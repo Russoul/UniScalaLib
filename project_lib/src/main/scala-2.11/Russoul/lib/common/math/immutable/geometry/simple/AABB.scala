@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 import Russoul.lib.common.utils.vector
 
 
@@ -18,6 +18,11 @@ class AABB(val center: vec3, val extent: vec3)
     new AABB(center + v, extent)
   }
 
+  /**
+    *
+    * @param s
+    * @return scaled version (around AABB's center point)
+    */
   def scale(s:Float) =
   {
     new AABB(center, extent * s)
@@ -44,6 +49,8 @@ class AABB(val center: vec3, val extent: vec3)
   }
 
 
+
+
   /**
     *
     *
@@ -66,6 +73,18 @@ class AABB(val center: vec3, val extent: vec3)
     a+= new Rectangle(center + vec3(0, 0, sz), vec3(sx, 0,0), vec3(0,sy,0))//front
     a
   }
+
+  /*def applyTransformation(mat: mat4): AABB =
+  {
+    val min = genMin()
+    val max = genMax()
+
+    val newMin = min * mat
+    val newMax = max * mat
+
+    AABB.genFromMinMax(min, max)
+  }*/
+
 }
 
 object AABB

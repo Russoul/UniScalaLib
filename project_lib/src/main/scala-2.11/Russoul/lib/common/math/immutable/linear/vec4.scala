@@ -176,6 +176,7 @@ class vec4(arrayIn:Array[Float])
     vec3(x,y,z)
   }
 
+  def xyz() = vec3(x,y,z)
 
 
   override def equals(obj: scala.Any): Boolean =
@@ -206,7 +207,7 @@ class vec4(arrayIn:Array[Float])
   }
 
 
-  def xyz = vec3(x,y,z)
+
 
 }
 

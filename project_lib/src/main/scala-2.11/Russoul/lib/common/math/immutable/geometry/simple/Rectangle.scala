@@ -33,6 +33,16 @@ class Rectangle(val center: vec3,val right: vec3,val up: vec3)
     new Rectangle(center, this.right * right, this.up * up)
   }
 
+  def scaleAroundBasis(scale:Float): Rectangle =
+  {
+    new Rectangle(center*scale, this.right * scale, this.up * scale)
+  }
+
+  def scaleAroundBasisZConst(scale:Float): Rectangle =
+  {
+    new Rectangle(vec3(center.x*scale, center.y * scale,center.z), this.right * scale, this.up * scale)
+  }
+
   override def toString: String =
   {
     center.toString() + ";" + right.toString() + ";" + up.toString()

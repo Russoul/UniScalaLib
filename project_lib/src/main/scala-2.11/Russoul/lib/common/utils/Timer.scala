@@ -5,39 +5,58 @@ package Russoul.lib.common.utils
   */
 class Timer
 {
-  private var prevFrameTime = 0D
-  private var prevInputTime = 0D
-  private var prevSystemTime = 0D
+  private val table = new map[String, Double]()
+
+
+  def update(key:String): Unit =
+  {
+    table(key) = Timer.getTimeNano()
+  }
+
+  def hasKey(key:String): Boolean =
+  {
+    table.get(key).nonEmpty
+  }
+
+  def remove(key:String): Boolean =
+  {
+    table.remove(key)
+  }
+
 
   /**
-    * @note InternalUse
+    *
+    * @param key
+    * @return in nanoseconds
     */
-  def onFrameUpdate(): Unit =
+  def getDelta(key:String):Double =
   {
-    prevFrameTime = Timer.getTimeNano()
+    val time = table.get(key)
+    if(time.nonEmpty){
+      Timer.getTimeNano() - time.get
+    }else{
+      -1D
+    }
   }
 
-  def onSystemUpdate():Unit =
+  /**
+    *
+    * @param key
+    * @return in nanoseconds
+    */
+  def getLastUpdateTime(key:String):Double =
   {
-    prevSystemTime = Timer.getTimeNano()
+    val got = table.get(key)
+    if(got.isDefined){
+      got.get
+    }else{
+      -1D
+    }
   }
 
-  def onInputUpdate(): Unit =
-  {
-    prevInputTime = Timer.getTimeNano()
-  }
 
-  def getFrameDelta() = Timer.getTimeNano() - prevFrameTime
 
-  def getInputDelta() = Timer.getTimeNano() - prevInputTime
 
-  def getSystemDelta() = Timer.getTimeNano() - prevSystemTime
-
-  def init(): Unit =
-  {
-    prevFrameTime = Timer.getTimeNano()
-    prevInputTime = Timer.getTimeNano()
-  }
 }
 
 object Timer

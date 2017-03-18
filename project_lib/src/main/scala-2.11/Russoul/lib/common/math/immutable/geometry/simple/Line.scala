@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 
 /**
   * Created by Russoul on 18.07.2016.
@@ -10,6 +10,11 @@ class Line(val start:vec3, val end:vec3)
   def genDir() = (end - start).normalize()
 
   def genRay() = new Ray(start, genDir())
+
+  /*def applyTransformation(mat:mat4): Line =
+  {
+    new Line(start*mat, end*mat)
+  }*/
 }
 
 object Line

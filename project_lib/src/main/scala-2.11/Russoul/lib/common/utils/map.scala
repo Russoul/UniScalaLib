@@ -8,7 +8,11 @@ class KeyNotFoundException(k: String) extends Exception("key %s was not found" f
 
 /**
   * Created by russoul on 28.01.17.
+  *
+  * very simple and slow implementation of map, get = O(n)
   */
+
+
 class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
 {
   def this()(implicit cta: ClassTag[A], ctb: ClassTag[B]) =
@@ -153,6 +157,20 @@ class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B
   {
     keys = new vector[A]()
     values = new vector[B]()
+  }
+
+  def remove(key:A):Boolean  =
+  {
+    val i = getIndex(key)
+
+    if(i >= 0){
+      keys.remove(i)
+      values.remove(i)
+      true
+    }else{
+      false
+    }
+
   }
 
   def getIndex(key: A):Int =

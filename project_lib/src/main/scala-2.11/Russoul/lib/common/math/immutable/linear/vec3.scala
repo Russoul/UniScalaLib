@@ -177,6 +177,7 @@ class vec3(arrayIn:Array[Float])
 
   def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
 
+  def xy() = vec2(x,y)
 
   def crossProduct(v: vec3): vec3 =
   {

@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
-import Russoul.lib.common.math.immutable.linear.vec2
+import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
 import Russoul.lib.common.utils.vector
 
 /**
@@ -10,6 +10,11 @@ class Rectangle2 (val center:vec2, val extent:vec2){
 
 
   def genVertices() = vector[vec2](center - extent, center + vec2(extent.x, -extent.y), center + extent, center + vec2(-extent.x, extent.y))
+
+  def toRectangleParallelToZ(zLevel:Float): Rectangle =
+  {
+    new Rectangle(vec3(center, zLevel), vec3(extent.x, 0,0), vec3(0,extent.y, 0))
+  }
 
   override def toString: String =
   {
