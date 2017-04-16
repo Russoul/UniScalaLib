@@ -18,13 +18,13 @@ class vec3(arrayIn:Array[Float])
 
 
 
-  protected[lib] val array = arrayIn
+  protected[lib] val array: Array[Float] = arrayIn
 
-  def x = array(0)
+  @inline def x: Float = array(0)
 
-  def y = array(1)
+  @inline def y: Float = array(1)
 
-  def z = array(2)
+  @inline def z: Float = array(2)
 
 
   def this(dx:Float,dy:Float,dz:Float){
@@ -56,74 +56,74 @@ class vec3(arrayIn:Array[Float])
     * @param index - starts from 1 !
     * @return
     */
-  def apply(index: Int): Float =
+  @inline def apply(index: Int): Float =
   {
     array(index-1)
   }
 
 
-  def *(vec: vec3) =
+  @inline def *(vec: vec3): Float =
   {
     dotProduct(vec)
   }
 
-  def *(mat:mat4) =
+  @inline def *(mat:mat4): vec3 =
   {
     (vec4(this,1) * mat).toVec3()
   }
 
   //by element product
-  def **(vec:vec3):vec3 =
+  @inline def **(vec:vec3):vec3 =
   {
     vec3(this.x*vec.x, this.y*vec.y, this.z*vec.z)
   }
 
-  def dotProduct(vec: vec3): Float =
+  @inline def dotProduct(vec: vec3): Float =
   {
     this (1) * vec(1) + this (2) * vec(2) + this (3) * vec(3)
   }
 
 
-  def *(scalar: Float): vec3 =
+  @inline def *(scalar: Float): vec3 =
   {
     vec3(x * scalar, y * scalar, z * scalar)
   }
-  def /(scalar:Float):vec3 =
+  @inline def /(scalar:Float):vec3 =
   {
     vec3(x / scalar, y / scalar, z / scalar)
   }
 
-  def scalarMultiplication(scalar: Float): vec3 =
+  @inline def scalarMultiplication(scalar: Float): vec3 =
   {
     vec3(this (1) * scalar, this (2) * scalar, this (3) * scalar)
   }
 
-  def add(vec: vec3): vec3 =
+  @inline def add(vec: vec3): vec3 =
   {
     vec3(x + vec.x, y + vec.y, z + vec.z)
   }
 
-  def subtract(vec: vec3): vec3 =
+  @inline def subtract(vec: vec3): vec3 =
   {
     vec3(x - vec.x, y - vec.y, z - vec.z)
   }
 
-  def -(vec: vec3): vec3 =
+  @inline def -(vec: vec3): vec3 =
   {
     vec3(x - vec.x, y - vec.y, z - vec.z)
   }
 
-  def +(vec: vec3): vec3 =
+  @inline def +(vec: vec3): vec3 =
   {
     vec3(x + vec.x, y + vec.y, z + vec.z)
   }
 
-  def unary_-(): vec3 =
+  @inline def unary_-(): vec3 =
   {
     this * (-1)
   }
 
-  def ^(vec:vec3): vec3 =
+  @inline def ^(vec:vec3): vec3 =
   {
     this.crossProduct(vec)
   }
@@ -139,13 +139,13 @@ class vec3(arrayIn:Array[Float])
   }
 
 
-  def length(): Float =
+  @inline def length(): Float =
   {
     val r = x * x + y * y + z * z
     math.sqrt(r).toFloat
   }
 
-  def squareLength(): Float =
+  @inline def squareLength(): Float =
   {
     x * x + y * y + z * z
   }
@@ -163,23 +163,23 @@ class vec3(arrayIn:Array[Float])
   }
 
 
-  def copy(): vec3 =
+  @inline def copy(): vec3 =
   {
     vec3(this (1), this (2), this (3))
   }
 
-  def normalize(): vec3 =
+  @inline def normalize(): vec3 =
   {
     this * (1 / length())
   }
 
-  def wOne(): vec4 = vec4(this (1), this (2), this (3), 1)
+  @inline def wOne(): vec4 = vec4(this (1), this (2), this (3), 1)
 
-  def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
+  @inline def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
 
-  def xy() = vec2(x,y)
+  @inline def xy() = vec2(x,y)
 
-  def crossProduct(v: vec3): vec3 =
+  @inline def crossProduct(v: vec3): vec3 =
   {
     vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)
   }
@@ -226,7 +226,7 @@ class vec3(arrayIn:Array[Float])
 
 
 
-  def size(): Int = 3
+  @inline def size(): Int = 3
 
 }
 

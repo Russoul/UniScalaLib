@@ -51,7 +51,7 @@ class WaveFrontObject(name: String)
       val v = vertexList(i)
       val v1 = v.wZero()
       val v2 = v1 * mat
-      val v3 = v2.wOff()
+      val v3 = v2.xyz
       vertexList(i) = v3
     }
     this

@@ -11,15 +11,15 @@ class vec4(arrayIn:Array[Float])
 {
 
 
-  protected[lib] val array = arrayIn
+  protected[lib] val array: Array[Float] = arrayIn
 
-  def x = array(0)
+  @inline def x: Float = array(0)
 
-  def y = array(1)
+  @inline def y: Float = array(1)
 
-  def z = array(2)
+  @inline def z: Float = array(2)
 
-  def w = array(3)
+  @inline def w: Float = array(3)
 
   def this(dx:Float, dy:Float, dz:Float, dw:Float)
   {
@@ -32,68 +32,78 @@ class vec4(arrayIn:Array[Float])
     * @param index - starts from 1 !
     * @return
     */
-  def apply(index: Int): Float =
+  @inline def apply(index: Int): Float =
   {
     array(index-1)
   }
 
 
-  def *(vec: vec4) =
-  {
-    dotProduct(vec)
-  }
-
-  def dotProduct(vec: vec4): Float =
+  @inline def *(vec: vec4): Float =
   {
     this (1) * vec(1) + this (2) * vec(2) + this (3) * vec(3) + this (4) * vec(4)
   }
 
-  def matrixProduct(matrix: mat4): vec4 =
+  @inline def dotProduct(vec: vec4): Float =
+  {
+    this (1) * vec(1) + this (2) * vec(2) + this (3) * vec(3) + this (4) * vec(4)
+  }
+
+  @inline def matrixProduct(matrix: mat4): vec4 =
   {
     vec4(this * matrix.column(1), this * matrix.column(2), this * matrix.column(3), this * matrix.column(4))
   }
 
-  def *(matrix: mat4): vec4 =
+  @inline def *(matrix: mat4): vec4 =
   {
-    matrixProduct(matrix)
+    vec4(this * matrix.column(1), this * matrix.column(2), this * matrix.column(3), this * matrix.column(4))
   }
 
-  def *(scalar: Float): vec4 =
-  {
-    scalarMultiplication(scalar)
-  }
-
-  def scalarMultiplication(scalar: Float): vec4 =
+  @inline def *(scalar: Float): vec4 =
   {
     vec4(this (1) * scalar, this (2) * scalar, this (3) * scalar, this (4) * scalar)
   }
 
-  def add(vec: vec4): vec4 =
+  @inline def **(vec: vec4): vec4 =
+  {
+    vec4(this (1) * vec(1), this (2) * vec(2), this (3) * vec(3), this (4) * vec(4))
+  }
+
+  @inline def /(scalar: Float): vec4 =
+  {
+    vec4(this (1) / scalar, this (2) / scalar, this (3) / scalar, this (4) / scalar)
+  }
+
+  @inline def scalarMultiplication(scalar: Float): vec4 =
+  {
+    vec4(this (1) * scalar, this (2) * scalar, this (3) * scalar, this (4) * scalar)
+  }
+
+  @inline def add(vec: vec4): vec4 =
   {
     vec4(this (1) + vec(1), this (2) + vec(2), this (3) + vec(3), this (4) + vec(4))
   }
 
-  def subtract(vec: vec4): vec4 =
+  @inline def subtract(vec: vec4): vec4 =
   {
-    add(-vec)
+    vec4(this (1) - vec(1), this (2) - vec(2), this (3) - vec(3), this (4) - vec(4))
   }
 
-  def -(vec: vec4): vec4 =
+  @inline def -(vec: vec4): vec4 =
   {
-    subtract(vec)
+    vec4(this (1) - vec(1), this (2) - vec(2), this (3) - vec(3), this (4) - vec(4))
   }
 
-  def +(vec: vec4): vec4 =
+  @inline def +(vec: vec4): vec4 =
   {
-    add(vec)
+    vec4(this (1) + vec(1), this (2) + vec(2), this (3) + vec(3), this (4) + vec(4))
   }
 
-  def unary_-(): vec4 =
+  @inline def unary_-(): vec4 =
   {
     this * (-1)
   }
 
-  def toMatrix4(): mat4 =
+  def toMatrix4FirstColumn(): mat4 =
   {
     mat4(this (1), 0, 0, 0,
       this (2), 0, 0, 0,
@@ -111,12 +121,12 @@ class vec4(arrayIn:Array[Float])
   }
 
 
-  def length(): Float =
+  @inline def length(): Float =
   {
     math.sqrt(squareLength()).toFloat
   }
 
-  def squareLength(): Float =
+  @inline def squareLength(): Float =
   {
     x * x + y * y + z * z + w * w
   }
@@ -138,23 +148,22 @@ class vec4(arrayIn:Array[Float])
     Array(this (1), this (2), this (3), this (4))
   }
 
-  def copy(): vec4 =
+  @inline def copy(): vec4 =
   {
     vec4(this (1), this (2), this (3), this (4))
   }
 
-  def normalize(): vec4 =
+  @inline def normalize(): vec4 =
   {
     this * (1 / length())
   }
 
-  def wOne(): vec4 = vec4(this (1), this (2), this (3), 1)
+  @inline def wOne(): vec4 = vec4(this (1), this (2), this (3), 1)
 
-  def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
+  @inline def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
 
-  def wOff(): vec3 = vec3(this (1), this (2), this (3))
 
-  def divideByW() = this * (1 / w)
+  @inline def divideByW() = this * (1 / w)
 
 
   def toSeq2(): Seq[Float] =
@@ -176,7 +185,7 @@ class vec4(arrayIn:Array[Float])
     vec3(x,y,z)
   }
 
-  def xyz() = vec3(x,y,z)
+  @inline def xyz() = vec3(x,y,z)
 
 
   override def equals(obj: scala.Any): Boolean =

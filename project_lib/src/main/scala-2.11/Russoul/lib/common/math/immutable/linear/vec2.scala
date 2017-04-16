@@ -11,11 +11,11 @@ import java.nio.FloatBuffer
 class vec2(arrayIn:Array[Float])
 {
 
-  protected[lib] val array = arrayIn
+  protected[lib] val array: Array[Float] = arrayIn
 
-  def x = array(0)
+  @inline def x: Float = array(0)
 
-  def y = array(1)
+  @inline def y: Float = array(1)
 
   def this(dx:Float,dy:Float){
     this(Array(dx,dy))
@@ -27,54 +27,65 @@ class vec2(arrayIn:Array[Float])
     * @param index - starts from 1 !
     * @return
     */
-  def apply(index: Int): Float =
+  @inline def apply(index: Int): Float =
   {
     array(index-1)
   }
 
 
-  def *(vec: vec2) =
+  @inline def *(vec: vec2) =
   {
-    dotProduct(vec)
+    this (1) * vec(1) + this (2) * vec(2)
   }
 
-  def dotProduct(vec: vec2): Float =
+  //by element product
+  @inline def **(vec:vec2):vec2 =
+  {
+    vec2(this.x*vec.x, this.y*vec.y)
+  }
+
+  @inline def dotProduct(vec: vec2): Float =
   {
     this (1) * vec(1) + this (2) * vec(2)
   }
 
 
-  def *(scalar: Float): vec2 =
-  {
-    scalarMultiplication(scalar)
-  }
-
-  def scalarMultiplication(scalar: Float): vec2 =
+  @inline def *(scalar: Float): vec2 =
   {
     vec2(this (1) * scalar, this (2) * scalar)
   }
 
-  def add(vec: vec2): vec2 =
+  @inline def /(scalar: Float): vec2 =
+  {
+    vec2(this (1) / scalar, this (2) / scalar)
+  }
+
+  @inline def scalarMultiplication(scalar: Float): vec2 =
+  {
+    vec2(this (1) * scalar, this (2) * scalar)
+  }
+
+  @inline def add(vec: vec2): vec2 =
   {
     vec2(this (1) + vec(1), this (2) + vec(2))
   }
 
-  def subtract(vec: vec2): vec2 =
+  @inline def subtract(vec: vec2): vec2 =
   {
-    add(-vec)
+    vec2(this (1) - vec(1), this (2) - vec(2))
   }
 
-  def -(vec: vec2): vec2 =
+  @inline def -(vec: vec2): vec2 =
   {
-    subtract(vec)
+    vec2(this (1) - vec(1), this (2) - vec(2))
   }
 
-  def +(vec: vec2): vec2 =
+  @inline def +(vec: vec2): vec2 =
   {
-    add(vec)
+    vec2(this (1) + vec(1), this (2) + vec(2))
   }
 
-  def unary_-(): vec2 =
+  @inline def unary_-(): vec2 =
   {
     this * (-1)
   }
@@ -91,13 +102,13 @@ class vec2(arrayIn:Array[Float])
   }
 
 
-  def length(): Float =
+  @inline def length(): Float =
   {
     val r = x * x + y * y
     math.sqrt(r).toFloat
   }
 
-  def squareLength(): Float =
+  @inline def squareLength(): Float =
   {
     x * x + y * y
   }
@@ -110,12 +121,12 @@ class vec2(arrayIn:Array[Float])
   }
 
 
-  def copy(): vec2 =
+  @inline def copy(): vec2 =
   {
     vec2(this (1), this (2))
   }
 
-  def normalize(): vec2 =
+  @inline def normalize(): vec2 =
   {
     this * (1 / length())
   }

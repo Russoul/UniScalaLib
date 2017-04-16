@@ -1,7 +1,7 @@
 package Russoul.lib.common.math
 
 import Russoul.lib.common.math.immutable.geometry.simple._
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
 import Russoul.lib.common.utils.vector
 
 import scala.language.postfixOps
@@ -371,6 +371,8 @@ object CollisionEngine
     }
   }
 
+
+  //TODO CHECK IF IT REALLY WORKS
   def checkPointRectangle(p: vec3, rec: Rectangle): Boolean =
   {
     val vs = rec.genVertices()
@@ -388,6 +390,12 @@ object CollisionEngine
     val lAC = l * AC
 
     0 <= lAB && lAB <= AB * AB && 0 <= lAC && lAC <= AC * AC
+  }
+
+  def checkPoint2Rectangle2(p:vec2, rec:Rectangle2):Boolean =
+  {
+    p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
+    p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
   }
 
   /**
