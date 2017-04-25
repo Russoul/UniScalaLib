@@ -131,11 +131,7 @@ class vec3(arrayIn:Array[Float])
 
   override def toString(): String =
   {
-    var re = ""
-    for (i <- 1 to 3) {
-      re += (apply(i) + (if (i != 3) " " else ""))
-    }
-    re
+    "vec3( " + x + "; " + y + "; " + z + " )"
   }
 
 

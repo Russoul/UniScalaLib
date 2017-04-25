@@ -11,10 +11,11 @@ class Line(val start:vec3, val end:vec3)
 
   def genRay() = new Ray(start, genDir())
 
-  /*def applyTransformation(mat:mat4): Line =
+  override def toString(): String =
   {
-    new Line(start*mat, end*mat)
-  }*/
+    "Line( start = " + start + "; end = " + end + " )"
+
+  }
 }
 
 object Line

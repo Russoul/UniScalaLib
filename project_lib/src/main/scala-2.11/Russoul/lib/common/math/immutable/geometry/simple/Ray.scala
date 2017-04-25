@@ -5,6 +5,11 @@ import Russoul.lib.common.math.immutable.linear.vec3
 
 class Ray(val start: vec3, val dir: vec3)
 {
+  override def toString(): String =
+  {
+    "Ray( start = " + start + "; dir = " + dir + " )"
+
+  }
 }
 
 object Ray

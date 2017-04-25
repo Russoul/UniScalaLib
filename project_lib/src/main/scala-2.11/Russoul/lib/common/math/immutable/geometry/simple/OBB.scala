@@ -148,14 +148,11 @@ class OBB(val center:vec3,val right:vec3,val up:vec3,val extentRight:Float,val e
     out
   }
 
-  /*def applyTransformation(mat: mat4): OBB =
+  override def toString(): String =
   {
-    val vs = genVertices()
-    vs.map(_ * mat)
+    "OBB( center = " + center + "; right = " + right +  "; up = " + up + "; extent = " + vec3(extentRight,extentUp,extentLook) + " )"
 
-
-
-  }*/
+  }
 }
 
 

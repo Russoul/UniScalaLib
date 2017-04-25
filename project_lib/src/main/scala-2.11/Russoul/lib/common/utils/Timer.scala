@@ -39,6 +39,27 @@ class Timer
     }
   }
 
+  def getDeltaNano(key:String):Double =
+  {
+    getDelta(key)
+  }
+
+  def getDeltaMilli(key:String):Double =
+  {
+    getDeltaNano(key)/1000000D
+  }
+
+
+  def getDeltaMicro(key:String):Double =
+  {
+    getDeltaNano(key)/1000D
+  }
+
+  def getDeltaSec(key:String):Double =
+  {
+    getDeltaNano(key)/1000000000D
+  }
+
   /**
     *
     * @param key

@@ -113,11 +113,7 @@ class vec4(arrayIn:Array[Float])
 
   override def toString(): String =
   {
-    var re = ""
-    for (i <- 1 to 4) {
-      re += (apply(i) + (if (i != 4) " " else ""))
-    }
-    re
+    "vec4( " + x + "; " + y + "; " + z + "; " + w + " )"
   }
 
 

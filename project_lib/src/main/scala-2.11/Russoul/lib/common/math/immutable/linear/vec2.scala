@@ -90,15 +90,14 @@ class vec2(arrayIn:Array[Float])
     this * (-1)
   }
 
-
+  @inline def vec2OrthogonalToThisOneToTheRight():vec2 =
+  {
+    vec2(y,-x)
+  }
 
   override def toString(): String =
   {
-    var re = ""
-    for (i <- 1 to 2) {
-      re += (apply(i) + (if (i != 2) " " else ""))
-    }
-    re
+     "vec2( " + x + "; " + y + " )"
   }
 
 

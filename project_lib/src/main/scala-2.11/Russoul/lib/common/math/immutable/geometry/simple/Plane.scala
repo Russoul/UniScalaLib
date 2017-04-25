@@ -7,5 +7,9 @@ import Russoul.lib.common.math.immutable.linear.vec3
   */
 class Plane(val point:vec3, val normal:vec3)
 {
+  override def toString(): String =
+  {
+    "Plane( point = " + point + "; normal = " + normal + " )"
 
+  }
 }

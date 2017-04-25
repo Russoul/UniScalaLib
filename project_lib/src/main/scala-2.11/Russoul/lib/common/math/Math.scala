@@ -55,6 +55,22 @@ object Math
     if (x == n) n else x * 2
   }
 
+  /*def nextMultipleOf(n:Float, multipleOf:Float): Float ={
+
+
+    if(n == 0) return 0
+
+    def rec(curMult:Float): Float =
+    {
+      if(n <= curMult) curMult
+      else{
+        rec(curMult + multipleOf)
+      }
+    }
+
+    rec(multipleOf)
+  }*/
+
   implicit class FloatInverse(x:Float)
   {
     def inv():Float = -x

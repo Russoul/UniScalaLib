@@ -5,6 +5,8 @@ import Russoul.lib.common.utils.vector
 
 /**
   * Created by russoul on 11.03.17.
+  *
+  * AXIS ALIGNED !!!
   */
 class Rectangle2 (val center:vec2, val extent:vec2){
 
@@ -16,9 +18,22 @@ class Rectangle2 (val center:vec2, val extent:vec2){
     new Rectangle(vec3(center, zLevel), vec3(extent.x, 0,0), vec3(0,extent.y, 0))
   }
 
+  /**
+    * scaling around center of this rectangle
+    */
+  def scale(scalar:Float): Rectangle2 =
+  {
+    new Rectangle2(center, extent * scalar)
+  }
+
+  def scaleAroundBasis(scalar:Float):Rectangle2 =
+  {
+    new Rectangle2(center * scalar, extent * scalar)
+  }
+
   override def toString: String =
   {
-    "Rectangle2( "+center.toString() + ";" + extent.toString() + " )"
+    "Rectangle2( center = "+center.toString() + "; extent = " + extent.toString() + " )"
   }
 }
 

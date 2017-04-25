@@ -79,11 +79,7 @@ class vec2i(arrayIn:Array[Int])
 
   override def toString(): String =
   {
-    var re = ""
-    for (i <- 1 to 2) {
-      re += (apply(i) + (if (i != 2) " " else ""))
-    }
-    re
+    "vec2i( " + x + "; " + y + " )"
   }
 
 

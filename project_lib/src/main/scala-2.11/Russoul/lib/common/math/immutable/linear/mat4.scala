@@ -48,24 +48,20 @@ class mat4()
     re
   }
 
-  def out() =
-  {
-    println(toString)
-  }
-
-  def >>() =
-  {
-    out
-  }
 
   /**
     *
     * @param row    -starts from 1 !
     * @param column -starts from 1 !
     */
-  def apply(row: Int, column: Int) =
+  /*def apply(row: Int, column: Int) =
   {
     this.get(row, column)
+  }
+*/
+  def apply(row:Int)(column:Int) =
+  {
+    this.row(row)(column)
   }
 
 
@@ -131,13 +127,22 @@ class mat4()
 
   override def toString(): String =
   {
-    var s: String = ""
-    for (i <- 0 until array.size) {
-      s += array(i)
-      val n = if ((i + 1) % 4 == 0) "\n" else " "
-      s += n
+    var res: String = "mat4\n"
+
+
+    for(i <- 0 until 4){
+
+      res += "( "
+      for(j <- 0 until 4){
+        val v = this(i)(j)
+        res += v + " "
+
+      }
+
+      res += ")\n"
     }
-    s
+
+    res
   }
 
   def genFloatBuffer(): FloatBuffer =
@@ -167,7 +172,7 @@ class mat4()
       for (k <- 1 to 4) {
         //column
         if (i != l && j != k) {
-          re(u) = this (l, k)
+          re(u) = this (l) (k)
           u += 1
         }
       }
@@ -217,7 +222,7 @@ class mat4()
 
   def determinant(): Float =
   {
-    this (1, 1) * detmat3x3(minor(1, 1)) - this (1, 2) * detmat3x3(minor(1, 2)) + this (1, 3) * detmat3x3(minor(1, 3)) - this (1, 4) * detmat3x3(minor(1, 4))
+    this (1)(1) * detmat3x3(minor(1, 1)) - this (1)(2) * detmat3x3(minor(1, 2)) + this(1)(3) * detmat3x3(minor(1, 3)) - this(1)(4) * detmat3x3(minor(1, 4))
   }
 
   def cofactor(): mat4 =

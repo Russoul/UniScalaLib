@@ -253,7 +253,7 @@ object CollisionEngine
   }
 
 
-  def checkPointAABB(point: vec3, container: AABB) =
+  def checkPointAABB(point: vec3, container: AABB): Boolean =
   {
     val cmin = container.genMin()
     val cmax = container.genMax()
@@ -316,7 +316,7 @@ object CollisionEngine
     * 1 - intersects
     * 2 - inside
     */
-  def checkOBBAABB(checkThis:OBB, checkWith:AABB) : Int =
+  def checkOBBAABBi(checkThis:OBB, checkWith:AABB) : Int =
   {
     val points = checkThis.genVertices()
 
@@ -372,7 +372,7 @@ object CollisionEngine
   }
 
 
-  //TODO CHECK IF IT REALLY WORKS
+  //TODO CHECK IF IT REALLY WORKS ???
   def checkPointRectangle(p: vec3, rec: Rectangle): Boolean =
   {
     val vs = rec.genVertices()
@@ -392,11 +392,6 @@ object CollisionEngine
     0 <= lAB && lAB <= AB * AB && 0 <= lAC && lAC <= AC * AC
   }
 
-  def checkPoint2Rectangle2(p:vec2, rec:Rectangle2):Boolean =
-  {
-    p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
-    p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
-  }
 
   /**
     *
@@ -493,6 +488,312 @@ object CollisionEngine
     sqdist < sqradDist
 
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  //2D--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+  def checkPoint2Rectangle2(p:vec2, rec:Rectangle2):Boolean =
+  {
+    p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
+    p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
+  }
+
+  def checkRectangle2Rectangle2(a:Rectangle2, b:Rectangle2): Boolean =
+  {
+    a.center.x-a.extent.x <= b.center.x+b.extent.x && a.center.x+a.extent.x >= b.center.x-b.extent.x &&
+      a.center.y-a.extent.y <= b.center.y+b.extent.y && a.center.y+a.extent.y >= b.center.y-b.extent.y
+
+  }
+
+
+  def checkCircleCircle(a:Circle, b:Circle) : Boolean =
+  {
+    (b.center*a.center) <= (a.rad + b.rad) * (a.rad + b.rad)
+  }
+
+  def checkCircleRectangle2(a:Circle, b:Rectangle2) : Boolean =
+  {
+    !(a.center.x + a.rad < b.center.x - b.extent.x || a.center.x - a.rad > b.center.x + b.extent.x ||
+      a.center.y + a.rad < b.center.y - b.extent.y || a.center.y - a.rad > b.center.y + b.extent.y)
+  }
+
+  def penetrationCircleCircle(a:Circle, b:Circle):Option[PenetrationData2] =
+  {
+    if(!checkCircleCircle(a, b)) None
+    else{
+      val n = b.center - a.center
+      val dist = n.length()
+
+
+      val r = a.rad + b.rad
+
+      if(dist > 0){
+
+        val norm = n / dist
+        val pen = r - dist
+
+        Some(new PenetrationData2(norm, pen))
+      }else{
+        Some(new PenetrationData2(vec2(1,1), r)) //random direction
+      }
+
+    }
+  }
+
+  /*def penetrationCircleRectangle2(a:Circle, b:Rectangle2) :Option[PenetrationData2] =
+  {
+    if(!checkCircleRectangle2(a, b)) None
+    else{
+
+    }
+  }*/
+
+
+  def checkPoint2Square2(p:vec2, centerOfSquare:vec2, extentOfSquare:Float): Boolean ={
+    p.x >= centerOfSquare.x-extentOfSquare &&
+      p.x <= centerOfSquare.x + extentOfSquare &&
+      p.y >= centerOfSquare.y - extentOfSquare &&
+      p.y <= centerOfSquare.y + extentOfSquare
+  }
+
+
+
+  def checkRectangle2Square2(a:Rectangle2, b:Square2): Boolean =
+  {
+    a.center.x-a.extent.x <= b.center.x+b.extent && a.center.x+a.extent.x >= b.center.x-b.extent &&
+      a.center.y-a.extent.y <= b.center.y+b.extent && a.center.y+a.extent.y >= b.center.y-b.extent
+  }
+
+  /**
+    *
+    * @param a
+    * @param b
+    * @return singular intersection point, None in other cases
+    */
+  def checkLine2Line2(a:Line2, b:Line2) : Option[vec2] =
+  {
+
+    val A1 = a.end.y - a.start.y
+    val B1 = a.start.x - a.end.x
+    val C1 = A1*a.start.x + B1*a.start.y
+
+    val A2 = b.end.y - b.start.y
+    val B2 = b.start.x - b.end.x
+    val C2 = A2*b.start.x + B2*b.start.y
+
+    val det = A1*B2 - B1*A2
+
+    if(det == 0) return None //lines are parallel or coincide we are returning None either way
+
+    val x = (C1*B2 - B1*C2)/det
+    val y = (A1*C2 - C1*A2)/det
+
+    val intersection = vec2(x,y)
+
+
+    val dif1 = a.end - a.start
+    val dif2 = b.end - b.start
+    val len1 = dif1.squareLength()
+    val len2 = dif2.squareLength()
+    val difA = intersection - a.start
+    val difB = intersection - b.start
+
+
+    val test1 = dif1 * difA
+    val test2 = dif2 * difB
+
+    if( test1 > 0 && test1/len1 <= 1 && test2 > 0 && test2/len2 <= 1) Some(intersection) else None
+
+  }
+
+  /**
+    *
+    * @return point and line of intersection of rectangle
+    */
+  def checkLine2Rectangle2Min(line:Line2, rec:Rectangle2): Option[(vec2, Line2)] =
+  {
+    val vertices = rec.genVertices()
+
+    val l0 = new Line2(vertices(0), vertices(1))
+    val l1 = new Line2(vertices(1), vertices(2))
+    val l2 = new Line2(vertices(2), vertices(3))
+    val l3 = new Line2(vertices(3), vertices(0))
+
+    val i0 = checkLine2Line2(line, l0)
+    val i1 = checkLine2Line2(line, l1)
+    val i2 = checkLine2Line2(line, l2)
+    val i3 = checkLine2Line2(line, l3)
+
+    var min = Float.MaxValue
+    var minV = vec2(0,0)
+    var minL:Line2 = null
+
+    var temp:Float = 0
+
+    if(i0.isDefined && {temp = i0.get.squareLength();temp} < min){
+      minV = i0.get
+      min = temp
+      minL = l0
+    }
+    if(i1.isDefined && {temp = i1.get.squareLength();temp} < min){
+      minV = i1.get
+      min = temp
+      minL = l1
+    }
+    if(i2.isDefined && {temp = i2.get.squareLength();temp} < min){
+      minV = i2.get
+      min = temp
+      minL = l2
+    }
+    if(i3.isDefined && {temp = i3.get.squareLength();temp} < min){
+      minV = i3.get
+      min = temp
+      minL = l3
+    }
+
+    if(minL != null) Some(minV, minL) else None
+
+
+  }
+
+  def checkRay2Ray2(a:Ray2, b:Ray2):Option[vec2] =
+  {
+    val A1 = a.dir.y
+    val B1 = -a.dir.x
+    val C1 = A1*a.start.x + B1*a.start.y
+
+    val A2 = b.dir.y
+    val B2 = -b.dir.x
+    val C2 = A2*b.start.x + B2*b.start.y
+
+    val det = A1*B2 - B1*A2
+
+    if(det == 0) return None //lines are parallel or coincide we are returning None either way
+
+    val x = (C1*B2 - B1*C2)/det
+    val y = (A1*C2 - C1*A2)/det
+
+    Some(vec2(x,y))
+  }
+
+  def distancePoint2Point2(a:vec2, b:vec2): Float =
+  {
+    (b-a).length()
+  }
+
+
+  /**
+    *
+    * @param circle
+    * @param line
+    * @return distance and point of closest distance
+    */
+  def distanceCircleLine(circle:Circle, line:Line2) : (Float,vec2) =
+  {
+    val v1 = line.end-line.start
+
+    val ray1 = new Ray2(line.start, v1)
+    val ray2 = new Ray2(circle.center, ray1.dir.vec2OrthogonalToThisOneToTheRight())
+
+
+    val dist = checkRay2Ray2(ray1, ray2).get //can be always found as rays are orthogonal
+
+    val v2 = dist - line.start
+    val v3 = line.end - dist
+
+    println(ray2.dir)
+    println(dist)
+
+    if((v1 * v2) * (v1*v3) > 0) return ((circle.center-dist).length()-circle.rad, dist)
+    else{
+      val l1 = (circle.center - line.start).squareLength()
+      val l2 = (circle.center - line.end).squareLength()
+
+      if(l1 > l2) return (math.sqrt(l2).toFloat - circle.rad, line.end)
+      else return (math.sqrt(l1).toFloat - circle.rad, line.start)
+    }
+  }
+
+
+  /**
+    *
+    * @param a
+    * @param b
+    * @return 8 different situations not including intersection
+    *         if intersection ret 0 else 4 dists between corners or 4 dists between edges possible (just draw it to understand)
+    *         returning distance
+    */
+  def distanceRectangle2Square2(a:Rectangle2, b:Square2):Float =
+  {
+    if(checkRectangle2Square2(a, b)) 0
+    else{
+      if(b.center.x - b.extent >= a.center.x + a.extent.x){
+        if(b.center.y + b.extent <= a.center.y - a.extent.y){
+          distancePoint2Point2(vec2(a.center.x+a.extent.x, a.center.y - a.extent.y), vec2(b.center.x - b.extent, b.center.y + b.extent))
+        }else if(b.center.y - b.extent >= a.center.y + a.extent.y){
+          distancePoint2Point2(vec2(a.center.x+a.extent.x, a.center.y + a.extent.y), vec2(b.center.x - b.extent, b.center.y - b.extent))
+        }else{
+          (b.center.x - b.extent) - (a.center.x + a.extent.x)
+        }
+      }else if(b.center.x + b.extent <= a.center.x - a.extent.x){
+        if(b.center.y - b.extent >= a.center.y + a.extent.y){
+          distancePoint2Point2(vec2(a.center.x-a.extent.x, a.center.y + a.extent.y), vec2(b.center.x + b.extent, b.center.y - b.extent))
+        }else if(b.center.y + b.extent <= a.center.y - a.extent.y){
+          distancePoint2Point2(vec2(a.center.x-a.extent.x, a.center.y - a.extent.y), vec2(b.center.x + b.extent, b.center.y + b.extent))
+        }else{
+          (a.center.x - a.extent.x) - (b.center.x + b.extent)
+        }
+      }else{
+        if(b.center.y - b.extent >= a.center.y + a.extent.y){
+          (b.center.y - b.extent) - (a.center.y + a.extent.y)
+        }else{
+          (a.center.y - a.extent.y) - (b.center.y + b.extent)
+        }
+      }
+    }
+  }
+
+
+  //--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------------------------
+
+
+  /*def normalOfTouchRectangle2Square2(a:Rectangle2, b:Square2):Option[vec2] =
+  {
+    if(a.center.x-a.extent.x == b.center.x+b.extent && b.center.y - b.extent < a.center.y + a.extent.y && b.center.y + b.extent > a.center.y - a.extent.y) Some(vec2(-1,0))
+    else if(a.center.x+a.extent.x == b.center.x-b.extent  && b.center.y - b.extent < a.center.y + a.extent.y && b.center.y + b.extent > a.center.y - a.extent.y) Some(vec2(1,0))
+    else if(a.center.y+a.extent.y == b.center.y-b.extent  && b.center.x - b.extent < a.center.x + a.extent.x && b.center.x + b.extent > a.center.x - a.extent.x) Some(vec2(0,1))
+    else if(a.center.y-a.extent.y == b.center.y+b.extent  && b.center.x - b.extent < a.center.x + a.extent.x && b.center.x + b.extent > a.center.x - a.extent.x) Some(vec2(0,-1))
+    else None
+  }*/
+
 
   /*def checkAABBAndFrustumSlow2(box: AABB, planes: vector[Plane]): Int =
   {

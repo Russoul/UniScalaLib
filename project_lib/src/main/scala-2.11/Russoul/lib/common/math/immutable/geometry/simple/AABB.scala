@@ -48,9 +48,6 @@ class AABB(val center: vec3, val extent: vec3)
     a
   }
 
-
-
-
   /**
     *
     *
@@ -74,16 +71,11 @@ class AABB(val center: vec3, val extent: vec3)
     a
   }
 
-  /*def applyTransformation(mat: mat4): AABB =
+  override def toString(): String =
   {
-    val min = genMin()
-    val max = genMax()
+    "AABB( center = " + center + "; extent = " + extent + " )"
 
-    val newMin = min * mat
-    val newMax = max * mat
-
-    AABB.genFromMinMax(min, max)
-  }*/
+  }
 
 }
 

@@ -46,7 +46,7 @@ class Rectangle(val center: vec3,val right: vec3,val up: vec3)
 
   override def toString: String =
   {
-    center.toString() + ";" + right.toString() + ";" + up.toString()
+    "Rectangle( center = " + center.toString() + "; right = " + right.toString() + "; up = " + up.toString() + " )"
   }
 }
 
