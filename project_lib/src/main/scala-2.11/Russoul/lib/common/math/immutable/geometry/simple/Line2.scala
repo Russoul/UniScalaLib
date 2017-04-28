@@ -15,4 +15,9 @@ class Line2(val start:vec2, val end:vec2)
 
   }
 
+  def scaleAroundBasis(scalar:Float): Line2 =
+  {
+    new Line2(start * scalar, end * scalar)
+  }
+
 }
