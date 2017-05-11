@@ -543,28 +543,7 @@ object CollisionEngine
       a.center.y + a.rad < b.center.y - b.extent.y || a.center.y - a.rad > b.center.y + b.extent.y)
   }
 
-  def penetrationCircleCircle(a:Circle, b:Circle):Option[PenetrationData2] =
-  {
-    if(!checkCircleCircle(a, b)) None
-    else{
-      val n = b.center - a.center
-      val dist = n.length()
 
-
-      val r = a.rad + b.rad
-
-      if(dist > 0){
-
-        val norm = n / dist
-        val pen = r - dist
-
-        Some(new PenetrationData2(norm, pen))
-      }else{
-        Some(new PenetrationData2(vec2(1,1), r)) //random direction
-      }
-
-    }
-  }
 
   /*def penetrationCircleRectangle2(a:Circle, b:Rectangle2) :Option[PenetrationData2] =
   {
@@ -823,7 +802,34 @@ object CollisionEngine
     }
 
     result
-  }*/
+  }
+
+
+  def penetrationCircleCircle(a:Circle, b:Circle):Option[PenetrationData2] =
+  {
+    if(!checkCircleCircle(a, b)) None
+    else{
+      val n = b.center - a.center
+      val dist = n.length()
+
+
+      val r = a.rad + b.rad
+
+      if(dist > 0){
+
+        val norm = n / dist
+        val pen = r - dist
+
+        Some(new PenetrationData2(norm, pen))
+      }else{
+        Some(new PenetrationData2(vec2(1,1), r)) //random direction
+      }
+
+    }
+  }
+
+
+  */
 
 
 

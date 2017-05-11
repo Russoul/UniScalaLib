@@ -15,7 +15,7 @@ class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val looking
     val pc = near.center
     val sc = pc + (n * centerf) //sphere center
 
-    new Sphere(sc, centerf)
+    Sphere(sc, centerf)
 
   }
 

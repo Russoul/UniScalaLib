@@ -409,9 +409,19 @@ class vector[@specialized T](var array:Array[T],var size:Int)(implicit val ct: C
 
   def map(f:Function[T,T]): Unit =
   {
-    for(i <- indices()){
-      array(i) = f(array(i))
+    map(indices(), f)
+  }
+
+  def map(range:Range, f:Function[T,T]) : Unit =
+  {
+    for(i <- range){
+      map(i, f)
     }
+  }
+
+  @inline def map(index:Int, f:Function[T,T]) : Unit =
+  {
+    array(index) = f(array(index))
   }
 
   def foreach(f: Function[T, Unit]): Unit =

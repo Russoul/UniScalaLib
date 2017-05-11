@@ -1,13 +1,20 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.vec3
 
 
-class Ray(val start: vec3, val dir: vec3)
+@immutable case class Ray(start: vec3, dir: vec3) extends Shape3
 {
-  override def toString(): String =
-  {
-    "Ray( start = " + start + "; dir = " + dir + " )"
+
+
+  override def translate(v: vec3): Ray = {
+    Ray(start + v, dir)
+  }
+
+  override def toString(): String = {
+    "Ray(start = " + start + ";dir = " + dir + ")"
 
   }
 }

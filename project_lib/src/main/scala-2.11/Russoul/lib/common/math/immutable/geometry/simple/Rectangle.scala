@@ -1,5 +1,7 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.Shape3
 import Russoul.lib.common.math.immutable.linear.{mat4, vec2, vec3}
 import Russoul.lib.common.utils.vector
 
@@ -13,22 +15,26 @@ import Russoul.lib.common.utils.vector
   *       ||
   * right XX----->
   */
-class Rectangle(val center: vec3,val right: vec3,val up: vec3)
-{
+@immutable case class Rectangle(center: vec3, right: vec3, up: vec3) extends Shape3 {
+
+
+  override def translate(v: vec3): Rectangle = {
+    Rectangle(center + v, right, up)
+  }
 
   /**
     *
     * @return right hand rule
     */
-  def genNormal() = right.crossProduct(up).normalize()
+  def genNormal(): vec3 = right.crossProduct(up).normalize()
 
 
 
-  def genVerticesClockwise() = vector[vec3](center + up - right, center + up + right, center - up + right, center - up - right)
+  def genVerticesClockwise(): vector[vec3] = vector[vec3](center + up - right, center + up + right, center - up + right, center - up - right)
 
-  def genVertices() = vector[vec3](center - up - right, center - up + right, center + up + right, center + up - right)
+  def genVertices(): vector[vec3] = vector[vec3](center - up - right, center - up + right, center + up + right, center + up - right)
 
-  def scaleAroundOrigin(right:Float, up:Float): Rectangle =
+  def scale(right:Float, up:Float): Rectangle =
   {
     new Rectangle(center, this.right * right, this.up * up)
   }

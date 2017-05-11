@@ -1,21 +1,24 @@
 package Russoul.lib.common.math.immutable.linear
 
+import Russoul.lib.common.lang.immutable
+
 /**
   *
   * immutable
   */
-class vec2i(arrayIn:Array[Int])
+@immutable case class vec2i(array:Array[Int])
 {
 
-  protected[lib] val array = arrayIn
 
-  def x = array(0)
+  @inline def x: Int = array(0)
 
-  def y = array(1)
+  @inline def y: Int = array(1)
 
-  def this(dx:Int,dy:Int){
+  private def this(dx:Int,dy:Int){
     this(Array(dx,dy))
   }
+
+
 
 
   /**
@@ -23,98 +26,78 @@ class vec2i(arrayIn:Array[Int])
     * @param index - starts from 1 !
     * @return
     */
-  def apply(index: Int): Int =
-  {
+  @inline def apply(index: Int): Int = {
     array(index-1)
   }
 
 
-  def *(vec: vec2i) =
-  {
+  @inline def *(vec: vec2i): Int = {
     dotProduct(vec)
   }
 
-  def dotProduct(vec: vec2i): Int =
-  {
+  @inline def dotProduct(vec: vec2i): Int = {
     this (1) * vec(1) + this (2) * vec(2)
   }
 
 
-  def *(scalar: Float): vec2i =
-  {
+  @inline def *(scalar: Float): vec2i = {
     scalarMultiplication(scalar)
   }
 
-  def scalarMultiplication(scalar: Float): vec2i =
-  {
-    vec2i((this (1) * scalar).toInt, (this (2) * scalar).toInt)
+  @inline def scalarMultiplication(scalar: Float): vec2i = {
+    new vec2i((this (1) * scalar).toInt, (this (2) * scalar).toInt)
   }
 
-  def add(vec: vec2i): vec2i =
-  {
-    vec2i(this (1) + vec(1), this (2) + vec(2))
+  @inline def add(vec: vec2i): vec2i = {
+    new vec2i(this (1) + vec(1), this (2) + vec(2))
   }
 
-  def subtract(vec: vec2i): vec2i =
-  {
+  @inline def subtract(vec: vec2i): vec2i = {
     add(-vec)
   }
 
-  def -(vec: vec2i): vec2i =
-  {
+  @inline def -(vec: vec2i): vec2i = {
     subtract(vec)
   }
 
-  def +(vec: vec2i): vec2i =
-  {
+  @inline def +(vec: vec2i): vec2i = {
     add(vec)
   }
 
-  def unary_-(): vec2i =
-  {
+  @inline def unary_-(): vec2i = {
     this * (-1)
   }
 
 
 
-  override def toString(): String =
-  {
+  override def toString(): String = {
     "vec2i( " + x + "; " + y + " )"
   }
 
 
-  def length(): Int =
-  {
+  @inline def length(): Int = {
     val r = x * x + y * y
     math.sqrt(r).toInt
   }
 
-  def squareLength(): Int =
-  {
+  @inline def squareLength(): Int = {
     x * x + y * y
   }
 
 
 
-  def toArray2f(): Array[Int] =
-  {
+  def toArray2f(): Array[Int] = {
     Array(this (1), this (2))
   }
 
 
-  def copy(): vec2i =
-  {
-    vec2i(this (1), this (2))
-  }
 
-  def normalize(): vec2i =
-  {
+  @inline def normalize(): vec2i = {
     this * (1 / length())
   }
 
 
-  def toSeq2(): Seq[Int] =
-  {
+  def toSeq2(): Seq[Int] = {
     Seq(x, y)
   }
 
@@ -130,28 +113,11 @@ class vec2i(arrayIn:Array[Int])
     false
   }
 
-  override def hashCode(): Int =
-  {
-
-    var res = 1
-    val a = java.lang.Float.floatToIntBits(x)
-    val b = java.lang.Float.floatToIntBits(y)
-
-    res += 37 * res + a
-    res += 37 * res + b
-
-    res
-  }
-
 
 }
 
-object vec2i
-{
+object vec2i {
 
-  def apply(x: Int, y: Int) = new vec2i(x,y)
+  def apply(x:Int, y:Int): vec2i = new vec2i(Array(x,y))
 
-  def newSpace() = new Array[Int](2)
-
-  def getByteSize() = 8
 }

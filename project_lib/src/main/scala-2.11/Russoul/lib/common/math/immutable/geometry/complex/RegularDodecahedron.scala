@@ -82,15 +82,15 @@ class RegularDodecahedron(val center:vec3, val right:vec3, val up:vec3, val exte
     var fourth:Int = -1
     var fifth:Int = -1
 
-    for(i <- RegularDodecahedron.indicesLines.indices){
+    for(i <- RegularDodecahedron.indexLines.indices()){
       val pos = i%10
 
 
-      if(pos == 0)      first = RegularDodecahedron.indicesLines(i)
-      else if(pos == 1) second = RegularDodecahedron.indicesLines(i)
-      else if(pos == 3) third = RegularDodecahedron.indicesLines(i)
-      else if(pos == 5) fourth = RegularDodecahedron.indicesLines(i)
-      else if(pos == 7) fifth = RegularDodecahedron.indicesLines(i)
+      if(pos == 0)      first = RegularDodecahedron.indexLines(i)
+      else if(pos == 1) second = RegularDodecahedron.indexLines(i)
+      else if(pos == 3) third = RegularDodecahedron.indexLines(i)
+      else if(pos == 5) fourth = RegularDodecahedron.indexLines(i)
+      else if(pos == 7) fifth = RegularDodecahedron.indexLines(i)
       else if(pos == 9)
       {
         val t1 = (vertices(fourth) - vertices(third)) * 0.5F
@@ -119,8 +119,8 @@ class RegularDodecahedron(val center:vec3, val right:vec3, val up:vec3, val exte
 
   def genLength1(vertices:vector[vec3]): Float =
   {
-    val t1 = (vertices(RegularDodecahedron.indicesLines(5)) - vertices(RegularDodecahedron.indicesLines(3))) * 0.5F
-    val t2 = vertices(RegularDodecahedron.indicesLines(3)) - vertices(RegularDodecahedron.indicesLines(0))
+    val t1 = (vertices(RegularDodecahedron.indexLines(5)) - vertices(RegularDodecahedron.indexLines(3))) * 0.5F
+    val t2 = vertices(RegularDodecahedron.indexLines(3)) - vertices(RegularDodecahedron.indexLines(0))
 
 
     (t2 + t1).length()
@@ -128,7 +128,7 @@ class RegularDodecahedron(val center:vec3, val right:vec3, val up:vec3, val exte
 
   def genLength2(vertices:vector[vec3]):Float =
   {
-    (vertices(RegularDodecahedron.indicesLines(1))-vertices(RegularDodecahedron.indicesLines(7))).length()
+    (vertices(RegularDodecahedron.indexLines(1))-vertices(RegularDodecahedron.indexLines(7))).length()
   }
 
 
@@ -148,7 +148,8 @@ class RegularDodecahedron(val center:vec3, val right:vec3, val up:vec3, val exte
 object RegularDodecahedron
 {
   //with duplicates
-  final val indicesLines = vector[Int](14,2,2,10,10,11,11,3,3,14,
+  final val indexLines = vector[Int](
+    14,2,2,10,10,11,11,3,3,14,
     10,6,6,13,13,7,7,11,11,10, //each line is a pentagon
     2,16,16,17,17,6,6,10,10,2,
     15,1,1,16,16,2,2,14,14,15,
@@ -159,7 +160,8 @@ object RegularDodecahedron
     19,0,0,15,15,14,14,3,3,19,
     11,7,7,18,18,19,19,3,3,11,
     18,7,7,13,13,12,12,4,4,18,
-    8,0,0,19,19,18,18,4,4,12)
+    8,0,0,19,19,18,18,4,4,12
+  )
 
 
 }

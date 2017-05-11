@@ -1,5 +1,6 @@
 package Russoul.lib.common.math
 
+import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.vec3
 
 /**
@@ -71,15 +72,15 @@ object Math
     rec(multipleOf)
   }*/
 
-  implicit class FloatInverse(x:Float)
+
+  implicit class FloatEditions(x:Float)
   {
+    def sq():Float = x*x
+    def squared(): Float = x*x
     def inv():Float = -x
   }
 
-  implicit class FloatSquared(x:Float)
-  {
-    def squared() = x*x
-  }
+
 
   /**
     *
@@ -120,4 +121,7 @@ object Math
 
     minV + (maxV - minV) * k
   }
+
+
+
 }

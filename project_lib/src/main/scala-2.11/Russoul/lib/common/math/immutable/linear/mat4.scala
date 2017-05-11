@@ -2,6 +2,7 @@ package Russoul.lib.common.math.immutable.linear
 
 import java.nio.FloatBuffer
 
+import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.utils.Utilities
 
 /**
@@ -9,39 +10,22 @@ import Russoul.lib.common.utils.Utilities
   *
   * immutable
   */
-class mat4()
-{
+@immutable case class mat4(array: Array[Float]) {
 
-  def copy() = new mat4(array)
+  private def this() {
+    this(new Array[Float](16))
+  }
 
-  def this(floats: Float*)
-  {
+  private def this(floats: Seq[Float]) {
     this()
-    for (i <- 0 until floats.size) {
+    for (i <- floats.indices) {
       array(i) = floats(i)
     }
   }
 
-  def this(floats: Seq[Float], E: Boolean = true) =
-  {
-    this()
-    for (i <- 0 until floats.size) {
-      array(i) = floats(i)
-    }
-  }
 
-  def this(floats: Array[Float]) =
-  {
-    this()
-    for (i <- 0 until floats.size) {
-      array(i) = floats(i)
-    }
-  }
 
-  private val array: Array[Float] = new Array[Float](16)
-
-  def genArray() =
-  {
+  def genArray(): Array[Float] = {
     val re = new Array[Float](16)
     for(i <- 0 until 16) re(i) = array(i)
 
@@ -49,30 +33,17 @@ class mat4()
   }
 
 
-  /**
-    *
-    * @param row    -starts from 1 !
-    * @param column -starts from 1 !
-    */
-  /*def apply(row: Int, column: Int) =
-  {
-    this.get(row, column)
-  }
-*/
-  def apply(row:Int)(column:Int) =
-  {
+  @inline def apply(row:Int)(column:Int): Float = {
     this.row(row)(column)
   }
 
 
-  def row(index: Int): vec4 =
-  {
+  @inline def row(index: Int): vec4 = {
     val s = (index - 1) * 4
     vec4(array(s), array(s + 1), array(s + 2), array(s + 3))
   }
 
-  def withRow(index: Int, row: vec4): mat4 =
-  {
+  def withRow(index: Int, row: vec4): mat4 = {
     val c = copy()
 
     val s = (index - 1) * 4
@@ -83,29 +54,24 @@ class mat4()
     c
   }
 
-  def column(index: Int): vec4 =
-  {
+  @inline def column(index: Int): vec4 = {
     val s = index - 1
     vec4(array(s), array(s + 4), array(s + 8), array(s + 12))
   }
 
-  def get(row: Int, column: Int): Float =
-  {
+  @inline def get(row: Int, column: Int): Float = {
     this.column(column)(row)
   }
 
-  def *(scalar: Float) =
-  {
+  def *(scalar: Float): mat4 = {
     scalarMultiplication(scalar)
   }
 
-  def *(matrix: mat4) =
-  {
+  def *(matrix: mat4) = {
     matrixMultiplication(matrix)
   }
 
-  def scalarMultiplication(scalar: Float): mat4 =
-  {
+  def scalarMultiplication(scalar: Float): mat4 = {
     val copy = this.copy()
 
     for (i <- 0 until 16) {
@@ -114,8 +80,7 @@ class mat4()
     copy
   }
 
-  def matrixMultiplication(matrix: mat4): mat4 =
-  {
+  def matrixMultiplication(matrix: mat4): mat4 = {
     val n = new Array[Float](16)
     for (i <- 1 to 4) {
       for (j <- 1 to 4) {
@@ -125,8 +90,7 @@ class mat4()
     new mat4(n)
   }
 
-  override def toString(): String =
-  {
+  override def toString(): String = {
     var res: String = "mat4\n"
 
 
@@ -145,13 +109,11 @@ class mat4()
     res
   }
 
-  def genFloatBuffer(): FloatBuffer =
-  {
+  def genFloatBuffer(): FloatBuffer = {
     Utilities.createFloatBuffer(array)
   }
 
-  def transpose(): mat4 =
-  {
+  def transpose(): mat4 = {
     val mat = new mat4()
 
     for(i<- 1 to 4){
@@ -163,8 +125,7 @@ class mat4()
     mat
   }
 
-  def minor(i: Int, j: Int): Array[Float] =
-  {
+  def minor(i: Int, j: Int): Array[Float] = {
     val re = new Array[Float](9)
     var u = 0
     for (l <- 1 to 4) {
@@ -180,8 +141,7 @@ class mat4()
     re
   }
 
-  private def minor3x3(i: Int, j: Int, mat: Array[Float]): Array[Float] =
-  {
+  private def minor3x3(i: Int, j: Int, mat: Array[Float]): Array[Float] = {
     val re = new Array[Float](4)
     var u = 0
     for (l <- 1 to 3) {
@@ -197,8 +157,7 @@ class mat4()
     re
   }
 
-  private def minor2x2(i: Int, j: Int, mat: Array[Float]): Float =
-  {
+  private def minor2x2(i: Int, j: Int, mat: Array[Float]): Float = {
     val re = -1
     for (l <- 1 to 2) {
       //row
@@ -210,23 +169,19 @@ class mat4()
     re
   }
 
-  private def detmat2x2(mat: Array[Float]): Float =
-  {
+  private def detmat2x2(mat: Array[Float]): Float = {
     mat(0) * mat(3) - mat(1) * mat(2)
   }
 
-  private def detmat3x3(mat: Array[Float]): Float =
-  {
+  private def detmat3x3(mat: Array[Float]): Float = {
     mat(0) * detmat2x2(minor3x3(1, 1, mat)) - mat(1) * detmat2x2(minor3x3(1, 2, mat)) + mat(2) * detmat2x2(minor3x3(1, 3, mat))
   }
 
-  def determinant(): Float =
-  {
+  def determinant(): Float = {
     this (1)(1) * detmat3x3(minor(1, 1)) - this (1)(2) * detmat3x3(minor(1, 2)) + this(1)(3) * detmat3x3(minor(1, 3)) - this(1)(4) * detmat3x3(minor(1, 4))
   }
 
-  def cofactor(): mat4 =
-  {
+  def cofactor(): mat4 = {
     val array = new Array[Float](16)
 
     for (i <- 1 to 4) {
@@ -237,8 +192,7 @@ class mat4()
     new mat4(array)
   }
 
-  def inverse(): mat4 =
-  {
+  def inverse(): mat4 = {
     val co = this.cofactor()
     val adjoint = co.transpose()
     val det = determinant()
@@ -250,8 +204,7 @@ class mat4()
     }
   }
 
-  def toSeq(): Seq[Float] =
-  {
+  def toSeq(): Seq[Float] = {
     Seq[Float](array(0), array(1), array(2), array(3), array(4), array(5), array(6), array(7), array(8), array(9), array(10), array(11), array(12), array(13), array(14), array(15))
   }
 
@@ -261,7 +214,7 @@ object mat4
 {
   def apply(floats: Float*): mat4 =
   {
-    new mat4(floats)
+    new mat4(floats.toSeq)
   }
 
 

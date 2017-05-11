@@ -1,27 +1,33 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-class Line(val start:vec3, val end:vec3)
+@immutable case class Line(start:vec3, end:vec3) extends Shape3
 {
-  def genDir() = (end - start).normalize()
+
+
+  override def translate(v: vec3): Line = {
+    Line(start + v, end + v)
+  }
+
+  def genDir(): vec3 = (end - start).normalize()
 
   def genRay() = new Ray(start, genDir())
 
-  override def toString(): String =
-  {
-    "Line( start = " + start + "; end = " + end + " )"
+  override def toString(): String = {
+    "Line(start = " + start + ";end = " + end + " )"
 
   }
 }
 
 object Line
 {
-  def apply(pos: vec3, start: Float, end: Float, yaw: Float, pitch: Float): Line =
-  {
+  def apply(pos: vec3, start: Float, end: Float, yaw: Float, pitch: Float): Line = {
     val alpha = -yaw
     val t = math.toRadians(90 - alpha).toFloat
     val cosT = math.cos(t).toFloat

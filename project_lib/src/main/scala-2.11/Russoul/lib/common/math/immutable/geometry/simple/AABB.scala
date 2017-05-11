@@ -1,19 +1,19 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 import Russoul.lib.common.utils.vector
 
 
-class AABB(val center: vec3, val extent: vec3)
+@immutable case class AABB(center: vec3, extent: vec3) extends CenteredShape3
 {
 
-  def copy() = new AABB(center.copy(), extent.copy())
 
+  def genMin(): vec3 = center - extent
+  def genMax(): vec3 = center + extent
 
-  def genMin() = center - extent
-  def genMax() = center + extent
-
-  def translate(v: vec3) =
+  override def translate(v: vec3): AABB =
   {
     new AABB(center + v, extent)
   }
@@ -23,7 +23,7 @@ class AABB(val center: vec3, val extent: vec3)
     * @param s
     * @return scaled version (around AABB's center point)
     */
-  def scale(s:Float) =
+  override def scale(s:Float): AABB =
   {
     new AABB(center, extent * s)
   }
@@ -73,7 +73,7 @@ class AABB(val center: vec3, val extent: vec3)
 
   override def toString(): String =
   {
-    "AABB( center = " + center + "; extent = " + extent + " )"
+    "AABB(center = " + center + ";extent = " + extent + ")"
 
   }
 

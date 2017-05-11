@@ -2,6 +2,7 @@ package Russoul.lib.common.math.immutable.linear
 
 import java.nio.{ByteBuffer, FloatBuffer}
 
+import Russoul.lib.common.lang.immutable
 
 import scala.language.implicitConversions
 
@@ -13,12 +14,7 @@ import scala.language.implicitConversions
 
 
 
-class vec3(arrayIn:Array[Float])
-{
-
-
-
-  protected[lib] val array: Array[Float] = arrayIn
+@immutable case class vec3(array:Array[Float]) {
 
   @inline def x: Float = array(0)
 
@@ -27,12 +23,11 @@ class vec3(arrayIn:Array[Float])
   @inline def z: Float = array(2)
 
 
-  def this(dx:Float,dy:Float,dz:Float){
+  private def this(dx:Float,dy:Float,dz:Float){
     this(Array[Float](dx,dy,dz))
   }
 
-  def <(right:vec3):Boolean =
-  {
+  def <(right:vec3):Boolean = { //TODO probably not needed
     if (x < right.x)
       return true
     else if (x > right.x)
@@ -56,116 +51,92 @@ class vec3(arrayIn:Array[Float])
     * @param index - starts from 1 !
     * @return
     */
-  @inline def apply(index: Int): Float =
-  {
+  @inline def apply(index: Int): Float = {
     array(index-1)
   }
 
 
-  @inline def *(vec: vec3): Float =
-  {
+  @inline def *(vec: vec3): Float = {
     dotProduct(vec)
   }
 
-  @inline def *(mat:mat4): vec3 =
-  {
+  @inline def *(mat:mat4): vec3 = {
     (vec4(this,1) * mat).toVec3()
   }
 
   //by element product
-  @inline def **(vec:vec3):vec3 =
-  {
+  @inline def **(vec:vec3):vec3 = {
     vec3(this.x*vec.x, this.y*vec.y, this.z*vec.z)
   }
 
-  @inline def dotProduct(vec: vec3): Float =
-  {
+  @inline def dotProduct(vec: vec3): Float = {
     this (1) * vec(1) + this (2) * vec(2) + this (3) * vec(3)
   }
 
 
-  @inline def *(scalar: Float): vec3 =
-  {
+  @inline def *(scalar: Float): vec3 = {
     vec3(x * scalar, y * scalar, z * scalar)
   }
-  @inline def /(scalar:Float):vec3 =
-  {
+  @inline def /(scalar:Float):vec3 = {
     vec3(x / scalar, y / scalar, z / scalar)
   }
 
-  @inline def scalarMultiplication(scalar: Float): vec3 =
-  {
+  @inline def scalarMultiplication(scalar: Float): vec3 = {
     vec3(this (1) * scalar, this (2) * scalar, this (3) * scalar)
   }
 
-  @inline def add(vec: vec3): vec3 =
-  {
+  @inline def add(vec: vec3): vec3 = {
     vec3(x + vec.x, y + vec.y, z + vec.z)
   }
 
-  @inline def subtract(vec: vec3): vec3 =
-  {
+  @inline def subtract(vec: vec3): vec3 = {
     vec3(x - vec.x, y - vec.y, z - vec.z)
   }
 
-  @inline def -(vec: vec3): vec3 =
-  {
+  @inline def -(vec: vec3): vec3 = {
     vec3(x - vec.x, y - vec.y, z - vec.z)
   }
 
-  @inline def +(vec: vec3): vec3 =
-  {
+  @inline def +(vec: vec3): vec3 = {
     vec3(x + vec.x, y + vec.y, z + vec.z)
   }
 
-  @inline def unary_-(): vec3 =
-  {
+  @inline def unary_-(): vec3 = {
     this * (-1)
   }
 
-  @inline def ^(vec:vec3): vec3 =
-  {
+  @inline def ^(vec:vec3): vec3 = {
     this.crossProduct(vec)
   }
 
 
-  override def toString(): String =
-  {
+  override def toString(): String = {
     "vec3( " + x + "; " + y + "; " + z + " )"
   }
 
 
-  @inline def length(): Float =
-  {
+  @inline def length(): Float = {
     val r = x * x + y * y + z * z
     math.sqrt(r).toFloat
   }
 
-  @inline def squareLength(): Float =
-  {
+  @inline def squareLength(): Float = {
     x * x + y * y + z * z
   }
 
 
 
-  def toArray2f(): Array[Float] =
-  {
+  def toArray2f(): Array[Float] = {
     Array(this (1), this (2))
   }
 
-  def toArray3f(): Array[Float] =
-  {
+  def toArray3f(): Array[Float] = {
     Array(this (1), this (2), this (3))
   }
 
 
-  @inline def copy(): vec3 =
-  {
-    vec3(this (1), this (2), this (3))
-  }
 
-  @inline def normalize(): vec3 =
-  {
+  @inline def normalize(): vec3 = {
     this * (1 / length())
   }
 
@@ -173,73 +144,27 @@ class vec3(arrayIn:Array[Float])
 
   @inline def wZero(): vec4 = vec4(this (1), this (2), this (3), 0)
 
-  @inline def xy() = vec2(x,y)
+  @inline def xy(): vec2 = vec2(x,y)
 
-  @inline def crossProduct(v: vec3): vec3 =
-  {
+  @inline def crossProduct(v: vec3): vec3 = {
     vec3(y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)
   }
 
-  def toSeq2(): Seq[Float] =
-  {
+  def toSeq2(): Seq[Float] = {
     Seq(x, y)
   }
 
-  def toSeq3(): Seq[Float] =
-  {
+  def toSeq3(): Seq[Float] = {
     Seq(x, y, z)
   }
-
-
-  override def equals(obj: scala.Any): Boolean =
-  {
-    obj match {
-      case v: vec3 =>
-        equals(v)
-      case _ => false
-    }
-  }
-
-  def equals(v: vec3): Boolean =
-  {
-    x == v.x && y == v.y && z == v.z
-  }
-
-  override def hashCode(): Int =
-  {
-
-    var res = 1
-    val a = java.lang.Float.floatToIntBits(x)
-    val b = java.lang.Float.floatToIntBits(y)
-    val c = java.lang.Float.floatToIntBits(z)
-
-    res += 37 * res + a
-    res += 37 * res + b
-    res += 37 * res + c
-
-    res
-  }
-
-
-
-  @inline def size(): Int = 3
 
 }
 
 
 
-object vec3
-{
-
+object vec3 {
   def apply(x: Float, y: Float, z: Float) = new vec3(x,y,z)
-  def apply(array:Array[Float]) = new vec3(array)
-
-  def newSpace() = new Array[Float](3)
-
-  def getByteSize() = 12
-
   def apply(v2:vec2, z:Float) = new vec3(v2.x, v2.y, z)
-
 }
 
 

@@ -1,22 +1,22 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
 import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 import Russoul.lib.common.utils.vector
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-class OBB(val center:vec3,val right:vec3,val up:vec3,val extentRight:Float,val extentUp:Float,val extentLook:Float)
+@immutable case class OBB(center:vec3, right:vec3, up:vec3, extentRight:Float, extentUp:Float, extentLook:Float) extends CenteredShape3
 {
 
-  def copy() = new OBB(center.copy(), right.copy(), up.copy(), extentRight, extentUp, extentLook)
-
-  def this(aabbInWorldSpace :AABB)
+  private def this(aabbInWorldSpace :AABB)
   {
     this(aabbInWorldSpace.center, vec3(1,0,0), vec3(0,1,0), aabbInWorldSpace.extent.x, aabbInWorldSpace.extent.y, aabbInWorldSpace.extent.z)
   }
 
-  def genMax() =
+  def genMax(): vec3 =
   {
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -25,7 +25,7 @@ class OBB(val center:vec3,val right:vec3,val up:vec3,val extentRight:Float,val e
     center + ue + re + fe
   }
 
-  def genMin() =
+  def genMin(): vec3 =
   {
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -34,28 +34,28 @@ class OBB(val center:vec3,val right:vec3,val up:vec3,val extentRight:Float,val e
     center - ue - re - fe
   }
 
-  def genRightLine(length:Float = 1) =
+  def genRightLine(length:Float = 1): Line =
   {
-    new Line(center, center + right * length)
+    Line(center, center + right * length)
   }
 
-  def genUpLine(length:Float = 1) = {
-    new Line(center, center + up * length)
+  def genUpLine(length:Float = 1): Line = {
+    Line(center, center + up * length)
   }
 
-  def genLookLine(length:Float = 1) = {
-    new Line(center, center + (right^up) * length)
+  def genLookLine(length:Float = 1): Line = {
+    Line(center, center + (right^up) * length)
   }
 
 
-  def translate(tr:vec3) =
+  def translate(tr:vec3): OBB =
   {
-    new OBB(center + tr, right, up, extentRight, extentUp, extentLook)
+    OBB(center + tr, right, up, extentRight, extentUp, extentLook)
   }
 
-  def scale(s:Float) =
+  def scale(s:Float): OBB =
   {
-    new OBB(center, right, up, extentRight * s, extentUp * s, extentLook * s)
+    OBB(center, right, up, extentRight * s, extentUp * s, extentLook * s)
   }
 
 
@@ -150,9 +150,15 @@ class OBB(val center:vec3,val right:vec3,val up:vec3,val extentRight:Float,val e
 
   override def toString(): String =
   {
-    "OBB( center = " + center + "; right = " + right +  "; up = " + up + "; extent = " + vec3(extentRight,extentUp,extentLook) + " )"
+    "OBB(center = " + center + ";right = " + right +  ";up = " + up + ";extent = " + vec3(extentRight,extentUp,extentLook) + ")"
 
   }
+}
+
+object OBB
+{
+  def apply(aabb: AABB): OBB = new OBB(aabb)
+
 }
 
 

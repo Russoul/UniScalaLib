@@ -1,20 +1,28 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.vec2
 
 /**
   * Created by russoul on 23.04.17.
   */
-class Circle(val center:vec2, val rad:Float)
+@immutable case class Circle(center:vec2, rad:Float) extends CenteredShape2
 {
 
-  def scaleAroundBasis(scalar:Float): Circle =
-  {
-    new Circle(center * scalar, rad * scalar)
+  override def translate(v: vec2): CenteredShape2 = {
+    Circle(center + v, rad)
   }
 
-  def inscribedInRectangle2(): Rectangle2 =
-  {
+  override def scale(scalar:Float): Circle = {
+    Circle(center, rad * scalar)
+  }
+
+  override def scaleAroundBasis(scalar:Float): Circle = {
+    Circle(center * scalar, rad * scalar)
+  }
+
+  def inscribedInRectangle2(): Rectangle2 = {
     new Rectangle2(center, vec2(rad,rad))
   }
 
