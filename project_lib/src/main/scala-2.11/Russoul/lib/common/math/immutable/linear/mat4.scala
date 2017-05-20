@@ -3,6 +3,8 @@ package Russoul.lib.common.math.immutable.linear
 import java.nio.FloatBuffer
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 import Russoul.lib.common.utils.Utilities
 
 /**
@@ -10,13 +12,13 @@ import Russoul.lib.common.utils.Utilities
   *
   * immutable
   */
-@immutable case class mat4(array: Array[Float]) {
+@immutable case class mat4[A](array: Array[A])(implicit ev: FieldLike[A]) {
 
   private def this() {
-    this(new Array[Float](16))
+    this(new Array[A](16))
   }
 
-  private def this(floats: Seq[Float]) {
+  private def this(floats: Seq[A]) {
     this()
     for (i <- floats.indices) {
       array(i) = floats(i)
@@ -25,25 +27,25 @@ import Russoul.lib.common.utils.Utilities
 
 
 
-  def genArray(): Array[Float] = {
-    val re = new Array[Float](16)
+  def genArray(): Array[A] = {
+    val re = new Array[A](16)
     for(i <- 0 until 16) re(i) = array(i)
 
     re
   }
 
 
-  @inline def apply(row:Int)(column:Int): Float = {
+  @inline def apply(row:Int)(column:Int): A = {
     this.row(row)(column)
   }
 
 
-  @inline def row(index: Int): vec4 = {
+  @inline def row(index: Int): vec4[A] = {
     val s = (index - 1) * 4
     vec4(array(s), array(s + 1), array(s + 2), array(s + 3))
   }
 
-  def withRow(index: Int, row: vec4): mat4 = {
+  def withRow(index: Int, row: vec4[A]): mat4[A] = {
     val c = copy()
 
     val s = (index - 1) * 4
@@ -54,24 +56,24 @@ import Russoul.lib.common.utils.Utilities
     c
   }
 
-  @inline def column(index: Int): vec4 = {
+  @inline def column(index: Int): vec4[A] = {
     val s = index - 1
     vec4(array(s), array(s + 4), array(s + 8), array(s + 12))
   }
 
-  @inline def get(row: Int, column: Int): Float = {
+  @inline def get(row: Int, column: Int): A = {
     this.column(column)(row)
   }
 
-  def *(scalar: Float): mat4 = {
+  def *(scalar: A): mat4[A] = {
     scalarMultiplication(scalar)
   }
 
-  def *(matrix: mat4) = {
+  def *(matrix: mat4[A]) = {
     matrixMultiplication(matrix)
   }
 
-  def scalarMultiplication(scalar: Float): mat4 = {
+  def scalarMultiplication(scalar: A): mat4[A] = {
     val copy = this.copy()
 
     for (i <- 0 until 16) {
@@ -80,8 +82,8 @@ import Russoul.lib.common.utils.Utilities
     copy
   }
 
-  def matrixMultiplication(matrix: mat4): mat4 = {
-    val n = new Array[Float](16)
+  def matrixMultiplication(matrix: mat4[A]): mat4[A] = {
+    val n = new Array[A](16)
     for (i <- 1 to 4) {
       for (j <- 1 to 4) {
         n((i - 1) * 4 + j - 1) = row(i) * matrix.column(j)
@@ -108,13 +110,10 @@ import Russoul.lib.common.utils.Utilities
 
     res
   }
+  
 
-  def genFloatBuffer(): FloatBuffer = {
-    Utilities.createFloatBuffer(array)
-  }
-
-  def transpose(): mat4 = {
-    val mat = new mat4()
+  def transpose(): mat4[A] = {
+    val mat = new mat4[A]()
 
     for(i<- 1 to 4){
       for(j<- 1 to 4){
@@ -125,8 +124,8 @@ import Russoul.lib.common.utils.Utilities
     mat
   }
 
-  def minor(i: Int, j: Int): Array[Float] = {
-    val re = new Array[Float](9)
+  def minor(i: Int, j: Int): Array[A] = {
+    val re = new Array[A](9)
     var u = 0
     for (l <- 1 to 4) {
       //row
@@ -141,8 +140,8 @@ import Russoul.lib.common.utils.Utilities
     re
   }
 
-  private def minor3x3(i: Int, j: Int, mat: Array[Float]): Array[Float] = {
-    val re = new Array[Float](4)
+  private def minor3x3(i: Int, j: Int, mat: Array[A]): Array[A] = {
+    val re = new Array[A](4)
     var u = 0
     for (l <- 1 to 3) {
       //row
@@ -157,8 +156,8 @@ import Russoul.lib.common.utils.Utilities
     re
   }
 
-  private def minor2x2(i: Int, j: Int, mat: Array[Float]): Float = {
-    val re = -1
+  private def minor2x2(i: Int, j: Int, mat: Array[A]): A = {
+    val re = -ev.one
     for (l <- 1 to 2) {
       //row
       for (k <- 1 to 2) {
@@ -169,64 +168,65 @@ import Russoul.lib.common.utils.Utilities
     re
   }
 
-  private def detmat2x2(mat: Array[Float]): Float = {
+  private def detmat2x2(mat: Array[A]): A = {
     mat(0) * mat(3) - mat(1) * mat(2)
   }
 
-  private def detmat3x3(mat: Array[Float]): Float = {
+  private def detmat3x3(mat: Array[A]): A = {
     mat(0) * detmat2x2(minor3x3(1, 1, mat)) - mat(1) * detmat2x2(minor3x3(1, 2, mat)) + mat(2) * detmat2x2(minor3x3(1, 3, mat))
   }
 
-  def determinant(): Float = {
+  def determinant(): A = {
     this (1)(1) * detmat3x3(minor(1, 1)) - this (1)(2) * detmat3x3(minor(1, 2)) + this(1)(3) * detmat3x3(minor(1, 3)) - this(1)(4) * detmat3x3(minor(1, 4))
   }
 
-  def cofactor(): mat4 = {
-    val array = new Array[Float](16)
+  def cofactor(): mat4[A] = {
+    val array = new Array[A](16)
 
     for (i <- 1 to 4) {
       for (j <- 1 to 4) {
-        array( (j-1)*4 + i-1) = (if ((i + j) % 2 == 0) 1 else -1) * detmat3x3(minor(i, j))
+        array( (j-1)*4 + i-1) = (if ((i + j) % 2 == 0) ev.one else -ev.one) * detmat3x3(minor(i, j))
       }
     }
     new mat4(array)
   }
 
-  def inverse(): mat4 = {
+  def inverse(): mat4[A] = {
     val co = this.cofactor()
     val adjoint = co.transpose()
     val det = determinant()
     if (det != 0) {
-      adjoint * (1 / det)
+      adjoint * (ev.one / det)
     }
     else {
       null
     }
   }
 
-  def toSeq(): Seq[Float] = {
-    Seq[Float](array(0), array(1), array(2), array(3), array(4), array(5), array(6), array(7), array(8), array(9), array(10), array(11), array(12), array(13), array(14), array(15))
+  def toSeq(): Seq[A] = {
+    Seq[A](array(0), array(1), array(2), array(3), array(4), array(5), array(6), array(7), array(8), array(9), array(10), array(11), array(12), array(13), array(14), array(15))
   }
 
 }
 
 object mat4
 {
-  def apply(floats: Float*): mat4 =
+  def apply[A : FieldLike](floats: A*): mat4[A] =
   {
     new mat4(floats.toSeq)
   }
 
 
-  def matrixIdentity(): mat4 =
+  def matrixIdentity(): mat4[Float] =
   {
+
     mat4(1, 0, 0, 0,
       0, 1, 0, 0,
       0, 0, 1, 0,
       0, 0, 0, 1)
   }
 
-  def matrixSCALE(x: Float, y: Float, z: Float): mat4 =
+  def matrixSCALE(x: Float, y: Float, z: Float): mat4[Float] =
   {
     mat4(x, 0, 0, 0,
       0, y, 0, 0,
@@ -234,7 +234,7 @@ object mat4
       0, 0, 0, 1)
   }
 
-  def matrixSCALE(v: vec3): mat4 =
+  def matrixSCALE(v: vec3[Float]): mat4[Float] =
   {
     mat4(v.x, 0, 0, 0,
       0, v.y, 0, 0,
@@ -242,7 +242,7 @@ object mat4
       0, 0, 0, 1)
   }
 
-  def matrixTRANSLATION(x: Float, y: Float, z: Float): mat4 =
+  def matrixTRANSLATION(x: Float, y: Float, z: Float): mat4[Float] =
   {
     mat4(1, 0, 0, 0,
       0, 1, 0, 0,
@@ -250,7 +250,7 @@ object mat4
       x, y, z, 1)
   }
 
-  def matrixTRANSLATION(v: vec3): mat4 =
+  def matrixTRANSLATION(v: vec3[Float]): mat4[Float] =
   {
     mat4(1, 0, 0, 0,
       0, 1, 0, 0,
@@ -258,7 +258,7 @@ object mat4
       v.x, v.y, v.z, 1)
   }
 
-  def matrixROTATION(axis: vec3, angleInDegrees: Float): mat4 =
+  def matrixROTATION(axis: vec3[Float], angleInDegrees: Float): mat4[Float] =
   {
     val rad = angleInDegrees * math.Pi / 180
     val cos = math.cos(rad).toFloat
@@ -273,7 +273,7 @@ object mat4
 
   }
 
-  def matrixROTATIONRad(axis: vec3, angleInRadians: Float): mat4 =
+  def matrixROTATIONRad(axis: vec3[Float], angleInRadians: Float): mat4[Float] =
   {
     val cos = math.cos(angleInRadians).toFloat
     val sin = math.sin(angleInRadians).toFloat
@@ -287,7 +287,7 @@ object mat4
 
   }
 
-  def matrixORTHOGRAPHIC(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float): mat4 =
+  def matrixORTHOGRAPHIC(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float): mat4[Float] =
   {
 
     mat4(2 / (right - left), 0, 0, -(right + left) / (right - left),
@@ -297,7 +297,7 @@ object mat4
   }
 
 
-  def matrixPERSPECTIVE(angleInDegrees: Float, aspect: Float, near: Float, far: Float): mat4 =
+  def matrixPERSPECTIVE(angleInDegrees: Float, aspect: Float, near: Float, far: Float): mat4[Float] =
   {
     val top = near * math.tan(math.Pi / 180 * angleInDegrees / 2).toFloat
     val bottom = -top
@@ -310,7 +310,7 @@ object mat4
       0, 0, -1, 0).transpose()
   }
 
-  def matrixPERSPECTIVEDIRECTX(angleInDegrees: Float, aspect: Float, near: Float, far: Float): mat4 = //Directx way doesn't work
+  def matrixPERSPECTIVEDIRECTX(angleInDegrees: Float, aspect: Float, near: Float, far: Float): mat4[Float] = //Directx way doesn't work
   {
     val fov = math.tan(angleInDegrees / 2 / 180 * math.Pi).toFloat
     val r = aspect
@@ -325,7 +325,7 @@ object mat4
   }
 
 
-  def matrixVIEW(pos: vec3, target: vec3, up: vec3): mat4 =
+  def matrixVIEW(pos: vec3[Float], target: vec3[Float], up: vec3[Float]): mat4[Float] =
   {
     val za = (target - pos).normalize()
     val xa = up.crossProduct(za).normalize()
@@ -337,7 +337,7 @@ object mat4
       -xa.dotProduct(pos), -ya.dotProduct(pos), -za.dotProduct(pos), 1)
   }
 
-  def matrixVIEWDir(pos: vec3, look: vec3, up: vec3): mat4 =
+  def matrixVIEWDir(pos: vec3[Float], look: vec3[Float], up: vec3[Float]): mat4[Float] =
   {
     val za = -look
     val xa = up.crossProduct(za).normalize()
@@ -349,7 +349,7 @@ object mat4
       -xa.dotProduct(pos), -ya.dotProduct(pos), -za.dotProduct(pos), 1)
   }
 
-  def matrixVIEW(pos: vec3, rotX: Float, rotY: Float, rotZ: Float): mat4 =
+  def matrixVIEW(pos: vec3[Float], rotX: Float, rotY: Float, rotZ: Float): mat4[Float] =
   {
     var mat = matrixIdentity()
     mat *= matrixTRANSLATION(-pos)

@@ -2,6 +2,7 @@ package Russoul.lib.common.utils
 
 import Russoul.lib.common.math.Math
 
+import scala.math.Ordering
 import scala.reflect.ClassTag
 
 /**
@@ -81,6 +82,46 @@ class vector[@specialized T](var array:Array[T],var size:Int)(implicit val ct: C
     code
   }
 
+
+  // Ordering[T] might be slow especially for boxed primitives, so use binary search variant of insertion sort
+  // Caller must pass iN >= i0 or math will fail.  Also, i0 >= 0.
+  private def insertionSort(a: Array[T], i0: Int, iN: Int, ord: Ordering[T]): Unit = {
+    val n = iN - i0
+    if (n < 2) return
+    if (ord.compare(a(i0), a(i0+1)) > 0) {
+      val temp = a(i0)
+      a(i0) = a(i0+1)
+      a(i0+1) = temp
+    }
+    var m = 2
+    while (m < n) {
+      // Speed up already-sorted case by checking last element first
+      val next = a(i0 + m)
+      if (ord.compare(next, a(i0+m-1)) < 0) {
+        var iA = i0
+        var iB = i0 + m - 1
+        while (iB - iA > 1) {
+          val ix = (iA + iB) >>> 1    // Use bit shift to get unsigned div by 2
+          if (ord.compare(next, a(ix)) < 0) iB = ix
+          else iA = ix
+        }
+        val ix = iA + (if (ord.compare(next, a(iA)) < 0) 0 else 1)
+        var i = i0 + m
+        while (i > ix) {
+          a(i) = a(i-1)
+          i -= 1
+        }
+        a(ix) = next
+      }
+      m += 1
+    }
+  }
+
+  def insertionSort(ord:Ordering[T]): vector[T] =
+  {
+    insertionSort(array, 0, size, ord)
+    this
+  }
 
 
   /**
@@ -396,6 +437,7 @@ class vector[@specialized T](var array:Array[T],var size:Int)(implicit val ct: C
       throw new IndexOutOfBoundsException( (i+num-1).toString)
     }
   }
+
 
 
   final def contains(key: T): Boolean =

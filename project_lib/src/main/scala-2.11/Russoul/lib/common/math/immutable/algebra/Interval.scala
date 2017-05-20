@@ -3,21 +3,23 @@ package Russoul.lib.common.math.immutable.algebra
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.utils.vector
 
+import scala.util.Sorting
+
 /**
   * Created by russoul on 07.05.17.
   */
-@immutable case class Interval private(min:Float, max:Float, empty:Boolean)
+@immutable case class Interval private(min:Float, max:Float, empty:Boolean) extends Ordered[Interval]
 {
 
   def &(i:Interval): Interval =
   {
     if(i.empty || this.empty) return Interval.empty()
-    if(this.max < i.min || i.max < this.min) return Interval.empty()
+    if(this.max < i.min || i.max < this.min) Interval.empty()
     else{
       val rmin = math.max(min, i.min)
       val rmax = math.min(max, i.max)
 
-      return new Interval(rmin, rmax, false)
+      Interval(rmin, rmax, false)
     }
   }
 
@@ -30,7 +32,7 @@ import Russoul.lib.common.utils.vector
       if(!t.empty) res += t
     }
 
-    return res
+    res
   }
 
   //TODO WORKS ONLY FOR NOT INTERSECTING INTERVALS
@@ -46,12 +48,12 @@ import Russoul.lib.common.utils.vector
 
 
     if(maxOfMin > minOfMax){ //they do not intersect
-      return vector(this, i)
+      vector(this, i)
     }else{ //they intersect
       val rmin = math.min(min, i.min)
       val rmax = math.max(max, i.max)
 
-      return vector(Interval(rmin, rmax))
+      vector(Interval(rmin, rmax))
     }
 
   }
@@ -65,7 +67,7 @@ import Russoul.lib.common.utils.vector
     }
 
     if(i.size == 0){
-      return vector(this)
+      vector(this)
     }else{
       if(this.empty) return i
 
@@ -85,26 +87,56 @@ import Russoul.lib.common.utils.vector
 
       ret += cur
 
-      return ret
+      ret
 
     }
 
   }
+
+
+  override def compare(that: Interval): Int = {
+    if(this.empty){
+      if(that.empty){
+        0
+      }else{
+        -1
+      }
+    }else{
+      if(that.empty){
+        1
+      }else{
+        if(this.max > that.max) 1
+        else if(this.max < that.max) -1
+        else {
+          if(this.min > that.min) 1
+          else if(this.min < that.min) -1
+          else 0
+        }
+      }
+    }
+  }
+
 
   override def toString(): String =
   {
     if(empty){
-      return "Interval[EMPTY]"
+      "Interval[EMPTY]"
     }else{
-      return "Interval[ " + min + " ; " + max + " ]"
+      "Interval[ " + min + " ; " + max + " ]"
     }
   }
+
 
 
 
 }
 
-object Interval{
+object Interval extends Ordering[Interval]{
+
+
+  override def compare(x: Interval, y: Interval): Int = {
+    x compare y
+  }
 
   implicit class impl(chain:vector[Interval]){
 
@@ -113,7 +145,7 @@ object Interval{
       if(ii.size == 0) return chain
 
       if(ii.size == 1){
-        return ii(0) | chain
+        ii(0) | chain
       }else{
         var curChain = ii(0) | chain
 
@@ -121,14 +153,14 @@ object Interval{
           curChain = ii(i) | curChain
         }
 
-        return curChain
+        curChain
       }
     }
 
 
     def &(ii:vector[Interval]): vector[Interval] = {
       if(ii.size == 1){
-        return ii(0) & chain
+        ii(0) & chain
       }else{
         var curChain = vector(Interval.empty())
 
@@ -136,17 +168,21 @@ object Interval{
           curChain |= ii(i) & chain
         }
 
-        return curChain
+        curChain
       }
     }
 
 
     def |(ii:Interval): vector[Interval] = {
-      return ii | chain
+      ii | chain
     }
 
     def &(ii:Interval): vector[Interval] = {
-      return ii & chain
+      ii & chain
+    }
+
+    def sort():vector[Interval] = {
+      chain.insertionSort(Interval)
     }
 
     override def toString(): String =
@@ -166,6 +202,7 @@ object Interval{
   }
 
   implicit class impl2(i:Interval){
+
     def toVector(): vector[Interval] =
     {
       vector(i)

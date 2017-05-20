@@ -11,6 +11,10 @@
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/project_lib" />
             <option value="$PROJECT_DIR$/project_lib/project" />
+            <option value="$PROJECT_DIR$/project_macros" />
+            <option value="$PROJECT_DIR$/project_macros/project" />
+            <option value="$PROJECT_DIR$/project_test" />
+            <option value="$PROJECT_DIR$/project_test/project" />
           </set>
         </option>
         <option name="resolveSbtClassifiers" value="true" />

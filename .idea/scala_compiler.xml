@@ -2,5 +2,22 @@
 <project version="4">
   <component name="ScalaCompilerConfiguration">
     <profile name="SBT 1" modules="scalalibrary,lib" />
+    <profile name="SBT 2" modules="ScalaLibrary-macros">
+      <option name="implicitConversions" value="true" />
+      <parameters>
+        <parameter value="-Xplugin-require:macroparadise" />
+      </parameters>
+      <plugins>
+        <plugin path="$USER_HOME$/.ivy2/cache/org.scalameta/paradise_2.11.11/jars/paradise_2.11.11-3.0.0-M8.jar" />
+      </plugins>
+    </profile>
+    <profile name="SBT 3" modules="macros,test">
+      <parameters>
+        <parameter value="-Xplugin-require:macroparadise" />
+      </parameters>
+      <plugins>
+        <plugin path="$USER_HOME$/.ivy2/cache/org.scalameta/paradise_2.11.11/jars/paradise_2.11.11-3.0.0-M8.jar" />
+      </plugins>
+    </profile>
   </component>
 </project>
