@@ -5,7 +5,7 @@ import java.io._
 import java.nio.ByteBuffer
 import java.util.regex.{Matcher, Pattern}
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.Vec3
 
 
 /**
@@ -80,7 +80,7 @@ object ImageUtils
       str
     }
 
-    def toRGBABitmapBuffer(color:vec3, direct:Boolean): ByteBuffer =
+    def toRGBABitmapBuffer(color:Vec3[Float], direct:Boolean): ByteBuffer =
     {
       val size = bitsPerRow * height * 4
       val buffer = if(!direct) ByteBuffer.allocate(size) else ByteBuffer.allocateDirect(size)
@@ -101,7 +101,7 @@ object ImageUtils
     }
 
 
-    def toARGBBitmapBuffer(color:vec3, direct:Boolean): ByteBuffer =
+    def toARGBBitmapBuffer(color:Vec3[Float], direct:Boolean): ByteBuffer =
     {
       val size = bitsPerRow * height * 4
       val buffer = if(!direct) ByteBuffer.allocate(size) else ByteBuffer.allocateDirect(size)
@@ -211,7 +211,7 @@ object ImageUtils
       * @param color
       * @return (data, width, height)
       */
-    def genARGBBitmapBuffer(range:Range, color:vec3, directBuffer:Boolean): (ByteBuffer, Int, Int) =
+    def genARGBBitmapBuffer(range:Range, color:Vec3[Float], directBuffer:Boolean): (ByteBuffer, Int, Int) =
     {
       var width:Int = 0
       var height:Int = 0
@@ -257,7 +257,7 @@ object ImageUtils
       * @param color
       * @return (data, width, height)
       */
-    def genRGBABitmapBuffer(range:Range, color:vec3, directBuffer:Boolean): (ByteBuffer, Int, Int) =
+    def genRGBABitmapBuffer(range:Range, color:Vec3[Float], directBuffer:Boolean): (ByteBuffer, Int, Int) =
     {
       var width:Int = 0
       var height:Int = 0

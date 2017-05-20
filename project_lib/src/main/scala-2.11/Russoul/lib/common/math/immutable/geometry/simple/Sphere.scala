@@ -2,19 +2,21 @@ package Russoul.lib.common.math.immutable.geometry.simple
 
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.Vec3
 
+import FieldLike.Implicits._
 
 /**
   * Created by Russoul on 21.04.2016.
   */
-@immutable case class Sphere(center:vec3, rad: Float) extends CenteredShape3 {
+@immutable case class Sphere[A : FieldLike](center:Vec3[A], rad: A) extends CenteredShape3[A] {
 
 
 
 
-  override def translate(v: vec3): Sphere = {
+  override def translate(v: Vec3[A]): Sphere[A] = {
     Sphere(center + v, rad)
   }
 
@@ -23,7 +25,7 @@ import Russoul.lib.common.math.immutable.linear.vec3
     * @param factor
     * @return scaled around its center version
     */
-  override def scale(factor: Float): Sphere = {
+  override def scale(factor: A): Sphere[A] = {
     Sphere(center, factor * rad)
   }
 

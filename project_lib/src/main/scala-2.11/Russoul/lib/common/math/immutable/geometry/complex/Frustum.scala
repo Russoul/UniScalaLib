@@ -1,14 +1,14 @@
 package Russoul.lib.common.math.immutable.geometry.complex
 
 import Russoul.lib.common.math.immutable.geometry.simple.{Plane, Rectangle, Sphere}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.Vec3
 import Russoul.lib.common.utils.Vector
 
 
-class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val lookingDir: vec3,val zNear: Float,val zFar: Float,val up: vec3)
+class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Float, val lookingDir: Vec3[Float], val zNear: Float, val zFar: Float, val up: Vec3[Float])
 {
 
-  def genSphericalBound(near: Rectangle, far: Rectangle): Sphere =
+  def genSphericalBound(near: Rectangle[Float], far: Rectangle[Float]): Sphere[Float] =
   {
     val centerf = (zFar - zNear) / 2
     val n = -far.genNormal()
@@ -24,7 +24,7 @@ class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val looking
     *
     * @return facing the camera, out of the frustum
     */
-  def genNearPlane(): Rectangle =
+  def genNearPlane(): Rectangle[Float] =
   {
     val center = pos + lookingDir * zNear
 
@@ -46,7 +46,7 @@ class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val looking
     *
     * @return facing the camera, out of the frustum
     */
-  def genFarPlane(): Rectangle =
+  def genFarPlane(): Rectangle[Float] =
   {
     val center = pos + lookingDir * zFar
 
@@ -69,7 +69,7 @@ class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val looking
     *
     * @return normals face into the frustum, list of planes, point and normal for each
     */
-  def genExtraPlanes(): Vector[Plane] =
+  def genExtraPlanes(): Vector[Plane[Float]] =
   {
     val n = genNearPlane()
     val f = genFarPlane()
@@ -108,7 +108,7 @@ class Frustum(val pos: vec3,val angleOfView: Float,val aspect: Float,val looking
     val normalBottom = nb.crossProduct(-rb).normalize()
 
 
-    Vector[Plane](new Plane(nlb, normalLeft), new Plane(nrb, normalRight), new Plane(frt, normalTop), new Plane(flb, normalBottom))
+    Vector[Plane[Float]](Plane(nlb, normalLeft), Plane(nrb, normalRight), Plane(frt, normalTop), Plane(flb, normalBottom))
   }
 }
 

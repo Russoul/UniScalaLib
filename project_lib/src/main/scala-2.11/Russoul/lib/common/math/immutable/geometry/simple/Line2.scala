@@ -1,18 +1,19 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
 import Russoul.lib.common.math.immutable.geometry.simple.general.Shape2
-import Russoul.lib.common.math.immutable.linear.vec2
+import Russoul.lib.common.math.immutable.linear.Vec2
 
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class Line2(start:vec2, end:vec2) extends Shape2
+@immutable case class Line2[A](start:Vec2[A], end:Vec2[A])(implicit ev: FieldLike[A])  extends Shape2[A]
 {
-  def genDir(): vec2 = (end - start).normalize()
+  def genDir(): Vec2[A] = (end - start).normalize()
 
 
-  override def translate(v: vec2): Line2 = {
+  override def translate(v: Vec2[A]): Line2[A] = {
     Line2(start + v, end + v)
   }
 
@@ -21,7 +22,7 @@ import Russoul.lib.common.math.immutable.linear.vec2
 
   }
 
-  def scaleAroundBasis(scalar:Float): Line2 =
+  def scaleAroundBasis(scalar:A): Line2[A] =
   {
     Line2(start * scalar, end * scalar)
   }

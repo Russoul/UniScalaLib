@@ -1,7 +1,7 @@
 package Russoul.lib.common.math
 
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.Vec3
 
 /**
   * Created by Russoul on 20.04.2016.
@@ -35,7 +35,7 @@ object Math
     ((sub.toInt + d + p1) >> pow)*p1*2
   }
 
-  def roundTo2Power(sub:vec3, pow:Int): vec3 =
+  def roundTo2Power(sub:Vec3, pow:Int): Vec3 =
   {
     val p1 = power(2,pow-1)
 
@@ -43,7 +43,7 @@ object Math
     val d2 = if(sub.y < -p1) -1 else 0
     val d3 = if(sub.z < -p1) -1 else 0
 
-    vec3(((sub.x.toInt + d1 + p1) >> pow)*p1*2,((sub.y.toInt + d2 + p1) >> pow)*p1*2 ,((sub.z.toInt + d3 + p1) >> pow)*p1*2)
+    Vec3(((sub.x.toInt + d1 + p1) >> pow)*p1*2,((sub.y.toInt + d2 + p1) >> pow)*p1*2 ,((sub.z.toInt + d3 + p1) >> pow)*p1*2)
   }
 
   /**
@@ -91,13 +91,13 @@ object Math
     * @param val2
     * @return
     */
-  def vertexInterpolation(isoLevel:Float, v1:vec3, v2:vec3, val1:Float, val2:Float):vec3 =
+  def vertexInterpolation(isoLevel:Float, v1:Vec3, v2:Vec3, val1:Float, val2:Float):Vec3 =
   {
     var min:Float = -1
     var max:Float = -1
 
-    var minV:vec3 = null
-    var maxV:vec3 = null
+    var minV:Vec3 = null
+    var maxV:Vec3 = null
 
     if(val1 >= val2)
     {

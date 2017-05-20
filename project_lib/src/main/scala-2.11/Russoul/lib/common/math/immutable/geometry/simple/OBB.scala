@@ -1,22 +1,24 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
+import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
 import Russoul.lib.common.utils.Vector
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class OBB(center:vec3, right:vec3, up:vec3, extentRight:Float, extentUp:Float, extentLook:Float) extends CenteredShape3
+@immutable case class OBB[A](center:Vec3[A], right:Vec3[A], up:Vec3[A], extentRight:A, extentUp:A, extentLook:A)(implicit ev: FieldLike[A])  extends CenteredShape3[A]
 {
 
-  private def this(aabbInWorldSpace :AABB)
+  private def this(aabbInWorldSpace :AABB[A])
   {
-    this(aabbInWorldSpace.center, vec3(1,0,0), vec3(0,1,0), aabbInWorldSpace.extent.x, aabbInWorldSpace.extent.y, aabbInWorldSpace.extent.z)
+    this(aabbInWorldSpace.center, Vec3(1,0,0), Vec3(0,1,0), aabbInWorldSpace.extent.x, aabbInWorldSpace.extent.y, aabbInWorldSpace.extent.z)
   }
 
-  def genMax(): vec3 =
+  def genMax(): Vec3[A] =
   {
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -25,7 +27,7 @@ import Russoul.lib.common.utils.Vector
     center + ue + re + fe
   }
 
-  def genMin(): vec3 =
+  def genMin(): Vec3[A] =
   {
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -34,32 +36,32 @@ import Russoul.lib.common.utils.Vector
     center - ue - re - fe
   }
 
-  def genRightLine(length:Float = 1): Line =
+  def genRightLine(length:A = 1D): Line[A] =
   {
     Line(center, center + right * length)
   }
 
-  def genUpLine(length:Float = 1): Line = {
+  def genUpLine(length:A = 1D): Line[A] = {
     Line(center, center + up * length)
   }
 
-  def genLookLine(length:Float = 1): Line = {
+  def genLookLine(length:A = 1): Line[A] = {
     Line(center, center + (right^up) * length)
   }
 
 
-  def translate(tr:vec3): OBB =
+  def translate(tr:Vec3[A]): OBB[A] =
   {
     OBB(center + tr, right, up, extentRight, extentUp, extentLook)
   }
 
-  def scale(s:Float): OBB =
+  def scale(s:A): OBB[A] =
   {
     OBB(center, right, up, extentRight * s, extentUp * s, extentLook * s)
   }
 
 
-  def rotateAroundRight(rad:Float): OBB =
+  def rotateAroundRight(rad:A): OBB[A] =
   {
 
     val mat = mat4.matrixROTATIONRad(right, rad)
@@ -67,22 +69,22 @@ import Russoul.lib.common.utils.Vector
   }
 
 
-  def rotateAroundUp(rad:Float): Unit =
+  def rotateAroundUp(rad:A): OBB[A] =
   {
     val mat = mat4.matrixROTATIONRad(up, rad)
     new OBB(center,right * mat,up,extentRight, extentUp, extentLook)
   }
 
 
-  def rotateAroundLook(rad:Float):Unit =
+  def rotateAroundLook(rad:A):OBB[A] =
   {
     val mat = mat4.matrixROTATIONRad(right ^ up, rad)
     new OBB(center,right * mat,up * mat,extentRight, extentUp, extentLook)
   }
 
-  def genRectangles():Vector[Rectangle] =
+  def genRectangles():Vector[Rectangle[A]] =
   {
-    val out = Vector[Rectangle](6)
+    val out = Vector[Rectangle[A]](6)
 
     val fe = (right ^ up) * extentLook
     val ue = up * extentUp
@@ -105,9 +107,9 @@ import Russoul.lib.common.utils.Vector
     out
   }
 
-  def genVertices():Vector[vec3] =
+  def genVertices():Vector[Vec3[A]] =
   {
-    val out = Vector[vec3](8)
+    val out = Vector[Vec3[A]](8)
 
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -126,9 +128,9 @@ import Russoul.lib.common.utils.Vector
     out
   }
 
-  def genVerticesCounterClockwise():Vector[vec3] =
+  def genVerticesCounterClockwise():Vector[Vec3[A]] =
   {
-    val out = Vector[vec3](8)
+    val out = Vector[Vec3[A]](8)
 
     val l = (right ^ up)*extentLook
     val u =  up*extentUp
@@ -150,14 +152,14 @@ import Russoul.lib.common.utils.Vector
 
   override def toString(): String =
   {
-    "OBB(center = " + center + ";right = " + right +  ";up = " + up + ";extent = " + vec3(extentRight,extentUp,extentLook) + ")"
+    "OBB(center = " + center + ";right = " + right +  ";up = " + up + ";extent = " + Vec3(extentRight,extentUp,extentLook) + ")"
 
   }
 }
 
 object OBB
 {
-  def apply(aabb: AABB): OBB = new OBB(aabb)
+  def apply[A](aabb: AABB[A])(implicit ev: FieldLike[A]): OBB[A] = new OBB[A](aabb)
 
 }
 

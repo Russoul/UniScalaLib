@@ -1,40 +1,26 @@
-import Russoul.lib.macros.VecMeta
 
-import scala.reflect.ClassTag
-import Russoul.lib.common.math.immutable.algebra._
-
+import scala.language.experimental.macros
 /**
   * Created by russoul on 01.04.17.
   */
 
 import scala.language.implicitConversions
 
-/**
-  * Created by russoul on 18.05.17.
-  */
 
 
+object Test extends App {
 
-object Test extends App
-{
-
-
-
-  def add[B](a: Vec[Two,B], b: Vec[Two ,B]): Unit = {
-
+  /*implicit class thing(val s:StringContext){
+    def ff() = macro Macros.impl
   }
 
+  def floaty(str:String): Float = macro Macros.implFloat
+  //def fieldy[A](str:String): A = macro Macros.impl[A]
 
-  val vec1 = Vec(2.dim, 1F,2F)
-  val vec2 = Vec(2.dim, 0F,3F)
-  val vec3 = Vec(Three, 0F,3F)
-  val vec4 = Vec(Dim(4), 1F,2F,3F,4F)
-
-  val dotted = vec1 * vec2
-
-  println(dotted)
-  println(vec1)
-  println(vec4)
-
+  //println(floaty(implicitly[FieldLike[Float]].fromDouble(2) + ""))
+  val ev = implicitly[FieldLike[Double]]
+  val tt = "1" + "2"
+  val t:Double = ff"10D"
+  println(t)*/
 
 }

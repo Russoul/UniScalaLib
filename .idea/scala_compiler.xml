@@ -11,7 +11,7 @@
         <plugin path="$USER_HOME$/.ivy2/cache/org.scalameta/paradise_2.11.11/jars/paradise_2.11.11-3.0.0-M8.jar" />
       </plugins>
     </profile>
-    <profile name="SBT 3" modules="macros,test">
+    <profile name="SBT 4" modules="macros,test">
       <parameters>
         <parameter value="-Xplugin-require:macroparadise" />
       </parameters>

@@ -3,7 +3,7 @@ package Russoul.lib.common.helper.model
 import java.io.{File, FileNotFoundException}
 import java.util.Scanner
 
-import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
+import Russoul.lib.common.math.immutable.linear.{Vec2, Vec3}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -78,7 +78,7 @@ object WavefrontLoader
           val v1 = parseFloat(valuesS(0))
           val v2 = parseFloat(valuesS(1))
           val v3 = parseFloat(valuesS(2))
-          objects.last.addVertex(vec3(v1, v2, v3))
+          objects.last.addVertex(Vec3(v1, v2, v3))
         }
         else if (str.startsWith(VN_OBJECT)) {
           if (objects.size < 1) throw new WaveFrontModelLoadingException("Attempting to add a vertex normal without reading an object name first" + atLine())
@@ -88,7 +88,7 @@ object WavefrontLoader
           val v1 = parseFloat(valuesS(0))
           val v2 = parseFloat(valuesS(1))
           val v3 = parseFloat(valuesS(2))
-          objects.last.addNormal(vec3(v1, v2, v3))
+          objects.last.addNormal(Vec3(v1, v2, v3))
         }
         else if (str.startsWith(VT_OBJECT)) {
           if (objects.size < 1) throw new WaveFrontModelLoadingException("Attempting to add a vertex texture without reading an object name first" + atLine())
@@ -97,7 +97,7 @@ object WavefrontLoader
           if (valuesS.length < 2) throw new WaveFrontModelLoadingException("Attempting to add a vertex texture with incorrect data" + atLine())
           val v1 = parseFloat(valuesS(0))
           val v2 = 1 - parseFloat(valuesS(1))
-          objects.last.addTextureCoord(vec2(v1, v2))
+          objects.last.addTextureCoord(Vec2(v1, v2))
         }
         else if (str.startsWith(F_OBJECT)) {
           if (objects.size < 1) throw new WaveFrontModelLoadingException("Attempting to add a face without reading an object name first" + atLine())

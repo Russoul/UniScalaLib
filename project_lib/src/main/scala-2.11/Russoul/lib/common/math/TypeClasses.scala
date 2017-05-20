@@ -54,6 +54,8 @@ object TypeClasses {
   object CommutativeGroupLike {
     object Implicits{
       implicit def infixCommutativeGroupLikeOps[A](x: A)(implicit num: CommutativeGroupLike[A]): CommutativeGroupLike[A]#CommutativeGroupOps = new num.CommutativeGroupOps(x)
+
+
     }
   }
 
@@ -64,6 +66,11 @@ object TypeClasses {
     @inline def sqrt(x:A) : A
     @inline def atan2(x:A, y:A) : A
     @inline def pow(x:A, y:A) : A
+    @inline def toRadians(x:A): A
+    @inline def cos(x:A): A
+    @inline def sin(x:A): A
+
+    @inline def fromDouble(x: Double) : A
 
     @inline def div(x: A, y: A): A = times(x, inv(y))
 
@@ -74,6 +81,8 @@ object TypeClasses {
       def *(rhs: A) : A = ev.times(lhs, rhs)
       def /(rhs: A) : A = ev.div(lhs, rhs)
 
+
+
     }
 
     //implicit def mkFieldOps(lhs: A): FieldOps = new FieldOps(lhs)
@@ -83,6 +92,12 @@ object TypeClasses {
     object Implicits{
       implicit def infixFieldLikeOps[A](x: A)(implicit num: FieldLike[A]): FieldLike[A]#FieldOps = new num.FieldOps(x)
 
+      //TODO this results in a cast overhead !!!
+      @inline implicit def toField[A](x:Double)(implicit ev: FieldLike[A]): A = ev.fromDouble(x)
+
+      implicit class DoubleToField(x:Double){
+        @inline def toField[A](implicit ev: FieldLike[A]): A = ev.fromDouble(x)
+      }
     }
   }
 
@@ -109,7 +124,20 @@ object TypeClasses {
     override def atan2(x: Float, y:Float): Float = math.atan2(x,y).toFloat
     override def pow(x: Float, y:Float): Float = math.pow(x,y).toFloat
 
+
+
     //override val Pi = 3.14159265358979323846F //TODO bad idea ? BAD IDEA !
+
+    override def cos(x: Float): Float = math.cos(x).toFloat
+    override def sin(x: Float): Float = math.sin(x).toFloat
+
+    override def toRadians(x: Float): Float = {
+      math.toRadians(x).toFloat
+    }
+
+    override def fromDouble(x: Double): Float = {
+      x.toFloat
+    }
 
     override def toString: String = {
       "Float"
@@ -128,7 +156,16 @@ object TypeClasses {
     override def atan2(x: Double, y:Double): Double = math.atan2(x,y)
     override def pow(x: Double, y:Double): Double = math.pow(x,y)
 
+
+
+    override def cos(x: Double): Double = math.cos(x)
+
+    override def sin(x: Double): Double = math.sin(x)
+
+    override def toRadians(x: Double): Double = math.toRadians(x)
+
     //override val Pi = 3.14159265358979323846D
+    override def fromDouble(x: Double): Double = x
   }
 
   implicit object IntIsCommutativeGroup extends IntIsCommutativeGroup with Ordering.IntOrdering

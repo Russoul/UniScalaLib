@@ -1,19 +1,21 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
+import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
 import Russoul.lib.common.utils.Vector
 
+import FieldLike.Implicits._
 
-@immutable case class AABB(center: vec3, extent: vec3) extends CenteredShape3
+@immutable case class AABB[A](center: Vec3[A], extent: Vec3[A])(implicit ev : FieldLike[A]) extends CenteredShape3[A]
 {
 
 
-  def genMin(): vec3 = center - extent
-  def genMax(): vec3 = center + extent
+  def genMin(): Vec3[A] = center - extent
+  def genMax(): Vec3[A] = center + extent
 
-  override def translate(v: vec3): AABB =
+  override def translate(v: Vec3[A]): AABB[A] =
   {
     new AABB(center + v, extent)
   }
@@ -23,27 +25,27 @@ import Russoul.lib.common.utils.Vector
     * @param s
     * @return scaled version (around AABB's center point)
     */
-  override def scale(s:Float): AABB =
+  override def scale(s:A): AABB[A] =
   {
     new AABB(center, extent * s)
   }
 
-  def genVertices(): Vector[vec3] =
+  def genVertices(): Vector[Vec3[A]] =
   {
-    val a = Vector[vec3](8)
+    val a = Vector[Vec3[A]](8)
 
     val sx = extent.x
     val sy = extent.y
     val sz = extent.z
 
-    a += vec3(center.x-sx, center.y-sy, center.z-sz)
-    a += vec3(center.x-sx, center.y-sy, center.z+sz)
-    a += vec3(center.x+sx, center.y-sy, center.z+sz)
-    a += vec3(center.x+sx, center.y-sy, center.z-sz)
-    a += vec3(center.x-sx, center.y+sy, center.z-sz)
-    a += vec3(center.x-sx, center.y+sy, center.z+sz)
-    a += vec3(center.x+sx, center.y+sy, center.z+sz)
-    a += vec3(center.x+sx, center.y+sy, center.z-sz)
+    a += Vec3(center.x-sx, center.y-sy, center.z-sz)
+    a += Vec3(center.x-sx, center.y-sy, center.z+sz)
+    a += Vec3(center.x+sx, center.y-sy, center.z+sz)
+    a += Vec3(center.x+sx, center.y-sy, center.z-sz)
+    a += Vec3(center.x-sx, center.y+sy, center.z-sz)
+    a += Vec3(center.x-sx, center.y+sy, center.z+sz)
+    a += Vec3(center.x+sx, center.y+sy, center.z+sz)
+    a += Vec3(center.x+sx, center.y+sy, center.z-sz)
 
     a
   }
@@ -52,22 +54,22 @@ import Russoul.lib.common.utils.Vector
     *
     *
     */
-  def genRectangles(): Vector[Rectangle] =
+  def genRectangles(): Vector[Rectangle[A]] =
   {
 
-    val a = Vector[Rectangle](6)
+    val a = Vector[Rectangle[A]](6)
 
     val sx = extent.x
     val sy = extent.y
     val sz = extent.z
 
 
-    a+= new Rectangle(center + vec3(0, sy, 0), vec3(sx, 0,0), vec3(0,0,-sz))//top
-    a+= new Rectangle(center + vec3(0, -sy, 0), vec3(sx, 0,0), vec3(0,0,sz))//bottom
-    a+= new Rectangle(center + vec3(-sx, 0, 0), vec3(0, 0,sz), vec3(0,sy,0))//left
-    a+= new Rectangle(center + vec3(sx, 0, 0), vec3(0, 0,-sz), vec3(0,sy,0))//right
-    a+= new Rectangle(center + vec3(0, 0, -sz), vec3(-sx, 0,0), vec3(0,sy,0))//back
-    a+= new Rectangle(center + vec3(0, 0, sz), vec3(sx, 0,0), vec3(0,sy,0))//front
+    a+= new Rectangle(center + Vec3(ev.zero, sy, ev.zero), Vec3(sx, ev.zero,ev.zero), Vec3(ev.zero,ev.zero,-sz))//top
+    a+= new Rectangle(center + Vec3(ev.zero, -sy, ev.zero), Vec3(sx, ev.zero,ev.zero), Vec3(ev.zero,ev.zero,sz))//bottom
+    a+= new Rectangle(center + Vec3(-sx, ev.zero, ev.zero), Vec3(ev.zero, ev.zero,sz), Vec3(ev.zero,sy,ev.zero))//left
+    a+= new Rectangle(center + Vec3(sx, ev.zero, ev.zero), Vec3(ev.zero, ev.zero,-sz), Vec3(ev.zero,sy,ev.zero))//right
+    a+= new Rectangle(center + Vec3(ev.zero, ev.zero, -sz), Vec3(-sx, ev.zero,ev.zero), Vec3(ev.zero,sy,ev.zero))//back
+    a+= new Rectangle(center + Vec3(ev.zero, ev.zero, sz), Vec3(sx, ev.zero,ev.zero), Vec3(ev.zero,sy,ev.zero))//front
     a
   }
 
@@ -81,9 +83,9 @@ import Russoul.lib.common.utils.Vector
 
 object AABB
 {
-  def genFromMinMax(min:vec3, max:vec3):AABB =
+  def genFromMinMax[A : FieldLike](min:Vec3[A], max:Vec3[A]):AABB[A] =
   {
-    val extent = (max-min)*0.5F
+    val extent = (max-min) * implicitly[FieldLike[A]].fromDouble(0.5D)
     val center = min + extent
 
     new AABB(center,extent)

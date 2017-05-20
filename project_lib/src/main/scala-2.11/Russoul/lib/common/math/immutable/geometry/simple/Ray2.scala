@@ -1,18 +1,19 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
 import Russoul.lib.common.math.immutable.geometry.simple.general.Shape2
-import Russoul.lib.common.math.immutable.linear.vec2
+import Russoul.lib.common.math.immutable.linear.Vec2
 
 
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class Ray2(start: vec2, dir: vec2) extends Shape2
+@immutable case class Ray2[A](start: Vec2[A], dir: Vec2[A])(implicit ev: FieldLike[A])  extends Shape2[A]
 {
 
 
-  override def translate(v: vec2): Shape2 = {
+  override def translate(v: Vec2[A]): Shape2[A] = {
     Ray2(start + v, dir)
   }
 
@@ -20,7 +21,7 @@ import Russoul.lib.common.math.immutable.linear.vec2
     "Ray2(start = " + start + ";dir = " + dir + " )"
   }
 
-  override def scaleAroundBasis(factor: Float): Ray2 = {
+  override def scaleAroundBasis(factor: A): Ray2[A] = {
     Ray2(start * factor, dir)
   }
 }

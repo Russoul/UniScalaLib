@@ -10,8 +10,15 @@ import scala.reflect.ClassTag
   * Created by russoul on 20.05.17.
   */
 
+class IncorrectDimException(dim:Dim) extends Exception{
+  override def getMessage: String = "dim: " + dim.n
+}
+
 //TODO compile time scalameta checks of validity (VecDim == arg.length and others like vec(2.dim, ...) + vec(3.dim, ...))
 case class Vec[A <: Dim : NotNothing, @specialized B](dim: A, array:Array[B])(implicit tagA: ClassTag[A], tagB: ClassTag[B], ev: FieldLike[B]){
+
+  //TODO prevent this runtime check if possible ???, but how ?
+  if(dim.n != array.length) throw new IncorrectDimException(dim)
 
   @inline def x: B = array(0)
   @inline def y: B = array(1)

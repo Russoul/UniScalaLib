@@ -1,6 +1,6 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.math.immutable.linear.vec2
+import Russoul.lib.common.math.immutable.linear.Vec2
 
 /**
   * Created by russoul on 26.03.17.
@@ -19,9 +19,9 @@ object TextureUtils
     * 3)top right
     * 4)top left
     */
-  def mapUVCoordinates(array:Array[vec2], width:Float, height:Float): Array[vec2] =
+  def mapUVCoordinates(array:Array[Vec2[Float]], width:Float, height:Float): Array[Vec2[Float]] =
   {
-    array.map(coord => vec2(coord.x/width, coord.y/height))
+    array.map(coord => Vec2(coord.x/width, coord.y/height))
   }
 
 

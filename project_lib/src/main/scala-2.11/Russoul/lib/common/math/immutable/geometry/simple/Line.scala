@@ -1,21 +1,23 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
+import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class Line(start:vec3, end:vec3) extends Shape3
+@immutable case class Line[A](start:Vec3[A], end:Vec3[A])(implicit ev: FieldLike[A])  extends Shape3[A]
 {
 
 
-  override def translate(v: vec3): Line = {
+  override def translate(v: Vec3[A]): Line[A] = {
     Line(start + v, end + v)
   }
 
-  def genDir(): vec3 = (end - start).normalize()
+  def genDir(): Vec3[A] = (end - start).normalize()
 
   def genRay() = new Ray(start, genDir())
 
@@ -27,16 +29,16 @@ import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
 
 object Line
 {
-  def apply(pos: vec3, start: Float, end: Float, yaw: Float, pitch: Float): Line = {
+  def apply[A](pos: Vec3[A], start: A, end: A, yaw: A, pitch: A)(implicit ev: FieldLike[A]): Line[A] = {
     val alpha = -yaw
-    val t = math.toRadians(90 - alpha).toFloat
-    val cosT = math.cos(t).toFloat
-    val sinT = math.sin(t).toFloat
-    val t2 = math.toRadians(pitch)
-    val sinT2 = math.sin(t2).toFloat
-    val cosT2 = math.cos(t2).toFloat
+    val t = ev.toRadians(ev.fromDouble(90D) - alpha)
+    val cosT = ev.cos(t)
+    val sinT = ev.sin(t)
+    val t2 = ev.toRadians(pitch)
+    val sinT2 = ev.sin(t2)
+    val cosT2 = ev.cos(t2)
 
-    val k = vec3(cosT * cosT2, sinT2, -sinT * cosT2)
+    val k = Vec3(cosT * cosT2, sinT2, -sinT * cosT2)
 
     val p1 = k * start + pos
     val p2 = k * end + pos

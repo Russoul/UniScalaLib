@@ -1,7 +1,7 @@
 package Russoul.lib.common.math
 
 import Russoul.lib.common.math.immutable.geometry.simple._
-import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
+import Russoul.lib.common.math.immutable.linear.{Vec2, Vec3}
 import Russoul.lib.common.utils.Vector
 
 import scala.language.postfixOps
@@ -121,7 +121,7 @@ object CollisionEngine
   def checkOBBOBBSeparatingAxisTheorem(checkThis:OBB, checkWith:OBB):Boolean =
   {
 
-    val normals = new Vector[vec3]
+    val normals = new Vector[Vec3]
 
     val recs = checkThis.genRectangles()
     recs ++= checkWith.genRectangles()
@@ -163,7 +163,7 @@ object CollisionEngine
   def checkOBBAABBSeparatingAxisTheorem(checkThis:OBB, checkWith:AABB):Boolean =
   {
 
-    val normals = Vector[vec3](16)
+    val normals = Vector[Vec3](16)
 
     val recs = checkThis.genRectangles()
     recs ++= checkWith.genRectangles()
@@ -186,9 +186,9 @@ object CollisionEngine
     val look1 = checkThis.right^checkThis.up
 
 
-    val look2 = vec3(0,0,1)
-    val r2 = vec3(1,0,0)
-    val u2 = vec3(0,1,0)
+    val look2 = Vec3(0,0,1)
+    val r2 = Vec3(1,0,0)
+    val u2 = Vec3(0,1,0)
 
 
     for(i <- normals.indices )
@@ -206,13 +206,13 @@ object CollisionEngine
     true
   }
 
-  def checkPointSphere(point:vec3, sphere:Sphere):Boolean =
+  def checkPointSphere(point:Vec3, sphere:Sphere):Boolean =
   {
     (point-sphere.center).squareLength() <= sphere.rad*sphere.rad
   }
 
 
-  def checkPointOBB(p:vec3, b:OBB):Boolean =
+  def checkPointOBB(p:Vec3, b:OBB):Boolean =
   {
     val r = b.right
     val u = b.up
@@ -232,7 +232,7 @@ object CollisionEngine
 
   }
 
-  def checkPointOBBi(p:vec3, b:OBB):Int =
+  def checkPointOBBi(p:Vec3, b:OBB):Int =
   {
     val r = b.right
     val u = b.up
@@ -253,7 +253,7 @@ object CollisionEngine
   }
 
 
-  def checkPointAABB(point: vec3, container: AABB): Boolean =
+  def checkPointAABB(point: Vec3, container: AABB): Boolean =
   {
     val cmin = container.genMin()
     val cmax = container.genMax()
@@ -264,7 +264,7 @@ object CollisionEngine
       cmax.x >= point.x && cmax.y >= point.y && cmax.z >= point.z
   }
 
-  def checkPointAABBi(p:vec3, b:AABB):Int =
+  def checkPointAABBi(p:Vec3, b:AABB):Int =
   {
 
     val min = b.genMin()
@@ -373,7 +373,7 @@ object CollisionEngine
 
 
   //TODO CHECK IF IT REALLY WORKS ???
-  def checkPointRectangle(p: vec3, rec: Rectangle): Boolean =
+  def checkPointRectangle(p: Vec3, rec: Rectangle): Boolean =
   {
     val vs = rec.genVertices()
 
@@ -397,7 +397,7 @@ object CollisionEngine
     *
     * @return if point is to the side of plane's normal
     */
-  def checkPointPlaneNormal(p: vec3, plane:Plane): Boolean =
+  def checkPointPlaneNormal(p: Vec3, plane:Plane): Boolean =
   {
     //plane equation: "n*(p-p0) = 0"
     val n = plane.normal
@@ -441,7 +441,7 @@ object CollisionEngine
     * @param vertices
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  private def checkBoxFrustum(vertices: Vector[vec3], planes: Vector[Plane]): Int =
+  private def checkBoxFrustum(vertices: Vector[Vec3], planes: Vector[Plane]): Int =
   {
 
     var totalIn = 0
@@ -518,7 +518,7 @@ object CollisionEngine
   //--------------------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------------------
 
-  def checkPoint2Rectangle2(p:vec2, rec:Rectangle2):Boolean =
+  def checkPoint2Rectangle2(p:Vec2, rec:Rectangle2):Boolean =
   {
     p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
     p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
@@ -554,7 +554,7 @@ object CollisionEngine
   }*/
 
 
-  def checkPoint2Square2(p:vec2, centerOfSquare:vec2, extentOfSquare:Float): Boolean ={
+  def checkPoint2Square2(p:Vec2, centerOfSquare:Vec2, extentOfSquare:Float): Boolean ={
     p.x >= centerOfSquare.x-extentOfSquare &&
       p.x <= centerOfSquare.x + extentOfSquare &&
       p.y >= centerOfSquare.y - extentOfSquare &&
@@ -575,7 +575,7 @@ object CollisionEngine
     * @param b
     * @return singular intersection point, None in other cases
     */
-  def checkLine2Line2(a:Line2, b:Line2) : Option[vec2] =
+  def checkLine2Line2(a:Line2, b:Line2) : Option[Vec2] =
   {
 
     val A1 = a.end.y - a.start.y
@@ -593,7 +593,7 @@ object CollisionEngine
     val x = (C1*B2 - B1*C2)/det
     val y = (A1*C2 - C1*A2)/det
 
-    val intersection = vec2(x,y)
+    val intersection = Vec2(x,y)
 
 
     val dif1 = a.end - a.start
@@ -615,7 +615,7 @@ object CollisionEngine
     *
     * @return point and line of intersection of rectangle
     */
-  def checkLine2Rectangle2Min(line:Line2, rec:Rectangle2): Option[(vec2, Line2)] =
+  def checkLine2Rectangle2Min(line:Line2, rec:Rectangle2): Option[(Vec2, Line2)] =
   {
     val vertices = rec.genVertices()
 
@@ -630,7 +630,7 @@ object CollisionEngine
     val i3 = checkLine2Line2(line, l3)
 
     var min = Float.MaxValue
-    var minV = vec2(0,0)
+    var minV = Vec2(0,0)
     var minL:Line2 = null
 
     var temp:Float = 0
@@ -661,7 +661,7 @@ object CollisionEngine
 
   }
 
-  def checkRay2Ray2(a:Ray2, b:Ray2):Option[vec2] =
+  def checkRay2Ray2(a:Ray2, b:Ray2):Option[Vec2] =
   {
     val A1 = a.dir.y
     val B1 = -a.dir.x
@@ -678,10 +678,10 @@ object CollisionEngine
     val x = (C1*B2 - B1*C2)/det
     val y = (A1*C2 - C1*A2)/det
 
-    Some(vec2(x,y))
+    Some(Vec2(x,y))
   }
 
-  def distancePoint2Point2(a:vec2, b:vec2): Float =
+  def distancePoint2Point2(a:Vec2, b:Vec2): Float =
   {
     (b-a).length()
   }
@@ -693,7 +693,7 @@ object CollisionEngine
     * @param line
     * @return distance and point of closest distance
     */
-  def distanceCircleLine(circle:Circle, line:Line2) : (Float,vec2) =
+  def distanceCircleLine(circle:Circle, line:Line2) : (Float,Vec2) =
   {
     val v1 = line.end-line.start
 
@@ -734,17 +734,17 @@ object CollisionEngine
     else{
       if(b.center.x - b.extent >= a.center.x + a.extent.x){
         if(b.center.y + b.extent <= a.center.y - a.extent.y){
-          distancePoint2Point2(vec2(a.center.x+a.extent.x, a.center.y - a.extent.y), vec2(b.center.x - b.extent, b.center.y + b.extent))
+          distancePoint2Point2(Vec2(a.center.x+a.extent.x, a.center.y - a.extent.y), Vec2(b.center.x - b.extent, b.center.y + b.extent))
         }else if(b.center.y - b.extent >= a.center.y + a.extent.y){
-          distancePoint2Point2(vec2(a.center.x+a.extent.x, a.center.y + a.extent.y), vec2(b.center.x - b.extent, b.center.y - b.extent))
+          distancePoint2Point2(Vec2(a.center.x+a.extent.x, a.center.y + a.extent.y), Vec2(b.center.x - b.extent, b.center.y - b.extent))
         }else{
           (b.center.x - b.extent) - (a.center.x + a.extent.x)
         }
       }else if(b.center.x + b.extent <= a.center.x - a.extent.x){
         if(b.center.y - b.extent >= a.center.y + a.extent.y){
-          distancePoint2Point2(vec2(a.center.x-a.extent.x, a.center.y + a.extent.y), vec2(b.center.x + b.extent, b.center.y - b.extent))
+          distancePoint2Point2(Vec2(a.center.x-a.extent.x, a.center.y + a.extent.y), Vec2(b.center.x + b.extent, b.center.y - b.extent))
         }else if(b.center.y + b.extent <= a.center.y - a.extent.y){
-          distancePoint2Point2(vec2(a.center.x-a.extent.x, a.center.y - a.extent.y), vec2(b.center.x + b.extent, b.center.y + b.extent))
+          distancePoint2Point2(Vec2(a.center.x-a.extent.x, a.center.y - a.extent.y), Vec2(b.center.x + b.extent, b.center.y + b.extent))
         }else{
           (a.center.x - a.extent.x) - (b.center.x + b.extent)
         }

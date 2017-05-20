@@ -1,13 +1,13 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.immutable.linear.Vec3
 
 
 object ColorUtils
 {
 
   implicit class SmartVec3ToRGB(rgb:Int){
-    def genRGB(): vec3 =
+    def genRGB(): Vec3[Float] =
     {
       val t = 0xFF
 
@@ -15,11 +15,11 @@ object ColorUtils
       val g = (rgb >> 8) & t
       val b = rgb & t
 
-      vec3(r / 255F, g / 255F, b / 255F)
+      Vec3(r / 255F, g / 255F, b / 255F)
     }
   }
 
-  def genRGB(color: vec3): Int =
+  def genRGB(color: Vec3[Float]): Int =
   {
     genRGB(color.x, color.y, color.z)
   }
@@ -42,7 +42,7 @@ object ColorUtils
     re
   }
 
-  def genRGB(rgb: Int): vec3 =
+  def genRGB(rgb: Int): Vec3[Float] =
   {
     val t = 0xFF
 
@@ -50,7 +50,7 @@ object ColorUtils
     val g = (rgb >> 8) & t
     val b = rgb & t
 
-    vec3(r / 255F, g / 255F, b / 255F)
+    Vec3(r / 255F, g / 255F, b / 255F)
   }
 
 

@@ -40,12 +40,12 @@ import Russoul.lib.common.utils.Utilities
   }
 
 
-  @inline def row(index: Int): vec4[A] = {
+  @inline def row(index: Int): Vec4[A] = {
     val s = (index - 1) * 4
-    vec4(array(s), array(s + 1), array(s + 2), array(s + 3))
+    Vec4(array(s), array(s + 1), array(s + 2), array(s + 3))
   }
 
-  def withRow(index: Int, row: vec4[A]): mat4[A] = {
+  def withRow(index: Int, row: Vec4[A]): mat4[A] = {
     val c = copy()
 
     val s = (index - 1) * 4
@@ -56,9 +56,9 @@ import Russoul.lib.common.utils.Utilities
     c
   }
 
-  @inline def column(index: Int): vec4[A] = {
+  @inline def column(index: Int): Vec4[A] = {
     val s = index - 1
-    vec4(array(s), array(s + 4), array(s + 8), array(s + 12))
+    Vec4(array(s), array(s + 4), array(s + 8), array(s + 12))
   }
 
   @inline def get(row: Int, column: Int): A = {
@@ -69,27 +69,16 @@ import Russoul.lib.common.utils.Utilities
     scalarMultiplication(scalar)
   }
 
-  def *(matrix: mat4[A]) = {
+  def *(matrix: mat4[A]): mat4[A] = {
     matrixMultiplication(matrix)
   }
 
   def scalarMultiplication(scalar: A): mat4[A] = {
-    val copy = this.copy()
-
-    for (i <- 0 until 16) {
-      copy.array(i) *= scalar
-    }
-    copy
+    this * scalar
   }
 
   def matrixMultiplication(matrix: mat4[A]): mat4[A] = {
-    val n = new Array[A](16)
-    for (i <- 1 to 4) {
-      for (j <- 1 to 4) {
-        n((i - 1) * 4 + j - 1) = row(i) * matrix.column(j)
-      }
-    }
-    new mat4(n)
+    this * matrix
   }
 
   override def toString(): String = {
@@ -234,7 +223,7 @@ object mat4
       0, 0, 0, 1)
   }
 
-  def matrixSCALE(v: vec3[Float]): mat4[Float] =
+  def matrixSCALE(v: Vec3[Float]): mat4[Float] =
   {
     mat4(v.x, 0, 0, 0,
       0, v.y, 0, 0,
@@ -250,7 +239,7 @@ object mat4
       x, y, z, 1)
   }
 
-  def matrixTRANSLATION(v: vec3[Float]): mat4[Float] =
+  def matrixTRANSLATION(v: Vec3[Float]): mat4[Float] =
   {
     mat4(1, 0, 0, 0,
       0, 1, 0, 0,
@@ -258,7 +247,7 @@ object mat4
       v.x, v.y, v.z, 1)
   }
 
-  def matrixROTATION(axis: vec3[Float], angleInDegrees: Float): mat4[Float] =
+  def matrixROTATION(axis: Vec3[Float], angleInDegrees: Float): mat4[Float] =
   {
     val rad = angleInDegrees * math.Pi / 180
     val cos = math.cos(rad).toFloat
@@ -273,17 +262,19 @@ object mat4
 
   }
 
-  def matrixROTATIONRad(axis: vec3[Float], angleInRadians: Float): mat4[Float] =
+  def matrixROTATIONRad[A](axis: Vec3[A], angleInRadians: A)(implicit ev : FieldLike[A]): mat4[A] =
   {
-    val cos = math.cos(angleInRadians).toFloat
-    val sin = math.sin(angleInRadians).toFloat
+    import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+
+    val cos = ev.cos(angleInRadians)
+    val sin = ev.sin(angleInRadians)
     val x = axis.x * axis.x
     val y = axis.y * axis.y
     val z = axis.z * axis.z
-    mat4(cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
-      y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
-      z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
-      0, 0, 0, 1)
+    mat4(cos + x * x * (1D.toField - cos), x * y * (1D.toField - cos) - z * sin, x * z * (1D.toField - cos) + y * sin, 0D,
+      y * x * (1D.toField - cos) + z * sin, cos + y * y * (1D.toField - cos), y * z * (1D.toField - cos) - x * sin, 0D,
+      z * x * (1D.toField - cos) - y * sin, z * y * (1D.toField - cos) + x * sin, cos + z * z * (1D.toField - cos), 0D,
+      0D, 0D, 0D, 1D)
 
   }
 
@@ -325,7 +316,7 @@ object mat4
   }
 
 
-  def matrixVIEW(pos: vec3[Float], target: vec3[Float], up: vec3[Float]): mat4[Float] =
+  def matrixVIEW(pos: Vec3[Float], target: Vec3[Float], up: Vec3[Float]): mat4[Float] =
   {
     val za = (target - pos).normalize()
     val xa = up.crossProduct(za).normalize()
@@ -337,7 +328,7 @@ object mat4
       -xa.dotProduct(pos), -ya.dotProduct(pos), -za.dotProduct(pos), 1)
   }
 
-  def matrixVIEWDir(pos: vec3[Float], look: vec3[Float], up: vec3[Float]): mat4[Float] =
+  def matrixVIEWDir(pos: Vec3[Float], look: Vec3[Float], up: Vec3[Float]): mat4[Float] =
   {
     val za = -look
     val xa = up.crossProduct(za).normalize()
@@ -349,13 +340,13 @@ object mat4
       -xa.dotProduct(pos), -ya.dotProduct(pos), -za.dotProduct(pos), 1)
   }
 
-  def matrixVIEW(pos: vec3[Float], rotX: Float, rotY: Float, rotZ: Float): mat4[Float] =
+  def matrixVIEW(pos: Vec3[Float], rotX: Float, rotY: Float, rotZ: Float): mat4[Float] =
   {
     var mat = matrixIdentity()
     mat *= matrixTRANSLATION(-pos)
-    mat *= matrixROTATION(vec3(0, 1, 0), rotY)
-    mat *= matrixROTATION(vec3(1, 0, 0), rotX)
-    mat *= matrixROTATION(vec3(0, 0, 1), rotZ)
+    mat *= matrixROTATION(Vec3(0, 1, 0), rotY)
+    mat *= matrixROTATION(Vec3(1, 0, 0), rotX)
+    mat *= matrixROTATION(Vec3(0, 0, 1), rotZ)
     mat
   }
 }

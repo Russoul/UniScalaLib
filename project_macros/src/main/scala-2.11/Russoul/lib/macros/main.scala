@@ -2,23 +2,49 @@ package Russoul.lib.macros
 
 
 //import scala.meta.{Lit, Stat, _}
-import scala.meta._
-//import scala.reflect.macros.blackbox._
-/**
-  * Created by russoul on 17.05.17.
-  */
-class VecMeta extends scala.annotation.StaticAnnotation {
-  inline def apply(defn: Any): Any = meta {
-    defn match {
-      case dff @ Defn.Class(mods, typename, tps, ctor, temp) =>
 
-        println(ctor.structure)
+//import scala.meta._
 
-        dff
-      case _ => q"()"
+
+
+
+
+/*object Macros {
+  def implFloat(c: Context)(str: c.Expr[String]): c.Expr[Float] = {
+    import c.universe._
+
+    println(showRaw(str))
+
+    str match{
+      case Expr(Literal(Constant(x:String))) => {
+          println(showRaw(c.Expr(q"${x.toFloat}")) )
+          c.Expr(q"${x.toFloat}")
+        }
+      case _ =>
+        c.abort(c.enclosingPosition, "not a compile-time constant")
     }
-  }
-}
+
+  }*/
+
+  /*def impl(c: Context)(): c.Expr[Any] = {
+    import c.universe._
+
+    val exp = c.parse("implicitly[FieldLike[Double]].fromDouble(tt.toDouble)")
+    val ev = c.eval[Double](c.Expr(exp))
+    println(exp)
+    println(ev)
+
+    /*str match{
+      case Expr(Literal(Constant(x:String))) =>
+        c.Expr(q"(implicitly[FieldLike[${tag.tpe}]].fromDouble(s.s()))")
+      case _ =>
+        c.abort(c.enclosingPosition, "not a compile-time constant")
+    }*/
+
+    c.Expr(exp)
+
+  }*/
+
 
 /*object Macros{
   def impl(c: Context)(): c.Expr[Real[Float]] = {

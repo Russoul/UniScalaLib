@@ -2,7 +2,7 @@ package Russoul.lib.common.scene
 
 import Russoul.lib.common.math.immutable.geometry.complex.Frustum
 import Russoul.lib.common.math.immutable.geometry.simple.{Ray, Rectangle}
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3, vec4}
+import Russoul.lib.common.math.immutable.linear.{mat4, Vec3, Vec4}
 
 
 class Camera private
@@ -14,12 +14,12 @@ class Camera private
 
 
 
-  var pos = vec3(0,0,1.5F)
+  var pos = Vec3(0F,0F,1.5F)
 
   //normalized
-  var up = vec3(0, 1, 0)
+  var up = Vec3(0F, 1F, 0F)
   //normalized
-  var look = vec3(0, 0, -1)
+  var look = Vec3(0F, 0F, -1F)
 
   var frustum: Frustum = null
 
@@ -43,14 +43,14 @@ class Camera private
     this.screenY = y
   }
 
-  def genLookingRay(): Ray =
+  def genLookingRay(): Ray[Float] =
   {
     new Ray(pos, look)
   }
 
   def genRight() = look^up
 
-  def genNearPlaneRectangle():Rectangle =
+  def genNearPlaneRectangle():Rectangle[Float] =
   {
     val center = pos + look * zNear
 
@@ -96,7 +96,7 @@ class Camera private
     val pitch = dpitch/180*Math.PI
 
     val upTransform = mat4.matrixROTATION(look, -droll)
-    var newUp = (vec4(up, 1) * upTransform).normalize().xyz //new base : look, newUp, newRight
+    var newUp = (Vec4(up, 1) * upTransform).normalize().xyz //new base : look, newUp, newRight
     var newRight = (look ^ newUp).normalize()
 
     val newLook = (newRight * math.sin(yaw).toFloat + look * math.cos(yaw).toFloat + newUp * math.sin(pitch).toFloat).normalize(); //new look based on dpitch and dyaw in new base

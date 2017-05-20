@@ -1,14 +1,14 @@
 package Russoul.lib.common.helper.model
 
-import Russoul.lib.common.math.immutable.linear.{mat4, vec2, vec3}
+import Russoul.lib.common.math.immutable.linear.{mat4, Vec2, Vec3}
 import Russoul.lib.common.utils.Vector
 
 
 class WaveFrontObject(name: String)
 {
-  private val vertexList = new Vector[vec3]()
-  private val normalList = new Vector[vec3]()
-  private val textureList = new Vector[vec2]()
+  private val vertexList = new Vector[Vec3[Float]]()
+  private val normalList = new Vector[Vec3[Float]]()
+  private val textureList = new Vector[Vec2[Float]]()
 
   private val vertexIndicesTriangleList = new Vector[Int]()
   private val texCoordsIndicesTriangleList = new Vector[Int]()
@@ -27,24 +27,24 @@ class WaveFrontObject(name: String)
     normalIndicesTriangleList += n
   }
 
-  def addVertex(vertex: vec3) =
+  def addVertex(vertex: Vec3[Float]) =
   {
     vertexList += vertex
   }
 
-  def addNormal(normal: vec3) =
+  def addNormal(normal: Vec3[Float]) =
   {
     normalList += normal
   }
 
-  def addTextureCoord(tex: vec2): Unit =
+  def addTextureCoord(tex: Vec2[Float]): Unit =
   {
     textureList += tex
   }
 
   def getName() = name
 
-  def scale(v3: vec3): WaveFrontObject =
+  def scale(v3: Vec3[Float]): WaveFrontObject =
   {
     val mat = mat4.matrixSCALE(v3)
     for (i <- vertexList.indices) {
