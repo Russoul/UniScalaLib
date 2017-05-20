@@ -2,48 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb81bc22-8a86-4ac5-a588-5c5888536788" name="Default" comment="">
-      <change type="MOVED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec4.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/lib-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/lib-build.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/macros-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/macros-build.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/macros.iml" afterPath="$PROJECT_DIR$/.idea/modules/macros.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WaveFrontObject.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WaveFrontObject.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WavefrontLoader.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WavefrontLoader.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Math.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Math.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Plane.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Plane.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Sphere.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Sphere.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Square2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Square2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape3.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape2.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape3.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/scene/Camera.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/scene/Camera.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ColorUtils.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ColorUtils.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ImageUtils.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ImageUtils.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/TextureUtils.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/TextureUtils.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala" afterPath="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" afterPath="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -1163,7 +1122,14 @@
       <option name="project" value="LOCAL" />
       <updated>1495292175654</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="renamed vec&lt;n&gt; to Vec&lt;n&gt; n = 2,3,4&#10;lots of error fixing">
+      <created>1495314297349</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1495314297349</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1246,7 +1212,8 @@
     <MESSAGE value="gitignore added" />
     <MESSAGE value="groups, fields using type classes; new vector implementation - Vec[Dim,FieldLike[...]]&#10;Complex numbers over field" />
     <MESSAGE value="renamed vector and map to Uppercase equivalents" />
-    <option name="LAST_COMMIT_MESSAGE" value="renamed vector and map to Uppercase equivalents" />
+    <MESSAGE value="renamed vec&lt;n&gt; to Vec&lt;n&gt; n = 2,3,4&#10;lots of error fixing" />
+    <option name="LAST_COMMIT_MESSAGE" value="renamed vec&lt;n&gt; to Vec&lt;n&gt; n = 2,3,4&#10;lots of error fixing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
