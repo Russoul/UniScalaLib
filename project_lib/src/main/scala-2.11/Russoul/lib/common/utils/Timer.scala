@@ -5,7 +5,7 @@ package Russoul.lib.common.utils
   */
 class Timer
 {
-  private val table = new map[String, Double]()
+  private val table = new Map[String, Double]()
 
 
   def update(key:String): Unit =

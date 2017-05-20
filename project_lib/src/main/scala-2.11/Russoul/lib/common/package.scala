@@ -1,6 +1,5 @@
 package Russoul.lib
 
-import Russoul.lib.common.math.immutable.algebra.Real
 
 import scala.language.implicitConversions
 

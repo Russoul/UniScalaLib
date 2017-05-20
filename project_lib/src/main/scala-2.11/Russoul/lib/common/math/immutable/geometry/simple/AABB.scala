@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.geometry.simple
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 
 @immutable case class AABB(center: vec3, extent: vec3) extends CenteredShape3
@@ -28,9 +28,9 @@ import Russoul.lib.common.utils.vector
     new AABB(center, extent * s)
   }
 
-  def genVertices(): vector[vec3] =
+  def genVertices(): Vector[vec3] =
   {
-    val a = vector[vec3](8)
+    val a = Vector[vec3](8)
 
     val sx = extent.x
     val sy = extent.y
@@ -52,10 +52,10 @@ import Russoul.lib.common.utils.vector
     *
     *
     */
-  def genRectangles(): vector[Rectangle] =
+  def genRectangles(): Vector[Rectangle] =
   {
 
-    val a = vector[Rectangle](6)
+    val a = Vector[Rectangle](6)
 
     val sx = extent.x
     val sy = extent.y

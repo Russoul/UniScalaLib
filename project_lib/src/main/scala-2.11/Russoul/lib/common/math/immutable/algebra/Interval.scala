@@ -1,7 +1,7 @@
 package Russoul.lib.common.math.immutable.algebra
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 import scala.util.Sorting
 
@@ -23,9 +23,9 @@ import scala.util.Sorting
     }
   }
 
-  def &(ii:vector[Interval]) : vector[Interval] =
+  def &(ii:Vector[Interval]) : Vector[Interval] =
   {
-    val res = vector.ofSize[Interval](ii.size)
+    val res = Vector.ofSize[Interval](ii.size)
 
     for(i <- ii){
       val t = i & this
@@ -36,11 +36,11 @@ import scala.util.Sorting
   }
 
   //TODO WORKS ONLY FOR NOT INTERSECTING INTERVALS
-  def |(i:Interval):vector[Interval] =
+  def |(i:Interval):Vector[Interval] =
   {
 
-    if(i.empty) return vector(this)
-    if(this.empty) return vector(i)
+    if(i.empty) return Vector(this)
+    if(this.empty) return Vector(i)
 
 
     val maxOfMin = math.max(min, i.min)
@@ -48,30 +48,30 @@ import scala.util.Sorting
 
 
     if(maxOfMin > minOfMax){ //they do not intersect
-      vector(this, i)
+      Vector(this, i)
     }else{ //they intersect
       val rmin = math.min(min, i.min)
       val rmax = math.max(max, i.max)
 
-      vector(Interval(rmin, rmax))
+      Vector(Interval(rmin, rmax))
     }
 
   }
 
 
-  def |(ii:vector[Interval]):vector[Interval] ={
-    val i = vector.ofSize[Interval](ii.size)//does not contain any empty intervals
+  def |(ii:Vector[Interval]):Vector[Interval] ={
+    val i = Vector.ofSize[Interval](ii.size)//does not contain any empty intervals
 
     for(k <- ii){
       if(!k.empty) i += k
     }
 
     if(i.size == 0){
-      vector(this)
+      Vector(this)
     }else{
       if(this.empty) return i
 
-      val ret = vector.ofSize[Interval](ii.size)
+      val ret = Vector.ofSize[Interval](ii.size)
 
       var cur:Interval = this
 
@@ -138,9 +138,9 @@ object Interval extends Ordering[Interval]{
     x compare y
   }
 
-  implicit class impl(chain:vector[Interval]){
+  implicit class impl(chain:Vector[Interval]){
 
-    def |(ii:vector[Interval]): vector[Interval] = {
+    def |(ii:Vector[Interval]): Vector[Interval] = {
 
       if(ii.size == 0) return chain
 
@@ -158,11 +158,11 @@ object Interval extends Ordering[Interval]{
     }
 
 
-    def &(ii:vector[Interval]): vector[Interval] = {
+    def &(ii:Vector[Interval]): Vector[Interval] = {
       if(ii.size == 1){
         ii(0) & chain
       }else{
-        var curChain = vector(Interval.empty())
+        var curChain = Vector(Interval.empty())
 
         for(i <- 0 until ii.size){
           curChain |= ii(i) & chain
@@ -173,15 +173,15 @@ object Interval extends Ordering[Interval]{
     }
 
 
-    def |(ii:Interval): vector[Interval] = {
+    def |(ii:Interval): Vector[Interval] = {
       ii | chain
     }
 
-    def &(ii:Interval): vector[Interval] = {
+    def &(ii:Interval): Vector[Interval] = {
       ii & chain
     }
 
-    def sort():vector[Interval] = {
+    def sort():Vector[Interval] = {
       chain.insertionSort(Interval)
     }
 
@@ -203,9 +203,9 @@ object Interval extends Ordering[Interval]{
 
   implicit class impl2(i:Interval){
 
-    def toVector(): vector[Interval] =
+    def toVector(): Vector[Interval] =
     {
-      vector(i)
+      Vector(i)
     }
   }
 

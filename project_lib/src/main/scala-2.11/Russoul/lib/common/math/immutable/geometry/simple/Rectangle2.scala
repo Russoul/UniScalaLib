@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.geometry.simple
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 /**
   * Created by russoul on 11.03.17.
@@ -17,7 +17,7 @@ import Russoul.lib.common.utils.vector
     Rectangle2(center + v, extent)
   }
 
-  def genVertices(): vector[vec2] = vector[vec2](center - extent, center + vec2(extent.x, -extent.y), center + extent, center + vec2(-extent.x, extent.y))
+  def genVertices(): Vector[vec2] = Vector[vec2](center - extent, center + vec2(extent.x, -extent.y), center + extent, center + vec2(-extent.x, extent.y))
 
   def toRectangleParallelToZ(zLevel:Float): Rectangle =
   {

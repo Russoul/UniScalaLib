@@ -13,11 +13,11 @@ class KeyNotFoundException(k: String) extends Exception("key %s was not found" f
   */
 
 
-class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
+class Map[@specialized A, @specialized B](var keys:Vector[A], var values:Vector[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
 {
   def this()(implicit cta: ClassTag[A], ctb: ClassTag[B]) =
   {
-    this(new vector[A](), new vector[B]())
+    this(new Vector[A](), new Vector[B]())
 
   }
 
@@ -33,9 +33,9 @@ class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B
     * return false.
     */
   override def equals(rhs: Any): Boolean = rhs match {
-    case rhs: map[_, _] =>
+    case rhs: Map[_, _] =>
       if (this.size != rhs.size || this.cta != rhs.cta || this.ctb != rhs.ctb) return false
-      val m = rhs.asInstanceOf[map[A, B]]
+      val m = rhs.asInstanceOf[Map[A, B]]
       if(this.keys.equals(m.keys) && this.values.equals(m.values)) true else false
     case _ =>
       false
@@ -155,8 +155,8 @@ class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B
 
   def clear(): Unit =
   {
-    keys = new vector[A]()
-    values = new vector[B]()
+    keys = new Vector[A]()
+    values = new Vector[B]()
   }
 
   def remove(key:A):Boolean  =
@@ -204,10 +204,10 @@ class map[@specialized A, @specialized B](var keys:vector[A],var values:vector[B
   }
 }
 
-object map
+object Map
 {
-  def empty[@specialized A:ClassTag,@specialized B:ClassTag](): map[A,B] =
+  def empty[@specialized A:ClassTag,@specialized B:ClassTag](): Map[A,B] =
   {
-    new map[A,B]()
+    new Map[A,B]()
   }
 }

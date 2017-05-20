@@ -188,8 +188,8 @@ object ImageUtils
   {
 
     private var glyphCount:Int = _
-    private val glyphs     = new map[Int, Glyph]()
-    private val glyphNames = new map[String,Int]()
+    private val glyphs     = new Map[Int, Glyph]()
+    private val glyphNames = new Map[String,Int]()
 
     {
       readAll()

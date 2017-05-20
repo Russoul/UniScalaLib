@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.algebra
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.TypeClasses.FieldLike
 import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 /**
   * Created by russoul on 20.05.17.
@@ -58,8 +58,8 @@ import Russoul.lib.common.utils.vector
 object Complex{
 
 
-  @inline def root(n:Int, num:Complex[Float]) : vector[Complex[Float]] = {
-    val res = new vector[Complex[Float]](new Array[Complex[Float]](n), 0)
+  @inline def root(n:Int, num:Complex[Float]) : Vector[Complex[Float]] = {
+    val res = new Vector[Complex[Float]](new Array[Complex[Float]](n), 0)
 
 
     val r = num.length()

@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.geometry.simple
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
 import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 /**
   * Created by Russoul on 18.07.2016.
@@ -80,9 +80,9 @@ import Russoul.lib.common.utils.vector
     new OBB(center,right * mat,up * mat,extentRight, extentUp, extentLook)
   }
 
-  def genRectangles():vector[Rectangle] =
+  def genRectangles():Vector[Rectangle] =
   {
-    val out = vector[Rectangle](6)
+    val out = Vector[Rectangle](6)
 
     val fe = (right ^ up) * extentLook
     val ue = up * extentUp
@@ -105,9 +105,9 @@ import Russoul.lib.common.utils.vector
     out
   }
 
-  def genVertices():vector[vec3] =
+  def genVertices():Vector[vec3] =
   {
-    val out = vector[vec3](8)
+    val out = Vector[vec3](8)
 
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -126,9 +126,9 @@ import Russoul.lib.common.utils.vector
     out
   }
 
-  def genVerticesCounterClockwise():vector[vec3] =
+  def genVerticesCounterClockwise():Vector[vec3] =
   {
-    val out = vector[vec3](8)
+    val out = Vector[vec3](8)
 
     val l = (right ^ up)*extentLook
     val u =  up*extentUp

@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.geometry.simple
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.immutable.geometry.simple.general.Shape3
 import Russoul.lib.common.math.immutable.linear.{mat4, vec2, vec3}
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 
 /**
@@ -30,9 +30,9 @@ import Russoul.lib.common.utils.vector
 
 
 
-  def genVerticesClockwise(): vector[vec3] = vector[vec3](center + up - right, center + up + right, center - up + right, center - up - right)
+  def genVerticesClockwise(): Vector[vec3] = Vector[vec3](center + up - right, center + up + right, center - up + right, center - up - right)
 
-  def genVertices(): vector[vec3] = vector[vec3](center - up - right, center - up + right, center + up + right, center + up - right)
+  def genVertices(): Vector[vec3] = Vector[vec3](center - up - right, center - up + right, center + up + right, center + up - right)
 
   def scale(right:Float, up:Float): Rectangle =
   {

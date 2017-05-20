@@ -3,7 +3,7 @@ package Russoul.lib.common.math.immutable.geometry.simple
 import Russoul.lib.common.lang.immutable
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
-import Russoul.lib.common.utils.vector
+import Russoul.lib.common.utils.Vector
 
 /**
   * Created by russoul on 22.04.17.
@@ -24,7 +24,7 @@ import Russoul.lib.common.utils.vector
     Square2(center * factor, extent * factor)
   }
 
-  def genVertices(): vector[vec2] = vector[vec2](center - vec2(extent,extent), center + vec2(extent, -extent), center + vec2(extent,extent), center + vec2(-extent, extent))
+  def genVertices(): Vector[vec2] = Vector[vec2](center - vec2(extent,extent), center + vec2(extent, -extent), center + vec2(extent,extent), center + vec2(-extent, extent))
 
 
   /**
