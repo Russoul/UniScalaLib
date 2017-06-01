@@ -64,7 +64,7 @@ lazy val test = (project in file("project_test")).
     // other settings
 
 
-  ).dependsOn(macros)
+  )//.dependsOn(macros)
 
 
 

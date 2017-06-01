@@ -2,16 +2,16 @@ package Russoul.lib.common.math.immutable.geometry.simple
 
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.Field
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
 import Russoul.lib.common.math.immutable.linear.Vec3
 
-import FieldLike.Implicits._
+import Field.Implicits._
 
 /**
   * Created by Russoul on 21.04.2016.
   */
-@immutable case class Sphere[A : FieldLike](center:Vec3[A], rad: A) extends CenteredShape3[A] {
+@immutable case class Sphere[A : Field](center:Vec3[A], rad: A) extends CenteredShape3[A] {
 
 
 

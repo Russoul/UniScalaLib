@@ -13,11 +13,11 @@ class KeyNotFoundException(k: String) extends Exception("key %s was not found" f
   */
 
 
-class Map[@specialized A, @specialized B](var keys:Vector[A], var values:Vector[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
+class Map[@specialized A, @specialized B](var keys:Arr[A], var values:Arr[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
 {
   def this()(implicit cta: ClassTag[A], ctb: ClassTag[B]) =
   {
-    this(new Vector[A](), new Vector[B]())
+    this(new Arr[A](), new Arr[B]())
 
   }
 
@@ -155,8 +155,8 @@ class Map[@specialized A, @specialized B](var keys:Vector[A], var values:Vector[
 
   def clear(): Unit =
   {
-    keys = new Vector[A]()
-    values = new Vector[B]()
+    keys = new Arr[A]()
+    values = new Arr[B]()
   }
 
   def remove(key:A):Boolean  =

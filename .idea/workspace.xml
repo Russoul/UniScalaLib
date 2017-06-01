@@ -2,7 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb81bc22-8a86-4ac5-a588-5c5888536788" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/dim.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/unchecked.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Mat.scala" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec_old.scala" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec2i.scala" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Complex.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/ComplexOverField.scala" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Vector.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Arr.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/lib-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/lib-build.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/macros-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/macros-build.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" afterPath="$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build.sbt" afterPath="$PROJECT_DIR$/build.sbt" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WaveFrontObject.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/helper/model/WaveFrontObject.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Interval.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Interval.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/package.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/package.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line2.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Plane.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Plane.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Ray2.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Sphere.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Sphere.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Square2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Square2.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape3.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/package.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/package.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/FileUtils.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/FileUtils.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Map.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Map.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" afterPath="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -30,6 +73,15 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_TABLE_DETAILS" value="true" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -56,100 +108,89 @@
       </state>
     </system>
   </component>
+  <component name="FavoritesManager">
+    <favorites_list name="scalalibrary" />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="Test.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.sbt" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.sbt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1100">
-              <caret line="55" column="3" lean-forward="false" selection-start-line="55" selection-start-column="3" selection-end-line="55" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Triangle.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="10" column="69" lean-forward="true" selection-start-line="10" selection-start-column="69" selection-end-line="10" selection-end-column="97" />
+            <state relative-caret-position="-6899">
+              <caret line="20" column="7" lean-forward="false" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
               <folding>
-                <element signature="e#59#99#0" expanded="true" />
+                <element signature="e#2#36#0" expanded="true" />
+                <element signature="e#160#201#0" expanded="true" />
+                <element signature="e#22049#22069#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vec2.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala">
+      <file leaf-file-name="dim.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/dim.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+            <state relative-caret-position="175">
+              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="9" selection-end-column="1" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vec3.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala">
+      <file leaf-file-name="Math.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Math.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="214">
-              <caret line="18" column="26" lean-forward="false" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
-              <folding>
-                <marker date="1495314247150" expanded="true" signature="3286:3306" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vec4.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="460">
-              <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+            <state relative-caret-position="359">
+              <caret line="56" column="3" lean-forward="true" selection-start-line="53" selection-start-column="2" selection-end-line="56" selection-end-column="3" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="mat4.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="284">
-              <caret line="276" column="21" lean-forward="true" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
-              <folding>
-                <element signature="e#50#77#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TypeClasses.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TypeClasses.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="320">
-              <caret line="95" column="14" lean-forward="false" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
-              <folding />
+            <state relative-caret-position="53">
+              <caret line="322" column="55" lean-forward="true" selection-start-line="322" selection-start-column="55" selection-end-line="322" selection-end-column="55" />
+              <folding>
+                <element signature="e#33#63#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala">
+      <file leaf-file-name="Vec_old.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec_old.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="920">
-              <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="200">
+              <caret line="149" column="14" lean-forward="false" selection-start-line="149" selection-start-column="14" selection-end-line="149" selection-end-column="15" />
+              <folding>
+                <element signature="e#51#92#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mat.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Mat.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="796">
+              <caret line="129" column="13" lean-forward="false" selection-start-line="129" selection-start-column="13" selection-end-line="129" selection-end-column="13" />
+              <folding>
+                <element signature="e#51#89#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Vec.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="121">
+              <caret line="94" column="25" lean-forward="true" selection-start-line="94" selection-start-column="25" selection-end-line="94" selection-end-column="26" />
+              <folding>
+                <element signature="e#51#81#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -166,11 +207,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>float</find>
-      <find>vec2</find>
-      <find>dims</find>
-      <find>startchar a</find>
-      <find>startchar I</find>
       <find>BufferedIm</find>
       <find>startchar space</find>
       <find>clear</find>
@@ -195,6 +231,12 @@
       <find>cross</find>
       <find>v</find>
       <find>0</find>
+      <find>Float</find>
+      <find>Double</find>
+      <find>sqrt</find>
+      <find>Real</find>
+      <find>import</find>
+      <find>Vec</find>
     </findStrings>
     <replaceStrings>
       <replace>vec2i</replace>
@@ -203,6 +245,9 @@
       <replace>o</replace>
       <replace>b</replace>
       <replace>ev.zero</replace>
+      <replace>Real</replace>
+      <replace>Double</replace>
+      <replace>Vec_old</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -216,23 +261,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/common/macros/Macros.scala" />
-        <option value="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Macros.scala" />
-        <option value="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/Macros.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Real.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/ND.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/VecDim.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/NotNothing.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Dim.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/package.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Complex.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/vector.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Vector.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/map.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Map.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/Implicits.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/package.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape3.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Sphere.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape3.scala" />
@@ -242,9 +272,7 @@
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala" />
-        <option value="$PROJECT_DIR$/build.sbt" />
         <option value="$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala" />
-        <option value="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ColorUtils.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/ImageUtils.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/TextureUtils.scala" />
@@ -259,22 +287,45 @@
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line2.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Line.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec2.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec3.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec4.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Complex.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/ComplexOver.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/ComplexOverField.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/package.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/package.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Vector.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala" />
+        <option value="$PROJECT_DIR$/build.sbt" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/unchecked.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/size.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/dim.scala" />
+        <option value="$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec_old.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Arr.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Mat.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala" />
       </list>
     </option>
   </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="64" />
-    <option name="y" value="-11" />
-    <option name="width" value="1857" />
-    <option name="height" value="1092" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -338,8 +389,6 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -358,7 +407,187 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.11.11:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.11.11.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.11.11:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.11.11.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.11.11:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.11.11.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="External Libraries" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="SBT: org.scala-lang:scala-library:2.11.11:jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-library-2.11.11.jar" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="annotation" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="meta" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="ScalaLibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ScalaLibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project_test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ScalaLibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project_test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ScalaLibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project_test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scala-2.11" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scalalibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ScalaLibrary" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="project_test" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -495,10 +724,6 @@
               <option name="myItemId" value="immutable" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="linear" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -538,91 +763,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="geometry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="simple" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scalalibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScalaLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala-2.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="math" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="immutable" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="geometry" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scalalibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ScalaLibrary" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="project_lib" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="main" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="scala-2.11" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="common" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="math" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="immutable" />
+              <option name="myItemId" value="algebra" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -650,6 +791,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -657,9 +800,11 @@
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Language Defaults" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Font" />
     <property name="settings.editor.splitter.proportion" value="0.25488454" />
     <property name="SearchEverywhereHistoryKey" value="Macros&#9;null&#9;null" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -787,6 +932,136 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+      <method />
+    </configuration>
+    <configuration default="true" type="ArquillianTestNG" factoryName="">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Cold Fusion runner description" factoryName="Cold Fusion" custom_browser="" web_path="">
+      <method />
+    </configuration>
+    <configuration default="true" type="CucumberJavaRunConfigurationType" factoryName="Cucumber java">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <option name="myFilePath" />
+      <option name="GLUE" />
+      <option name="myNameFilter" />
+      <option name="myGeneratedName" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlashRunConfigurationType" factoryName="Flash App">
+      <option name="BCName" value="" />
+      <option name="IOSSimulatorSdkPath" value="" />
+      <option name="adlOptions" value="" />
+      <option name="airProgramParameters" value="" />
+      <option name="appDescriptorForEmulator" value="Android" />
+      <option name="debugTransport" value="USB" />
+      <option name="debuggerSdkRaw" value="BC SDK" />
+      <option name="emulator" value="NexusOne" />
+      <option name="emulatorAdlOptions" value="" />
+      <option name="fastPackaging" value="true" />
+      <option name="fullScreenHeight" value="0" />
+      <option name="fullScreenWidth" value="0" />
+      <option name="launchUrl" value="false" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="mobileRunTarget" value="Emulator" />
+      <option name="moduleName" value="" />
+      <option name="overriddenMainClass" value="" />
+      <option name="overriddenOutputFileName" value="" />
+      <option name="overrideMainClass" value="false" />
+      <option name="runTrusted" value="true" />
+      <option name="screenDpi" value="0" />
+      <option name="screenHeight" value="0" />
+      <option name="screenWidth" value="0" />
+      <option name="url" value="http://" />
+      <option name="usbDebugPort" value="7936" />
+      <method />
+    </configuration>
+    <configuration default="true" type="FlexUnitRunConfigurationType" factoryName="FlexUnit" appDescriptorForEmulator="Android" class_name="" emulatorAdlOptions="" method_name="" package_name="" scope="Class">
+      <option name="BCName" value="" />
+      <option name="launcherParameters">
+        <LauncherParameters>
+          <option name="browser" value="a7bb68e0-33c0-4d6f-a81a-aac1fdb870c8" />
+          <option name="launcherType" value="OSDefault" />
+          <option name="newPlayerInstance" value="false" />
+          <option name="playerPath" value="FlashPlayerDebugger.exe" />
+        </LauncherParameters>
+      </option>
+      <option name="moduleName" value="" />
+      <option name="trusted" value="true" />
+      <method />
+    </configuration>
     <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -801,6 +1076,15 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GrailsRunConfigurationType" factoryName="Grails">
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="passParentEnv" value="true" />
+      <setting name="launchBrowser" value="true" />
+      <setting name="launchBrowserUrl" value="" />
+      <setting name="depsClasspath" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="JUnit" factoryName="JUnit">
@@ -843,6 +1127,22 @@
       <option name="PASS_PARENT_ENVS" value="true" />
       <module name="" />
       <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
       <method />
     </configuration>
     <configuration default="true" type="JetRunConfigurationType" factoryName="Kotlin">
@@ -923,6 +1223,12 @@
       <envs />
       <method />
     </configuration>
+    <configuration default="true" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="" />
+      <envs />
+      <method />
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="" />
@@ -949,6 +1255,28 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Run Launcher">
+      <method />
+    </configuration>
+    <configuration default="true" type="osgi.bnd.run" factoryName="Test Launcher (JUnit)">
       <method />
     </configuration>
     <configuration default="true" type="uTestRunConfiguration" factoryName="utest">
@@ -1004,7 +1332,7 @@
     </recent_temporary>
   </component>
   <component name="SbtLocalSettings">
-    <option name="lastUpdateTimestamp" value="1495312556712" />
+    <option name="lastUpdateTimestamp" value="1496336914202" />
     <option name="availableProjects">
       <map>
         <entry>
@@ -1079,6 +1407,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1489223810600</updated>
+      <workItem from="1495570687026" duration="2782000" />
+      <workItem from="1496330459813" duration="3845000" />
+      <workItem from="1496336227496" duration="10786000" />
     </task>
     <task id="LOCAL-00001" summary="Timer updates">
       <created>1489870948563</created>
@@ -1129,40 +1460,59 @@
       <option name="project" value="LOCAL" />
       <updated>1495314297349</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="renamed vec&lt;n&gt; to Vec&lt;n&gt; n = 2,3,4&#10;lots of error fixing">
+      <created>1495314304189</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1495314304189</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="17413000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
   <component name="ToolWindowManager">
-    <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19191375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15416667" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31702346" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.08232711" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21778975" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20833333" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24770643" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24770643" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2130479" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32925585" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1200,6 +1550,9 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -1235,187 +1588,10 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/Shape2.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="9" column="31" lean-forward="false" selection-start-line="9" selection-start-column="31" selection-end-line="9" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/general/CenteredShape2.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="20" lean-forward="false" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="10" column="63" lean-forward="false" selection-start-line="10" selection-start-column="63" selection-end-line="10" selection-end-column="91" />
-          <folding>
-            <element signature="e#59#99#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="318">
-          <caret line="19" column="46" lean-forward="false" selection-start-line="19" selection-start-column="46" selection-end-line="19" selection-end-column="46" />
-          <folding>
-            <element signature="e#59#99#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Rectangle2.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-          <folding>
-            <element signature="e#59#99#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="11" column="54" lean-forward="false" selection-start-line="11" selection-start-column="54" selection-end-line="11" selection-end-column="82" />
-          <folding>
-            <element signature="e#59#99#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/api/Trees.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1536">
-          <caret line="67" column="8" lean-forward="false" selection-start-line="67" selection-start-column="8" selection-end-line="67" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/api/Types.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="61" column="7" lean-forward="false" selection-start-line="61" selection-start-column="7" selection-end-line="61" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/api/TypeTags.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="190" column="15" lean-forward="true" selection-start-line="190" selection-start-column="15" selection-end-line="190" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/api/Liftables.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="11" column="8" lean-forward="false" selection-start-line="11" selection-start-column="8" selection-end-line="11" selection-end-column="8" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Enclosures.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-506">
-          <caret line="27" column="6" lean-forward="false" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Aliases.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Names.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="32" column="6" lean-forward="false" selection-start-line="32" selection-start-column="6" selection-end-line="32" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Reifiers.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Internals.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-80">
-          <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/ExprUtils.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-620">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Parsers.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/whitebox/Context.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/blackbox/Context.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="43" column="25" lean-forward="false" selection-start-line="43" selection-start-column="25" selection-end-line="43" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-reflect/srcs/scala-reflect-2.11.11-sources.jar!/scala/reflect/macros/Evals.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="369">
-          <caret line="24" column="68" lean-forward="true" selection-start-line="24" selection-start-column="37" selection-end-line="24" selection-end-column="68" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/Implicits.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
           <caret line="8" column="7" lean-forward="false" selection-start-line="8" selection-start-column="7" selection-end-line="8" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1423,7 +1599,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="5" column="7" lean-forward="false" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1431,7 +1606,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="654">
           <caret line="44" column="34" lean-forward="false" selection-start-line="44" selection-start-column="34" selection-end-line="44" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1439,7 +1613,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-320">
           <caret line="259" column="57" lean-forward="false" selection-start-line="259" selection-start-column="57" selection-end-line="259" selection-end-column="57" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1447,7 +1620,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1455,7 +1627,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1463,7 +1634,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="21" column="93" lean-forward="false" selection-start-line="21" selection-start-column="93" selection-end-line="21" selection-end-column="93" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1471,7 +1641,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="5" column="6" lean-forward="false" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1479,7 +1648,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1487,9 +1655,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="540">
           <caret line="27" column="37" lean-forward="true" selection-start-line="27" selection-start-column="37" selection-end-line="27" selection-end-column="37" />
-          <folding>
-            <element signature="e#59#99#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1498,16 +1663,8 @@
         <state relative-caret-position="240">
           <caret line="12" column="34" lean-forward="false" selection-start-line="12" selection-start-column="34" selection-end-line="12" selection-end-column="34" />
           <folding>
-            <element signature="e#59#99#0" expanded="true" />
+            <element signature="e#59#99#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="654">
-          <caret line="71" column="42" lean-forward="false" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1515,7 +1672,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="24">
           <caret line="82" column="27" lean-forward="false" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1523,7 +1679,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-200">
           <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1531,23 +1686,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="840">
           <caret line="46" column="27" lean-forward="false" selection-start-line="46" selection-start-column="27" selection-end-line="46" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="9" column="7" lean-forward="false" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec2i.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-140">
-          <caret line="8" column="45" lean-forward="true" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1556,7 +1694,7 @@
         <state relative-caret-position="260">
           <caret line="39" column="33" lean-forward="false" selection-start-line="39" selection-start-column="33" selection-end-line="39" selection-end-column="33" />
           <folding>
-            <element signature="e#59#99#0" expanded="true" />
+            <element signature="e#59#99#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1565,9 +1703,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="460">
           <caret line="23" column="41" lean-forward="false" selection-start-line="23" selection-start-column="41" selection-end-line="23" selection-end-column="41" />
-          <folding>
-            <element signature="e#59#99#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1575,25 +1710,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="24" column="31" lean-forward="false" selection-start-line="24" selection-start-column="31" selection-end-line="24" selection-end-column="31" />
-          <folding>
-            <element signature="e#59#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/build.sbt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1100">
-          <caret line="55" column="3" lean-forward="false" selection-start-line="55" selection-start-column="3" selection-end-line="55" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="920">
-          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1601,71 +1717,282 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="680">
           <caret line="37" column="26" lean-forward="true" selection-start-line="37" selection-start-column="26" selection-end-line="37" selection-end-column="26" />
-          <folding>
-            <element signature="e#59#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="95" column="14" lean-forward="false" selection-start-line="95" selection-start-column="14" selection-end-line="95" selection-end-column="14" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/mat4.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="284">
-          <caret line="276" column="21" lean-forward="true" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
-          <folding>
-            <element signature="e#50#77#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="-10">
+          <caret line="276" column="21" lean-forward="false" selection-start-line="276" selection-start-column="21" selection-end-line="276" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/immutable.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="6" lean-forward="false" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Interval.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/OBB.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-700">
-          <caret line="4" column="64" lean-forward="false" selection-start-line="4" selection-start-column="64" selection-end-line="4" selection-end-column="64" />
-          <folding />
+        <state relative-caret-position="242">
+          <caret line="12" column="22" lean-forward="false" selection-start-line="12" selection-start-column="22" selection-end-line="12" selection-end-column="22" />
+          <folding>
+            <element signature="e#59#99#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/Frustum.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="654">
+          <caret line="71" column="42" lean-forward="false" selection-start-line="71" selection-start-column="42" selection-end-line="71" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/complex/RegularDodecahedron.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-198">
+          <caret line="129" column="44" lean-forward="false" selection-start-line="129" selection-start-column="44" selection-end-line="129" selection-end-column="44" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Triangle.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="10" column="69" lean-forward="true" selection-start-line="10" selection-start-column="69" selection-end-line="10" selection-end-column="97" />
-          <folding>
-            <element signature="e#59#99#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="17" column="0" lean-forward="true" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="250">
+          <caret line="10" column="41" lean-forward="false" selection-start-line="10" selection-start-column="41" selection-end-line="10" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec3.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="18" column="26" lean-forward="false" selection-start-line="18" selection-start-column="26" selection-end-line="18" selection-end-column="26" />
+        <state relative-caret-position="447">
+          <caret line="134" column="7" lean-forward="false" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
           <folding>
-            <marker date="1495314247150" expanded="true" signature="3286:3306" ph="{...}" />
+            <element signature="e#50#91#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec4.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="460">
-          <caret line="26" column="0" lean-forward="true" selection-start-line="26" selection-start-column="0" selection-end-line="26" selection-end-column="0" />
+        <state relative-caret-position="350">
+          <caret line="106" column="7" lean-forward="false" selection-start-line="106" selection-start-column="7" selection-end-line="106" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/AABB.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/package.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="15" column="24" lean-forward="false" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/Vec2.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="250">
+          <caret line="10" column="22" lean-forward="false" selection-start-line="10" selection-start-column="22" selection-end-line="10" selection-end-column="22" />
+          <folding>
+            <element signature="e#51#91#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/linear/vec2i.scala" />
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/CollisionEngine.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="100">
+          <caret line="9" column="7" lean-forward="false" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/geometry/simple/Circle.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="11" column="22" lean-forward="false" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Math.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="359">
+          <caret line="56" column="3" lean-forward="true" selection-start-line="53" selection-start-column="2" selection-end-line="56" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/ComplexOverField.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="674">
+          <caret line="82" column="1" lean-forward="false" selection-start-line="3" selection-start-column="0" selection-end-line="82" selection-end-column="1" />
+          <folding>
+            <element signature="e#51#91#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_macros/src/main/scala-2.11/Russoul/lib/macros/main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1150">
+          <caret line="46" column="0" lean-forward="false" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/mutable.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="6" lean-forward="false" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/Solver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="565">
+          <caret line="37" column="5" lean-forward="false" selection-start-line="30" selection-start-column="2" selection-end-line="37" selection-end-column="5" />
+          <folding>
+            <element signature="e#33#63#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.sbt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="445">
+          <caret line="66" column="5" lean-forward="false" selection-start-line="66" selection-start-column="5" selection-end-line="66" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/dim.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="9" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/annotation/TypeConstraint.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="25" column="6" lean-forward="false" selection-start-line="25" selection-start-column="6" selection-end-line="25" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/annotation/StaticAnnotation.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="17" column="6" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/annotation/meta/param.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="25">
+          <caret line="7" column="27" lean-forward="true" selection-start-line="7" selection-start-column="27" selection-end-line="7" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/lang/unchecked.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="313">
+          <caret line="14" column="3" lean-forward="true" selection-start-line="14" selection-start-column="3" selection-end-line="14" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/package.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="22" column="27" lean-forward="true" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
+          <folding>
+            <element signature="e#22#87#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_test/src/main/scala-2.11/Test.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6899">
+          <caret line="20" column="7" lean-forward="false" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+          <folding>
+            <element signature="e#2#36#0" expanded="true" />
+            <element signature="e#160#201#0" expanded="true" />
+            <element signature="e#22049#22069#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/utils/Arr.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="11" column="9" lean-forward="false" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
+          <folding>
+            <element signature="e#34#72#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Mat.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="796">
+          <caret line="129" column="13" lean-forward="false" selection-start-line="129" selection-start-column="13" selection-end-line="129" selection-end-column="13" />
+          <folding>
+            <element signature="e#51#89#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec_old.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="149" column="14" lean-forward="false" selection-start-line="149" selection-start-column="14" selection-end-line="149" selection-end-column="15" />
+          <folding>
+            <element signature="e#51#92#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/immutable/algebra/Vec.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="121">
+          <caret line="94" column="25" lean-forward="true" selection-start-line="94" selection-start-column="25" selection-end-line="94" selection-end-column="26" />
+          <folding>
+            <element signature="e#51#81#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala-2.11/Russoul/lib/common/math/TypeClasses.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="322" column="55" lean-forward="true" selection-start-line="322" selection-start-column="55" selection-end-line="322" selection-end-column="55" />
+          <folding>
+            <element signature="e#33#63#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

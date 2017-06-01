@@ -2,7 +2,7 @@ package Russoul.lib.common.math
 
 import Russoul.lib.common.math.immutable.geometry.simple._
 import Russoul.lib.common.math.immutable.linear.{Vec2, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 import scala.language.postfixOps
 
@@ -51,7 +51,7 @@ object CollisionEngine
   }
 
 
-  private def checkRayBox(ray:Ray, recs:Vector[Rectangle]):Option[(Float, Rectangle)] =
+  private def checkRayBox(ray:Ray, recs:Arr[Rectangle]):Option[(Float, Rectangle)] =
   {
     var tmin = -1F
     var re:Rectangle = null
@@ -121,7 +121,7 @@ object CollisionEngine
   def checkOBBOBBSeparatingAxisTheorem(checkThis:OBB, checkWith:OBB):Boolean =
   {
 
-    val normals = new Vector[Vec3]
+    val normals = new Arr[Vec3]
 
     val recs = checkThis.genRectangles()
     recs ++= checkWith.genRectangles()
@@ -163,7 +163,7 @@ object CollisionEngine
   def checkOBBAABBSeparatingAxisTheorem(checkThis:OBB, checkWith:AABB):Boolean =
   {
 
-    val normals = Vector[Vec3](16)
+    val normals = Arr[Vec3](16)
 
     val recs = checkThis.genRectangles()
     recs ++= checkWith.genRectangles()
@@ -413,7 +413,7 @@ object CollisionEngine
     * @param box
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  def checkBoxFrustum(box: AABB, planes: Vector[Plane]): Int =
+  def checkBoxFrustum(box: AABB, planes: Arr[Plane]): Int =
   {
 
     val vertices = box.genVertices()
@@ -428,7 +428,7 @@ object CollisionEngine
     * @param box
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  def checkBoxFrustum(box: OBB, planes: Vector[Plane]): Int =
+  def checkBoxFrustum(box: OBB, planes: Arr[Plane]): Int =
   {
 
     val vertices = box.genVertices()
@@ -441,7 +441,7 @@ object CollisionEngine
     * @param vertices
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  private def checkBoxFrustum(vertices: Vector[Vec3], planes: Vector[Plane]): Int =
+  private def checkBoxFrustum(vertices: Arr[Vec3], planes: Arr[Plane]): Int =
   {
 
     var totalIn = 0

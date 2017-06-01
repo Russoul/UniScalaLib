@@ -2,7 +2,7 @@ package Russoul.lib.common.math.immutable.geometry.complex
 
 import Russoul.lib.common.math.immutable.geometry.simple.{Plane, Rectangle, Sphere}
 import Russoul.lib.common.math.immutable.linear.Vec3
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 
 class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Float, val lookingDir: Vec3[Float], val zNear: Float, val zFar: Float, val up: Vec3[Float])
@@ -69,7 +69,7 @@ class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Float, v
     *
     * @return normals face into the frustum, list of planes, point and normal for each
     */
-  def genExtraPlanes(): Vector[Plane[Float]] =
+  def genExtraPlanes(): Arr[Plane[Float]] =
   {
     val n = genNearPlane()
     val f = genFarPlane()
@@ -108,7 +108,7 @@ class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Float, v
     val normalBottom = nb.crossProduct(-rb).normalize()
 
 
-    Vector[Plane[Float]](Plane(nlb, normalLeft), Plane(nrb, normalRight), Plane(frt, normalTop), Plane(flb, normalBottom))
+    Arr[Plane[Float]](Plane(nlb, normalLeft), Plane(nrb, normalRight), Plane(frt, normalTop), Plane(flb, normalBottom))
   }
 }
 

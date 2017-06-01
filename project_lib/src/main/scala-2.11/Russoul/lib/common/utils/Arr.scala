@@ -1,5 +1,6 @@
 package Russoul.lib.common.utils
 
+import Russoul.lib.common.lang.mutable
 import Russoul.lib.common.math.Math
 
 import scala.math.Ordering
@@ -8,7 +9,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 28.01.17.
   */
-class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: ClassTag[T])
+@mutable class Arr[@specialized T](var array:Array[T], var size:Int)(implicit val ct: ClassTag[T])
 {
 
 
@@ -24,7 +25,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
 
   def this()(implicit ct: ClassTag[T]) =
   {
-    this(new Array[T](Vector.DEFAULT_SIZE), 0)
+    this(new Array[T](Arr.DEFAULT_SIZE), 0)
   }
 
   def this(args:T*)(implicit ct: ClassTag[T]) = //exact amount
@@ -58,9 +59,9 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     * return false.
     */
   override def equals(that: Any): Boolean = that match {
-    case b: Vector[_] =>
+    case b: Arr[_] =>
       if (size != b.size || ct != b.ct) return false
-      val buf = b.asInstanceOf[Vector[T]]
+      val buf = b.asInstanceOf[Arr[T]]
       for(i <- 0 until size){
         if(buf.array(i) != array(i)) return false
       }
@@ -117,7 +118,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     }
   }
 
-  def insertionSort(ord:Ordering[T]): Vector[T] =
+  def insertionSort(ord:Ordering[T]): Arr[T] =
   {
     insertionSort(array, 0, size, ord)
     this
@@ -146,7 +147,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
   /**
     * Copy the buffer's contents to a new buffer.
     */
-  final def copy: Vector[T] = new Vector(array.clone, size)
+  final def copy: Arr[T] = new Arr(array.clone, size)
 
   def growIfNecessary(delta: Int): Unit = {
     val goal = size + delta
@@ -248,7 +249,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
   /**
     * This is a synonym for ++.
     */
-  def concat(buf: Vector[T]): Vector[T] = this ++ buf
+  def concat(buf: Arr[T]): Arr[T] = this ++ buf
 
   /**
     * Concatenate two buffers, returning a new buffer.
@@ -259,7 +260,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     * This is an O(n+m) operation, where n and m are the lengths of the
     * input buffers.
     */
-  def ++(buf: Vector[T]): Vector[T] = {
+  def ++(buf: Arr[T]): Arr[T] = {
     val result = this.copy; result ++= buf; result
   }
 
@@ -271,7 +272,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
   /**
     * This is a synonym for extend.
     */
-  def extend(buf: Vector[T]): Unit = this ++= buf
+  def extend(buf: Arr[T]): Unit = this ++= buf
 
   /**
     * This is a synonym for extend.
@@ -290,7 +291,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     *
     * This method is an O(m) operation, where m is the length of buf.
     */
-  def ++=(buf: Vector[T]): Unit = splice(size, buf)
+  def ++=(buf: Arr[T]): Unit = splice(size, buf)
 
   /**
     * Append the values in elems to the end of the buffer.
@@ -334,7 +335,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     * This method is an O(m+n) operation, where m is the length of buf,
     * and n is the length of the buffer.
     */
-  def splice(i: Int, buf: Vector[T]): Unit =
+  def splice(i: Int, buf: Arr[T]): Unit =
     if (i < 0 || i > size) {
       throw new IllegalArgumentException(i.toString)
     } else {
@@ -366,7 +367,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
     * This method is an O(m+n) operation, where m is the length of arr,
     * and n is the lenght of the buffer.
     */
-  def prependAll(buf: Vector[T]): Unit = splice(0, buf)
+  def prependAll(buf: Arr[T]): Unit = splice(0, buf)
 
   /**
     * Remove the element at i, returning the value removed.
@@ -481,7 +482,7 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
 
   def indices() = 0 until size
 
-  def absorb(vec:Vector[T]): Unit =
+  def absorb(vec:Arr[T]): Unit =
   {
     this.array = vec.array
     this.size = vec.size
@@ -489,19 +490,22 @@ class Vector[@specialized T](var array:Array[T], var size:Int)(implicit val ct: 
 
   def clear(): Unit =
   {
-    absorb(Vector.empty[T]())
+    absorb(Arr.empty[T]())
   }
 }
 
-object Vector
+object Arr
 {
   private final val DEFAULT_SIZE = 8
 
   /**
     * Allocate an empty Buffer.
     */
-  def empty[@specialized T: ClassTag](): Vector[T] =
-    ofSize[T](DEFAULT_SIZE)
+  def emptyOptimum[@specialized T: ClassTag](): Arr[T] =
+    ofSizeOptimum[T](DEFAULT_SIZE)
+
+  def empty[@specialized T: ClassTag](): Arr[T] =
+    ofSizeOptimum[T](0)
 
   /**
     * Allocate an empty Buffer, capable of holding n items without
@@ -510,22 +514,25 @@ object Vector
     * This method is useful if you know you'll be adding a large number
     * of elements in advance and you want to save a few resizes.
     */
-  def ofSize[@specialized T: ClassTag](n: Int): Vector[T] =
-    new Vector(new Array[T](Math.nextPowerOfTwo(n)), 0)
+  def ofSizeOptimum[@specialized T: ClassTag](n: Int): Arr[T] =
+    new Arr(new Array[T](Math.nextPowerOfTwo(n)), 0)
 
-  def apply[@specialized T: ClassTag](): Vector[T] =
+  def ofSize[@specialized T: ClassTag](n: Int): Arr[T] =
+    new Arr(new Array[T](n), 0)
+
+  def apply[@specialized T: ClassTag](): Arr[T] =
   {
-    new Vector[T]()
+    new Arr[T]()
   }
 
-  def apply[@specialized T: ClassTag](allocSize:Int): Vector[T] =
+  def apply[@specialized T: ClassTag](allocSize:Int): Arr[T] =
   {
-    new Vector[T](allocSize)
+    new Arr[T](allocSize)
   }
 
-  def apply[@specialized T: ClassTag](args:T*): Vector[T] =
+  def apply[@specialized T: ClassTag](args:T*): Arr[T] =
   {
-    val re = new Vector[T](args.size)
+    val re = new Arr[T](args.size)
 
     for(i <- 0 until args.size){
       re(i) = args(i)

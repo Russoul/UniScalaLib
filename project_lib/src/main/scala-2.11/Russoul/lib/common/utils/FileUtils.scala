@@ -10,7 +10,7 @@ object FileUtils
   {
     val dir = new File(dirToSerialize)
     var ser: String = ""
-    val files = new Vector[File]
+    val files = new Arr[File]
     listOfFilesInDir(dir, files)
     for (i <- files.indices ){
       val n: File = files(i)
@@ -31,7 +31,7 @@ object FileUtils
     * @param paths    output files
     * @param contents output contents of the files,index of a file is equal to an index of its content
     */
-  def decodeSerializedDirectory(s: String, paths: Vector[String], contents: Vector[String]): Unit =
+  def decodeSerializedDirectory(s: String, paths: Arr[String], contents: Arr[String]): Unit =
   {
     val blocks = s.split("@END")
     for (i <- 0 until blocks.length) {
@@ -46,7 +46,7 @@ object FileUtils
 
   }
 
-  def listOfFilesInDir(directory: File, files: Vector[File])
+  def listOfFilesInDir(directory: File, files: Arr[File])
   {
     val fList: Array[File] = directory.listFiles
     if (fList == null) return

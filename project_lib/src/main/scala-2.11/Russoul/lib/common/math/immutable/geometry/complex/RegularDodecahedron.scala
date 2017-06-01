@@ -1,17 +1,18 @@
 package Russoul.lib.common.math.immutable.geometry.complex
 
 import Russoul.lib.common.math.Math
+import Russoul.lib.common.math.TypeClasses.Field
 import Russoul.lib.common.math.immutable.linear.Vec3
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 /**
   * Created by Russoul on 26.07.2016.
   */
-class RegularDodecahedron(val center:Vec3, val right:Vec3, val up:Vec3, val extent:Float)
+class RegularDodecahedron(val center:Vec3[Float], val right:Vec3[Float], val up:Vec3[Float], val extent:Float)(implicit ev: Field[Float])
 {
-  def genVertices():Vector[Vec3] =
+  def genVertices():Arr[Vec3[Float]] =
   {
-    val vs = new Vector[Vec3]()
+    val vs = new Arr[Vec3[Float]]()
 
     val r = right * extent
     val u = up * extent
@@ -67,14 +68,14 @@ class RegularDodecahedron(val center:Vec3, val right:Vec3, val up:Vec3, val exte
     * results a collection containing turples: (center,normal,vertex1,vertex2,vertex3,vertex4,vertex5)
     * normals point outwards the regular dodecahedron
     */
-  def genPentagonals(vertices:Vector[Vec3]):Vector[(Vec3,Vec3,Vec3,Vec3,Vec3,Vec3,Vec3)] = {
+  def genPentagonals(vertices:Arr[Vec3[Float]]) = {
 
     val phi:Float = Math.GOLDEN_RATIO.toFloat
     val phiInv:Float = 1.0F / phi
 
 
 
-    val res = new Vector[(Vec3,Vec3,Vec3,Vec3,Vec3,Vec3,Vec3)]()
+    val res = new Arr[(Vec3[Float],Vec3[Float],Vec3[Float],Vec3[Float],Vec3[Float],Vec3[Float],Vec3[Float])]()
 
     var first:Int = -1
     var second:Int = -1
@@ -117,7 +118,7 @@ class RegularDodecahedron(val center:Vec3, val right:Vec3, val up:Vec3, val exte
     * @param vertices
     */
 
-  def genLength1(vertices:Vector[Vec3]): Float =
+  def genLength1(vertices:Arr[Vec3[Float]]): Float =
   {
     val t1 = (vertices(RegularDodecahedron.indexLines(5)) - vertices(RegularDodecahedron.indexLines(3))) * 0.5F
     val t2 = vertices(RegularDodecahedron.indexLines(3)) - vertices(RegularDodecahedron.indexLines(0))
@@ -126,7 +127,7 @@ class RegularDodecahedron(val center:Vec3, val right:Vec3, val up:Vec3, val exte
     (t2 + t1).length()
   }
 
-  def genLength2(vertices:Vector[Vec3]):Float =
+  def genLength2(vertices:Arr[Vec3[Float]]):Float =
   {
     (vertices(RegularDodecahedron.indexLines(1))-vertices(RegularDodecahedron.indexLines(7))).length()
   }
@@ -148,7 +149,7 @@ class RegularDodecahedron(val center:Vec3, val right:Vec3, val up:Vec3, val exte
 object RegularDodecahedron
 {
   //with duplicates
-  final val indexLines = Vector[Int](
+  final val indexLines = Arr[Int](
     14,2,2,10,10,11,11,3,3,14,
     10,6,6,13,13,7,7,11,11,10, //each line is a pentagon
     2,16,16,17,17,6,6,10,10,2,

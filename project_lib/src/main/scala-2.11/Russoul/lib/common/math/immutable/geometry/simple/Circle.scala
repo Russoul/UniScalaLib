@@ -1,15 +1,15 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.Vec2
 
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class Circle[A](center:Vec2[A], rad:A)(implicit ev : FieldLike[A]) extends CenteredShape2[A]
+@immutable case class Circle[A](center:Vec2[A], rad:A)(implicit ev : Field[A]) extends CenteredShape2[A]
 {
 
   override def translate(v: Vec2[A]): CenteredShape2[A] = {

@@ -1,229 +1,123 @@
 package Russoul.lib.common.math.immutable.algebra
 
-import Russoul.lib.common.lang.NotNothing
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
-
-import scala.reflect.ClassTag
+import Russoul.lib.common.Real
+import Russoul.lib.common.lang.immutable
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.utils.Arr
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 
 /**
-  * Created by russoul on 20.05.17.
+  * Created by russoul on 01.06.2017.
   */
+@immutable case class Vec[F](private val array:Arr[F], var isColumn:Boolean = true)(implicit ev: Field[F]) {
 
-class IncorrectDimException(dim:Dim) extends Exception{
-  override def getMessage: String = "dim: " + dim.n
-}
 
-//TODO compile time scalameta checks of validity (VecDim == arg.length and others like vec(2.dim, ...) + vec(3.dim, ...))
-case class Vec[A <: Dim : NotNothing, @specialized B](dim: A, array:Array[B])(implicit tagA: ClassTag[A], tagB: ClassTag[B], ev: FieldLike[B]){
+  @inline @unchecked def x: F = array(0)
+  @inline @unchecked def y: F = array(1)
+  @inline @unchecked def z: F = array(2)
+  @inline @unchecked def w: F = array(3)
 
-  //TODO prevent this runtime check if possible ???, but how ?
-  if(dim.n != array.length) throw new IncorrectDimException(dim)
+  @inline def dim():Int = array.size
+  @inline def size():Int = array.size
 
-  @inline def x: B = array(0)
-  @inline def y: B = array(1)
-  @inline def z: B = array(2)
-  @inline def w: B = array(3)
+  @inline def setAsColumn(): Vec[F] = {
+    isColumn = true
+    this
+  }
 
-  /**
-    *
-    * @param index - starts from 1 !
-    * @return
-    */
-  @inline def apply(index: Int): B = {
+  @inline def setAsRow(): Vec[F] = {
+    isColumn = false
+    this
+  }
+
+  @inline @unchecked def apply(index: Int): F = {
     array(index-1)
   }
 
-  @inline def *[C <: Dim : NotNothing](vec: Vec[C,B]): B = {
-    var res:B = ev.zero
-
-    for(i <- array.indices){
-      res += array(i) * vec.array(i)
-    }
-
-    res
-  }
-
-  @inline def ??*[C <: Dim : NotNothing](vec: Vec[C,B]): Boolean = {
-    dim.n == vec.dim.n
-  }
-
-  @inline def *(scalar: B): Vec[A,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
+  @inline def *(scalar: F): Vec[F] = {
+    val ar = new Arr[F](array.size)
+    for(i <- 0 until array.size){
       ar(i) = array(i) * scalar
     }
 
-    new Vec(dim, ar)
+    new Vec(ar)
   }
 
-  @inline def /(scalar: B): Vec[A,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
+  @inline def /(scalar: F): Vec[F] = {
+    val ar = new Arr[F](array.size)
+    for(i <- 0 until array.size){
       ar(i) = array(i) / scalar
     }
 
-    new Vec(dim, ar)
+    new Vec(ar)
   }
 
-  @inline def ⊗[C <: Dim : NotNothing](vec:Vec[C,B]):Vec[Dim,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
-      ar(i) = array(i) * vec.array(i)
+
+  @inline @unchecked def +(that: Vec[F]):Vec[F] = {
+    val ar = new Arr[F](array.size)
+    for(i <- 0 until array.size){
+      ar(i) = this.array(i) + that.array(i)
     }
 
-    new Vec(dim, ar)
+    new Vec(ar)
   }
 
-  @inline def ??⊗[C <: Dim : NotNothing](vec: Vec[C,B]): Boolean = {
-    dim.n == vec.dim.n
-  }
-
-  @inline def +[C <: Dim : NotNothing](vec:Vec[C,B]):Vec[Dim,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
-      ar(i) = array(i) + vec.array(i)
+  @inline @unchecked def -(that: Vec[F]):Vec[F] = {
+    val ar = new Arr[F](array.size)
+    for(i <- 0 until array.size){
+      ar(i) = this.array(i) - that.array(i)
     }
 
-    new Vec(dim, ar)
+    new Vec(ar)
   }
 
-
-  @inline def ??+[C <: Dim : NotNothing](vec: Vec[C,B]): Boolean = {
-    dim.n == vec.dim.n
+  @inline def ??+(that: Vec[F]): Boolean = {
+    this.array.size == that.array.size
   }
 
+  @inline def ??-(that: Vec[F]): Boolean = {
+    this.array.size == that.array.size
+  }
 
-  @inline def -[C <: Dim : NotNothing](vec:Vec[C,B]):Vec[Dim,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
-      ar(i) = array(i) - vec.array(i)
+  @inline @unchecked def unary_-():Vec[F] = {
+    val ar = new Arr[F](array.size)
+    for(i <- 0 until array.size){
+      ar(i) = -this.array(i)
     }
 
-    new Vec(dim, ar)
+    new Vec(ar)
   }
 
-  @inline def ??-[C <: Dim : NotNothing](vec: Vec[C,B]): Boolean = {
-    dim.n == vec.dim.n
+  @inline def ??⨯(that:Mat[F]): Boolean ={
+    if(isColumn) that.rows == 1 else that.rows == dim
   }
 
-  @inline def unary_-(): Vec[A,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
-      ar(i) = -array(i)
+  @inline @unchecked def ⨯(that:Mat[F]): Mat[F] ={
+    val p = that.columns
+
+    if(isColumn){
+      val ar = new Arr[F](dim * p)
+      val res = new Mat[F](dim, p, ar)
+
+      for(i <- 1 to dim){
+        for(j <- 1 to p){
+          res(i)(j) += this(i) * that(1)(j)
+        }
+      }
+
+      res
+    }else{
+      val ar = new Arr[F](1 * p)
+      val res = new Mat[F](1, p, ar)
+
+      for(j <- 1 to p){
+        for(k <- 1 to dim) {
+          res(1)(j) += this(k) * that(k)(j)
+        }
+      }
+
+      res
     }
-
-    new Vec(dim, ar)
   }
-
-  @inline def unary_+(): Vec[A,B] = {
-    val ar = new Array[B](dim.n)
-    for(i <- 0 until dim.n){
-      ar(i) = array(i)
-    }
-
-    new Vec(dim, ar)
-  }
-
-  /**
-    * defined only for vectors of dim 2
-    * @return
-    */
-  @inline def ⟂():Vec[Dim,B] = {
-    Vec(Two, y, -x)
-  }
-
-
-  @inline def ??⟂():Boolean = {
-    dim.n == 2
-  }
-
-  @inline def ?⟂():Option[Vec[Dim,B]] = {
-    if(??⟂()) Some(Vec(Two, y, -x)) else None
-  }
-
-
-  /**
-    * defined only for vectors of dim 3
-    * @return
-    */
-  @inline def ⨯[C <: Dim : NotNothing](v:Vec[C,B]):Vec[Dim,B] = {
-    Vec(dim, y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)
-  }
-
-
-
-  @inline def ??⨯[C <: Dim : NotNothing](v:Vec[C,B]):Boolean = {
-    dim.n == 3 && v.dim.n == 3
-  }
-
-  @inline def ?⨯[C <: Dim : NotNothing](v:Vec[C,B]):Option[Vec[Dim,B]] = {
-    if(??⨯(v)) Some(Vec(dim, y * v.z - z * v.y, z * v.x - x * v.z, x * v.y - y * v.x)) else None
-  }
-
-  @inline def squaredLength():B = {
-    var res:B = ev.one
-
-    for(i <- array.indices){
-      res *= array(i) * array(i)
-    }
-
-    res
-  }
-
-  @inline def length():B = {
-    ev.sqrt(squaredLength())
-  }
-
-  @inline def normalize(): Vec[A,B] = {
-    val ar = new Array[B](dim.n)
-    val len = length()
-    for(i <- 0 until dim.n){
-      ar(i) = array(i) / len
-    }
-
-    new Vec(dim, ar)
-  }
-
-  override def toString(): String = {
-    val bld = new StringBuilder
-
-
-    bld ++= "Vec[" + dim.n + "," + ev.toString() + "]("
-
-    for(a <- array){
-      bld ++= a.toString + "; "
-    }
-
-    bld.delete(bld.length - 2, bld.length)
-    bld += ')'
-
-    bld.result()
-  }
-}
-
-object Vec{
-  def apply[A <: Dim : NotNothing, B](dim:A, seq: B*)(implicit tagA: ClassTag[A], tagB : ClassTag[B], ev: FieldLike[B]): Vec[A,B] = {
-
-    val arr = new Array[B](dim.n)
-
-    for(i <- 0 until dim.n){
-      arr(i) = seq(i)
-    }
-
-    new Vec(dim, arr)
-  }
-
-
-  //EXTRA OPS...........................................................................
-  @inline def ⟂[B : FieldLike](v:Vec[Two, B]):Vec[Two,B] = {
-    Vec(Two, v.y, -v.x)
-  }
-
-
-  @inline def ⨯[B : FieldLike](a:Vec[Three,B], b:Vec[Three,B]):Vec[Three,B] = {
-    Vec(Three, a.y * b.z - a.z * b.y, a.z * b.x - a.x * b.z, a.x * b.y - a.y * b.x)
-  }
-  //....................................................................................
 
 }

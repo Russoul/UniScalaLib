@@ -1,14 +1,14 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.Field
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
-import FieldLike.Implicits._
+import Field.Implicits._
 
-@immutable case class AABB[A](center: Vec3[A], extent: Vec3[A])(implicit ev : FieldLike[A]) extends CenteredShape3[A]
+@immutable case class AABB[A](center: Vec3[A], extent: Vec3[A])(implicit ev : Field[A]) extends CenteredShape3[A]
 {
 
 
@@ -30,9 +30,9 @@ import FieldLike.Implicits._
     new AABB(center, extent * s)
   }
 
-  def genVertices(): Vector[Vec3[A]] =
+  def genVertices(): Arr[Vec3[A]] =
   {
-    val a = Vector[Vec3[A]](8)
+    val a = Arr[Vec3[A]](8)
 
     val sx = extent.x
     val sy = extent.y
@@ -54,10 +54,10 @@ import FieldLike.Implicits._
     *
     *
     */
-  def genRectangles(): Vector[Rectangle[A]] =
+  def genRectangles(): Arr[Rectangle[A]] =
   {
 
-    val a = Vector[Rectangle[A]](6)
+    val a = Arr[Rectangle[A]](6)
 
     val sx = extent.x
     val sy = extent.y
@@ -83,9 +83,9 @@ import FieldLike.Implicits._
 
 object AABB
 {
-  def genFromMinMax[A : FieldLike](min:Vec3[A], max:Vec3[A]):AABB[A] =
+  def genFromMinMax[A : Field](min:Vec3[A], max:Vec3[A]):AABB[A] =
   {
-    val extent = (max-min) * implicitly[FieldLike[A]].fromDouble(0.5D)
+    val extent = (max-min) * implicitly[Field[A]].fromDouble(0.5D)
     val center = min + extent
 
     new AABB(center,extent)

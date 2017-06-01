@@ -3,8 +3,8 @@ package Russoul.lib.common.math.immutable.linear
 import java.nio.{ByteBuffer, FloatBuffer}
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.{Field, Euclidean}
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 
 import scala.language.implicitConversions
 
@@ -16,7 +16,7 @@ import scala.language.implicitConversions
 
 
 
-@immutable case class Vec3[A](array:Array[A])(implicit ev: FieldLike[A]) {
+@immutable case class Vec3[A](array:Array[A])(implicit ev: Field[A], pow:Euclidean[A]) {
 
   @inline def x: A = array(0)
 
@@ -132,7 +132,7 @@ import scala.language.implicitConversions
 
   @inline def length(): A = {
     val r = x * x + y * y + z * z
-    ev.sqrt(r)
+    pow.sqrt(r)
   }
 
   @inline def squareLength(): A = {
@@ -175,8 +175,8 @@ import scala.language.implicitConversions
 
 
 object Vec3 {
-  def apply[A : FieldLike](x: A, y: A, z: A) = new Vec3(x,y,z)
-  def apply[A : FieldLike](v2:Vec2[A], z:A) = new Vec3(v2.x, v2.y, z)
+  def apply[A : Field](x: A, y: A, z: A) = new Vec3(x,y,z)
+  def apply[A : Field](v2:Vec2[A], z:A) = new Vec3(v2.x, v2.y, z)
 }
 
 

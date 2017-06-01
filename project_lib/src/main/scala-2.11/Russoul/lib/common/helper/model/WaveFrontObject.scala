@@ -1,18 +1,18 @@
 package Russoul.lib.common.helper.model
 
 import Russoul.lib.common.math.immutable.linear.{mat4, Vec2, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 
 class WaveFrontObject(name: String)
 {
-  private val vertexList = new Vector[Vec3[Float]]()
-  private val normalList = new Vector[Vec3[Float]]()
-  private val textureList = new Vector[Vec2[Float]]()
+  private val vertexList = new Arr[Vec3[Float]]()
+  private val normalList = new Arr[Vec3[Float]]()
+  private val textureList = new Arr[Vec2[Float]]()
 
-  private val vertexIndicesTriangleList = new Vector[Int]()
-  private val texCoordsIndicesTriangleList = new Vector[Int]()
-  private val normalIndicesTriangleList = new Vector[Int]()
+  private val vertexIndicesTriangleList = new Arr[Int]()
+  private val texCoordsIndicesTriangleList = new Arr[Int]()
+  private val normalIndicesTriangleList = new Arr[Int]()
 
   def addVertexNormalIndex(vertexIndex: Int, normalIndex: Int) =
   {

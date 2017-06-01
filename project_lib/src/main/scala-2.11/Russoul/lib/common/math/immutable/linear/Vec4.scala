@@ -1,15 +1,14 @@
 package Russoul.lib.common.math.immutable.linear
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.{Field, Euclidean}
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 /**
   *
   *
   * immutable
   */
-@immutable case class Vec4[@specialized A](array:Array[A])(implicit ev: FieldLike[A]) {
+@immutable case class Vec4[@specialized A](array:Array[A])(implicit ev: Field[A], pow:Euclidean[A]) {
 
   @inline def x: A = array(0)
 
@@ -105,7 +104,7 @@ import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 
 
   @inline def length(): A = {
-    ev.sqrt(squareLength())
+    pow.sqrt(squareLength())
   }
 
   @inline def squareLength(): A = {
@@ -161,7 +160,7 @@ import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 }
 
 object Vec4 {
-  def apply[A : FieldLike](x: A, y: A, z: A, w: A)  = new Vec4(x,y,z,w)
-  def apply[A : FieldLike](v:Vec3[A], w:A): Vec4[A] = new Vec4(v.x, v.y, v.z, w)
+  def apply[A : Field](x: A, y: A, z: A, w: A)  = new Vec4(x,y,z,w)
+  def apply[A : Field](v:Vec3[A], w:A): Vec4[A] = new Vec4(v.x, v.y, v.z, w)
 }
 

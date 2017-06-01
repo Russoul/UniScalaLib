@@ -2,14 +2,13 @@ package Russoul.lib.common.math.immutable.linear
 
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.{Field, Euclidean}
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 /**
   *
   * immutable
   */
-@immutable case class Vec2[@specialized A](array:Array[A])(implicit ev:FieldLike[A]) {
+@immutable case class Vec2[@specialized A](array:Array[A])(implicit ev:Field[A], pow:Euclidean[A]) {
 
 
   @inline def x: A = array(0)
@@ -97,7 +96,7 @@ import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
 
   @inline def length(): A = {
     val r = x * x + y * y
-    ev.sqrt(r)
+    pow.sqrt(r)
   }
 
 

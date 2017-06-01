@@ -1,12 +1,12 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.Field
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.Vec3
 
 
-@immutable case class Ray[A](start: Vec3[A], dir: Vec3[A])(implicit ev: FieldLike[A]) extends Shape3[A]
+@immutable case class Ray[A](start: Vec3[A], dir: Vec3[A])(implicit ev: Field[A]) extends Shape3[A]
 {
 
 
@@ -23,7 +23,7 @@ import Russoul.lib.common.math.immutable.linear.Vec3
 object Ray
 {
 
-  def apply[A](pos: Vec3[A], look: Vec3[A], zNear: A, zFar: A)(implicit ev: FieldLike[A]): Ray[A] =
+  def apply[A](pos: Vec3[A], look: Vec3[A], zNear: A, zFar: A)(implicit ev: Field[A]): Ray[A] =
   {
     new Ray(pos + look * zNear, look)
   }

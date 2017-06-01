@@ -1,11 +1,11 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.Shape3
 import Russoul.lib.common.math.immutable.linear.{mat4, Vec2, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 
 /**
@@ -17,7 +17,7 @@ import Russoul.lib.common.utils.Vector
   *       ||
   * right XX----->
   */
-@immutable case class Rectangle[A : FieldLike](center: Vec3[A], right: Vec3[A], up: Vec3[A]) extends Shape3[A] {
+@immutable case class Rectangle[A : Field](center: Vec3[A], right: Vec3[A], up: Vec3[A]) extends Shape3[A] {
 
 
   override def translate(v: Vec3[A]): Rectangle[A] = {
@@ -32,9 +32,9 @@ import Russoul.lib.common.utils.Vector
 
 
 
-  def genVerticesClockwise(): Vector[Vec3[A]] = Vector[Vec3[A]](center + up - right, center + up + right, center - up + right, center - up - right)
+  def genVerticesClockwise(): Arr[Vec3[A]] = Arr[Vec3[A]](center + up - right, center + up + right, center - up + right, center - up - right)
 
-  def genVertices(): Vector[Vec3[A]] = Vector[Vec3[A]](center - up - right, center - up + right, center + up + right, center + up - right)
+  def genVertices(): Arr[Vec3[A]] = Arr[Vec3[A]](center - up - right, center - up + right, center + up + right, center + up - right)
 
   def scale(right:A, up:A): Rectangle[A] =
   {
@@ -60,7 +60,7 @@ import Russoul.lib.common.utils.Vector
 
 object Rectangle
 {
-  def fromMinMax2DParallelToZ[A](min:Vec2[A], max:Vec2[A], z:A)(implicit ev: FieldLike[A]): Rectangle[A] =
+  def fromMinMax2DParallelToZ[A](min:Vec2[A], max:Vec2[A], z:A)(implicit ev: Field[A]): Rectangle[A] =
   {
     val t = Vec3(max,ev.zero) - Vec3(min,ev.zero)
     new Rectangle(Vec3(min,z) + t*ev.fromDouble(0.5D), Vec3(t.x/ev.fromDouble(2D),ev.zero,ev.zero), Vec3(ev.zero,t.y/ev.fromDouble(2D),ev.zero))

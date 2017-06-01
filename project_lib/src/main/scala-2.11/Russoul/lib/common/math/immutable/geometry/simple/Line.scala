@@ -1,15 +1,15 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class Line[A](start:Vec3[A], end:Vec3[A])(implicit ev: FieldLike[A])  extends Shape3[A]
+@immutable case class Line[A](start:Vec3[A], end:Vec3[A])(implicit ev: Field[A])  extends Shape3[A]
 {
 
 
@@ -29,7 +29,7 @@ import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
 
 object Line
 {
-  def apply[A](pos: Vec3[A], start: A, end: A, yaw: A, pitch: A)(implicit ev: FieldLike[A]): Line[A] = {
+  def apply[A](pos: Vec3[A], start: A, end: A, yaw: A, pitch: A)(implicit ev: Field[A]): Line[A] = {
     val alpha = -yaw
     val t = ev.toRadians(ev.fromDouble(90D) - alpha)
     val cosT = ev.cos(t)

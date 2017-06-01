@@ -1,16 +1,16 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape3
 import Russoul.lib.common.math.immutable.linear.{mat4, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class OBB[A](center:Vec3[A], right:Vec3[A], up:Vec3[A], extentRight:A, extentUp:A, extentLook:A)(implicit ev: FieldLike[A])  extends CenteredShape3[A]
+@immutable case class OBB[A](center:Vec3[A], right:Vec3[A], up:Vec3[A], extentRight:A, extentUp:A, extentLook:A)(implicit ev: Field[A])  extends CenteredShape3[A]
 {
 
   private def this(aabbInWorldSpace :AABB[A])
@@ -82,9 +82,9 @@ import Russoul.lib.common.utils.Vector
     new OBB(center,right * mat,up * mat,extentRight, extentUp, extentLook)
   }
 
-  def genRectangles():Vector[Rectangle[A]] =
+  def genRectangles():Arr[Rectangle[A]] =
   {
-    val out = Vector[Rectangle[A]](6)
+    val out = Arr[Rectangle[A]](6)
 
     val fe = (right ^ up) * extentLook
     val ue = up * extentUp
@@ -107,9 +107,9 @@ import Russoul.lib.common.utils.Vector
     out
   }
 
-  def genVertices():Vector[Vec3[A]] =
+  def genVertices():Arr[Vec3[A]] =
   {
-    val out = Vector[Vec3[A]](8)
+    val out = Arr[Vec3[A]](8)
 
     val fe = (right ^ up)*extentLook
     val ue =  up*extentUp
@@ -128,9 +128,9 @@ import Russoul.lib.common.utils.Vector
     out
   }
 
-  def genVerticesCounterClockwise():Vector[Vec3[A]] =
+  def genVerticesCounterClockwise():Arr[Vec3[A]] =
   {
-    val out = Vector[Vec3[A]](8)
+    val out = Arr[Vec3[A]](8)
 
     val l = (right ^ up)*extentLook
     val u =  up*extentUp
@@ -159,7 +159,7 @@ import Russoul.lib.common.utils.Vector
 
 object OBB
 {
-  def apply[A](aabb: AABB[A])(implicit ev: FieldLike[A]): OBB[A] = new OBB[A](aabb)
+  def apply[A](aabb: AABB[A])(implicit ev: Field[A]): OBB[A] = new OBB[A](aabb)
 
 }
 

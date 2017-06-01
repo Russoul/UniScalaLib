@@ -3,8 +3,8 @@ package Russoul.lib.common.math.immutable.linear
 import java.nio.FloatBuffer
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.utils.Utilities
 
 /**
@@ -12,7 +12,7 @@ import Russoul.lib.common.utils.Utilities
   *
   * immutable
   */
-@immutable case class mat4[A](array: Array[A])(implicit ev: FieldLike[A]) {
+@immutable case class mat4[A](array: Array[A])(implicit ev: Field[A]) {
 
   private def this() {
     this(new Array[A](16))
@@ -200,7 +200,7 @@ import Russoul.lib.common.utils.Utilities
 
 object mat4
 {
-  def apply[A : FieldLike](floats: A*): mat4[A] =
+  def apply[A : Field](floats: A*): mat4[A] =
   {
     new mat4(floats.toSeq)
   }
@@ -262,18 +262,18 @@ object mat4
 
   }
 
-  def matrixROTATIONRad[A](axis: Vec3[A], angleInRadians: A)(implicit ev : FieldLike[A]): mat4[A] =
+  def matrixROTATIONRad[A](axis: Vec3[A], angleInRadians: A)(implicit ev : Field[A]): mat4[A] =
   {
-    import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+    import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 
     val cos = ev.cos(angleInRadians)
     val sin = ev.sin(angleInRadians)
     val x = axis.x * axis.x
     val y = axis.y * axis.y
     val z = axis.z * axis.z
-    mat4(cos + x * x * (1D.toField - cos), x * y * (1D.toField - cos) - z * sin, x * z * (1D.toField - cos) + y * sin, 0D,
-      y * x * (1D.toField - cos) + z * sin, cos + y * y * (1D.toField - cos), y * z * (1D.toField - cos) - x * sin, 0D,
-      z * x * (1D.toField - cos) - y * sin, z * y * (1D.toField - cos) + x * sin, cos + z * z * (1D.toField - cos), 0D,
+    mat4(cos + x * x * (1D.to - cos), x * y * (1D.to - cos) - z * sin, x * z * (1D.to - cos) + y * sin, 0D,
+      y * x * (1D.to - cos) + z * sin, cos + y * y * (1D.to - cos), y * z * (1D.to - cos) - x * sin, 0D,
+      z * x * (1D.to - cos) - y * sin, z * y * (1D.to - cos) + x * sin, cos + z * z * (1D.to - cos), 0D,
       0D, 0D, 0D, 1D)
 
   }

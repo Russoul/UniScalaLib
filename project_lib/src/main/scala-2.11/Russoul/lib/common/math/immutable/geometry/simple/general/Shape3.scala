@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.immutable.geometry.simple.general
 
-import Russoul.lib.common.math.TypeClasses.FieldLike
+import Russoul.lib.common.math.TypeClasses.Field
 import Russoul.lib.common.math.immutable.linear.Vec3
 
 /**

@@ -1,11 +1,11 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.{Vec2, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 /**
   * Created by russoul on 22.04.17.
@@ -13,7 +13,7 @@ import Russoul.lib.common.utils.Vector
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Square2 [A](center:Vec2[A], extent:A)(implicit ev: FieldLike[A])  extends CenteredShape2[A]{
+@immutable case class Square2 [A](center:Vec2[A], extent:A)(implicit ev: Field[A])  extends CenteredShape2[A]{
 
 
 
@@ -26,7 +26,7 @@ import Russoul.lib.common.utils.Vector
     Square2(center * factor, extent * factor)
   }
 
-  def genVertices(): Vector[Vec2[A]] = Vector(center - Vec2(extent,extent), center + Vec2(extent, -extent), center + Vec2(extent,extent), center + Vec2(-extent, extent))
+  def genVertices(): Arr[Vec2[A]] = Arr(center - Vec2(extent,extent), center + Vec2(extent, -extent), center + Vec2(extent,extent), center + Vec2(-extent, extent))
 
 
   /**

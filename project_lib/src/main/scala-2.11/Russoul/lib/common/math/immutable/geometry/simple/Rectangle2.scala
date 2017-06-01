@@ -1,25 +1,25 @@
 package Russoul.lib.common.math.immutable.geometry.simple
 
 import Russoul.lib.common.lang.immutable
-import Russoul.lib.common.math.TypeClasses.FieldLike
-import Russoul.lib.common.math.TypeClasses.FieldLike.Implicits._
+import Russoul.lib.common.math.TypeClasses.Field
+import Russoul.lib.common.math.TypeClasses.Field.Implicits._
 import Russoul.lib.common.math.immutable.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.math.immutable.linear.{Vec2, Vec3}
-import Russoul.lib.common.utils.Vector
+import Russoul.lib.common.utils.Arr
 
 /**
   * Created by russoul on 11.03.17.
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Rectangle2[A](center:Vec2[A], extent:Vec2[A])(implicit ev : FieldLike[A]) extends CenteredShape2[A]{
+@immutable case class Rectangle2[A](center:Vec2[A], extent:Vec2[A])(implicit ev : Field[A]) extends CenteredShape2[A]{
 
 
   override def translate(v: Vec2[A]): Rectangle2[A] = {
     Rectangle2(center + v, extent)
   }
 
-  def genVertices(): Vector[Vec2[A]] = Vector[Vec2[A]](center - extent, center + Vec2(extent.x, -extent.y), center + extent, center + Vec2(-extent.x, extent.y))
+  def genVertices(): Arr[Vec2[A]] = Arr[Vec2[A]](center - extent, center + Vec2(extent.x, -extent.y), center + extent, center + Vec2(-extent.x, extent.y))
 
   def toRectangleParallelToZ(zLevel:A): Rectangle[A] =
   {
@@ -47,7 +47,7 @@ import Russoul.lib.common.utils.Vector
 
 object Rectangle2
 {
-  def fromMinMax[A](min:Vec2[A], max:Vec2[A])(implicit ev : FieldLike[A]):Rectangle2[A] =
+  def fromMinMax[A](min:Vec2[A], max:Vec2[A])(implicit ev : Field[A]):Rectangle2[A] =
   {
     val t = (max - min)*ev.fromDouble(0.5D)
     Rectangle2(min + t, t)
