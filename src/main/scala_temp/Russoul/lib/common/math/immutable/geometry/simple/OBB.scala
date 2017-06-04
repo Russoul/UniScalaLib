@@ -1,6 +1,6 @@
-package Russoul.lib.common.math.immutable.geometry.simple
+package Russoul.lib.common.math.geometry.simple
 
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3}
+import Russoul.lib.common.math.linear.{mat4, vec3}
 import Russoul.lib.common.utils.vector
 
 /**

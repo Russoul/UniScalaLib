@@ -3,9 +3,9 @@ package Russoul.lib.context.scene.structure
 import Russoul.engine.core.Engine
 import Russoul.lib.common.math.Math._
 import Russoul.lib.common.math.{CollisionEngine, Math}
-import Russoul.lib.common.math.immutable.geometry.complex.RegularDodecahedron
-import Russoul.lib.common.math.immutable.geometry.simple._
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.complex.RegularDodecahedron
+import Russoul.lib.common.math.geometry.simple._
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.{Timer, map, vector}
 import Russoul.lib.context.scene.{CVoxel, PointLight, VOOctree}
 import Russoul.lib.context.utils.SimplexNoise

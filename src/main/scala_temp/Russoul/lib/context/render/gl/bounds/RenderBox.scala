@@ -2,8 +2,8 @@ package Russoul.lib.context.render.gl.bounds
 
 import java.nio.{FloatBuffer, IntBuffer}
 
-import Russoul.lib.common.math.immutable.geometry.simple.{AABB, OBB}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.{AABB, OBB}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 import Russoul.lib.context.render.IRenderer
 import org.lwjgl.opengl.GL15._

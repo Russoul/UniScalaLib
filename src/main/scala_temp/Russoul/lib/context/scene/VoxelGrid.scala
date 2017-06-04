@@ -3,8 +3,8 @@ package Russoul.lib.context.scene
 import java.lang
 
 import Russoul.lib.common.math.CollisionEngine
-import Russoul.lib.common.math.immutable.geometry.simple.{AABB, Ray}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.{AABB, Ray}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 import Russoul.lib.context.scene.structure.{ChunkGrid, World}
 

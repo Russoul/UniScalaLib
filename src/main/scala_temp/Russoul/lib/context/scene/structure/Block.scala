@@ -1,6 +1,6 @@
 package Russoul.lib.context.scene.structure
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.context.scene.{BAOctree, CVoxel}
 
 

@@ -1,10 +1,10 @@
 package Russoul.lib.common.math
 
 import Russoul.lib.common.Real
-import Russoul.lib.common.math.TypeClasses.{ConvertibleFromDouble, Field}
-import Russoul.lib.common.math.TypeClasses.Field.Implicits._
-import Russoul.lib.common.math.immutable.algebra.{Unknown, Vec}
-import Russoul.lib.common.math.immutable.linear.Vec2
+import Russoul.lib.common.TypeClasses.{ConvertibleFromDouble, Field}
+import Russoul.lib.common.TypeClasses.Field.Implicits._
+import Russoul.lib.common.math.algebra.{Unknown, Vec}
+import Russoul.lib.common.math.linear.Vec2
 
 /**
   * Created by russoul on 13.05.17.

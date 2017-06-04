@@ -1,4 +1,4 @@
-package Russoul.lib.common.math.immutable.linear
+package Russoul.lib.common.math.linear
 
 import java.nio.{ByteBuffer, FloatBuffer}
 

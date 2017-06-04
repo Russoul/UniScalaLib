@@ -2,7 +2,7 @@ package Russoul.lib.context.utils.lang.unsafe
 
 import java.nio.{Buffer, FloatBuffer, ByteBuffer}
 
-import Russoul.lib.common.math.immutable.linear.{vec4, vec2, vec3}
+import Russoul.lib.common.math.linear.{vec4, vec2, vec3}
 import jcuda.{NativePointerObject, Pointer}
 import jcuda.driver.CUdeviceptr
 

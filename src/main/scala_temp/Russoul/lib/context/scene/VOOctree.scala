@@ -1,9 +1,9 @@
 package Russoul.lib.context.scene
 
 import Russoul.lib.common.math.CollisionEngine
-import Russoul.lib.common.math.immutable.geometry.complex.Frustum
-import Russoul.lib.common.math.immutable.geometry.simple.{OBB, Plane, Ray, Rectangle}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.complex.Frustum
+import Russoul.lib.common.math.geometry.simple.{OBB, Plane, Ray, Rectangle}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 import Russoul.lib.context.scene.structure.Voxel
 import Russoul.lib.context.scene.structure.sample.{VoxelData, VoxelSample}

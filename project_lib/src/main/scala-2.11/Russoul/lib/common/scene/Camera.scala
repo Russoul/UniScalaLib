@@ -1,8 +1,8 @@
 package Russoul.lib.common.scene
 
-import Russoul.lib.common.math.immutable.geometry.complex.Frustum
-import Russoul.lib.common.math.immutable.geometry.simple.{Ray, Rectangle}
-import Russoul.lib.common.math.immutable.linear.{mat4, Vec3, Vec4}
+import Russoul.lib.common.math.geometry.complex.Frustum
+import Russoul.lib.common.math.geometry.simple.{RayOverES, RectangleOverES}
+import Russoul.lib.common.math.linear.{Mat4, Vec3, Vec4}
 
 
 class Camera private
@@ -26,9 +26,9 @@ class Camera private
   var width = 800F;var height = 600F;var screenX = 0F;var screenY = 0F
 
 
-  var mat_perspective = mat4.matrixIdentity()
-  var mat_orthographic = mat4.matrixIdentity()
-  var mat_view = mat4.matrixIdentity()
+  var mat_perspective = Mat4.matrixIdentity()
+  var mat_orthographic = Mat4.matrixIdentity()
+  var mat_view = Mat4.matrixIdentity()
 
 
 
@@ -43,14 +43,14 @@ class Camera private
     this.screenY = y
   }
 
-  def genLookingRay(): Ray[Float] =
+  def genLookingRay(): RayOverES[Float] =
   {
-    new Ray(pos, look)
+    new RayOverES(pos, look)
   }
 
   def genRight() = look^up
 
-  def genNearPlaneRectangle():Rectangle[Float] =
+  def genNearPlaneRectangle():RectangleOverES[Float] =
   {
     val center = pos + look * zNear
 
@@ -60,7 +60,7 @@ class Camera private
     val ext1v = v1 * (ext1*aspect)
     val ext2v = up * ext1
 
-    new Rectangle(center, ext1v, ext2v)
+    new RectangleOverES(center, ext1v, ext2v)
   }
 
   def updateDimensionsAndAspect(w:Float, h:Float) =
@@ -85,9 +85,9 @@ class Camera private
 
   def updateMatrices(): Unit =
   {
-    mat_perspective = mat4.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
-    mat_orthographic = mat4.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
-    mat_view = mat4.matrixVIEWDir(pos, look, up)
+    mat_perspective = Mat4.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
+    mat_orthographic = Mat4.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
+    mat_view = Mat4.matrixVIEWDir(pos, look, up)
   }
 
   def updateTransformation(droll:Float, dyaw:Float, dpitch:Float, dforward:Float, dright:Float, dup:Float): Unit =
@@ -95,7 +95,7 @@ class Camera private
     val yaw = dyaw/180*Math.PI
     val pitch = dpitch/180*Math.PI
 
-    val upTransform = mat4.matrixROTATION(look, -droll)
+    val upTransform = Mat4.matrixROTATION(look, -droll)
     var newUp = (Vec4(up, 1) * upTransform).normalize().xyz //new base : look, newUp, newRight
     var newRight = (look ^ newUp).normalize()
 

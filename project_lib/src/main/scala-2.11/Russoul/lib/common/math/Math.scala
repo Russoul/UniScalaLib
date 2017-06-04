@@ -1,7 +1,7 @@
 package Russoul.lib.common.math
 
-import Russoul.lib.common.math.immutable.geometry.simple.general.{CenteredShape3, Shape3}
-import Russoul.lib.common.math.immutable.linear.Vec3
+import Russoul.lib.common._
+import Russoul.lib.common.{Real, Real3}
 
 /**
   * Created by Russoul on 20.04.2016.
@@ -9,9 +9,9 @@ import Russoul.lib.common.math.immutable.linear.Vec3
 object Math
 {
 
-  final val PI: Double = 3.14159265358979323846
-  final val EPSILON:Double = 0.0000000000000001
-  final val GOLDEN_RATIO:Double = 1.61803398875
+  final val PI: Real = 3.14159265358979323846
+  final val EPSILON:Real = 0.0000000000000001
+  final val GOLDEN_RATIO:Real = 1.61803398875
 
   def power(value: Int, pow: Int): Int =
   {
@@ -26,7 +26,7 @@ object Math
   }
 
 
-  def roundTo2Power(sub:Float, pow:Int): Float =
+  def roundTo2Power(sub:Real, pow:Int): Int =
   {
     val p1 = power(2,pow-1)
 
@@ -35,7 +35,7 @@ object Math
     ((sub.toInt + d + p1) >> pow)*p1*2
   }
 
-  def roundTo2Power(sub:Vec3, pow:Int): Vec3 =
+  def roundTo2Power(sub:Real3, pow:Int): Real3 =
   {
     val p1 = power(2,pow-1)
 
@@ -43,7 +43,7 @@ object Math
     val d2 = if(sub.y < -p1) -1 else 0
     val d3 = if(sub.z < -p1) -1 else 0
 
-    Vec3(((sub.x.toInt + d1 + p1) >> pow)*p1*2,((sub.y.toInt + d2 + p1) >> pow)*p1*2 ,((sub.z.toInt + d3 + p1) >> pow)*p1*2)
+    Real3(((sub.x.toInt + d1 + p1) >> pow)*p1*2,((sub.y.toInt + d2 + p1) >> pow)*p1*2 ,((sub.z.toInt + d3 + p1) >> pow)*p1*2)
   }
 
   /**
@@ -56,12 +56,12 @@ object Math
     if (x == n) n else x * 2
   }
 
-  /*def nextMultipleOf(n:Float, multipleOf:Float): Float ={
+  /*def nextMultipleOf(n:Real, multipleOf:Real): Real ={
 
 
     if(n == 0) return 0
 
-    def rec(curMult:Float): Float =
+    def rec(curMult:Real): Real =
     {
       if(n <= curMult) curMult
       else{
@@ -73,11 +73,11 @@ object Math
   }*/
 
 
-  implicit class FloatEditions(x:Float)
+  implicit class RealEditions(x:Real)
   {
-    def sq():Float = x*x
-    def squared(): Float = x*x
-    def inv():Float = -x
+    def sq():Real = x*x
+    def squared(): Real = x*x
+    def inv():Real = -x
   }
 
 
@@ -91,13 +91,13 @@ object Math
     * @param val2
     * @return
     */
-  def vertexInterpolation(isoLevel:Float, v1:Vec3, v2:Vec3, val1:Float, val2:Float):Vec3 =
+  def vertexInterpolation(isoLevel:Real, v1:Real3, v2:Real3, val1:Real, val2:Real):Real3 =
   {
-    var min:Float = -1
-    var max:Float = -1
+    var min:Real = -1D
+    var max:Real = -1D
 
-    var minV:Vec3 = null
-    var maxV:Vec3 = null
+    var minV = nil[Real3]
+    var maxV = nil[Real3]
 
     if(val1 >= val2)
     {

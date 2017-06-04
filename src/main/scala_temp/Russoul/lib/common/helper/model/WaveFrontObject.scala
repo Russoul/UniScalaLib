@@ -1,6 +1,6 @@
 package Russoul.lib.common.helper.model
 
-import Russoul.lib.common.math.immutable.linear.{mat4, vec2, vec3}
+import Russoul.lib.common.math.linear.{mat4, vec2, vec3}
 import Russoul.lib.common.utils.vector
 
 

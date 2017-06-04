@@ -1,6 +1,6 @@
 package Russoul.lib.common.math
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.linear.vec3
 
 /**
   * Created by Russoul on 20.04.2016.

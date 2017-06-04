@@ -1,7 +1,7 @@
 package Russoul.lib.context.scene.structure
 
 import Russoul.lib.common.math.Math
-import Russoul.lib.common.math.immutable.geometry.simple.OBB
+import Russoul.lib.common.math.geometry.simple.OBB
 import Russoul.lib.context.scene.structure.sample.VoxelData
 
 import scala.language.postfixOps

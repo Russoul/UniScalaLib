@@ -1,7 +1,7 @@
 package Russoul.lib.context.render.gl.flat
 
-import Russoul.lib.common.math.immutable.geometry.simple.Triangle
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.Triangle
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL30._

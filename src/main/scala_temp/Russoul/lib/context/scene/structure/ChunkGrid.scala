@@ -4,8 +4,8 @@ import java.util.concurrent.Executors
 
 import Russoul.engine.core.Engine
 import Russoul.lib.common.math.CollisionEngine
-import Russoul.lib.common.math.immutable.geometry.simple.{AABB, OBB, Ray}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.{AABB, OBB, Ray}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.context.render.gl.bounds.RenderBox
 import Russoul.lib.context.render.{RenderMarchingCubesGrid, RenderMarchingCubesGridLocked}
 import Russoul.lib.context.scene.{CVoxel, VoxelGrid}

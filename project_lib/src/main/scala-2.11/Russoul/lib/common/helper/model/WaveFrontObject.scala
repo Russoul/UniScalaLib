@@ -1,6 +1,6 @@
 package Russoul.lib.common.helper.model
 
-import Russoul.lib.common.math.immutable.linear.{mat4, Vec2, Vec3}
+import Russoul.lib.common.math.linear.{Mat4, Vec2, Vec3}
 import Russoul.lib.common.utils.Arr
 
 
@@ -46,7 +46,7 @@ class WaveFrontObject(name: String)
 
   def scale(v3: Vec3[Float]): WaveFrontObject =
   {
-    val mat = mat4.matrixSCALE(v3)
+    val mat = Mat4.matrixSCALE(v3)
     for (i <- vertexList.indices) {
       val v = vertexList(i)
       val v1 = v.wZero()

@@ -3,7 +3,7 @@ package Russoul.lib.common.helper.model
 import java.io.{File, FileNotFoundException}
 import java.util.Scanner
 
-import Russoul.lib.common.math.immutable.linear.{vec2, vec3}
+import Russoul.lib.common.math.linear.{vec2, vec3}
 
 import scala.collection.mutable.ArrayBuffer
 

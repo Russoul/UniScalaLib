@@ -1,7 +1,7 @@
-package Russoul.lib.common.math.immutable.geometry.simple
+package Russoul.lib.common.math.geometry.simple
 
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.linear.vec3
 
 
 /**

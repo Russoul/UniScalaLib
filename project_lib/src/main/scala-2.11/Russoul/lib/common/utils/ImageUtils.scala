@@ -5,7 +5,7 @@ import java.io._
 import java.nio.ByteBuffer
 import java.util.regex.{Matcher, Pattern}
 
-import Russoul.lib.common.math.immutable.linear.Vec3
+import Russoul.lib.common.math.linear.Vec3
 
 
 /**

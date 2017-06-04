@@ -1,7 +1,7 @@
 package Russoul.lib.context.render
 
 import Russoul.lib.common.math.Math
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.{ColorUtils, vector}
 import Russoul.lib.context.scene.VoxelGrid
 import Russoul.lib.context.scene.structure.ChunkGrid

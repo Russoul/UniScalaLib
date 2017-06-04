@@ -1,7 +1,7 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.lang.mutable
 import Russoul.lib.common.math.Math
+import Russoul.lib.common.mutable
 
 import scala.math.Ordering
 import scala.reflect.ClassTag

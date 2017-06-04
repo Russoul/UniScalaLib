@@ -1,6 +1,6 @@
 package Russoul.lib.context.scene
 
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.linear.vec3
 
 /**
   * Created by wzlom on 25.08.2016.

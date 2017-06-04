@@ -1,7 +1,7 @@
 package Russoul.lib.common.math
 
-import Russoul.lib.common.math.immutable.geometry.simple._
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple._
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 
 import scala.language.postfixOps

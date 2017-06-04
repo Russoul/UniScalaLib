@@ -4,8 +4,8 @@ import java.util.concurrent.Executors
 
 import Russoul.engine.core.Engine
 import Russoul.lib.common.math.CollisionEngine
-import Russoul.lib.common.math.immutable.geometry.simple.{OBB, Sphere}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.{OBB, Sphere}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.{ColorUtils, Timer, vector}
 import Russoul.lib.context.render.RenderMarchingCubes
 import Russoul.lib.context.render.gl.bounds.RenderBox

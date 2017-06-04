@@ -1,7 +1,7 @@
 package Russoul.lib.context.render.mesh
 
-import Russoul.lib.common.math.immutable.geometry.simple.Sphere
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.Sphere
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.vector
 
 /**

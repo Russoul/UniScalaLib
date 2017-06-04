@@ -1,6 +1,6 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.math.immutable.linear.Vec3
+import Russoul.lib.common.math.linear.Vec3
 
 
 object ColorUtils

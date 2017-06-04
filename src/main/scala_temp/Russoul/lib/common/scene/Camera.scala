@@ -1,8 +1,8 @@
 package Russoul.lib.common.scene
 
-import Russoul.lib.common.math.immutable.geometry.complex.Frustum
-import Russoul.lib.common.math.immutable.geometry.simple.{Ray, Rectangle}
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3, vec4}
+import Russoul.lib.common.math.geometry.complex.Frustum
+import Russoul.lib.common.math.geometry.simple.{Ray, Rectangle}
+import Russoul.lib.common.math.linear.{mat4, vec3, vec4}
 
 
 class Camera private

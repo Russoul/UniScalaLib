@@ -1,8 +1,8 @@
 package Russoul.lib.context.render
 
 import Russoul.lib.common.math.Math
-import Russoul.lib.common.math.immutable.geometry.simple.{AABB, OBB}
-import Russoul.lib.common.math.immutable.linear.vec3
+import Russoul.lib.common.math.geometry.simple.{AABB, OBB}
+import Russoul.lib.common.math.linear.vec3
 import Russoul.lib.common.utils.{ColorUtils, vector}
 import Russoul.lib.context.scene.VOOctree
 import Russoul.lib.context.scene.structure.Voxel

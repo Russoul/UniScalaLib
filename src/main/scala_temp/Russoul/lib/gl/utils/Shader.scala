@@ -3,7 +3,7 @@ package Russoul.lib.gl.utils
 import java.util
 import java.util.HashMap
 
-import Russoul.lib.common.math.immutable.linear.{mat4, vec3, vec4}
+import Russoul.lib.common.math.linear.{mat4, vec3, vec4}
 import org.lwjgl.opengl.GL20._
 
 /**
