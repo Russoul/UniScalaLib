@@ -20,6 +20,8 @@
       <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target" />
       <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target/resolution-cache" />
       <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target/scala-2.10" />
+      <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target/scala-2.11" />
+      <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target/scala-2.12" />
       <excludeFolder url="file://$MODULE_DIR$/../../project_lib/target/streams" />
     </content>
     <orderEntry type="inheritedJdk" />

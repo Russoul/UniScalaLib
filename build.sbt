@@ -1,11 +1,14 @@
+import sbt.Keys.scalaVersion
 
-scalaVersion in ThisBuild := "2.11.11"
-
+scalaVersion := "2.11.11"
+sbtVersion   := "0.13.15"
 
 lazy val commonSettings = Seq(
   organization := "russoul",
   version := "0.1",
-  scalaVersion := "2.11.11"
+
+  scalaVersion := "2.11.11",
+  sbtVersion   := "0.13.15"
 
 )
 
@@ -47,19 +50,20 @@ lazy val macros = (project in file("project_macros")).
   settings(
     commonSettings,
     metaMacroSettings,
-    libraryDependencies += "org.scalameta" %% "scalameta" % "1.7.0",
-    libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
+    //libraryDependencies += "org.scalameta" %% "scalameta" % "1.7.0",
+    //libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     name := "macros" //sbt lib/run
     // other settings
     //libraryDependencies += "org.typelevel" %% "spire" % "0.14.1"
 
-  ).dependsOn(lib)
+  )//.dependsOn(lib)
 
 lazy val test = (project in file("project_test")).
   settings(
     commonSettings,
     metaMacroSettings,
 
+    //scalacOptions ++= Seq("-print"),
     name := "test" //sbt lib/run
     // other settings
 
