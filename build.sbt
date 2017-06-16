@@ -1,14 +1,23 @@
 import sbt.Keys.scalaVersion
 
-scalaVersion := "2.11.11"
-sbtVersion   := "0.13.15"
+scalaVersion in Scope.GlobalScope := "2.11.11"
+sbtVersion in Scope.GlobalScope  := "0.13.15"
+libraryDependencies in GlobalScope += "org.scala-lang" % "scala-reflect" % "2.11.11"
 
 lazy val commonSettings = Seq(
   organization := "russoul",
   version := "0.1",
 
-  scalaVersion := "2.11.11",
-  sbtVersion   := "0.13.15"
+  scalacOptions in Runtime ++= Seq("-optimise", "-Yclosure-elim", "-Yinline", "-Xdisable-assertions"),//optimizations
+  scalacOptions in Runtime += "-Xplugin-require:scalaxy-streams",
+  scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams")),
+  scalacOptions in Test += "-Xplugin-disable:scalaxy-streams",
+  scalacOptions in Test ~= (_ filterNot (_ == "-Xdisable-assertions")),
+  libraryDependencies += "org.typelevel" %% "spire" % "0.14.1",
+
+  autoCompilerPlugins := true,
+
+  addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
 
 )
 
@@ -42,21 +51,16 @@ lazy val lib = (project in file("project_lib")).
     commonSettings,
     name := "lib" //sbt lib/run
     // other settings
-    //libraryDependencies += "org.typelevel" %% "spire" % "0.14.1"
 
-  )
+  )//.dependsOn(macros)
 
 lazy val macros = (project in file("project_macros")).
   settings(
     commonSettings,
     metaMacroSettings,
-    //libraryDependencies += "org.scalameta" %% "scalameta" % "1.7.0",
-    //libraryDependencies += "org.scala-lang" % "scala-reflect" % scalaVersion.value,
     name := "macros" //sbt lib/run
-    // other settings
-    //libraryDependencies += "org.typelevel" %% "spire" % "0.14.1"
 
-  )//.dependsOn(lib)
+  )
 
 lazy val test = (project in file("project_test")).
   settings(
@@ -68,7 +72,7 @@ lazy val test = (project in file("project_test")).
     // other settings
 
 
-  )//.dependsOn(macros)
+  ).dependsOn(macros)
 
 
 

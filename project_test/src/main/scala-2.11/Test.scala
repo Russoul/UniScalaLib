@@ -1,3 +1,6 @@
+import Russoul.lib.macros.Macros
+
+import scala.collection.immutable
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 import scala.util.Random
@@ -140,3 +143,19 @@ object Test extends App {
 
 
 }*/
+
+
+object Testy extends App{
+
+  trait WithDim{
+    def dim: Int
+  }
+
+  class MyDim(i : Int) extends WithDim{
+    override def dim: Int = i
+  }
+
+  val myDim = new MyDim(3)
+
+  println(Macros.ensureConstant(2))
+}

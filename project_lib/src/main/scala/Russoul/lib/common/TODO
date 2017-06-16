@@ -1,0 +1,12 @@
+Priority:
+    Errors:
+        1)see Mat4 (specialize it !)
+    High:
+        1)write tests
+        2)see if @sp is set in all places needed
+        3)assertions
+        4)//TODO fix Mat.apply calls indexing from 0 but not from 1
+    Medium:
+        1)instantiate typeclass from string at compile time ? or at least at run time
+    Low:
+        1)prob remove all the inline annotations that are unnecessary(are warned by the compiler as they can not be inlined "-Yinline-warnings")
