@@ -39,10 +39,12 @@ object MainTest extends App{
     }
 
     implicit val cont = new Vec2IsContainer2[Float]
-    implicit val contArray = new ArrayIsContainerAny[Float]
+    //implicit val contArray = new ArrayIsContainerAny[Float]
 
     println(sum(Vec2(1F,2F)))
     println(sum(Array(1F,2F)))
+    println(sum(Array(1F,2F)))
+
   }
 
   testAdhocPolymorphism()

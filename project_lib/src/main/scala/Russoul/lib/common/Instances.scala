@@ -2,25 +2,15 @@ package Russoul.lib.common
 
 import Russoul.lib.common.TypeClasses._
 
+import scala.collection.mutable
+import scala.reflect.ClassTag
+
 /**
   * Created by russoul on 13.06.2017.
   */
 object Instances {
 
-  trait AllInstances extends
-  IntInstances with
-  FloatInstances with
-  DoubleInstances with
-  ComplexInstances with
-  Int2Instances with
-  Int3Instances with
-  TurpleDouble3Instances with
-  Double2Instances with
-  Double3Instances with
-  Double4Instances with
-  Float2Instances with
-  Float3Instances with
-  Float4Instances
+
 
   object AllInstances extends AllInstances
 
@@ -77,10 +67,36 @@ object Instances {
   trait Float2Instances{
     implicit val float2CanEuclideanSpace2 = new Float2IsCanonicalEuclideanSpace2OverFloat
   }
-  
-  /*trait VecInstances{
-    implicit val vecCanEuclideanSpace = new VecIsCanonicalEuclideanSpaceOverReal
-  }*/
+
+  trait ArrayInstances{
+
+    private val hashTableArrayInstances = new mutable.HashMap[ClassTag[_], ArrayIsContainerAny[_]]()
+    implicit def arrayIsContainerAny[@specialized T](implicit tag : ClassTag[T]): ArrayIsContainerAny[T] = {
+      if(hashTableArrayInstances.contains(tag)){
+        hashTableArrayInstances(tag).asInstanceOf[ArrayIsContainerAny[T]]
+      }else{
+        val n = new ArrayIsContainerAny[T]
+        hashTableArrayInstances.put(tag, n)
+        n
+      }
+    }
+  }
+
+  trait AllInstances extends
+    IntInstances with
+    FloatInstances with
+    DoubleInstances with
+    ComplexInstances with
+    Int2Instances with
+    Int3Instances with
+    TurpleDouble3Instances with
+    Double2Instances with
+    Double3Instances with
+    Double4Instances with
+    Float2Instances with
+    Float3Instances with
+    Float4Instances with
+    ArrayInstances
   
   
 
