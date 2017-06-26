@@ -1,6 +1,9 @@
 package Russoul.lib.common.utils
 
+//TODO use std scala HashMap instead
+/*
 import scala.reflect.ClassTag
+
 
 
 class KeyNotFoundException(k: String) extends Exception("key %s was not found" format k)
@@ -211,3 +214,4 @@ object Map
     new Map[A,B]()
   }
 }
+*/

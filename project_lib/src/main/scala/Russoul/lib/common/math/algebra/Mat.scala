@@ -11,7 +11,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 01.06.2017.
   */
-@mutable case class Mat[@specialized F : ClassTag](val rows:Int, val columns:Int, val ar: Array[F])(implicit ev: Field[F]) {
+@mutable class Mat[@specialized F : ClassTag](val rows:Int, val columns:Int, val ar: Array[F])(implicit ev: Field[F]) {
 
   //Double definition error
   /*@inline @straight def apply(i:Int)(j:Int): F ={
@@ -156,4 +156,8 @@ import scala.reflect.ClassTag
     re
   }
 
+}
+object Mat{
+  def apply[T: ClassTag : Field](r:Int, c: Int, ar: Array[T]): Mat[T] = new Mat[T](r,c,ar)
+  def apply[T: ClassTag : Field](r:Int, c: Int, ar: T*): Mat[T] = new Mat[T](r,c,ar.toArray[T])
 }

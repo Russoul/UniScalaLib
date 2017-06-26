@@ -1,11 +1,13 @@
 package Russoul.lib.common.utils
 
+import scala.collection.mutable
+
 /**
   * Created by Russoul on 19.07.2016.
   */
 class Timer
 {
-  private val table = new Map[String, Double]()
+  private val table = new mutable.HashMap[String, Double]()
 
 
   def update(key:String): Unit =
@@ -18,7 +20,7 @@ class Timer
     table.get(key).nonEmpty
   }
 
-  def remove(key:String): Boolean =
+  def remove(key:String): Option[Double] =
   {
     table.remove(key)
   }

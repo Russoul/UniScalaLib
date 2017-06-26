@@ -5,12 +5,13 @@ import Russoul.lib.common.TypeClasses.Field
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.Implicits._
 
+import scala.collection.IterableLike
 import scala.reflect.ClassTag
 
 /**
   * Created by russoul on 01.06.2017.
   */
-@immutable case class Vec[@specialized F : ClassTag](private val array:Array[F], var isColumn:Boolean = true)(implicit ev: Field[F]) {
+@immutable class Vec[@specialized F : ClassTag](private val array:Array[F], var isColumn:Boolean = true)(implicit ev: Field[F]){
 
 
   @inline @straight def x: F = array(0)
@@ -20,6 +21,18 @@ import scala.reflect.ClassTag
 
   @inline def dim():Int = array.size
   @inline def size():Int = array.size
+
+  @inline def foreach[U](f: (F => U)): Unit ={
+    array.foreach(f)
+  }
+
+  @inline def filter[U](f: (F => Boolean)): Vec[F] ={
+    new Vec(array.filter(f), isColumn)
+  }
+
+  @inline def min[B >: F]()(implicit ordering : Ordering[B]): F ={
+    array.min(ordering)
+  }
 
   @inline def setAsColumn(): Vec[F] = {
     isColumn = true
@@ -41,7 +54,7 @@ import scala.reflect.ClassTag
       ar(i) = array(i) * scalar
     }
 
-    Vec(ar)
+    new Vec[F](ar)
   }
 
   @inline def /(scalar: F): Vec[F] = {
@@ -50,7 +63,7 @@ import scala.reflect.ClassTag
       ar(i) = array(i) / scalar
     }
 
-    Vec(ar)
+    new Vec[F](ar)
   }
 
 
@@ -62,7 +75,7 @@ import scala.reflect.ClassTag
     }
 
 
-    Vec(ar)
+    new Vec[F](ar)
   }
 
   @inline @straight def -(that: Vec[F]):Vec[F] = {
@@ -72,7 +85,7 @@ import scala.reflect.ClassTag
       ar(i) = this.array(i) - that.array(i)
     }
 
-    Vec(ar)
+    new Vec[F](ar)
   }
 
   @inline def ??+(that: Vec[F]): Boolean = {
@@ -89,7 +102,7 @@ import scala.reflect.ClassTag
       ar(i) = -this.array(i)
     }
 
-    Vec(ar)
+    new Vec[F](ar)
   }
 
   @inline def ??⨯(that:Mat[F]): Boolean ={
@@ -128,5 +141,6 @@ import scala.reflect.ClassTag
 
 }
 object Vec{
-  def apply[F : ClassTag : Field](seq : F*) : Vec[F] = Vec[F](seq.toArray[F])
+  def apply[F : ClassTag : Field](seq : F*) : Vec[F] = new Vec[F](seq.toArray[F])
+  def apply[F : ClassTag : Field](ar: Array[F]) : Vec[F] = new Vec[F](ar.clone())
 }

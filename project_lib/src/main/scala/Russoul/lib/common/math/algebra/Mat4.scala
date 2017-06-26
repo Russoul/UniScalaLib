@@ -11,9 +11,9 @@ import scala.reflect.ClassTag
 /**
   * row vec4 based ! (Directx)
   *
-  * immutable
+  * mutable
   */
-@mutable case class Mat4[A : ClassTag](val array: Array[A])(implicit ev: Field[A]){
+@mutable case class Mat4[A : ClassTag](array: Array[A])(implicit ev: Field[A]){
 
   def this()(implicit ev: Field[A]) {
     this(new Array[A](16))

@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage
 import java.io._
 import java.nio.ByteBuffer
 import java.util.regex.{Matcher, Pattern}
-
+import scala.collection.mutable
 import Russoul.lib.common.Real
 import Russoul.lib.common.math.algebra.Vec3
 
@@ -189,8 +189,8 @@ object ImageUtils
   {
 
     private var glyphCount:Int = _
-    private val glyphs     = new Map[Int, Glyph]()
-    private val glyphNames = new Map[String,Int]()
+    private val glyphs     = new mutable.HashMap[Int, Glyph]()
+    private val glyphNames = new mutable.HashMap[String,Int]()
 
     {
       readAll()
@@ -200,8 +200,8 @@ object ImageUtils
 
     def getGlyph(unicode:Int) = glyphs(unicode)
     def hasGlyph(unicode:Int) = glyphs.contains(unicode)
-    def getAllNames() = glyphNames.keys.copy //this makes glyphNames immutable on caller side (doesn't give the called the actual object but its copy)
-    def getAllCodes() = glyphNames.values.copy
+    def getAllNames(): Iterable[String] = glyphNames.keys //this makes glyphNames immutable on caller side (doesn't give the called the actual object but its copy)
+    def getAllCodes(): Iterable[Int] = glyphNames.values
     def getCode(name:String) = glyphNames(name)
     def hasCode(name:String) = glyphNames.contains(name)
 

@@ -2,10 +2,14 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+        0)remove Vec use Array instead !
         1)write tests
         2)see if @sp is set in all places needed
         3)assertions
         4)//TODO fix Mat.apply calls indexing from 0 but not from 1
+        5)make Vec, Mat and other containers be scala friendly(support native operations or
+         maybe even extend common types)
+        6)remove shitty column field in Vec, use special container or trait to indicate row vectors, column vectors are default
     Medium:
         1)instantiate typeclass from string at compile time ? or at least at run time
     Low:

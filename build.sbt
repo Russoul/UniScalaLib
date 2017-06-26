@@ -13,7 +13,7 @@ lazy val commonSettings = Seq(
   scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams")),
   scalacOptions in Test += "-Xplugin-disable:scalaxy-streams",
   scalacOptions in Test ~= (_ filterNot (_ == "-Xdisable-assertions")),
-  libraryDependencies += "org.typelevel" %% "spire" % "0.14.1",
+  //libraryDependencies += "org.typelevel" %% "spire" % "0.14.1",
 
   autoCompilerPlugins := true,
 

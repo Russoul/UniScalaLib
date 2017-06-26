@@ -1,7 +1,9 @@
 package Russoul.lib.common.math.algebra
 
+import Russoul.lib.common.utils.ImArr
 import Russoul.lib.common.{Real, immutable, straight}
 
+import scala.collection.immutable
 import scala.reflect.ClassTag
 
 
@@ -12,7 +14,7 @@ import scala.reflect.ClassTag
 
 
 
-@immutable @straight case class Vec3[@specialized A : ClassTag](array:Array[A]) {
+@immutable @straight case class Vec3[@specialized A : ClassTag](array:ImArr[A]) {
 
   @inline def x: A = array(0)
 
@@ -22,7 +24,7 @@ import scala.reflect.ClassTag
 
 
   def this(dx:A,dy:A,dz:A){
-    this(Array[A](dx,dy,dz))
+    this(ImArr[A](dx,dy,dz))
   }
 
 
@@ -69,7 +71,4 @@ object Vec3 {
   @inline def apply[@specialized A : ClassTag](v2:Vec2[A], z:A)  = new Vec3[A](v2.x, v2.y, z)
 }
 
-/*case class Vec3OverReal(override val array : Array[Real]) extends Vec3[Real](array){
-
-}*/
 

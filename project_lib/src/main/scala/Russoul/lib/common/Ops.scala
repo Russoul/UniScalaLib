@@ -61,6 +61,32 @@ object Ops {
 
   }
 
+  class Container1Ops[@specialized T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
+    @inline def x: T = ev.x(lhs)
+  }
+  class Container2Ops[@specialized T, Con2](lhs: Con2)(implicit ev: Container2[T,Con2]){
+    //@inline def x: T = ev.x(lhs)
+    @inline def y: T = ev.y(lhs)
+  }
+  class Container3Ops[@specialized T, Con3](lhs: Con3)(implicit ev: Container3[T,Con3]){
+    //@inline def x: T = ev.x(lhs)
+    //@inline def y: T = ev.y(lhs)
+    @inline def z: T = ev.z(lhs)
+  }
+  class Container4Ops[@specialized T, Con4](lhs: Con4)(implicit ev: Container4[T,Con4]){
+    //@inline def x: T = ev.x(lhs)
+    //@inline def y: T = ev.y(lhs)
+    //@inline def z: T = ev.z(lhs)
+    @inline def w: T = ev.w(lhs)
+  }
+  class ContainerAnyOps[@specialized T, Con](lhs: Con)(implicit ev: ContainerAny[T,Con]){
+    /*@inline def x: T = ev.x(lhs)
+    @inline def y: T = ev.y(lhs)
+    @inline def z: T = ev.z(lhs)
+    @inline def w: T = ev.w(lhs)*/
+    @inline def apply(i: Int): T = ev.apply(lhs,i)
+    @inline def size(): Int = ev.size(lhs)
+  }
 
   class VectorSpaceOps[V,@specialized F](lhs: V)(implicit ev: VectorSpaceOverField[V,F]){
     @inline def /(rhs: F) : V = ev.div(lhs, rhs)
@@ -151,6 +177,16 @@ object Ops {
     //implicit def double2ConvertibleFromDouble[A](n: Double)(implicit ev:ConvertibleFromDouble[A]) = ev.fromDouble(n)
   }
 
+  trait ContainerImplicits{
+    implicit def Container1Ops[@specialized T, Con1](x: Con1)(implicit ev : Container1[T,Con1]): Container1Ops[T,Con1] = new Container1Ops[T,Con1](x)
+    implicit def Container2Ops[@specialized T, Con2](x: Con2)(implicit ev : Container2[T,Con2]): Container2Ops[T,Con2] = new Container2Ops[T,Con2](x)
+    implicit def Container3Ops[@specialized T, Con3](x: Con3)(implicit ev : Container3[T,Con3]): Container3Ops[T,Con3] = new Container3Ops[T,Con3](x)
+    implicit def Container4Ops[@specialized T, Con4](x: Con4)(implicit ev : Container4[T,Con4]): Container4Ops[T,Con4] = new Container4Ops[T,Con4](x)
+    implicit def ContainerAnyOps[@specialized T, Con](x: Con)(implicit ev : ContainerAny[T,Con]): ContainerAnyOps[T,Con] = new ContainerAnyOps[T,Con](x)
+  }
+
+  object ContainerImplicits extends ContainerImplicits
+
   trait AllOps extends AddableOpsImplicits with
   OrderableOpsImplicits with
   CommutativeGroupImplicits with
@@ -162,7 +198,8 @@ object Ops {
   CanonicalCrossProductImplicits with
   Canonical2DimCrossProductImplicits with
   Mat4MultImplicits with
-  ConvertibleFromDoubleImplicits
+  ConvertibleFromDoubleImplicits with
+  ContainerImplicits
 
 
 }

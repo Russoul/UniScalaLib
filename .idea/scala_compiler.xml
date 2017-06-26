@@ -16,7 +16,7 @@
         <plugin path="C:\Users\russoul\.ivy2\cache\com.nativelibs4java\scalaxy-streams_2.11\jars\scalaxy-streams_2.11-0.3.4.jar" />
       </plugins>
     </profile>
-    <profile name="SBT 4" modules="macros,test,test">
+    <profile name="SBT 4" modules="test,macros,test">
       <parameters>
         <parameter value="-Xplugin-require:macroparadise" />
       </parameters>

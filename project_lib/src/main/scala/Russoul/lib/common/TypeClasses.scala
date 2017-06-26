@@ -1,12 +1,11 @@
 package Russoul.lib.common
 
-import Russoul.lib.common.math.algebra.{ComplexOver, Mat, Mat4, Vec}
+import Russoul.lib.common.math.algebra._
 import Russoul.lib.common.utils.Arr
 
-import scala.language.implicitConversions
+import scala.language.{higherKinds, implicitConversions}
 import scala.math.Ordering
 import scala.reflect.ClassTag
-
 import Implicits._
 
 /**
@@ -15,6 +14,24 @@ import Implicits._
 object TypeClasses {
 
   class OperationUnsupportedException(str: String) extends Exception(str)
+
+  trait Container1[@specialized T, Con]{
+    def x(con: Con): T
+  }
+  trait Container2[@specialized T, Con] extends Container1[T,Con]{
+    def y(con: Con): T
+  }
+  trait Container3[@specialized T, Con] extends Container2[T,Con]{
+    def z(con: Con): T
+  }
+  trait Container4[@specialized T, Con] extends Container3[T,Con]{
+    def w(con: Con): T
+  }
+
+  trait ContainerAny[@specialized T, Con] extends Container4[T,Con]{
+    def apply(con: Con, i: Int) : T
+    def size(con: Con) : Int
+  }
 
 
   trait Addable[@specialized A] {
@@ -56,6 +73,7 @@ object TypeClasses {
   {
     @inline def sqrt(x:A) : A
     @inline def pow(x: A, y:A): A
+    def cbrt(x: A) : A
   }
 
   //means that its is dim is 1
@@ -112,7 +130,7 @@ object TypeClasses {
   }
 
 
-  trait ElementOps2[@specialized T]{
+ /* trait ElementOps2[@specialized T]{
     @inline def x: T
     @inline def y: T
   }
@@ -128,7 +146,7 @@ object TypeClasses {
     @inline def y: T
     @inline def z: T
     @inline def w: T
-  }
+  }*/
 
 
   //used to better utilise implicits (being more concrete with what the matrix should be)
@@ -324,7 +342,7 @@ object TypeClasses {
     override def sqrt(x: Float): Float = Math.sqrt(x).toFloat
     override def pow(x: Float, y:Float): Float = Math.pow(x,y).toFloat
 
-
+    override def cbrt(x: RealF): RealF = Math.cbrt(x).toFloat
   }
 
 
@@ -378,6 +396,7 @@ object TypeClasses {
     override def sqrt(x: Double): Double = Math.sqrt(x)
     override def pow(x: Double, y:Double): Double = Math.pow(x,y)
 
+    override def cbrt(x: Real): Real = Math.cbrt(x)
   }
 
   trait DoubleIsField extends Field[Double]{
@@ -715,16 +734,8 @@ object TypeClasses {
 
 
     override def multM(v: Real4, m: Mat4[Real]): Real4 = {
-      val res = new Array[Real](4)
 
-      import DoubleIsFullField._
-
-      res(0) = dotProduct(v, m.column(1))
-      res(1) = dotProduct(v, m.column(2))
-      res(2) = dotProduct(v, m.column(3))
-      res(3) = dotProduct(v, m.column(4))
-
-      new Real4(res)
+      Real4(dotProduct(v, m.column(1)), dotProduct(v, m.column(2)), dotProduct(v, m.column(3)), dotProduct(v, m.column(4)))
     }
 
     override def get(v: Real4, i: Int): Real = v(i)
@@ -841,7 +852,7 @@ object TypeClasses {
         i += 1
       }
 
-      Vec(ar)
+      Vec[Real](ar)
     }
 
     override def get(v: Vec[Real], i: Int): Real = v(i)
@@ -860,7 +871,7 @@ object TypeClasses {
         k += 1
       }
 
-      Vec(ar)
+      Vec[Real](ar)
     }
 
     override def x(v: Vec[Real]) = v(1)
@@ -985,15 +996,8 @@ object TypeClasses {
 
 
     override def multM(v: Float4, m: Mat4[Float]): Float4 = {
-      val res = new Array[Float](4)
 
-
-      res(0) = dotProduct(v, m.column(1))
-      res(1) = dotProduct(v, m.column(2))
-      res(2) = dotProduct(v, m.column(3))
-      res(3) = dotProduct(v, m.column(4))
-
-      new Float4(res)
+      Float4(dotProduct(v, m.column(1)), dotProduct(v, m.column(2)), dotProduct(v, m.column(3)), dotProduct(v, m.column(4)))
     }
 
     override def get(v: Float4, i: Int): Float = v(i)
@@ -1074,8 +1078,39 @@ object TypeClasses {
 
   
   
-  
-  
+  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
+    override def x(v: Vec2[T]): T = v.x
 
+    override def y(v: Vec2[T]): T = v.y
+  }
+  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
+    override def x(v: Vec3[T]): T = v.x
+
+    override def y(v: Vec3[T]): T = v.y
+
+    override def z(v: Vec3[T]): T = v.z
+  }
+  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
+    override def x(v: Vec4[T]): T = v.x
+
+    override def y(v: Vec4[T]): T = v.y
+
+    override def z(v: Vec4[T]): T = v.z
+
+    override def w(v: Vec4[T]): T = v.w
+  }
+  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
+    override def x(v: Array[T]): T = v(0)
+
+    override def y(v: Array[T]): T = v(1)
+
+    override def z(v: Array[T]): T = v(2)
+
+    override def w(v: Array[T]): T = v(3)
+
+    override def apply(con: Array[T], i: Int): T = con(i)
+
+    override def size(con: Array[T]): Int = con.size
+  }
 
 }

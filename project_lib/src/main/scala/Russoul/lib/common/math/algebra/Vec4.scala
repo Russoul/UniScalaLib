@@ -1,14 +1,16 @@
 package Russoul.lib.common.math.algebra
 
+import Russoul.lib.common.utils.ImArr
 import Russoul.lib.common.{immutable, straight}
 
+import scala.collection.immutable
 import scala.reflect.ClassTag
 /**
   *
   *
   * immutable
   */
-@immutable @straight case class Vec4[@specialized A : ClassTag](array:Array[A]) {
+@immutable @straight case class Vec4[@specialized A : ClassTag](array:ImArr[A]) {
 
   @inline def x: A = array(0)
 
@@ -20,7 +22,7 @@ import scala.reflect.ClassTag
 
   def this(dx:A, dy:A, dz:A, dw:A)
   {
-    this(Array[A](dx,dy,dz,dw))
+    this(ImArr[A](dx,dy,dz,dw))
   }
 
 
@@ -37,7 +39,6 @@ import scala.reflect.ClassTag
   override def toString(): String = {
     "Vec4( " + x + "; " + y + "; " + z + "; " + w + " )"
   }
-
 
 
 }

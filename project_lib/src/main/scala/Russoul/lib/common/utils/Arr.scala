@@ -8,6 +8,8 @@ import scala.reflect.ClassTag
 
 /**
   * Created by russoul on 28.01.17.
+  *
+  * mutable fast implementation of Vector
   */
 @mutable class Arr[@specialized T](var array:Array[T], var size:Int)(implicit val ct: ClassTag[T])
 {
@@ -491,6 +493,10 @@ import scala.reflect.ClassTag
   def clear(): Unit =
   {
     absorb(Arr.empty[T]())
+  }
+
+  def toImmutable(): ImArr[T] = {
+    new ImArr[T](array.clone())
   }
 }
 
