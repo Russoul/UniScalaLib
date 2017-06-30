@@ -140,6 +140,8 @@ object Ops {
     implicit def infixFieldLikeOps[@specialized A](x: A)(implicit num: Field[A]) = new FieldOps[A](x)
   }
 
+  object FieldImplicits extends FieldImplicits
+
   trait ModuleOverRingImplicits{
     implicit def infixModuleOps[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R]) = new ModuleOps[V,R](x)
   }

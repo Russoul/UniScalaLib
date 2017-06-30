@@ -4,6 +4,11 @@
     <list default="true" id="cb81bc22-8a86-4ac5-a588-5c5888536788" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" afterPath="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -72,55 +77,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="TODO" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TODO">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="8" column="27" lean-forward="false" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ImArr.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ImArr.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="9" column="29" lean-forward="false" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Vec.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="350">
-              <caret line="32" column="16" lean-forward="false" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
-              <folding>
-                <element signature="e#41#94#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Solver.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/Solver.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="557">
-              <caret line="152" column="16" lean-forward="false" selection-start-line="152" selection-start-column="16" selection-end-line="152" selection-end-column="16" />
-              <folding>
-                <element signature="e#33#49#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainTest.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="MainTest.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="546">
-              <caret line="45" column="30" lean-forward="false" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
+            <state relative-caret-position="346">
+              <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
               </folding>
@@ -128,14 +89,52 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Instances.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="550">
+              <caret line="29" column="3" lean-forward="false" selection-start-line="27" selection-start-column="2" selection-end-line="29" selection-end-column="3" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TypeClasses.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="20675">
+              <caret line="834" column="10" lean-forward="false" selection-start-line="834" selection-start-column="10" selection-end-line="834" selection-end-column="10" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Mat4.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Vec3.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="13" column="15" lean-forward="false" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Instances.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="233">
-              <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
-              <folding>
-                <element signature="e#28#67#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="2050">
+              <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -143,28 +142,18 @@
       <file leaf-file-name="Ops.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="685">
-              <caret line="87" column="42" lean-forward="true" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
+            <state relative-caret-position="2825">
+              <caret line="116" column="70" lean-forward="false" selection-start-line="116" selection-start-column="70" selection-end-line="116" selection-end-column="70" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Map.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/Map.scala">
+      <file leaf-file-name="Implicits.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Implicits.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="100">
-              <caret line="4" column="28" lean-forward="false" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Arr.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/Arr.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
-              <caret line="11" column="41" lean-forward="false" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
+            <state relative-caret-position="200">
+              <caret line="8" column="42" lean-forward="false" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
               <folding />
             </state>
           </provider>
@@ -182,7 +171,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>abs</find>
       <find>⨯</find>
       <find>xyz</find>
       <find>get(</find>
@@ -212,6 +200,7 @@
       <find>this(</find>
       <find>Double</find>
       <find>ElementOps3</find>
+      <find>???</find>
     </findStrings>
     <replaceStrings>
       <replace>ev.zero</replace>
@@ -283,7 +272,6 @@
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/scene/Camera.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec_old.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/TriangleOver.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/Square2Over.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/SphereOver.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/RectangleOver.scala" />
@@ -300,10 +288,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/build.sbt" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/Arr.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec2.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec4.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ImageUtils.scala" />
@@ -312,10 +298,13 @@
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ImArr.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TODO" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/Solver.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" />
       </list>
     </option>
   </component>
@@ -445,6 +434,7 @@
     <panes>
       <pane id="PackagesPane" />
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -579,11 +569,10 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../libgdxTest/techopixel" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -1264,7 +1253,12 @@
       <workItem from="1498052511939" duration="661000" />
       <workItem from="1498132145237" duration="2234000" />
       <workItem from="1498214114115" duration="640000" />
-      <workItem from="1498503134455" duration="3856000" />
+      <workItem from="1498503134455" duration="4043000" />
+      <workItem from="1498768179469" duration="781000" />
+      <workItem from="1498808061238" duration="3305000" />
+      <workItem from="1498822422657" duration="7085000" />
+      <workItem from="1498848883955" duration="1903000" />
+      <workItem from="1498856745953" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Timer updates">
       <created>1489870948563</created>
@@ -1350,11 +1344,18 @@
       <option name="project" value="LOCAL" />
       <updated>1498506204454</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="cached instances of evidences">
+      <created>1498507047543</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1498507047543</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="224767000" />
+    <option name="totallyTimeSpent" value="238032000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1367,7 +1368,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1383,15 +1383,14 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18551043" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="SBT Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19538969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="SBT" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1109375" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26234907" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35675082" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13830955" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23385416" sideWeight="0.49615806" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14791666" sideWeight="0.49615806" order="0" side_tool="false" content_ui="combo" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18221734" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09791667" sideWeight="0.50384194" order="2" side_tool="true" content_ui="tabs" />
@@ -1399,6 +1398,7 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19538969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2963776" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -1461,7 +1461,8 @@
     <MESSAGE value="almost compiles" />
     <MESSAGE value="new typeclasses (like canonical euclidean vector space 3) for optimized calculations (no gram or ijk matrices !)" />
     <MESSAGE value="containers" />
-    <option name="LAST_COMMIT_MESSAGE" value="containers" />
+    <MESSAGE value="cached instances of evidences" />
+    <option name="LAST_COMMIT_MESSAGE" value="cached instances of evidences" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1483,12 +1484,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.typelevel/algebra_2.11/srcs/algebra_2.11-0.7.0-sources.jar!/algebra/ring/Field.scala" />
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalanlp/breeze_2.11/srcs/breeze_2.11-0.12-sources.jar!/breeze/numerics/package.scala" />
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalanlp/breeze_2.11/srcs/breeze_2.11-0.12-sources.jar!/breeze/math/Field.scala" />
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalanlp/breeze_2.11/srcs/breeze_2.11-0.12-sources.jar!/breeze/linalg/operators/OpType.scala" />
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalanlp/breeze_2.11/srcs/breeze_2.11-0.12-sources.jar!/breeze/linalg/NumericOps.scala" />
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scalanlp/breeze_2.11/srcs/breeze_2.11-0.12-sources.jar!/breeze/linalg/Tensor.scala" />
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.typelevel/spire_2.11/srcs/spire_2.11-0.14.1-sources.jar!/spire/algebra/CoordinateSpace.scala" />
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.typelevel/spire_2.11/srcs/spire_2.11-0.14.1-sources.jar!/spire/syntax/Ops.scala" />
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.typelevel/spire_2.11/srcs/spire_2.11-0.14.1-sources.jar!/spire/NoImplicit.scala" />
@@ -1526,39 +1521,11 @@
       </provider>
     </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/collection/immutable/Vector.scala" />
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="324" column="42" lean-forward="true" selection-start-line="324" selection-start-column="42" selection-end-line="324" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-800">
-          <caret line="26" column="14" lean-forward="false" selection-start-line="26" selection-start-column="14" selection-end-line="26" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec4.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="350">
-          <caret line="24" column="14" lean-forward="false" selection-start-line="24" selection-start-column="14" selection-end-line="24" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/collection/immutable/Stream.scala" />
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="13" column="15" lean-forward="false" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="15" column="39" lean-forward="false" selection-start-line="15" selection-start-column="39" selection-end-line="15" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -1587,7 +1554,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="600">
           <caret line="24" column="21" lean-forward="false" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1595,9 +1561,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4925">
           <caret line="203" column="23" lean-forward="false" selection-start-line="203" selection-start-column="23" selection-end-line="203" selection-end-column="23" />
-          <folding>
-            <element signature="e#34#69#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1605,7 +1568,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="9" column="29" lean-forward="false" selection-start-line="9" selection-start-column="29" selection-end-line="9" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1613,7 +1575,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="8" column="27" lean-forward="false" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1622,15 +1583,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
           <caret line="14" column="71" lean-forward="false" selection-start-line="14" selection-start-column="71" selection-end-line="14" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/language.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="668">
-          <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1638,7 +1590,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="125">
           <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1646,17 +1597,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1145">
           <caret line="105" column="15" lean-forward="false" selection-start-line="105" selection-start-column="15" selection-end-line="105" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="244">
-          <caret line="1101" column="2" lean-forward="true" selection-start-line="1101" selection-start-column="2" selection-end-line="1101" selection-end-column="2" />
-          <folding>
-            <element signature="e#28#68#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1664,7 +1604,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="4" column="28" lean-forward="false" selection-start-line="4" selection-start-column="28" selection-end-line="4" selection-end-column="28" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1672,15 +1611,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="175">
           <caret line="11" column="41" lean-forward="false" selection-start-line="11" selection-start-column="41" selection-end-line="11" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="685">
-          <caret line="87" column="42" lean-forward="true" selection-start-line="87" selection-start-column="42" selection-end-line="87" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1688,9 +1618,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="557">
           <caret line="152" column="16" lean-forward="false" selection-start-line="152" selection-start-column="16" selection-end-line="152" selection-end-column="16" />
-          <folding>
-            <element signature="e#33#49#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1698,28 +1625,120 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
           <caret line="32" column="16" lean-forward="false" selection-start-line="32" selection-start-column="16" selection-end-line="32" selection-end-column="16" />
-          <folding>
-            <element signature="e#41#94#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/runtime/ScalaNumberProxy.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="546">
-          <caret line="45" column="30" lean-forward="false" selection-start-line="45" selection-start-column="30" selection-end-line="45" selection-end-column="30" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="293">
+          <caret line="55" column="6" lean-forward="false" selection-start-line="55" selection-start-column="6" selection-end-line="55" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/runtime/RichFloat.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="53">
+          <caret line="11" column="67" lean-forward="false" selection-start-line="11" selection-start-column="67" selection-end-line="11" selection-end-column="67" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/Float.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="218">
+          <caret line="18" column="79" lean-forward="true" selection-start-line="18" selection-start-column="79" selection-end-line="18" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/language.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="143">
+          <caret line="133" column="20" lean-forward="false" selection-start-line="133" selection-start-column="20" selection-end-line="133" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_131/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="554" column="19" lean-forward="false" selection-start-line="554" selection-start-column="19" selection-end-line="554" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec4.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="45" column="7" lean-forward="false" selection-start-line="45" selection-start-column="7" selection-end-line="45" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Ops.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2825">
+          <caret line="116" column="70" lean-forward="false" selection-start-line="116" selection-start-column="70" selection-end-line="116" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/CollisionEngine.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="723" column="61" lean-forward="false" selection-start-line="723" selection-start-column="61" selection-end-line="723" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Mat4.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Implicits.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="8" column="42" lean-forward="false" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="233">
-          <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+        <state relative-caret-position="2050">
+          <caret line="85" column="8" lean-forward="false" selection-start-line="85" selection-start-column="8" selection-end-line="85" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec3.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="13" column="15" lean-forward="false" selection-start-line="13" selection-start-column="15" selection-end-line="13" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20675">
+          <caret line="834" column="10" lean-forward="false" selection-start-line="834" selection-start-column="10" selection-end-line="834" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="550">
+          <caret line="29" column="3" lean-forward="false" selection-start-line="27" selection-start-column="2" selection-end-line="29" selection-end-column="3" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="136" column="0" lean-forward="false" selection-start-line="136" selection-start-column="0" selection-end-line="136" selection-end-column="0" />
           <folding>
-            <element signature="e#28#67#0" expanded="true" />
+            <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>

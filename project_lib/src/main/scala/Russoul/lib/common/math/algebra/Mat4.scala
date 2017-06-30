@@ -45,7 +45,7 @@ import scala.reflect.ClassTag
   }
 
 
-  @inline def row(index: Int)(implicit f: Field[A] with Euclidean[A] with Orderable[A]): Vec4[A] = {
+  @inline def row(index: Int): Vec4[A] = {
     val s = (index - 1) * 4
     Vec4(array(s), array(s + 1), array(s + 2), array(s + 3))
   }
@@ -61,7 +61,7 @@ import scala.reflect.ClassTag
     c
   }
 
-  @inline def column(index: Int)(implicit f: Field[A] with Euclidean[A] with Orderable[A]): Vec4[A] = {
+  @inline def column(index: Int): Vec4[A] = {
     val s = index - 1
     Vec4(array(s), array(s + 4), array(s + 8), array(s + 12))
   }

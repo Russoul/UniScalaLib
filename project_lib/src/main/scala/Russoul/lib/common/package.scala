@@ -18,6 +18,18 @@ package object common
 {
 
 
+  //Functional
+
+  //TODO this currently does not work with functions that take implicit parameters, fixed in dotty ?
+  implicit class Pipe1[A,R](a: A){
+    def |>(f: A => R): R = f(a)
+  }
+
+  implicit class Pipe2[A,B,R](a: (A,B)){
+    def ||>(f: (A,B) => R): R = f(a._1,a._2)
+  }
+
+  //............................................
 
   //simple types---------------------------
   //Real is just another name for double, it must not be changed to float or any other similar types
@@ -354,7 +366,7 @@ package object common
     * "@straight" def sum2(a:Array[Int], b:Array[Int]) ={
     *   Array(a(0) + b(0), a(1) + b(1))
     * }
-    * as you see this function does not perform common sense checks like bounds check or check for
+    * as you see this function does not perform common sense checks like bounds check and check for
     * correct size of input arrays (a.size == b.size && a.size == 2)
     *
     * so if object(class, method, ...) is marked "straight" then some sets of input values may lead to undefined behaviour

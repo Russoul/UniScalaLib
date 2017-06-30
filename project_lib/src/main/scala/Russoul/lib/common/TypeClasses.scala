@@ -7,6 +7,7 @@ import scala.language.{higherKinds, implicitConversions}
 import scala.math.Ordering
 import scala.reflect.ClassTag
 import Implicits._
+import Russoul.lib.common.Ops.FieldOps
 
 /**
   * Created by russoul on 18.05.17.
@@ -117,6 +118,8 @@ object TypeClasses {
       * @param b
       * @return by element product
       */
+
+    //TODO Modules in general do not support this operation !
     @inline def timesByElement(a: V, b: V) : V
   }
 
@@ -623,6 +626,333 @@ object TypeClasses {
     def canonicalBasis(dim:Int):Arr[(Double, Double, Double)] = Arr((1D,0,0), (0,1D,0), (0,0,1D))
   }
 
+
+  class VecIsCanonicalEuclideanSpaceOverReal(final val dimensions: Int) extends CanonicalEuclideanSpaceOverField[Vec[Real], Real]{
+
+
+
+    override implicit val scalar: Field[Real] with Trig[Real] with Euclidean[Real] = new DoubleIsFullField
+
+    /**
+      *
+      * @param a will be set as row
+      * @param b will be set as column
+      * @return
+      */
+    override def dotProduct(a: Vec[Real], b: Vec[Real]): Real = {
+
+      var x = 0 : Real
+      var k = 1
+      while(k <= a.size()){
+        x += a(k) * b(k)
+        k += 1
+      }
+
+      x
+    }
+
+    override def plus(a: Vec[Real], b: Vec[Real]): Vec[Real] = a + b
+
+    override def negate(a: Vec[Real]): Vec[Real] = -a
+
+    override def times(a: Vec[Real], k: Real): Vec[Real] = a * k
+
+    override val zero: Vec[Real] = new Vec[Real](new Array[Real](0)) //TODO
+
+    override def create(coordinates: Real*): Vec[Real] = {
+      val ar = new Array[Real](coordinates.size)
+      var i = 0
+      while(i < ar.size){
+        ar(i) = coordinates(i)
+        i += 1
+      }
+
+      Vec[Real](ar)
+    }
+
+    override def get(v: Vec[Real], i: Int): Real = v(i)
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Vec[Real], b: Vec[Real]): Vec[Real] = {
+      val ar = new Array[Real](a.size())
+      var k = 0
+      while(k < ar.length){
+        ar(k) = a(k) * b(k)
+        k += 1
+      }
+
+      Vec[Real](ar)
+    }
+
+    override def x(v: Vec[Real]) = v(1)
+
+    override def y(v: Vec[Real]) = v(2)
+
+    override def z(v: Vec[Real]) = v(3)
+
+    override def w(v: Vec[Real]) = v(4)
+  }
+
+
+  class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T] with CanonicalCrossProductOp[Vec3[T]] with Mat4Mult[Vec3[T],T]{
+
+
+    override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
+
+    override def dotProduct(a: Vec3[T], b: Vec3[T]): T = a.x * b.x + a.y * b.y + a.z * b.z
+
+    override def crossProduct(a: Vec3[T], b: Vec3[T]): Vec3[T] = Vec3(a.y*b.x - b.y*a.z, -a.x*b.z + b.x*a.z, a.x * b.y - b.x * a.y)
+
+    val V4 = new Vec4IsCanonicalEuclideanSpaceOverField[T](field)
+    override def multM(v: Vec3[T], m: Mat4[T]): Vec3[T] = {
+      val v4 = Vec4[T](x(v), y(v), z(v), scalar.zero)
+      Vec3[T](V4.dotProduct(v4, m.column(1)), V4.dotProduct(v4, m.column(2)), V4.dotProduct(v4, m.column(3)))
+    }
+
+    override def dimensions: Int = 3
+
+    override def times(a: Vec3[T], k: T): Vec3[T] = Vec3[T](a.x * k, a.y * k, a.z * k)
+
+    override def create(coordinates: T*): Vec3[T] = Vec3(coordinates(0), coordinates(1), coordinates(2))
+
+    override def get(v: Vec3[T], i: Int): T = v(i)
+
+    override def x(v: Vec3[T]): T = v.x
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Vec3[T], b: Vec3[T]): Vec3[T] = Vec3[T](a.x * b.x, a.y * b.y, a.z * b.z)
+
+    override def zero: Vec3[T] = Vec3(scalar.zero, scalar.zero, scalar.zero)
+
+    override def plus(a: Vec3[T], b: Vec3[T]): Vec3[T] = Vec3[T](a.x + b.x, a.y + b.y, a.z + b.z)
+
+    override def negate(a: Vec3[T]): Vec3[T] = Vec3[T](-a.x, -a.y, -a.z)
+  }
+
+  class Vec4IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec4[T], T] with Mat4Mult[Vec4[T],T]{
+
+
+    override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
+
+    override def dotProduct(a: Vec4[T], b: Vec4[T]): T = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
+
+
+    override def multM(v: Vec4[T], m: Mat4[T]): Vec4[T] = {
+
+      Vec4[T](dotProduct(v, m.column(1)), dotProduct(v, m.column(2)), dotProduct(v, m.column(3)), dotProduct(v, m.column(4)))
+    }
+
+    override def dimensions: Int = 4
+
+    override def times(a: Vec4[T], k: T): Vec4[T] = Vec4[T](a.x * k, a.y * k, a.z * k, a.w * k)
+
+    override def create(coordinates: T*): Vec4[T] = Vec4(coordinates(0), coordinates(1), coordinates(2), coordinates(3))
+
+    override def get(v: Vec4[T], i: Int): T = v(i)
+
+    override def x(v: Vec4[T]): T = v.x
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Vec4[T], b: Vec4[T]): Vec4[T] = Vec4[T](a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w)
+
+    override def zero: Vec4[T] = Vec4(scalar.zero, scalar.zero, scalar.zero, scalar.zero)
+
+    override def plus(a: Vec4[T], b: Vec4[T]): Vec4[T] = Vec4[T](a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w)
+
+    override def negate(a: Vec4[T]): Vec4[T] = Vec4[T](-a.x, -a.y, -a.z, -a.w)
+  }
+
+  class Vec2IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec2[T], T] with Canonical2DimOrthoOp[Vec2[T]]{
+
+
+    override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
+
+    override def dotProduct(a: Vec2[T], b: Vec2[T]): T = a.x * b.x + a.y * b.y
+
+
+    override def ortho(a: Vec2[T]): Vec2[T] = {
+      Vec2[T](-a.y, a.x)
+    }
+
+    override def dimensions: Int = 2
+
+    override def times(a: Vec2[T], k: T): Vec2[T] = Vec2[T](a.x * k, a.y * k)
+
+    override def create(coordinates: T*): Vec2[T] = Vec2(coordinates(0), coordinates(1))
+
+    override def get(v: Vec2[T], i: Int): T = v(i)
+
+    override def x(v: Vec2[T]): T = v.x
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Vec2[T], b: Vec2[T]): Vec2[T] = Vec2[T](a.x * b.x, a.y * b.y)
+
+    override def zero: Vec2[T] = Vec2(scalar.zero, scalar.zero)
+
+    override def plus(a: Vec2[T], b: Vec2[T]): Vec2[T] = Vec2[T](a.x + b.x, a.y + b.y)
+
+    override def negate(a: Vec2[T]): Vec2[T] = Vec2[T](-a.x, -a.y)
+  }
+
+
+
+
+
+
+  
+  class Tuple2IsContainer2[@specialized T] extends Container2[T, (T,T)]{
+    override def x(v: (T,T)): T = v._1
+
+    override def y(v: (T,T)): T = v._2
+  }
+  class Tuple3IsContainer3[@specialized T] extends Container3[T, (T,T,T)]{
+    override def x(v: (T,T,T)): T = v._1
+
+    override def y(v: (T,T,T)): T = v._2
+
+    override def z(v: (T,T,T)): T = v._3
+  }
+  class Tuple4IsContainer4[@specialized T] extends Container4[T, (T,T,T,T)]{
+    override def x(v: (T,T,T,T)): T = v._1
+
+    override def y(v: (T,T,T,T)): T = v._2
+
+    override def z(v: (T,T,T,T)): T = v._3
+
+    override def w(v: (T,T,T,T)): T = v._4
+  }
+  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
+    override def x(v: Vec2[T]): T = v.x
+
+    override def y(v: Vec2[T]): T = v.y
+  }
+  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
+    override def x(v: Vec3[T]): T = v.x
+
+    override def y(v: Vec3[T]): T = v.y
+
+    override def z(v: Vec3[T]): T = v.z
+  }
+  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
+    override def x(v: Vec4[T]): T = v.x
+
+    override def y(v: Vec4[T]): T = v.y
+
+    override def z(v: Vec4[T]): T = v.z
+
+    override def w(v: Vec4[T]): T = v.w
+  }
+  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
+    override def x(v: Array[T]): T = v(0)
+
+    override def y(v: Array[T]): T = v(1)
+
+    override def z(v: Array[T]): T = v(2)
+
+    override def w(v: Array[T]): T = v(3)
+
+    override def apply(con: Array[T], i: Int): T = con(i)
+
+    override def size(con: Array[T]): Int = con.size
+  }
+
+
+
+
+
+
+  /*class Float3IsCanonicalEuclideanSpace3OverFloat extends CanonicalEuclideanSpaceOverField[Float3, Float] with CanonicalCrossProductOp[Float3] with Mat4Mult[Float3,Float]{
+
+
+    override def dimensions: Int = 3
+
+    override implicit val scalar: Field[RealF] with Trig[RealF] with Euclidean[RealF] = new FloatIsFullField
+
+    override def dotProduct(a: Float3, b: Float3): Float = {
+      //TODO dim check ??? must be 3 !
+      a.x * b.x + a.y * b.y + a.z * b.z
+    }
+
+    val envV4 = implicitly[CanonicalEuclideanSpaceOverField[Float4, Float] with Mat4Mult[Float4, Float]]
+    override def multM(v: Float3, mat: Mat4[RealF]): Float3 = {
+
+      val v4 = envV4.create(x(v), y(v), z(v), envV4.scalar.zero)
+      val v4Res = envV4.multM(v4, mat)
+
+      create(envV4.x(v4Res), envV4.y(v4Res), envV4.z(v4Res))
+    }
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return
+      */
+    override def crossProduct(a: Float3, b: Float3): Float3 = {
+
+      Float3(a.y*b.x - b.y*a.z, -a.x*b.z + b.x*a.z, a.x * b.y - b.x * a.y)
+    }
+
+    override def plus(a: Float3, b: Float3): Float3 = {
+      Float3(a.x + b.x, a.y + b.y, a.z + b.z)
+    }
+
+    override def negate(a:Float3): Float3 = {
+      Float3(-a.x, -a.y, -a.z)
+    }
+
+    override def times(a: Float3, k: Float): Float3 = {
+      Float3(a.x * k, a.y * k, a.z * k)
+    }
+
+    override val zero: Float3 = {
+      Float3(0F,0F,0F)
+    }
+
+
+    override def create(coordinates: Float*): Float3 = {
+      Float3(coordinates(0), coordinates(1), coordinates(2))
+    }
+
+
+    override def get(v: Float3, i: Int): Float = v(i)
+
+
+    override def x(v: Float3): Float = v.x
+
+    override def y(v: Float3): Float = v.y
+
+    override def z(v: Float3): Float = v.z
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Float3, b: Float3): Float3 = Float3(a.x * b.x, a.y * b.y, a.z * b.z)
+  }
+
   class Double3IsCanonicalEuclideanSpace3OverDouble extends CanonicalEuclideanSpaceOverField[Real3, Real] with CanonicalCrossProductOp[Real3] with Mat4Mult[Real3, Real]{
 
 
@@ -812,154 +1142,6 @@ object TypeClasses {
   }
 
 
-  class VecIsCanonicalEuclideanSpaceOverReal(final val dimensions: Int) extends CanonicalEuclideanSpaceOverField[Vec[Real], Real]{
-
-
-
-    override implicit val scalar: Field[Real] with Trig[Real] with Euclidean[Real] = new DoubleIsFullField
-
-    /**
-      *
-      * @param a will be set as row
-      * @param b will be set as column
-      * @return
-      */
-    override def dotProduct(a: Vec[Real], b: Vec[Real]): Real = {
-
-      var x = 0 : Real
-      var k = 1
-      while(k <= a.size()){
-        x += a(k) * b(k)
-        k += 1
-      }
-
-      x
-    }
-
-    override def plus(a: Vec[Real], b: Vec[Real]): Vec[Real] = a + b
-
-    override def negate(a: Vec[Real]): Vec[Real] = -a
-
-    override def times(a: Vec[Real], k: Real): Vec[Real] = a * k
-
-    override val zero: Vec[Real] = new Vec[Real](new Array[Real](0)) //TODO
-
-    override def create(coordinates: Real*): Vec[Real] = {
-      val ar = new Array[Real](coordinates.size)
-      var i = 0
-      while(i < ar.size){
-        ar(i) = coordinates(i)
-        i += 1
-      }
-
-      Vec[Real](ar)
-    }
-
-    override def get(v: Vec[Real], i: Int): Real = v(i)
-
-    /**
-      *
-      * @param a
-      * @param b
-      * @return by element product
-      */
-    override def timesByElement(a: Vec[Real], b: Vec[Real]): Vec[Real] = {
-      val ar = new Array[Real](a.size())
-      var k = 0
-      while(k < ar.length){
-        ar(k) = a(k) * b(k)
-        k += 1
-      }
-
-      Vec[Real](ar)
-    }
-
-    override def x(v: Vec[Real]) = v(1)
-
-    override def y(v: Vec[Real]) = v(2)
-
-    override def z(v: Vec[Real]) = v(3)
-
-    override def w(v: Vec[Real]) = v(4)
-  }
-
-
-
-
-  class Float3IsCanonicalEuclideanSpace3OverFloat extends CanonicalEuclideanSpaceOverField[Float3, Float] with CanonicalCrossProductOp[Float3] with Mat4Mult[Float3,Float]{
-
-
-    override def dimensions: Int = 3
-
-    override implicit val scalar: Field[RealF] with Trig[RealF] with Euclidean[RealF] = new FloatIsFullField
-
-    override def dotProduct(a: Float3, b: Float3): Float = {
-      //TODO dim check ??? must be 3 !
-      a.x * b.x + a.y * b.y + a.z * b.z
-    }
-
-    val envV4 = implicitly[CanonicalEuclideanSpaceOverField[Float4, Float] with Mat4Mult[Float4, Float]]
-    override def multM(v: Float3, mat: Mat4[RealF]): Float3 = {
-      
-      val v4 = envV4.create(x(v), y(v), z(v), envV4.scalar.zero)
-      val v4Res = envV4.multM(v4, mat)
-      
-      create(envV4.x(v4Res), envV4.y(v4Res), envV4.z(v4Res))
-    }
-
-    /**
-      *
-      * @param a
-      * @param b
-      * @return
-      */
-    override def crossProduct(a: Float3, b: Float3): Float3 = {
-
-      Float3(a.y*b.x - b.y*a.z, -a.x*b.z + b.x*a.z, a.x * b.y - b.x * a.y)
-    }
-
-    override def plus(a: Float3, b: Float3): Float3 = {
-      Float3(a.x + b.x, a.y + b.y, a.z + b.z)
-    }
-
-    override def negate(a:Float3): Float3 = {
-      Float3(-a.x, -a.y, -a.z)
-    }
-
-    override def times(a: Float3, k: Float): Float3 = {
-      Float3(a.x * k, a.y * k, a.z * k)
-    }
-
-    override val zero: Float3 = {
-      Float3(0F,0F,0F)
-    }
-
-
-    override def create(coordinates: Float*): Float3 = {
-      Float3(coordinates(0), coordinates(1), coordinates(2))
-    }
-
-
-    override def get(v: Float3, i: Int): Float = v(i)
-
-
-    override def x(v: Float3): Float = v.x
-
-    override def y(v: Float3): Float = v.y
-
-    override def z(v: Float3): Float = v.z
-
-    /**
-      *
-      * @param a
-      * @param b
-      * @return by element product
-      */
-    override def timesByElement(a: Float3, b: Float3): Float3 = Float3(a.x * b.x, a.y * b.y, a.z * b.z)
-  }
-
-
-
   class Float4IsCanonicalEuclideanSpace4OverFloat extends CanonicalEuclideanSpaceOverField[Float4, Float] with Mat4Mult[Float4, Float]{
 
 
@@ -1076,41 +1258,6 @@ object TypeClasses {
     override def timesByElement(a: Float2, b: Float2): Float2 = Float2(a.x * b.x, a.y * b.y)
   }
 
-  
-  
-  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
-    override def x(v: Vec2[T]): T = v.x
-
-    override def y(v: Vec2[T]): T = v.y
-  }
-  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
-    override def x(v: Vec3[T]): T = v.x
-
-    override def y(v: Vec3[T]): T = v.y
-
-    override def z(v: Vec3[T]): T = v.z
-  }
-  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
-    override def x(v: Vec4[T]): T = v.x
-
-    override def y(v: Vec4[T]): T = v.y
-
-    override def z(v: Vec4[T]): T = v.z
-
-    override def w(v: Vec4[T]): T = v.w
-  }
-  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
-    override def x(v: Array[T]): T = v(0)
-
-    override def y(v: Array[T]): T = v(1)
-
-    override def z(v: Array[T]): T = v(2)
-
-    override def w(v: Array[T]): T = v(3)
-
-    override def apply(con: Array[T], i: Int): T = con(i)
-
-    override def size(con: Array[T]): Int = con.size
-  }
+  */
 
 }

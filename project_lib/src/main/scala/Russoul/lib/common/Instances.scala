@@ -45,27 +45,27 @@ object Instances {
   }
   
   trait Double3Instances{
-    implicit val double3CanEuclideanSpace3 = new Double3IsCanonicalEuclideanSpace3OverDouble
+    implicit val double3CanEuclideanSpace3 = new Vec3IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
   }
 
   trait Double4Instances{
-    implicit val double4CanEuclideanSpace4 = new Double4IsCanonicalEuclideanSpace4OverDouble
+    implicit val double4CanEuclideanSpace4 = new Vec4IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
   }
 
   trait Double2Instances{
-    implicit val double2CanEuclideanSpace2 = new Double2IsCanonicalEuclideanSpace2OverDouble
+    implicit val double2CanEuclideanSpace2 = new Vec2IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
   }
 
   trait Float3Instances{
-    implicit val float3CanEuclideanSpace3 = new Float3IsCanonicalEuclideanSpace3OverFloat
+    implicit val float3CanEuclideanSpace3 = new Vec3IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
   }
 
   trait Float4Instances{
-    implicit val float4CanEuclideanSpace4 = new Float4IsCanonicalEuclideanSpace4OverFloat
+    implicit val float4CanEuclideanSpace4 = new Vec4IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
   }
 
   trait Float2Instances{
-    implicit val float2CanEuclideanSpace2 = new Float2IsCanonicalEuclideanSpace2OverFloat
+    implicit val float2CanEuclideanSpace2 = new Vec2IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
   }
 
   trait ArrayInstances{
@@ -81,6 +81,7 @@ object Instances {
       }
     }
   }
+
 
   trait AllInstances extends
     IntInstances with
