@@ -128,6 +128,10 @@ package object common
   object Triangle{
     def apply(p1: Real3, p2: Real3, p3: Real3): Triangle = TriangleOver[Real3, Real](p1, p2, p3)
   }
+  type OBB2 = OBB2Over[Real2, Real]
+  object OBB2{
+    def apply(center: Real2, right: Real2, up: Real2, extentRight: Real, extentUp: Real): OBB2 = OBB2Over(center, right, up, extentRight, extentUp)
+  }
 
 
   type AABBD = AABB
@@ -143,6 +147,7 @@ package object common
   type SphereD = Sphere
   type Square2D = Square2
   type TriangleD = Triangle
+  type OBB2D = OBB2
   //--------------------------------------------------------
 
 
@@ -200,6 +205,10 @@ package object common
   type TriangleF = TriangleOver[Float3, Float]
   object TriangleF{
     def apply(p1: Float3, p2: Float3, p3: Float3) = TriangleOver[Float3, Float](p1, p2, p3)
+  }
+  type OBB2F = OBB2Over[Float2, Float]
+  object OBB2F{
+    def apply(center: Float2, right: Float2, up: Float2, extentRight: Float, extentUp: Float): OBB2F = OBB2Over(center, right, up, extentRight, extentUp)
   }
   //--------------------------------------------------------
   

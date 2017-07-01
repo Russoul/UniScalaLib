@@ -443,13 +443,21 @@ import scala.reflect.ClassTag
 
 
 
-  final def contains(key: T): Boolean =
+  final def contains(obj: T): Boolean =
   {
     for(v <- this){
-      if(v == key) return true
+      if(v == obj) return true
     }
 
     false
+  }
+
+  final def find(obj: T) : Option[Int] = {
+    for(i <- indices()){
+      if(this(i) == obj) return Some(i)
+    }
+
+    None
   }
 
   def map(f:Function[T,T]): Unit =

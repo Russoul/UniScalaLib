@@ -352,9 +352,9 @@ object TypeClasses {
   trait FloatIsField extends Field[Float]{
     override def times(x: Float, y: Float): Float = x * y
     override def inv(x: Float): Float = 1/x
-    override val one: Float = 1F
+    override def one: Float = 1F
     override def negate(x: Float): Float = -x
-    override val zero: Float = 0F
+    override def zero: Float = 0F
     override def plus(x: Float, y: Float): Float = x + y
     override def toString: String = {
       "Float"
@@ -405,9 +405,9 @@ object TypeClasses {
   trait DoubleIsField extends Field[Double]{
     override def times(x: Double, y: Double): Double = x * y
     override def inv(x: Double): Double = 1/x
-    override val one: Double = 1D
+    override def one: Double = 1D
     override def negate(x: Double): Double = -x
-    override val zero: Double = 0D
+    override def zero: Double = 0D
     override def plus(x: Double, y: Double): Double = x + y
 
     override def toString: String = {
@@ -433,9 +433,9 @@ object TypeClasses {
 
     override def times(x: ComplexOver[Real], y: ComplexOver[Real]): ComplexOver[Real] = x * y
     override def inv(x: ComplexOver[Real]): ComplexOver[Real] = one / x
-    override val one: ComplexOver[Real] = ComplexOver(1D,0D)
+    override def one: ComplexOver[Real] = ComplexOver(1D,0D)
     override def negate(x: ComplexOver[Real]): ComplexOver[Real] = -x
-    override val zero: ComplexOver[Real] = ComplexOver(0D,0D)
+    override def zero: ComplexOver[Real] = ComplexOver(0D,0D)
     override def plus(x: ComplexOver[Real], y: ComplexOver[Real]): ComplexOver[Real] = x + y
 
   }
@@ -443,9 +443,9 @@ object TypeClasses {
   class Double3IsField extends Field[(Double, Double, Double)]{
     override def times(x: (Double, Double, Double), y: (Double, Double, Double)): (Double, Double, Double) = (x._1 * y._1, x._2 * y._2, x._3 * y._3)
     override def inv(x: (Double, Double, Double)): (Double, Double, Double) = (1/x._1, 1/x._2, 1/x._3)
-    override val one: (Double, Double, Double) = (1D,1D,1D)
+    override def one: (Double, Double, Double) = (1D,1D,1D)
     override def negate(x: (Double, Double, Double)): (Double, Double, Double) = (-x._1, -x._2, -x._3)
-    override val zero: (Double, Double, Double) = (0D,0D,0D)
+    override def zero: (Double, Double, Double) = (0D,0D,0D)
     override def plus(x: (Double, Double, Double), y: (Double, Double, Double)): (Double, Double, Double) = (x._1 + y._1, x._2 + y._2, x._3 + y._3)
 
     override def toString: String = {
@@ -468,7 +468,7 @@ object TypeClasses {
 
     override def times(a: Int2, k: Int): Int2 = Int2(a.x * k, a.y * k)
 
-    override val zero: Int2 = Int2(0,0)
+    override def zero: Int2 = Int2(0,0)
 
     override def create(coordinates: Int*): Int2 = Int2(coordinates(0), coordinates(1))
 
@@ -502,7 +502,7 @@ object TypeClasses {
 
     override def times(a: Int3, k: Int): Int3 = Int3(a.x * k, a.y * k, a.z * k)
 
-    override val zero: Int3 = Int3(0,0,0)
+    override def zero: Int3 = Int3(0,0,0)
 
     override def create(coordinates: Int*): Int3 = Int3(coordinates(0), coordinates(1), coordinates(2))
 
@@ -581,7 +581,7 @@ object TypeClasses {
       (a._1 * k, a._2 * k, a._3 * k)
     }
 
-    override val zero: (Double, Double, Double) = {
+    override def zero: (Double, Double, Double) = {
       (0,0,0)
     }
 
@@ -657,7 +657,7 @@ object TypeClasses {
 
     override def times(a: Vec[Real], k: Real): Vec[Real] = a * k
 
-    override val zero: Vec[Real] = new Vec[Real](new Array[Real](0)) //TODO
+    override def zero: Vec[Real] = new Vec[Real](new Array[Real](0)) //TODO
 
     override def create(coordinates: Real*): Vec[Real] = {
       val ar = new Array[Real](coordinates.size)
@@ -724,6 +724,10 @@ object TypeClasses {
 
     override def x(v: Vec3[T]): T = v.x
 
+    override def y(v: Vec3[T]) = v.y
+
+    override def z(v: Vec3[T]) = v.z
+
     /**
       *
       * @param a
@@ -762,6 +766,14 @@ object TypeClasses {
 
     override def x(v: Vec4[T]): T = v.x
 
+
+
+    override def y(v: Vec4[T]) = v.y
+
+    override def z(v: Vec4[T]) = v.z
+
+    override def w(v: Vec4[T]) = v.w
+
     /**
       *
       * @param a
@@ -798,6 +810,8 @@ object TypeClasses {
     override def get(v: Vec2[T], i: Int): T = v(i)
 
     override def x(v: Vec2[T]): T = v.x
+
+    override def y(v: Vec2[T]) = v.y
 
     /**
       *
@@ -925,7 +939,7 @@ object TypeClasses {
       Float3(a.x * k, a.y * k, a.z * k)
     }
 
-    override val zero: Float3 = {
+    override def zero: Float3 = {
       Float3(0F,0F,0F)
     }
 
@@ -1000,7 +1014,7 @@ object TypeClasses {
       Real3(a.x * k, a.y * k, a.z * k)
     }
 
-    override val zero: Real3 = {
+    override def zero: Real3 = {
       Real3(0D,0D,0D)
     }
 
@@ -1053,7 +1067,7 @@ object TypeClasses {
       Real4(a.x * k, a.y * k, a.z * k, a.w * k)
     }
 
-    override val zero: Real4 = {
+    override def zero: Real4 = {
       Real4(0D,0D,0D,0D)
     }
 
@@ -1116,7 +1130,7 @@ object TypeClasses {
       Real2(a(1) * k, a(2) * k)
     }
 
-    override val zero: Real2 = {
+    override def zero: Real2 = {
       Real2(0D,0D)
     }
 
@@ -1167,7 +1181,7 @@ object TypeClasses {
       Float4(a.x * k, a.y * k, a.z * k, a.w * k)
     }
 
-    override val zero: Float4 = {
+    override def zero: Float4 = {
       Float4(0F,0F,0F,0F)
     }
 
@@ -1233,7 +1247,7 @@ object TypeClasses {
       Float2(a(1) * k, a(2) * k)
     }
 
-    override val zero: Float2 = {
+    override def zero: Float2 = {
       Float2(0F,0F)
     }
 

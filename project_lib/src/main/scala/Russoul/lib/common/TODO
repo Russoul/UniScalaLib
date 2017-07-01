@@ -2,6 +2,7 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+       -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
         0)remove Vec use Array instead !
         1)write tests
         2)see if @sp is set in all places needed

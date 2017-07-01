@@ -1,16 +1,27 @@
 package Russoul.lib.common.utils
 
+import Russoul.lib.common.Float3
 import Russoul.lib.common.TypeClasses.{Euclidean, Field, Orderable}
 import Russoul.lib.common.math.algebra.Vec3
-
 import Russoul.lib.common.Implicits._
 
 
 object ColorUtils
 {
+  //TODO colors start from capital letter ?
+  final val Red = Float3(1F,0F,0F)
+  final val Green = Float3(0F,1F,0F)
+  final val Blue = Float3(0F,0F,1F)
+  final val Yellow = Float3(1F,1F,0F)
+  final val Magenta = Float3(1F,0F,1F)
+  final val Cyan = Float3(0F,1F,1F)
+  final val Black = Float3(0F,0F,0F)
+  final val White = Float3(1F,1F,1F)
+
+
 
   implicit class SmartVec3ToRGB(rgb:Int){
-    def genRGB()(implicit ev : Field[Float] with Euclidean[Float] with Orderable[Float]): Vec3[Float] =
+    def genRGB(): Vec3[Float] =
     {
       val t = 0xFF
 
@@ -45,7 +56,7 @@ object ColorUtils
     re
   }
 
-  def genRGB(rgb: Int)(implicit ev : Field[Float] with Euclidean[Float] with Orderable[Float]): Vec3[Float] =
+  def genRGB(rgb: Int): Vec3[Float] =
   {
     val t = 0xFF
 

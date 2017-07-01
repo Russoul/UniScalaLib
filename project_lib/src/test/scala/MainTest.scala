@@ -104,9 +104,10 @@ object MainTest extends App{
     // (v1 |> f1, v2 |> f2) |> f3
   }
 
-  def testPolynoms: Unit = {
+  def testPolynoms(): Unit = {
     val res1 = Solver.findRealRootsPolynomial3(1D, -3D, 21D, -19D)
     res1.foreach(println)
+
 
     val res2 = Solver.findRealRootsPolynomial4(1D, 3D, 3D, -1D, -6D)
     res2 match {
@@ -116,7 +117,7 @@ object MainTest extends App{
 
   }
 
-  def testNewtonMethod: Unit = {
+  def testNewtonMethod(): Unit = {
     val f = (x: Float) =>  (x+3)*(x+4) //x^2 + 2x - 8
     val dfdx = (x: Float) => 2*x + 2
     val x0 = -2.9F
@@ -147,4 +148,5 @@ object MainTest extends App{
   }
 
   testAdhocPolymorphism()
+  testPolynoms()
 }
