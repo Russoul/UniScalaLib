@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cb81bc22-8a86-4ac5-a588-5c5888536788" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TODO" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TODO" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/Arr.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/Arr.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ColorUtils.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ColorUtils.scala" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" afterPath="$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala" afterPath="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -80,7 +74,7 @@
       <file leaf-file-name="MainTest.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
+            <state relative-caret-position="646">
               <caret line="150" column="2" lean-forward="false" selection-start-line="150" selection-start-column="2" selection-end-line="150" selection-end-column="2" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
@@ -89,12 +83,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="package.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="975">
-              <caret line="226" column="37" lean-forward="false" selection-start-line="226" selection-start-column="36" selection-end-line="226" selection-end-column="37" />
+            <state relative-caret-position="25">
+              <caret line="131" column="9" lean-forward="false" selection-start-line="131" selection-start-column="9" selection-end-line="131" selection-end-column="9" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OBB2Over.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="228">
+              <caret line="25" column="40" lean-forward="false" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+              <folding>
+                <element signature="e#49#128#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -102,18 +108,8 @@
       <file leaf-file-name="Solver.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/Solver.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
+            <state relative-caret-position="2800">
               <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TypeClasses.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="239">
-              <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -124,9 +120,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="375">
               <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-              <folding>
-                <element signature="e#34#66#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -134,9 +128,11 @@
       <file leaf-file-name="Rectangle2Over.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/Rectangle2Over.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="550">
-              <caret line="42" column="3" lean-forward="true" selection-start-line="39" selection-start-column="2" selection-end-line="42" selection-end-column="3" />
-              <folding />
+            <state relative-caret-position="850">
+              <caret line="42" column="3" lean-forward="false" selection-start-line="39" selection-start-column="2" selection-end-line="42" selection-end-column="3" />
+              <folding>
+                <element signature="e#49#88#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -153,7 +149,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>map</find>
       <find>D</find>
       <find>Real</find>
       <find>dot</find>
@@ -183,6 +178,7 @@
       <find>contain</find>
       <find>val one</find>
       <find>val zero</find>
+      <find>normalize</find>
     </findStrings>
     <replaceStrings>
       <replace>Vec_old</replace>
@@ -285,8 +281,8 @@
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/utils/ColorUtils.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2.scala" />
-        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala" />
         <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala" />
+        <option value="$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala" />
       </list>
     </option>
   </component>
@@ -414,7 +410,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -704,6 +699,7 @@
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -1395,7 +1391,8 @@
       <workItem from="1498822422657" duration="7085000" />
       <workItem from="1498848883955" duration="1903000" />
       <workItem from="1498856745953" duration="4000" />
-      <workItem from="1498905255800" duration="5487000" />
+      <workItem from="1498905255800" duration="6705000" />
+      <workItem from="1498920837630" duration="697000" />
     </task>
     <task id="LOCAL-00001" summary="Timer updates">
       <created>1489870948563</created>
@@ -1488,11 +1485,18 @@
       <option name="project" value="LOCAL" />
       <updated>1498507047543</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="fixed some issues in typeclasses + OBB2">
+      <created>1498914719893</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1498914719893</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="243519000" />
+    <option name="totallyTimeSpent" value="245434000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1526,11 +1530,10 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.14160264" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26015368" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.13830955" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21822916" sideWeight="0.49615806" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2203125" sideWeight="0.49615806" order="0" side_tool="false" content_ui="combo" />
       <window_info id="JProfiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18221734" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2963776" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09791667" sideWeight="0.50384194" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1540,6 +1543,7 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.19538969" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Run with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2963776" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug with VisualVM" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1600,7 +1604,8 @@
     <MESSAGE value="new typeclasses (like canonical euclidean vector space 3) for optimized calculations (no gram or ijk matrices !)" />
     <MESSAGE value="containers" />
     <MESSAGE value="cached instances of evidences" />
-    <option name="LAST_COMMIT_MESSAGE" value="cached instances of evidences" />
+    <MESSAGE value="fixed some issues in typeclasses + OBB2" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed some issues in typeclasses + OBB2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1714,13 +1719,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec2.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="125">
-          <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.ivy2/cache/org.scala-lang/scala-library/srcs/scala-library-2.11.11-sources.jar!/scala/collection/SeqLike.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1145">
@@ -1795,9 +1793,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
           <caret line="15" column="25" lean-forward="false" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
-          <folding>
-            <element signature="e#41#80#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1805,7 +1800,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="8" column="42" lean-forward="false" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1827,29 +1821,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/Solver.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/Instances.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="25" column="47" lean-forward="false" selection-start-line="25" selection-start-column="47" selection-end-line="25" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="150" column="2" lean-forward="false" selection-start-line="150" selection-start-column="2" selection-end-line="150" selection-end-column="2" />
-          <folding>
-            <element signature="e#0#23#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1857,7 +1832,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
           <caret line="4" column="80" lean-forward="false" selection-start-line="4" selection-start-column="80" selection-end-line="4" selection-end-column="80" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1873,43 +1847,68 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
           <caret line="18" column="36" lean-forward="false" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding>
-            <element signature="e#34#66#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="499">
-          <caret line="38" column="3" lean-forward="true" selection-start-line="38" selection-start-column="3" selection-end-line="38" selection-end-column="3" />
-          <folding>
-            <element signature="e#49#128#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/Rectangle2Over.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="550">
-          <caret line="42" column="3" lean-forward="true" selection-start-line="39" selection-start-column="2" selection-end-line="42" selection-end-column="3" />
+        <state relative-caret-position="850">
+          <caret line="42" column="3" lean-forward="false" selection-start-line="39" selection-start-column="2" selection-end-line="42" selection-end-column="3" />
+          <folding>
+            <element signature="e#49#88#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/algebra/Vec2.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="9" column="30" lean-forward="false" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/TypeClasses.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="239">
-          <caret line="58" column="8" lean-forward="false" selection-start-line="58" selection-start-column="8" selection-end-line="58" selection-end-column="8" />
+        <state relative-caret-position="379">
+          <caret line="277" column="22" lean-forward="true" selection-start-line="277" selection-start-column="22" selection-end-line="277" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/Solver.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2800">
+          <caret line="120" column="0" lean-forward="false" selection-start-line="120" selection-start-column="0" selection-end-line="120" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/test/scala/MainTest.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="646">
+          <caret line="150" column="2" lean-forward="false" selection-start-line="150" selection-start-column="2" selection-end-line="150" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#23#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/package.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="975">
-          <caret line="226" column="37" lean-forward="false" selection-start-line="226" selection-start-column="36" selection-end-line="226" selection-end-column="37" />
+        <state relative-caret-position="25">
+          <caret line="131" column="9" lean-forward="false" selection-start-line="131" selection-start-column="9" selection-end-line="131" selection-end-column="9" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project_lib/src/main/scala/Russoul/lib/common/math/geometry/simple/OBB2Over.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="25" column="40" lean-forward="false" selection-start-line="25" selection-start-column="40" selection-end-line="25" selection-end-column="40" />
+          <folding>
+            <element signature="e#49#128#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

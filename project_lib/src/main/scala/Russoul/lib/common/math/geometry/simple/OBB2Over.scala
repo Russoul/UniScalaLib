@@ -23,11 +23,11 @@ import scala.reflect.ClassTag
     OBB2Over(center, right, up, extentRight * factor, extentUp * factor)
   }
 
-  override def translate(v: V): Shape2[V, F] = {
+  override def translate(v: V): OBB2Over[V, F] = {
     OBB2Over(center + v, right, up, extentRight, extentUp)
   }
 
-  override def scaleAroundBasis(factor: F): Shape2[V, F] = {
+  override def scaleAroundBasis(factor: F): OBB2Over[V, F] = {
     OBB2Over(center * factor, right, up, extentRight * factor, extentUp * factor)
   }
 
