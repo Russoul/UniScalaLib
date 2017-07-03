@@ -35,6 +35,8 @@ object Utilities
     result.toString()
   }
 
+
+  //TODO code duplication
   def loadAsStringAndClose(stream: InputStream): String =
   {
     val result = new StringBuilder()

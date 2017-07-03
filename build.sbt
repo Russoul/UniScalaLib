@@ -4,6 +4,19 @@ scalaVersion in Scope.GlobalScope := "2.11.11"
 sbtVersion in Scope.GlobalScope  := "0.13.15"
 libraryDependencies in GlobalScope += "org.scala-lang" % "scala-reflect" % "2.11.11"
 
+resolvers ++= Seq(
+  Resolver.sonatypeRepo("releases"),
+  Resolver.sonatypeRepo("snapshots")
+)
+
+libraryDependencies += "org.typelevel" %% "cats" % "0.9.0"
+libraryDependencies += "org.typelevel" %% "kittens" % "1.0.0-M9" //auto typeclass derivation
+libraryDependencies += "org.typelevel" %% "spire" % "0.14.1" //algebra and numeric computing
+
+libraryDependencies ++= Seq(
+  "com.chuusai" %% "shapeless" % "2.3.2"
+)
+
 lazy val commonSettings = Seq(
   organization := "russoul",
   version := "0.1",

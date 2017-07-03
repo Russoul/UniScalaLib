@@ -2,6 +2,10 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+        //TODO watch shapeless videos
+        //TODO make universal matrix and vector classes (probably use arrays for representation of both) + type-checked sizes
+       -3)matrices for 2d transformations
+       -2)TODO Shapeless for statically sized collections and more !!
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
         0)remove Vec use Array instead !
         1)write tests
@@ -12,6 +16,8 @@ Priority:
          maybe even extend common types)
         6)remove shitty column field in Vec, use special container or trait to indicate row vectors, column vectors are default
     Medium:
+       -1)make better renderers (RenderXXX), make them inherit common interface, make them smart, rethink whole idea
+        0)write crossplatform rendering library
         1)instantiate typeclass from string at compile time ? or at least at run time
     Low:
         1)prob remove all the inline annotations that are unnecessary(are warned by the compiler as they can not be inlined "-Yinline-warnings")

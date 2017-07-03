@@ -698,6 +698,99 @@ object TypeClasses {
     override def w(v: Vec[Real]) = v(4)
   }
 
+  class ArrayIsCanonicalEuclideanSpaceOverField[@specialized F : ClassTag](final val dimensions: Int, field: Field[F] with Trig[F] with Euclidean[F]) extends CanonicalEuclideanSpaceOverField[Array[F], F]{
+
+
+
+    override implicit val scalar: Field[F] with Trig[F] with Euclidean[F] = field
+
+    /**
+      *
+      * @param a will be set as row
+      * @param b will be set as column
+      * @return
+      */
+    override def dotProduct(a: Array[F], b: Array[F]): F = {
+
+      var x = scalar.zero
+      var k = 0
+      while(k < dimensions){
+        x += a(k) * b(k)
+        k += 1
+      }
+
+      x
+    }
+
+    override def plus(a: Array[F], b: Array[F]): Array[F] = {
+      val res = new Array[F](dimensions)
+
+      for(i <- 0 until dimensions){
+        res(i) = a(i) + b(i)
+      }
+
+      res
+    }
+
+    override def negate(a: Array[F]): Array[F] = {
+      val res = new Array[F](dimensions)
+
+      for(i <- 0 until dimensions){
+        res(i) *= -scalar.one
+      }
+
+      res
+    }
+
+    override def times(a: Array[F], k: F): Array[F] = {
+      val res = new Array[F](dimensions)
+
+      for(i <- 0 until dimensions){
+        res(i) = a(i) * k
+      }
+
+      res
+    }
+
+    override def zero: Array[F] = new Array[F](dimensions) //TODO
+
+    override def create(coordinates: F*): Array[F] = {
+      val ar = new Array[F](dimensions)
+      var i = 0
+      while(i < ar.size){
+        ar(i) = coordinates(i)
+        i += 1
+      }
+
+      ar
+    }
+
+    override def get(v: Array[F], i: Int): F = v(i)
+
+    /**
+      *
+      * @param a
+      * @param b
+      * @return by element product
+      */
+    override def timesByElement(a: Array[F], b: Array[F]): Array[F] = {
+      val res = new Array[F](dimensions)
+
+      for(i <- 0 until dimensions){
+        res(i) = a(i) * b(i)
+      }
+
+      res
+    }
+
+    override def x(v: Array[F]) = v(0)
+
+    override def y(v: Array[F]) = v(1)
+
+    override def z(v: Array[F]) = v(2)
+
+    override def w(v: Array[F]) = v(3)
+  }
 
   class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T] with CanonicalCrossProductOp[Vec3[T]] with Mat4Mult[Vec3[T],T]{
 

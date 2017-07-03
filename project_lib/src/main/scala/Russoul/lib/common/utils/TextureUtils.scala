@@ -20,7 +20,7 @@ object TextureUtils
     * 3)top right
     * 4)top left
     */
-  def mapUVCoordinates(array:Array[Vec2[Float]], width:Float, height:Float)(implicit ev : Field[Float] with Euclidean[Float] with Orderable[Float]): Array[Vec2[Float]] =
+  def mapUVCoordinates(array:Array[Vec2[Float]], width:Float, height:Float): Array[Vec2[Float]] =
   {
     array.map(coord => Vec2(coord.x/width, coord.y/height))
   }

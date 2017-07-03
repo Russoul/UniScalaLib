@@ -11,6 +11,8 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 01.06.2017.
   */
+
+//TODO redundant, do not use this class, use array instead
 @immutable class Vec[@specialized F : ClassTag](private val array:Array[F], var isColumn:Boolean = true)(implicit ev: Field[F]){
 
 

@@ -194,13 +194,14 @@ object ImageUtils
 
     {
       readAll()
+      read.close()
     }
 
     def getGlyphCount() = glyphCount
 
     def getGlyph(unicode:Int) = glyphs(unicode)
     def hasGlyph(unicode:Int) = glyphs.contains(unicode)
-    def getAllNames(): Iterable[String] = glyphNames.keys //this makes glyphNames immutable on caller side (doesn't give the called the actual object but its copy)
+    def getAllNames(): Iterable[String] = glyphNames.keys //this makes glyphNames immutable on caller side (doesn't give the caller the actual object but its copy)
     def getAllCodes(): Iterable[Int] = glyphNames.values
     def getCode(name:String) = glyphNames(name)
     def hasCode(name:String) = glyphNames.contains(name)

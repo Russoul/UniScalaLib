@@ -149,4 +149,6 @@ object MainTest extends App{
 
   testAdhocPolymorphism()
   testPolynoms()
+
+
 }

@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="SBT 1" modules="scalalibrary" />
+    <profile name="SBT 1" modules="scalalibrary">
+      <parameters>
+        <parameter value="-Ypartial-unification" />
+      </parameters>
+    </profile>
     <profile name="SBT 2" modules="ScalaLibrary-macros">
       <option name="implicitConversions" value="true" />
       <parameters>
@@ -12,12 +16,16 @@
       </plugins>
     </profile>
     <profile name="SBT 3" modules="lib">
+      <parameters>
+        <parameter value="-Ypartial-unification" />
+      </parameters>
       <plugins>
         <plugin path="C:\Users\russoul\.ivy2\cache\com.nativelibs4java\scalaxy-streams_2.11\jars\scalaxy-streams_2.11-0.3.4.jar" />
       </plugins>
     </profile>
-    <profile name="SBT 4" modules="test,macros,test">
+    <profile name="SBT 5" modules="macros,test">
       <parameters>
+        <parameter value="-Ypartial-unification" />
         <parameter value="-Xplugin-require:macroparadise" />
       </parameters>
       <plugins>

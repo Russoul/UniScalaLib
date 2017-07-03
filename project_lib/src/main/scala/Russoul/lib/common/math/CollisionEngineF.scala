@@ -548,6 +548,22 @@ object CollisionEngineF
 
   }
 
+  def checkPoint2OBB2(p: Float2, obb: OBB2F) : Boolean = {
+    val centerPoint = p - obb.center
+
+    val projRight = centerPoint dot obb.right
+    if(lang.Math.abs(projRight) <= obb.extentRight){
+      val projUp = centerPoint dot obb.up
+      if(lang.Math.abs(projUp) <= obb.extentUp){
+        true
+      }else{
+        false
+      }
+    }else{
+      false
+    }
+  }
+
 
   def checkCircleCircle(a:CircleF, b:CircleF): Boolean =
   {
