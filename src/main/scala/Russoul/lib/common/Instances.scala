@@ -81,7 +81,11 @@ object Instances {
       }
     }
 
-    def ArrayAsEuclideanSpace[@specialized F](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
+    def ArrayAsEuclideanSpace[@specialized F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
+  }
+
+  trait SpecialIntances{
+
   }
 
   object ArrayInstances extends ArrayInstances

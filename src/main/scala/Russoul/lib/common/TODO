@@ -2,6 +2,7 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+        //Type everything !
         //TODO watch shapeless videos
         //TODO make universal matrix and vector classes (probably use arrays for representation of both) + type-checked sizes
        -3)matrices for 2d transformations

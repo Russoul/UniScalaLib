@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib.iml" filepath="$PROJECT_DIR$/.idea/modules/lib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/lib-build.iml" filepath="$PROJECT_DIR$/.idea/modules/lib-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/macros.iml" filepath="$PROJECT_DIR$/.idea/modules/macros.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/macros-build.iml" filepath="$PROJECT_DIR$/.idea/modules/macros-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scalalibrary.iml" filepath="$PROJECT_DIR$/.idea/modules/scalalibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" filepath="$PROJECT_DIR$/.idea/modules/scalalibrary-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test.iml" filepath="$PROJECT_DIR$/.idea/modules/test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-build.iml" filepath="$PROJECT_DIR$/.idea/modules/test-build.iml" />
     </modules>
   </component>
 </project>
