@@ -2,9 +2,11 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+        //make some really powerful macros disabling typechecking(in macros), see c++ like templates project for scala
         //Type everything !
         //TODO watch shapeless videos
         //TODO make universal matrix and vector classes (probably use arrays for representation of both) + type-checked sizes
+        //the above thing is actually already partially implemented : StaticContainer - it is a one dim vector structure
        -3)matrices for 2d transformations
        -2)TODO Shapeless for statically sized collections and more !!
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?

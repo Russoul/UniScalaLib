@@ -32,15 +32,14 @@ object Instances {
   
   
   trait Int2Instances{
-    implicit val int2IsModule2 = new Int2IsModule2OverInt
+    implicit val int2IsModule2 = new Int2IsModuleOverInt
   }
 
   trait Int3Instances{
-    implicit val int3IsModule3 = new Int3IsModule3OverInt
+    implicit val int3IsModule3 = new Int3IsModuleOverInt
   }
   
   trait TurpleDouble3Instances{
-    implicit val turpleDouble3EuclideanSpace3 = new TurpleDouble3IsEuclideanSpace3OverDouble
     implicit val turpleDouble3IsField = new Double3IsField
   }
   
@@ -81,7 +80,7 @@ object Instances {
       }
     }
 
-    def ArrayAsEuclideanSpace[@specialized F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
+    //def ArrayAsEuclideanSpace[@specialized F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
   }
 
   trait SpecialIntances{

@@ -11,7 +11,7 @@ import scala.reflect.ClassTag
   *
   * immutable
   */
-@immutable @straight case class Vec3[@specialized A : ClassTag](array:ImArr[A]) {
+@immutable @straight case class Vec3[@specialized A : ClassTag](private val array:ImArr[A]) {
 
   @inline def x: A = array(0)
 

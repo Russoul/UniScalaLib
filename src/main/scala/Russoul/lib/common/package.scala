@@ -4,8 +4,8 @@ package Russoul.lib
 import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.math.algebra._
 import Russoul.lib.common.math.geometry.simple._
-
 import Russoul.lib.common.Implicits._
+import shapeless.Nat
 
 import scala.annotation.Annotation
 import scala.language.implicitConversions
@@ -31,8 +31,13 @@ package object common
 
   //............................................
 
+
+  //specialization
+  type sp = specialized
+  //....
+
   //simple types---------------------------
-  //Real is just another name for double, it must not be changed to float or any other similar types
+  //Real is just another name for double, it must not be changed to float or any other similar types(there is actually no other similar types on JVM)
   type Real = Double //TODO changing this leads to errors, so dont !
   type Complex = ComplexOver[Real]
   type Real2 = Vec2[Real]
@@ -220,13 +225,13 @@ package object common
 
   //common algebraic structures-----------------------------
   type Reals = Field[Real]
-  type V4 = CanonicalEuclideanSpaceOverField[Real4, Real]
-  type V3 = CanonicalEuclideanSpaceOverField[Real3, Real]
-  type V2 = CanonicalEuclideanSpaceOverField[Real2, Real]
+  type V4 = CanonicalEuclideanSpaceOverField[Real4, Real, Nat._4]
+  type V3 = CanonicalEuclideanSpaceOverField[Real3, Real, Nat._3]
+  type V2 = CanonicalEuclideanSpaceOverField[Real2, Real, Nat._2]
 
-  type I2 = ModuleOverRing[Int2, Int]
-  type I3 = ModuleOverRing[Int3, Int]
-  type I4 = ModuleOverRing[Int4, Int]
+  type I2 = ModuleOverRing[Int2, Int, Nat._2]
+  type I3 = ModuleOverRing[Int3, Int, Nat._3]
+  type I4 = ModuleOverRing[Int4, Int, Nat._4]
 
 
   object Real2{

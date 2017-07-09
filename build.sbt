@@ -1,5 +1,8 @@
-scalaOrganization := "org.typelevel"
-scalaVersion := "2.11.11-bin-typelevel-4"
+//scalaOrganization := "org.typelevel"
+//scalaVersion := "2.11.11-bin-typelevel-4"
+
+scalaOrganization in Global := "org.scala-lang"
+scalaVersion in Global := "2.11.11"
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
@@ -8,13 +11,16 @@ resolvers ++= Seq(
 
 libraryDependencies in Scope.GlobalScope += scalaOrganization.value % "scala-reflect" % scalaVersion.value % "provided"
 libraryDependencies in Scope.GlobalScope += scalaOrganization.value % "scala-compiler" % scalaVersion.value % "provided"
-libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "cats" % "0.9.0"
-libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "kittens" % "1.0.0-M9" //auto typeclass derivation
-libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //algebra and numeric computing
+//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "cats" % "0.9.0"
+//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "kittens" % "1.0.0-M9" //auto typeclass derivation
+//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //algebra and numeric computing
 libraryDependencies in Scope.GlobalScope += "com.chuusai" %% "shapeless" % "2.3.2"
-libraryDependencies in Scope.GlobalScope += "eu.timepit" %% "singleton-ops" % "0.0.4"
+//libraryDependencies in Scope.GlobalScope += "eu.timepit" %% "singleton-ops" % "0.0.4"
+//see machinist project for macros that increase performance of type classes
 
-scalacOptions += "-Yliteral-types"
+unmanagedJars in Compile += file("libs/scalamacroslibrary_2.11-1.0.jar")
+
+//scalacOptions += "-Yliteral-types"
 
 scalacOptions in Runtime ++= Seq("-optimise", "-Yclosure-elim", "-Yinline", "-Xdisable-assertions")//optimizations
 scalacOptions in Runtime += "-Xplugin-require:scalaxy-streams"
@@ -23,9 +29,6 @@ scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
 scalacOptions in Test ~= (_ filterNot (_ == "-Xdisable-assertions"))
 autoCompilerPlugins := true
 addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
-
-
-
 
 
 

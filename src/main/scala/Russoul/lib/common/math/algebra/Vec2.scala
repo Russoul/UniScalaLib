@@ -1,19 +1,22 @@
 package Russoul.lib.common.math.algebra
 
+import Russoul.lib.common.TypeClasses.StaticVector
 import Russoul.lib.common.utils.ImArr
 import Russoul.lib.common.{immutable, mutable, straight}
+import shapeless.Nat
+import shapeless.ops.nat
 
 import scala.collection.immutable
 import scala.reflect.ClassTag
 
 
-@mutable @straight case class Vec2[@specialized A : ClassTag](array:ImArr[A]) {
+@immutable @straight case class Vec2[@specialized A : ClassTag](private val array:Array[A]){
 
   @inline def x = array(0)
   @inline def y = array(1)
 
-  def this(dx:A,dy:A) = this(ImArr(dx,dy))
-  def apply(i: Int): A = array(i - 1)
+  def this(dx:A,dy:A) = this(Array[A](dx,dy))
+  @inline def apply(i: Int): A = array(i - 1)
   override def toString() = "Vec2( " + array(0) + "; " + array(1) + " )"
 
 

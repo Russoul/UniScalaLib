@@ -8,6 +8,11 @@ import scala.math.Ordering
 import scala.reflect.ClassTag
 import Implicits._
 import Russoul.lib.common.Ops.FieldOps
+import Russoul.lib.common.StaticContainerTypeClasses.{Tuple2IsStaticVector, Vec2IsStaticVector, Vec3IsStaticVector, Vec4IsStaticVector}
+import Russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
+import shapeless.ops.nat
+import shapeless.ops.nat.ToInt
+import shapeless.{<:!<, Nat}
 
 /**
   * Created by russoul on 18.05.17.
@@ -15,6 +20,7 @@ import Russoul.lib.common.Ops.FieldOps
 object TypeClasses {
 
   class OperationUnsupportedException(str: String) extends Exception(str)
+
 
   trait Container1[@specialized T, Con]{
     def x(con: Con): T
@@ -34,6 +40,52 @@ object TypeClasses {
     def size(con: Con) : Int
   }
 
+  //compile time static collection
+  //this is actually a valid representation of a vector from a vector space
+  //size of a collection typeclassing this abstract class must be known at compile time
+  //and size of any instance of this collection must be the same
+  abstract class StaticVector[@specialized T : ClassTag, Con, Size <: Nat]{
+    def get[Index <: Nat](con:Con, index: Index)(implicit ev: Size <:!< Index, toInt: ToInt[Index]): T
+    def make(args: T*): Con
+  }
+
+  //algebraic matrices
+  abstract class StaticSquareMatrix[@specialized T : ClassTag, Mat, Size <: Nat]{
+    def get[IndexI <: Nat, IndexJ <: Nat](mat: Mat, i: IndexI, j: IndexJ)(implicit ev1: Size <:!< IndexI, toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ, toIntJ: ToInt[IndexJ])
+    def make(args: T*): Mat //TODO is it the most comfortable way of creating a matrix ?
+  }
+  //...........
+
+  //also called Linear operator
+  trait LinearMap[V, @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+
+    implicit val space: Space
+    implicit val scalar = space.scalar
+
+    def map(a: V): V
+  }
+
+  trait BilinearMap[V, @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+
+    implicit val space: Space
+    implicit val scalar = space.scalar
+
+    def map(a: V, b: V): V
+  }
+
+  trait CrossProductOverCanonicalEuclideanSpaceOverField[V, @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
+
+    def map(a: V, b: V): V = {
+      space.staticContainer.make(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
+    }
+  }
+
+  trait TwoDimensionalVectorOrhoOperatorOverCanonicalEuclideanSpaceOverField[V, @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
+    override def map(a: V): V = {
+      space.staticContainer.make(-a.y, a.x)
+    }
+  }
+
 
   trait Addable[@specialized A] {
     @inline def plus(x: A, y:A): A
@@ -41,8 +93,8 @@ object TypeClasses {
     override def toString: String
   }
 
-  //under mult
-  trait Monoid[@specialized A]{
+
+  trait MultiplicativeMonoid[@specialized A]{
     def times(x : A, y: A) : A
     def one : A
   }
@@ -56,7 +108,7 @@ object TypeClasses {
   }
 
 
-  trait CommutativeGroup[@specialized A] extends Addable[A] with CanBeNegated[A]{
+  trait CommutativeAdditiveGroup[@specialized A] extends Addable[A] with CanBeNegated[A]{
     @inline def zero: A
     @inline def minus(x: A, y: A): A = plus(x, negate(y))
   }
@@ -82,7 +134,7 @@ object TypeClasses {
     @inline def fromDouble(x: Double) : A
   }
 
-  trait Ring[@specialized A] extends CommutativeGroup[A] with Monoid[A]
+  trait Ring[@specialized A] extends CommutativeAdditiveGroup[A] with MultiplicativeMonoid[A]
 
   trait Field[@specialized A] extends Ring[A]{
     @inline def inv(x: A): A
@@ -91,10 +143,9 @@ object TypeClasses {
   }
 
 
-  trait ModuleOverRing[V, @specialized R] extends CommutativeGroup[V]{
+  trait ModuleOverRing[V, @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V]{
     implicit def scalar: Ring[R]
-
-    def dimensions : Int
+    implicit def staticContainer: StaticVector[R, V, Dim] //V must be static container
 
     //@inline def plus(a:V, b:V) : V //can't use the same names because of type erasure
     //@inline def negate(a:V):V
@@ -103,14 +154,11 @@ object TypeClasses {
 
     //@inline def minus(a:V, b:V):V = plus(a, negate(b))
 
-    @inline def create(coordinates: R*) : V
 
-    @inline def get(v:V, i:Int) : R
-
-    @inline @straight def x(v: V) : R
+    /*@inline @straight def x(v: V) : R
     @inline @straight def y(v: V) : R = throw new OperationUnsupportedException("")
     @inline @straight def z(v: V) : R = throw new OperationUnsupportedException("")
-    @inline @straight def w(v: V) : R = throw new OperationUnsupportedException("")
+    @inline @straight def w(v: V) : R = throw new OperationUnsupportedException("")*/
 
     /**
       *
@@ -119,13 +167,13 @@ object TypeClasses {
       * @return by element product
       */
 
-    //TODO Modules in general do not support this operation !
+    //TODO Modules in general do not have this operation !
     @inline def timesByElement(a: V, b: V) : V
   }
 
 
 
-  trait VectorSpaceOverField[V,@specialized F] extends ModuleOverRing[V,F]{
+  trait VectorSpaceOverField[V,@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
 
     override implicit def scalar: Field[F]
     @inline def div(a:V, k:F):V = times(a, scalar.inv(k))
@@ -133,6 +181,8 @@ object TypeClasses {
   }
 
 
+
+  //TODO D E P R E C A T E D ---------------------------------------------------------------------------------------
  /* trait ElementOps2[@specialized T]{
     @inline def x: T
     @inline def y: T
@@ -239,8 +289,9 @@ object TypeClasses {
   trait Canonical2DimOrthoOp[V]{
     def ortho(a: V) : V
   }
+  //TODO--------------------------------------------------------------------------------
 
-  trait EuclideanSpaceOverField[V,@specialized F] extends VectorSpaceOverField[V,F]{
+  trait EuclideanSpaceOverField[V,@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim]{
 
     override implicit def scalar : Field[F] with Trig[F] with Euclidean[F]
 
@@ -263,7 +314,7 @@ object TypeClasses {
 
 
   //using canonical basis
-  trait CanonicalEuclideanSpaceOverField[V,@specialized F] extends VectorSpaceOverField[V,F] {
+  trait CanonicalEuclideanSpaceOverField[V,@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
 
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F]
 
@@ -282,14 +333,14 @@ object TypeClasses {
 
   }
 
-  //DEFINITIONS------------------------------------------------------
+  //TODO DEFINITIONS------------------------------------------------------
 
 
   trait IntIsAddable extends Addable[Int]{
     override def plus(x: Int, y: Int): Int = x + y
   }
 
-  trait IntIsCommutativeGroup extends CommutativeGroup[Int]{
+  trait IntIsCommutativeAdditiveGroup extends CommutativeAdditiveGroup[Int]{
     override def negate(x: Int): Int = -x
     override def zero: Int = 0
     override def plus(x: Int, y: Int): Int = x + y
@@ -306,7 +357,7 @@ object TypeClasses {
     override def negate(x: Int): Int = -x
   }
 
-  trait IntIsRing extends IntIsCommutativeGroup with Ring[Int]{
+  trait IntIsRing extends IntIsCommutativeAdditiveGroup with Ring[Int]{
     override def times(x: Int, y: Int): Int = x * y
     override def one: Int = 1
   }
@@ -455,10 +506,10 @@ object TypeClasses {
 
 
 
-  class Int2IsModule2OverInt extends ModuleOverRing[Int2, Int]{
+  class Int2IsModuleOverInt extends ModuleOverRing[Int2, Int,Nat._2]{
 
 
-    override def dimensions: Int = 2
+    override implicit def staticContainer: StaticVector[Int, Int2, Nat._2] = new Vec2IsStaticVector[Int]
 
     override implicit val scalar: Ring[Int] = new IntIsFullRing
 
@@ -470,13 +521,6 @@ object TypeClasses {
 
     override def zero: Int2 = Int2(0,0)
 
-    override def create(coordinates: Int*): Int2 = Int2(coordinates(0), coordinates(1))
-
-    override def get(v: Int2, i: Int): Int = v(i-1)
-
-    override def x(v: Int2): Int = v.x
-
-    override def y(v: Int2): Int = v.y
 
 
     /**
@@ -489,10 +533,10 @@ object TypeClasses {
   }
 
 
-  class Int3IsModule3OverInt extends ModuleOverRing[Int3, Int]{
+  class Int3IsModuleOverInt extends ModuleOverRing[Int3, Int, Nat._3]{
 
 
-    override def dimensions: Int = 3
+    override implicit def staticContainer: StaticVector[Int, Int3, _root_.shapeless.Nat._3] = new Vec3IsStaticVector[Int]
 
     override implicit val scalar: Ring[Int] = new IntIsFullRing
 
@@ -504,16 +548,6 @@ object TypeClasses {
 
     override def zero: Int3 = Int3(0,0,0)
 
-    override def create(coordinates: Int*): Int3 = Int3(coordinates(0), coordinates(1), coordinates(2))
-
-    override def get(v: Int3, i: Int): Int = v(i-1)
-
-    override def x(v: Int3): Int = v.x
-
-    override def y(v: Int3): Int = v.y
-
-    override def z(v: Int3): Int = v.z
-
     /**
       *
       * @param a
@@ -524,94 +558,20 @@ object TypeClasses {
   }
 
 
-
-  class TurpleDouble3IsEuclideanSpace3OverDouble extends EuclideanSpaceOverField[(Double,Double,Double), Double] with GramCrossProductOp[(Double,Double,Double)]{
-
-
-    override def dimensions: Int = 3
-
-    override implicit val scalar: Field[Real] with Trig[Real] with Euclidean[Real] = new DoubleIsFullField
-
-    override def dotProduct(a: (Double, Double, Double), b: (Double, Double, Double), gram: Mat[Double] with Gram): Double = {
-      //TODO dim check ??? must be 3 !
+  class Int4IsModuleOverInt extends ModuleOverRing[Int4, Int, Nat._4]{
 
 
-      a._1 * b._1 * gram(0,0) + a._1 * b._2 * gram(0,1) + a._1 * b._3 * gram(0,2) +
-        a._2 * b._1 * gram(1,0) + a._2 * b._2 * gram(1,1) + a._2 * b._3 * gram(1,2) +
-        a._3 * b._1 * gram(2,0) + a._3 * b._2 * gram(2,1) + a._3 * b._3 * gram(2,2)
+    override implicit def staticContainer: StaticVector[Int, Int4, _root_.shapeless.Nat._4] = new Vec4IsStaticVector[Int]
 
-    }
+    override implicit val scalar: Ring[Int] = new IntIsFullRing
 
+    override def plus(a: Int4, b: Int4): Int4 = Int4(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w)
 
-    /**
-      *
-      * @param a
-      * @param b
-      * @param ijk [i,i] [i,j] [i,k]
-      *            [j,i] [j,j] [j,k]
-      *            [k,i] [k,j] [k,k]
-      * @return
-      */
-    override def crossProduct(a: (Real, Real, Real), b: (Real, Real, Real), ijk: Mat[(Double, Double, Double)] with CrossProduct): (Real, Real, Real) = {
-      val i0 = times(ijk(0,0), a._1 * b._1)
-      val i1 = times(ijk(0,1), a._1 * b._2)
-      val i2 = times(ijk(0,2), a._1 * b._3)
-      val i3 = times(ijk(1,0), a._2 * b._1)
-      val i4 = times(ijk(1,1), a._2 * b._2)
-      val i5 = times(ijk(1,2), a._2 * b._3)
-      val i6 = times(ijk(2,0), a._3 * b._1)
-      val i7 = times(ijk(2,1), a._3 * b._2)
-      val i8 = times(ijk(2,2), a._3 * b._3)
+    override def negate(a: Int4): Int4 = Int4(-a.x, -a.y, -a.z, -a.w)
 
-      (i0._1 + i1._1+ i2._1 + i3._1 + i4._1 + i5._1 + i6._1+ i7._1 + i8._1,
-        i0._2 + i1._2+ i2._2 + i3._2 + i4._2 + i5._2 + i6._2+ i7._2 + i8._2,
-        i0._3 + i1._3+ i2._3 + i3._3 + i4._3 + i5._3 + i6._3+ i7._3 + i8._3
-      )
-    }
+    override def times(a: Int4, k: Int): Int4 = Int4(a.x * k, a.y * k, a.z * k, a.w * k)
 
-    override def plus(a: (Double, Double, Double), b: (Double, Double, Double)): (Double, Double, Double) = {
-      (a._1 + b._1, a._2 + b._2, a._3 + b._3)
-    }
-
-    override def negate(a: (Double, Double, Double)): (Double, Double, Double) = {
-      (-a._1, -a._2, -a._3)
-    }
-
-    override def times(a: (Double, Double, Double), k: Double): (Double, Double, Double) = {
-      (a._1 * k, a._2 * k, a._3 * k)
-    }
-
-    override def zero: (Double, Double, Double) = {
-      (0,0,0)
-    }
-
-
-    //TODO inefficient
-    override def get(v: (Real, Real, Real), i: Int): Real = {
-      i match{
-        case 1 => v._1
-        case 2 => v._2
-        case 3 => v._3
-        case _ => throw new Exception("Incorrect index !")
-      }
-    }
-
-
-
-
-
-    override def x(v: (Real, Real, Real)): Real = v._1
-
-    override def y(v: (Real, Real, Real)): Real = v._2
-
-    override def z(v: (Real, Real, Real)): Real = v._3
-
-
-
-    override def create(coordinates: Double*): (Double, Double, Double) = {
-      (coordinates(0), coordinates(1), coordinates(2))
-    }
-
+    override def zero: Int4 = Int4(0,0,0,0)
 
     /**
       *
@@ -619,15 +579,15 @@ object TypeClasses {
       * @param b
       * @return by element product
       */
-    override def timesByElement(a: (Real, Real, Real), b: (Real, Real, Real)): (Real, Real, Real) = {
-      (a._1 * b._1, a._2 * b._2, a._3 * b._3)
-    }
-
-    def canonicalBasis(dim:Int):Arr[(Double, Double, Double)] = Arr((1D,0,0), (0,1D,0), (0,0,1D))
+    override def timesByElement(a: Int4, b: Int4): Int4 = Int4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w)
   }
 
 
-  class VecIsCanonicalEuclideanSpaceOverReal(final val dimensions: Int) extends CanonicalEuclideanSpaceOverField[Vec[Real], Real]{
+
+
+  //TODO DEPRECATED
+
+  /*class VecIsCanonicalEuclideanSpaceOverReal(final val dimensions: Int) extends CanonicalEuclideanSpaceOverField[Vec[Real], Real]{
 
 
 
@@ -696,9 +656,11 @@ object TypeClasses {
     override def z(v: Vec[Real]) = v(3)
 
     override def w(v: Vec[Real]) = v(4)
-  }
+  }*/
 
-  class ArrayIsCanonicalEuclideanSpaceOverField[@specialized F : ClassTag](final val dimensions: Int, field: Field[F] with Trig[F] with Euclidean[F]) extends CanonicalEuclideanSpaceOverField[Array[F], F]{
+
+  //DEPRECATED, only static collections are ok
+  /*class ArrayIsCanonicalEuclideanSpaceOverField[@specialized F : ClassTag](final val dimensions: Int, field: Field[F] with Trig[F] with Euclidean[F]) extends CanonicalEuclideanSpaceOverField[Array[F], F]{
 
 
 
@@ -790,36 +752,29 @@ object TypeClasses {
     override def z(v: Array[F]) = v(2)
 
     override def w(v: Array[F]) = v(3)
-  }
+  }*/
 
-  class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T] with CanonicalCrossProductOp[Vec3[T]] with Mat4Mult[Vec3[T],T]{
+  class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] with CrossProductOverCanonicalEuclideanSpaceOverField[Vec3[T], T]{
 
 
+    override implicit val space: CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] = this
     override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
 
     override def dotProduct(a: Vec3[T], b: Vec3[T]): T = a.x * b.x + a.y * b.y + a.z * b.z
 
-    override def crossProduct(a: Vec3[T], b: Vec3[T]): Vec3[T] = Vec3(a.y*b.x - b.y*a.z, -a.x*b.z + b.x*a.z, a.x * b.y - b.x * a.y)
 
-    val V4 = new Vec4IsCanonicalEuclideanSpaceOverField[T](field)
+    override implicit def staticContainer: StaticVector[T, Vec3[T], Nat._3] = new Vec3IsStaticVector[T]
+
+
+    /*val V4 = new Vec4IsCanonicalEuclideanSpaceOverField[T](field)
     override def multM(v: Vec3[T], m: Mat4[T]): Vec3[T] = {
       val v4 = Vec4[T](x(v), y(v), z(v), scalar.zero)
       Vec3[T](V4.dotProduct(v4, m.column(1)), V4.dotProduct(v4, m.column(2)), V4.dotProduct(v4, m.column(3)))
-    }
+    }*/
 
-    override def dimensions: Int = 3
 
     override def times(a: Vec3[T], k: T): Vec3[T] = Vec3[T](a.x * k, a.y * k, a.z * k)
 
-    override def create(coordinates: T*): Vec3[T] = Vec3(coordinates(0), coordinates(1), coordinates(2))
-
-    override def get(v: Vec3[T], i: Int): T = v(i)
-
-    override def x(v: Vec3[T]): T = v.x
-
-    override def y(v: Vec3[T]) = v.y
-
-    override def z(v: Vec3[T]) = v.z
 
     /**
       *
@@ -836,36 +791,25 @@ object TypeClasses {
     override def negate(a: Vec3[T]): Vec3[T] = Vec3[T](-a.x, -a.y, -a.z)
   }
 
-  class Vec4IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec4[T], T] with Mat4Mult[Vec4[T],T]{
+  class Vec4IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4]{
 
+
+
+    override implicit def staticContainer: StaticVector[T, Vec4[T], _root_.shapeless.Nat._4] = new Vec4IsStaticVector[T]
 
     override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
 
     override def dotProduct(a: Vec4[T], b: Vec4[T]): T = a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
 
 
-    override def multM(v: Vec4[T], m: Mat4[T]): Vec4[T] = {
+    /*override def multM(v: Vec4[T], m: Mat4[T]): Vec4[T] = {
 
       Vec4[T](dotProduct(v, m.column(1)), dotProduct(v, m.column(2)), dotProduct(v, m.column(3)), dotProduct(v, m.column(4)))
-    }
+    }*/
 
-    override def dimensions: Int = 4
 
     override def times(a: Vec4[T], k: T): Vec4[T] = Vec4[T](a.x * k, a.y * k, a.z * k, a.w * k)
 
-    override def create(coordinates: T*): Vec4[T] = Vec4(coordinates(0), coordinates(1), coordinates(2), coordinates(3))
-
-    override def get(v: Vec4[T], i: Int): T = v(i)
-
-    override def x(v: Vec4[T]): T = v.x
-
-
-
-    override def y(v: Vec4[T]) = v.y
-
-    override def z(v: Vec4[T]) = v.z
-
-    override def w(v: Vec4[T]) = v.w
 
     /**
       *
@@ -882,29 +826,19 @@ object TypeClasses {
     override def negate(a: Vec4[T]): Vec4[T] = Vec4[T](-a.x, -a.y, -a.z, -a.w)
   }
 
-  class Vec2IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec2[T], T] with Canonical2DimOrthoOp[Vec2[T]]{
+  class Vec2IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] with TwoDimensionalVectorOrhoOperatorOverCanonicalEuclideanSpaceOverField[Vec2[T], T]{
 
 
+    override implicit val space: CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] = this
     override implicit val scalar: Field[T] with Trig[T] with Euclidean[T] = field
 
     override def dotProduct(a: Vec2[T], b: Vec2[T]): T = a.x * b.x + a.y * b.y
 
 
-    override def ortho(a: Vec2[T]): Vec2[T] = {
-      Vec2[T](-a.y, a.x)
-    }
-
-    override def dimensions: Int = 2
+    override implicit def staticContainer: StaticVector[T, Vec2[T], Nat._2] = new Vec2IsStaticVector[T]
 
     override def times(a: Vec2[T], k: T): Vec2[T] = Vec2[T](a.x * k, a.y * k)
 
-    override def create(coordinates: T*): Vec2[T] = Vec2(coordinates(0), coordinates(1))
-
-    override def get(v: Vec2[T], i: Int): T = v(i)
-
-    override def x(v: Vec2[T]): T = v.x
-
-    override def y(v: Vec2[T]) = v.y
 
     /**
       *
@@ -926,7 +860,7 @@ object TypeClasses {
 
 
 
-  
+  //Those are just normal containers with dynamic sizes (not known at compile time, moreover size cannot change across instances of collection even at compile time)
   class Tuple2IsContainer2[@specialized T] extends Container2[T, (T,T)]{
     override def x(v: (T,T)): T = v._1
 

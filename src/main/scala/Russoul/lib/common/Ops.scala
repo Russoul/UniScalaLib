@@ -2,6 +2,7 @@ package Russoul.lib.common
 
 import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.math.algebra.{Mat, Mat4}
+import shapeless.Nat
 
 import scala.language.implicitConversions
 
@@ -25,40 +26,66 @@ object Ops {
   }
 
 
+  class MultiplicativeMonoidOps[@specialized A](lhs: A)(implicit ev: MultiplicativeMonoid[A]){
+    @inline def *(rhs: A) : A = ev.times(lhs, rhs)
+  }
 
-  class CommutativeGroupOps[@specialized A](lhs: A)(implicit ev: CommutativeGroup[A]){
+
+  class CommutativeGroupOps[@specialized A](lhs: A)(implicit ev: CommutativeAdditiveGroup[A]){
     @inline def -(rhs: A): A = ev.minus(lhs, rhs)
     @inline def unary_-(): A = ev.negate(lhs)
   }
 
   class FieldOps[@specialized A](lhs: A)(implicit ev: Field[A]){
-    @inline def *(rhs: A) : A = ev.times(lhs, rhs)
     @inline def /(rhs: A) : A = ev.div(lhs, rhs)
   }
 
-  class ModuleOps[V,@specialized R](lhs: V)(implicit ev: ModuleOverRing[V,R]){
+
+
+
+  class ModuleOpsCommon[V,@specialized R](lhs: V)(ev: ModuleOverRing[V,R,_]){
     @inline def *(rhs: R) : V = ev.times(lhs, rhs)
     @inline def ⊗(rhs: V) : V = ev.timesByElement(lhs, rhs)
 
     //starting from 1
-    @inline def apply(i:Int): R = ev.get(lhs, i)
-    @inline def x: R = ev.x(lhs)
+    @inline def apply(i:Int): R = ev.staticContainer.get(lhs, i)
+
+
+    /*@inline def x: R = ev.x(lhs)
 
     //may be undefined !
     @inline def y: R = ev.y(lhs)
     @inline def z: R = ev.z(lhs)
     @inline def w: R = ev.w(lhs)
 
-    @inline def withWZeroed[VP4](implicit v4: ModuleOverRing[VP4, R]) : VP4  = {
+    @inline def withWZeroed[VP4](implicit v4: ModuleOverRing[VP4, R, Dim]) : VP4  = {
       v4.create(x, y, z, v4.scalar.zero)
     }
 
-    @inline def xyz[VP3](implicit v3: ModuleOverRing[VP3, R]) : VP3  = {
+    @inline def xyz[VP3](implicit v3: ModuleOverRing[VP3, R, Dim]) : VP3  = {
       v3.create(x, y, z)
-    }
+    }*/
     //.............
 
+  }
 
+
+  class ModuleOps2[V,@specialized R](lhs: V)(ev: ModuleOverRing[V,R,Nat._2]){
+    @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
+    @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
+  }
+
+  class ModuleOps3[V,@specialized R](lhs: V)(ev: ModuleOverRing[V,R,Nat._3]){
+    @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
+    @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
+    @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
+  }
+
+  class ModuleOps4[V,@specialized R](lhs: V)(ev: ModuleOverRing[V,R,Nat._4]){
+    @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
+    @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
+    @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
+    @inline def w: R = ev.staticContainer.get(lhs, Nat._3)
   }
 
   class Container1Ops[@specialized T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
@@ -88,12 +115,12 @@ object Ops {
     @inline def size(): Int = ev.size(lhs)
   }
 
-  class VectorSpaceOps[V,@specialized F](lhs: V)(implicit ev: VectorSpaceOverField[V,F]){
+  class VectorSpaceOps[V,@specialized F](lhs: V)(implicit ev: VectorSpaceOverField[V,F,_]){
     @inline def /(rhs: F) : V = ev.div(lhs, rhs)
   }
 
 
-  class EuclideanSpaceOps[V,@specialized F](lhs: V)(implicit ev: EuclideanSpaceOverField[V,F]){
+  class EuclideanSpaceOps[V,@specialized F](lhs: V)(implicit ev: EuclideanSpaceOverField[V,F,_]){
     @inline def ⋅(rhs: V)(implicit matGram: Mat[F] with Gram) : F = ev.dotProduct(lhs, rhs, matGram)
     @inline def dot(rhs: V)(implicit matGram: Mat[F] with Gram) : F = ev.dotProduct(lhs, rhs, matGram)
     @inline def normalize()(implicit matGram: Mat[F] with Gram) : V = ev.normalize(lhs, matGram)
@@ -101,7 +128,7 @@ object Ops {
   }
 
 
-  class CanonicalEuclideanSpaceOps[V,@specialized F](lhs: V)(implicit ev: CanonicalEuclideanSpaceOverField[V,F]){
+  class CanonicalEuclideanSpaceOps[V,@specialized F](lhs: V)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_]){
     @inline def ⋅(rhs: V) : F = ev.dotProduct(lhs, rhs)
     @inline def dot(rhs: V) : F = ev.dotProduct(lhs, rhs)
     //can't use * operator because of JVM type erasure (we already have this operator in Field[F] both are erased to Object => Object)
@@ -132,8 +159,12 @@ object Ops {
     implicit def infixOrderableOps[@specialized A](x: A)(implicit num: Orderable[A]) = new OrderableOps[A](x)
   }
 
+  trait MultiplicativeMonoidImplicits{
+    implicit def infixMultiplicativeMonoidOps[@specialized A](x: A)(implicit num: MultiplicativeMonoid[A]) = new MultiplicativeMonoidOps[A](x)
+  }
+
   trait CommutativeGroupImplicits{
-    implicit def infixCommutativeGroupLikeOps[@specialized A](x: A)(implicit num: CommutativeGroup[A]) = new CommutativeGroupOps[A](x)
+    implicit def infixCommutativeGroupLikeOps[@specialized A](x: A)(implicit num: CommutativeAdditiveGroup[A]) = new CommutativeGroupOps[A](x)
   }
 
   trait FieldImplicits{
@@ -143,19 +174,22 @@ object Ops {
   object FieldImplicits extends FieldImplicits
 
   trait ModuleOverRingImplicits{
-    implicit def infixModuleOps[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R]) = new ModuleOps[V,R](x)
+    implicit def infixModuleOps[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R,_]) = new ModuleOpsCommon[V,R](x)
+    implicit def infixModuleOps2[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R,Nat._2]) = new ModuleOps2[V,R](x)
+    implicit def infixModuleOps3[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R,Nat._3]) = new ModuleOps3[V,R](x)
+    implicit def infixModuleOps4[V,@specialized R](x: V)(implicit num: ModuleOverRing[V,R,Nat._4]) = new ModuleOps4[V,R](x)
   }
 
   trait VectorSpaceOverFieldImplicits{
-    implicit def infixVectorSpaceOps[V,@specialized F](x: V)(implicit num: VectorSpaceOverField[V,F]) = new VectorSpaceOps[V,F](x)
+    implicit def infixVectorSpaceOps[V,@specialized F](x: V)(implicit num: VectorSpaceOverField[V,F,_]) = new VectorSpaceOps[V,F](x)
   }
 
   trait EuclideanSpaceImplicits{
-    implicit def infixEuclideanSpaceOps[V,@specialized F](x: V)(implicit num: EuclideanSpaceOverField[V,F]) = new EuclideanSpaceOps[V,F](x)
+    implicit def infixEuclideanSpaceOps[V,@specialized F](x: V)(implicit num: EuclideanSpaceOverField[V,F,_]) = new EuclideanSpaceOps[V,F](x)
   }
 
   trait CanonicalEuclideanSpaceOverFieldImplicits{
-    implicit def infixCanonicalEuclideanSpaceOps[V,@specialized F](x: V)(implicit num: CanonicalEuclideanSpaceOverField[V,F]) = new CanonicalEuclideanSpaceOps[V,F](x)
+    implicit def infixCanonicalEuclideanSpaceOps[V,@specialized F](x: V)(implicit num: CanonicalEuclideanSpaceOverField[V,F,_]) = new CanonicalEuclideanSpaceOps[V,F](x)
   }
 
   trait CanonicalCrossProductImplicits{
@@ -201,7 +235,8 @@ object Ops {
   Canonical2DimCrossProductImplicits with
   Mat4MultImplicits with
   ConvertibleFromDoubleImplicits with
-  ContainerImplicits
+  ContainerImplicits with
+  MultiplicativeMonoidImplicits
 
 
 }

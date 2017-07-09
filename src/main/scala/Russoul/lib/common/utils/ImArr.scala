@@ -9,7 +9,11 @@ import scala.reflect.ClassTag
   *
   * immutable Array container
   * cannot be empty
+  *
+  *
   */
+
+//TODO probably remove it
 @immutable class ImArr[@specialized T : ClassTag](private val array: Array[T]) {
 
   def apply(index:Int): T = array(index)

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ScalaCompilerConfiguration">
-    <profile name="SBT 1" modules="scalalibrary">
+    <profile name="SBT 1" modules="static_size_col">
       <parameters>
         <parameter value="-Ypartial-unification" />
-        <parameter value="-Yliteral-types" />
       </parameters>
-      <plugins>
-        <plugin path="C:\Users\russoul\.ivy2\cache\com.nativelibs4java\scalaxy-streams_2.11\jars\scalaxy-streams_2.11-0.3.4.jar" />
-      </plugins>
     </profile>
     <profile name="SBT 2" modules="ScalaLibrary-macros">
       <option name="implicitConversions" value="true" />
@@ -19,7 +15,7 @@
         <plugin path="$USER_HOME$/.ivy2/cache/org.scalameta/paradise_2.11.11/jars/paradise_2.11.11-3.0.0-M8.jar" />
       </plugins>
     </profile>
-    <profile name="SBT 3" modules="lib">
+    <profile name="SBT 3" modules="lib,scalalibrary">
       <parameters>
         <parameter value="-Ypartial-unification" />
       </parameters>
