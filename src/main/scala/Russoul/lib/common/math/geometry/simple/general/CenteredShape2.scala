@@ -1,6 +1,5 @@
 package Russoul.lib.common.math.geometry.simple.general
 
-import Russoul.lib.common.math.algebra.Vec2
 
 /**
   * Created by russoul on 11.05.17.

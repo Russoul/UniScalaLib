@@ -7,6 +7,7 @@ import Russoul.lib.common.utils.Arr
 import scala.reflect.ClassTag
 import Russoul.lib.common.Implicits._
 import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field}
+import shapeless.Nat._
 
 /**
   * Created by russoul on 22.04.17.
@@ -14,20 +15,19 @@ import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field}
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Square2Over [V : ClassTag,@specialized F : Field](center:V, extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F])  extends CenteredShape2[V,F]{
-  assert(ev.dimensions == 2)
+@immutable class Square2Over[V[_,_] : ClassTag,@specialized F : Field](val center:V[F,_2], val extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2])  extends CenteredShape2[V[F,_2],F]{
 
 
 
-  override def translate(v: V): Square2Over[V,F] = {
-    Square2Over(center + v, extent)
+  override def translate(v: V[F,_2]): Square2Over[V,F] = {
+    new Square2Over(center + v, extent)
   }
 
   override def scaleAroundBasis(factor: F): Square2Over[V,F] = {
-    Square2Over(center * factor, extent * factor)
+    new Square2Over(center * factor, extent * factor)
   }
 
-  def genVertices(): Arr[V] = Arr(center - ev.create(extent,extent), center + ev.create(extent, -extent), center + ev.create(extent,extent), center + ev.create(-extent, extent))
+  def genVertices(): Array[V[F,_2]] = Array(center - ev.staticContainer.factory.makeVector(extent,extent), center + ev.staticContainer.factory.makeVector[_2](extent, -extent), center + ev.staticContainer.factory.makeVector[_2](extent,extent), center + ev.staticContainer.factory.makeVector[_2](-extent, extent))
 
 
   /**
@@ -35,12 +35,12 @@ import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field}
     */
   def scale(scalar:F): Square2Over[V,F] =
   {
-    Square2Over(center, extent * scalar)
+    new Square2Over(center, extent * scalar)
   }
 
   def toRectangle2():Rectangle2Over[V,F] =
   {
-    Rectangle2Over[V,F](center, ev.create(extent, extent))
+    Rectangle2Over[V,F](center, ev.staticContainer.factory.makeVector[_2](extent, extent))
   }
 
   override def toString: String =

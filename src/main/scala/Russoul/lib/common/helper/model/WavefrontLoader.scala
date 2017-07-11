@@ -4,8 +4,7 @@ import java.io.{File, FileNotFoundException}
 import java.util.Scanner
 
 import Russoul.lib.common.TypeClasses.DoubleIsFullField._
-import Russoul.lib.common.Real
-import Russoul.lib.common.math.algebra.{Vec2, Vec3}
+import Russoul.lib.common.{RealF, Vec2, Vec3}
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -46,12 +45,12 @@ object WavefrontLoader
 
     def atLine() = ", line: " + curLineNumber
 
-    def parseReal(s: String): Real =
+    def parseRealF(s: String): RealF =
     {
       try {
-        s.toDouble
+        s.toFloat
       } catch {
-        case e: Exception => throw new WaveFrontModelLoadingException("Real parsing issue, string: " + s + atLine())
+        case e: Exception => throw new WaveFrontModelLoadingException("RealF parsing issue, string: " + s + atLine())
       }
     }
 
@@ -77,9 +76,9 @@ object WavefrontLoader
           res += str.replace(V_OBJECT + " ", "")
           val valuesS = res.split(" ")
           if (valuesS.length < 3) throw new WaveFrontModelLoadingException("Attempting to add a vertex with incorrect data" + atLine())
-          val v1 = parseReal(valuesS(0))
-          val v2 = parseReal(valuesS(1))
-          val v3 = parseReal(valuesS(2))
+          val v1 = parseRealF(valuesS(0))
+          val v2 = parseRealF(valuesS(1))
+          val v3 = parseRealF(valuesS(2))
           objects.last.addVertex(Vec3(v1, v2, v3))
         }
         else if (str.startsWith(VN_OBJECT)) {
@@ -87,9 +86,9 @@ object WavefrontLoader
           res += str.replace(VN_OBJECT + " ", "")
           val valuesS = res.split(" ")
           if (valuesS.length < 3) throw new WaveFrontModelLoadingException("Attempting to add a vertex normal with incorrect data" + atLine())
-          val v1 = parseReal(valuesS(0))
-          val v2 = parseReal(valuesS(1))
-          val v3 = parseReal(valuesS(2))
+          val v1 = parseRealF(valuesS(0))
+          val v2 = parseRealF(valuesS(1))
+          val v3 = parseRealF(valuesS(2))
           objects.last.addNormal(Vec3(v1, v2, v3))
         }
         else if (str.startsWith(VT_OBJECT)) {
@@ -97,8 +96,8 @@ object WavefrontLoader
           res += str.replace(VT_OBJECT + " ", "")
           val valuesS = res.split(" ")
           if (valuesS.length < 2) throw new WaveFrontModelLoadingException("Attempting to add a vertex texture with incorrect data" + atLine())
-          val v1 = parseReal(valuesS(0))
-          val v2 = 1 - parseReal(valuesS(1))
+          val v1 = parseRealF(valuesS(0))
+          val v2 = 1 - parseRealF(valuesS(1))
           objects.last.addTextureCoord(Vec2(v1, v2))
         }
         else if (str.startsWith(F_OBJECT)) {

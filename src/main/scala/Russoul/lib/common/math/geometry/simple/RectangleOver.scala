@@ -19,7 +19,7 @@ import Russoul.lib.common.Implicits._
   *       ||
   * right XX----->
   */
-@immutable case class RectangleOver[V : ClassTag, @specialized F : Field](center: V, right: V, up: V)(implicit ev : CanonicalEuclideanSpaceOverField[V,F] with CanonicalCrossProductOp[V]) extends CenteredShape3[V,F] {
+@immutable case class RectangleOver[V : ClassTag, @specialized F : Field](center: V, right: V, up: V)(implicit ev : CanonicalEuclideanSpaceOverField[V,F] , cross: CanonicalCrossProductOp[V]) extends CenteredShape3[V,F] {
   assert(ev.dimensions == 3)
 
   override def translate(v: V): RectangleOver[V,F] = {

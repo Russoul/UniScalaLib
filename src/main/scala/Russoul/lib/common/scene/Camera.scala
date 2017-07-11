@@ -1,37 +1,35 @@
 package Russoul.lib.common.scene
 
-import Russoul.lib.common.TypeClasses.{CrossProduct, Gram}
-import Russoul.lib.common.{Real, Real3, TypeClasses, V4}
+import Russoul.lib.common.{Mat4F, Real, Real3, Real3F, TypeClasses, V4, Vec3}
 import Russoul.lib.common.math.geometry.complex.Frustum
 import Russoul.lib.common.math.geometry.simple.{RayOver, RectangleOver}
-import Russoul.lib.common.math.algebra.{Mat, Mat4, Vec3, Vec4}
 import Russoul.lib.common.Implicits._
 
 
 class Camera private
 {
-  var angleOfView = 45D
-  var zNear = 0.1D
-  var zFar = 300D
-  var aspect = 800D/600D
+  var angleOfView = 45F
+  var zNear = 0.1F
+  var zFar = 300F
+  var aspect = 800F/600F
 
 
 
-  var pos = Vec3(0D,0D,1.5D)
+  var pos = Real3F(0F,0F,1.5F)
 
   //normalized
-  var up = Vec3(0D, 1D, 0D)
+  var up = Real3F(0F, 1F, 0F)
   //normalized
-  var look = Vec3(0D, 0D, -1D)
+  var look = Real3F(0F, 0F, -1F)
 
   var frustum: Frustum = null
 
   var width = 800D;var height = 600D;var screenX = 0D;var screenY = 0D
 
 
-  var mat_perspective = Mat4.matrixIdentity()
-  var mat_orthographic = Mat4.matrixIdentity()
-  var mat_view = Mat4.matrixIdentity()
+  var mat_perspective = Mat4F.matrixIdentity()
+  var mat_orthographic = Mat4F.matrixIdentity()
+  var mat_view = Mat4F.matrixIdentity()
 
 
 
@@ -92,9 +90,9 @@ class Camera private
 
   def updateMatrices(): Unit =
   {
-    mat_perspective = Mat4.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
-    mat_orthographic = Mat4.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
-    mat_view = Mat4.matrixVIEWDir(pos, look, up)
+    mat_perspective = Mat4F.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
+    mat_orthographic = Mat4F.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
+    mat_view = Mat4F.matrixVIEWDir(pos, look, up)
   }
 
   def updateTransformation(droll:Real, dyaw:Real, dpitch:Real, dforward:Real, dright:Real, dup:Real): Unit =

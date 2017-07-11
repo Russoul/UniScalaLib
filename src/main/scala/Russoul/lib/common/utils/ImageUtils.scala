@@ -4,9 +4,9 @@ import java.awt.image.BufferedImage
 import java.io._
 import java.nio.ByteBuffer
 import java.util.regex.{Matcher, Pattern}
+
 import scala.collection.mutable
-import Russoul.lib.common.Real
-import Russoul.lib.common.math.algebra.Vec3
+import Russoul.lib.common.{Real, Vec3}
 
 
 /**

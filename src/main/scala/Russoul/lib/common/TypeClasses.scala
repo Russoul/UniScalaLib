@@ -7,12 +7,12 @@ import scala.language.{higherKinds, implicitConversions}
 import scala.math.Ordering
 import scala.reflect.ClassTag
 import Implicits._
-import Russoul.lib.common.Ops.FieldOps
-import Russoul.lib.common.StaticContainerTypeClasses.{Tuple2IsStaticVector, Vec2IsStaticVector, Vec3IsStaticVector, Vec4IsStaticVector}
+import Russoul.lib.common.Ops.{CanonicalEuclideanSpaceOps, FieldOps}
+import Russoul.lib.common.StaticContainerTypeClasses.VecIsStaticVector
 import Russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
 import shapeless.ops.nat
-import shapeless.ops.nat.ToInt
-import shapeless.{<:!<, Nat}
+import shapeless.ops.nat.{Diff, GT, Sum, ToInt}
+import shapeless.{<:!<, Nat, Succ}
 
 /**
   * Created by russoul on 18.05.17.
@@ -40,49 +40,187 @@ object TypeClasses {
     def size(con: Con) : Int
   }
 
+
+  class DefaultAlgebraicFactory[@specialized T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
+
+    override def makeVector[Size <: Nat](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
+    override def makeMatrix[Size <: Nat](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
+
+    override protected def get[Size <: Nat](vec: Vec[T, Size], index: Int): T = vec(index)
+    override protected def get[Size <: Nat](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
+  }
+
+  abstract class AlgebraicTypeFactory[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
+
+    def makeVector[Size <: Nat](args: T*) : Vec[T, Size]
+    def makeMatrix[Size <: Nat](args: T*) : Mat[T, Size]
+
+    //should not be used by user
+    def get[Size <: Nat](vec: Vec[T,Size], index: Int) : T
+    def get[Size <: Nat](mat: Mat[T,Size], i: Int, j: Int) : T
+  }
+
+  //indices start from 0
   //compile time static collection
   //this is actually a valid representation of a vector from a vector space
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
-  abstract class StaticVector[@specialized T : ClassTag, Con, Size <: Nat]{
-    def get[Index <: Nat](con:Con, index: Index)(implicit ev: Size <:!< Index, toInt: ToInt[Index]): T
-    def make(args: T*): Con
+  //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
+  abstract class StaticVector[@specialized T : ClassTag, Vec[_,_]]{
+
+    val factory: AlgebraicTypeFactory[T, Vec, _]
+
+    @inline def get[Size <: Nat, Index <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index]) : T = factory.get[Size](vec, index())
+
   }
 
+
+
+  //indices start from 0
   //algebraic matrices
-  abstract class StaticSquareMatrix[@specialized T : ClassTag, Mat, Size <: Nat]{
-    def get[IndexI <: Nat, IndexJ <: Nat](mat: Mat, i: IndexI, j: IndexJ)(implicit ev1: Size <:!< IndexI, toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ, toIntJ: ToInt[IndexJ])
-    def make(args: T*): Mat //TODO is it the most comfortable way of creating a matrix ?
+  abstract class StaticSquareMatrix[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
+
+    type Space[Size] = CanonicalEuclideanSpaceOverField[Vec[T,Size], T, Size]
+
+    protected val factory: AlgebraicTypeFactory[T, Vec, Mat]
+
+
+
+    @inline def get[Size <: Nat, IndexI <: Nat, IndexJ <: Nat](mat: Mat[T,Size], i: IndexI, j: IndexJ)(implicit ev1: Size <:!< IndexI, toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ, toIntJ: ToInt[IndexJ]) : T = {
+      factory.get(mat, toIntI(), toIntJ())
+    }
+
+
+    //private dynamic variants
+    private def row[Size <: Nat](mat: Mat[T,Size], row: Int)(implicit sizeEv: ToInt[Size]) : Vec[T,Size] = {
+
+      val size = sizeEv()
+
+      val seq = new Array[T](size)
+
+      for(i <- 0 until size){
+        seq(i) = get(mat, row, i)
+      }
+
+      factory.makeVector(seq : _*)
+    }
+
+    private def column[Size <: Nat](mat: Mat[T,Size], column: Int)(implicit sizeEv: ToInt[Size]) : Vec[T,Size] = {
+
+      val size = sizeEv()
+
+      val seq = new Array[T](size)
+
+      for(i <- 0 until size){
+        seq(i) = get(mat, i, column)
+      }
+
+      factory.makeVector(seq : _*)
+    }
+
+
+    //...
+
+    @inline def row[Size <: Nat, Index <: Nat](mat: Mat[T,Size], row: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], rowEv : ToInt[Index]) : Vec[T,Size] = {
+      this.row[Size](mat, rowEv.apply())
+    }
+
+    @inline def column[Size <: Nat, Index <: Nat](mat: Mat[T,Size], column: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], colEv : ToInt[Index]) : Vec[T,Size] = {
+      this.column(mat, colEv.apply())
+    }
+
+    def transpose[Size <: Nat](mat: Mat[T,Size])(implicit sizeEv: ToInt[Size]) : Mat[T,Size] = {
+      val size = sizeEv()
+
+      val seq = new Array[T](size)
+      for(i <- 0 until size){
+        for(j <- 0 until size){
+          seq(i + j * size) = this.get(mat, j, i)
+        }
+      }
+
+      factory.makeMatrix(seq: _*)
+
+    }
+
+
+    def matrixMultiplication[Size <: Nat](a: Mat[T,Size], b: Mat[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]) : Mat[T,Size] = {
+
+      val size = sizeEv()
+
+      val seq = new Array[T](size * size)
+
+      for(i <- 0 until size){
+        for(j <- 0 until size){
+
+
+          seq(i + j * size) = row(a , i) dot column(b, j)
+        }
+      }
+
+      factory.makeMatrix(seq: _*)
+    }
+
+
+    //vector is supposed to be a row-vector
+    def vectorMultiplication[Size <: Nat](a: Vec[T,Size], b: Mat[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]): Vec[T,Size] = {
+      val size = sizeEv()
+
+      val seq = new Array[T](size)
+
+      for(i <- 0 until size){
+        seq(i) = a dot column(b,i)
+      }
+
+      factory.makeVector(seq: _*)
+    }
+
+    //vector is supposed to be a column-vector
+    def vectorMultiplication[Size <: Nat](a:Mat[T,Size], b: Vec[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]): Vec[T,Size] = {
+      val size = sizeEv()
+
+      val seq = new Array[T](size)
+
+      for(i <- 0 until size){
+        seq(i) = row(a, i) dot b
+      }
+
+      factory.makeVector(seq: _*)
+    }
+
   }
+
+
+
   //...........
 
   //also called Linear operator
-  trait LinearMap[V, @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait LinearMap[V[_,_], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
 
-    def map(a: V): V
+    def map(a: V[F,Dim]): V[F,Dim]
   }
 
-  trait BilinearMap[V, @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait BilinearMap[V[_,_], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
 
-    def map(a: V, b: V): V
+    def map(a: V[F,Dim], b: V[F,Dim]): V[F,Dim]
   }
 
-  trait CrossProductOverCanonicalEuclideanSpaceOverField[V, @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
+  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_], @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
 
-    def map(a: V, b: V): V = {
-      space.staticContainer.make(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
+    def map(a: V[F,Nat._3], b: V[F,Nat._3]): V[F,Nat._3] = {
+      space.staticContainer.factory.makeVector(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
     }
   }
 
-  trait TwoDimensionalVectorOrhoOperatorOverCanonicalEuclideanSpaceOverField[V, @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
-    override def map(a: V): V = {
-      space.staticContainer.make(-a.y, a.x)
+  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_], @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
+    override def map(a: V[F, Nat._2]): V[F, Nat._2] = {
+      space.staticContainer.factory.makeVector(-a.y, a.x)
     }
   }
 
@@ -143,40 +281,87 @@ object TypeClasses {
   }
 
 
-  trait ModuleOverRing[V, @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V]{
+  trait ModuleOverRing[V[_,_], @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
+
+    type Vector = V[R,Dim]
+
+    val dim = implicitly[ToInt[Dim]].apply() //TODO ok ??
     implicit def scalar: Ring[R]
-    implicit def staticContainer: StaticVector[R, V, Dim] //V must be static container
-
-    //@inline def plus(a:V, b:V) : V //can't use the same names because of type erasure
-    //@inline def negate(a:V):V
-    @inline def times(a:V, k:R):V
-    //@inline def zero(dim:Int) : V TODO
-
-    //@inline def minus(a:V, b:V):V = plus(a, negate(b))
+    implicit def staticContainer: StaticVector[R, V] //V must be static container
 
 
-    /*@inline @straight def x(v: V) : R
-    @inline @straight def y(v: V) : R = throw new OperationUnsupportedException("")
-    @inline @straight def z(v: V) : R = throw new OperationUnsupportedException("")
-    @inline @straight def w(v: V) : R = throw new OperationUnsupportedException("")*/
 
-    /**
-      *
-      * @param a
-      * @param b
-      * @return by element product
-      */
+
+    override def zero: V[R, Dim] = {
+      val seq = new Array[R](dim)
+
+      var i = 0
+      while(i < dim){
+        seq(i) = scalar.zero
+        i += 1
+      }
+
+      staticContainer.factory.makeVector[Dim](seq : _*)
+    }
+
+    override def plus(a: V[R, Dim], b: V[R, Dim]): V[R, Dim] = {
+      val seq = new Array[R](dim)
+
+      var i = 0
+      while(i < dim){
+        seq(i) = staticContainer.factory.get(a, i) + staticContainer.factory.get(b, i)
+        i += 1
+      }
+
+      staticContainer.factory.makeVector[Dim](seq : _*)
+    }
+
+    override def negate(a: V[R, Dim]): V[R, Dim] = {
+      val seq = new Array[R](dim)
+
+      var i = 0
+      while(i < dim){
+        seq(i) = -staticContainer.factory.get(a, i)
+        i += 1
+      }
+
+      staticContainer.factory.makeVector[Dim](seq : _*)
+    }
+
+
+    @inline def times(a:V[R,Dim], k:R): V[R,Dim] = {
+      val seq = new Array[R](dim)
+
+      var i = 0
+      while(i < dim){
+        seq(i) = staticContainer.factory.get(a, i) * k
+        i += 1
+      }
+
+      staticContainer.factory.makeVector[Dim](seq : _*)
+    }
+
 
     //TODO Modules in general do not have this operation !
-    @inline def timesByElement(a: V, b: V) : V
+    @inline def timesByElement(a: V[R,Dim], b: V[R,Dim]) : V[R,Dim] = {
+      val seq = new Array[R](dim)
+
+      var k = 0
+      while(k < dim){
+        seq(k) = staticContainer.factory.get(a, k) * staticContainer.factory.get(b, k)
+        k += 1
+      }
+
+      staticContainer.factory.makeVector[Dim](seq : _*)
+    }
   }
 
 
 
-  trait VectorSpaceOverField[V,@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
+  trait VectorSpaceOverField[V[_,_],@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
 
     override implicit def scalar: Field[F]
-    @inline def div(a:V, k:F):V = times(a, scalar.inv(k))
+    @inline def div(a:V[F,Dim], k:F):V[F,Dim] = times(a, scalar.inv(k))
 
   }
 
@@ -203,14 +388,14 @@ object TypeClasses {
 
 
   //used to better utilise implicits (being more concrete with what the matrix should be)
-  trait MixinForMutables[A, B]{
+ /* trait MixinForMutables[A, B]{
     def mixin(obj: A) : A with B
     def mixinCopy(obj: A) : A with B
   }
+*/
 
 
-
-  trait Gram
+  /*trait Gram
   trait CrossProduct
 
   //used to specify the area where the matrix may be used (great for implicits)
@@ -289,7 +474,6 @@ object TypeClasses {
   trait Canonical2DimOrthoOp[V]{
     def ortho(a: V) : V
   }
-  //TODO--------------------------------------------------------------------------------
 
   trait EuclideanSpaceOverField[V,@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim]{
 
@@ -313,20 +497,36 @@ object TypeClasses {
   }
 
 
+  */
+  //TODO--------------------------------------------------------------------------------
+
+
+
+
   //using canonical basis
-  trait CanonicalEuclideanSpaceOverField[V,@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
+  trait CanonicalEuclideanSpaceOverField[V[_,_],@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
 
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F]
 
-    @inline def dotProduct(a: V, b: V): F
+    @inline def dotProduct(a: V[F,Dim], b: V[F,Dim]): F = {
+      var res = scalar.zero
 
-    @inline def squaredLength(a: V): F = dotProduct(a, a)
+      var i = 0
+      while(i < dim){
+        res += staticContainer.factory.get(a, i) * staticContainer.factory.get(b, i)
+        i += 1
+      }
 
-    @inline def length(a: V): F = scalar.sqrt(dotProduct(a, a))
+      res
+    }
 
-    @inline def angle(a: V, b: V): F = scalar.acos(scalar.div(scalar.div(dotProduct(a, b), length(a)), length(b)))
+    @inline def squaredLength(a: V[F,Dim]): F = dotProduct(a, a)
 
-    @inline def normalize(v: V): V = {
+    @inline def length(a: V[F,Dim]): F = scalar.sqrt(dotProduct(a, a))
+
+    @inline def angle(a: V[F,Dim], b: V[F,Dim]): F = scalar.acos(scalar.div(scalar.div(dotProduct(a, b), length(a)), length(b)))
+
+    @inline def normalize(v: V[F,Dim]): V[F,Dim] = {
       val len = length(v)
       div(v, len)
     }
@@ -505,8 +705,81 @@ object TypeClasses {
   }
 
 
+  class VecIsCanonicalEuclideanSpaceOverField[@sp F, Dim <: Nat](field : Field[F] with Trig[F] with Euclidean[F])(implicit dim: ToInt[Dim]) extends CanonicalEuclideanSpaceOverField[Vec, F, Dim]{
+    override implicit def scalar: Field[F] with Trig[F] with Euclidean[F] = field
+    override implicit def staticContainer: StaticVector[F, Vec] = new VecIsStaticVector[F]
 
-  class Int2IsModuleOverInt extends ModuleOverRing[Int2, Int,Nat._2]{
+  }
+
+  class Vec3HasCrossProduct[@sp F] extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{
+    override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._3] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._3]]
+  }
+
+  class Vec2HasOrtho[@sp F] extends TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec, F]{
+    override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._2] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._2]]
+  }
+
+
+  //Those are just normal containers with dynamic sizes (not known at compile time, moreover size cannot change across instances of collection even at compile time)
+  class Tuple2IsContainer2[@specialized T] extends Container2[T, (T,T)]{
+    override def x(v: (T,T)): T = v._1
+
+    override def y(v: (T,T)): T = v._2
+  }
+  class Tuple3IsContainer3[@specialized T] extends Container3[T, (T,T,T)]{
+    override def x(v: (T,T,T)): T = v._1
+
+    override def y(v: (T,T,T)): T = v._2
+
+    override def z(v: (T,T,T)): T = v._3
+  }
+  class Tuple4IsContainer4[@specialized T] extends Container4[T, (T,T,T,T)]{
+    override def x(v: (T,T,T,T)): T = v._1
+
+    override def y(v: (T,T,T,T)): T = v._2
+
+    override def z(v: (T,T,T,T)): T = v._3
+
+    override def w(v: (T,T,T,T)): T = v._4
+  }
+  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
+    override def x(v: Vec2[T]): T = v(0)
+
+    override def y(v: Vec2[T]): T = v(1)
+  }
+  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
+    override def x(v: Vec3[T]): T = v(0)
+
+    override def y(v: Vec3[T]): T = v(1)
+
+    override def z(v: Vec3[T]): T = v(2)
+  }
+  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
+    override def x(v: Vec4[T]): T = v(0)
+
+    override def y(v: Vec4[T]): T = v(1)
+
+    override def z(v: Vec4[T]): T = v(2)
+
+    override def w(v: Vec4[T]): T = v(3)
+  }
+  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
+    override def x(v: Array[T]): T = v(0)
+
+    override def y(v: Array[T]): T = v(1)
+
+    override def z(v: Array[T]): T = v(2)
+
+    override def w(v: Array[T]): T = v(3)
+
+    override def apply(con: Array[T], i: Int): T = con(i)
+
+    override def size(con: Array[T]): Int = con.size
+  }
+
+
+
+  /*class Int2IsModuleOverInt extends ModuleOverRing[Int2, Int,Nat._2]{
 
 
     override implicit def staticContainer: StaticVector[Int, Int2, Nat._2] = new Vec2IsStaticVector[Int]
@@ -580,7 +853,7 @@ object TypeClasses {
       * @return by element product
       */
     override def timesByElement(a: Int4, b: Int4): Int4 = Int4(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w)
-  }
+  }*/
 
 
 
@@ -754,7 +1027,7 @@ object TypeClasses {
     override def w(v: Array[F]) = v(3)
   }*/
 
-  class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] with CrossProductOverCanonicalEuclideanSpaceOverField[Vec3[T], T]{
+  /*class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] with CrossProductOverCanonicalEuclideanSpaceOverField[Vec3[T], T]{
 
 
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] = this
@@ -860,62 +1133,7 @@ object TypeClasses {
 
 
 
-  //Those are just normal containers with dynamic sizes (not known at compile time, moreover size cannot change across instances of collection even at compile time)
-  class Tuple2IsContainer2[@specialized T] extends Container2[T, (T,T)]{
-    override def x(v: (T,T)): T = v._1
-
-    override def y(v: (T,T)): T = v._2
-  }
-  class Tuple3IsContainer3[@specialized T] extends Container3[T, (T,T,T)]{
-    override def x(v: (T,T,T)): T = v._1
-
-    override def y(v: (T,T,T)): T = v._2
-
-    override def z(v: (T,T,T)): T = v._3
-  }
-  class Tuple4IsContainer4[@specialized T] extends Container4[T, (T,T,T,T)]{
-    override def x(v: (T,T,T,T)): T = v._1
-
-    override def y(v: (T,T,T,T)): T = v._2
-
-    override def z(v: (T,T,T,T)): T = v._3
-
-    override def w(v: (T,T,T,T)): T = v._4
-  }
-  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
-    override def x(v: Vec2[T]): T = v.x
-
-    override def y(v: Vec2[T]): T = v.y
-  }
-  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
-    override def x(v: Vec3[T]): T = v.x
-
-    override def y(v: Vec3[T]): T = v.y
-
-    override def z(v: Vec3[T]): T = v.z
-  }
-  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
-    override def x(v: Vec4[T]): T = v.x
-
-    override def y(v: Vec4[T]): T = v.y
-
-    override def z(v: Vec4[T]): T = v.z
-
-    override def w(v: Vec4[T]): T = v.w
-  }
-  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
-    override def x(v: Array[T]): T = v(0)
-
-    override def y(v: Array[T]): T = v(1)
-
-    override def z(v: Array[T]): T = v(2)
-
-    override def w(v: Array[T]): T = v(3)
-
-    override def apply(con: Array[T], i: Int): T = con(i)
-
-    override def size(con: Array[T]): Int = con.size
-  }
+  */
 
 
 

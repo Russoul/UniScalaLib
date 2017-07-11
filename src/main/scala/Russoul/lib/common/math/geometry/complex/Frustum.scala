@@ -1,17 +1,15 @@
 package Russoul.lib.common.math.geometry.complex
 
-import Russoul.lib.common.TypeClasses.{CrossProduct, Gram}
-import Russoul.lib.common.math.algebra.{Mat, Vec3}
-import Russoul.lib.common.{Real, Real3}
+import Russoul.lib.common.{Real, Real3, RealF, Vec3}
 import Russoul.lib.common.math.geometry.simple.{PlaneOver, RectangleOver, SphereOver}
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.Implicits._
 
 
-class Frustum(val pos: Vec3[Real], val angleOfView: Real, val aspect: Real, val lookingDir: Vec3[Real], val zNear: Real, val zFar: Real, val up: Vec3[Real])
+class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, val lookingDir: Vec3[RealF], val zNear: RealF, val zFar: RealF, val up: Vec3[RealF])
 {
 
-  def genSphericalBound(near: RectangleOver[Real3,Real], far: RectangleOver[Real3, Real]): SphereOver[Real3, Real] =
+  def genSphericalBound(near: RectangleOver[Real3,RealF], far: RectangleOver[Real3, RealF]): SphereOver[Real3, RealF] =
   {
     val centerf = (zFar - zNear) / 2
     val n = -far.genNormal()
@@ -27,7 +25,7 @@ class Frustum(val pos: Vec3[Real], val angleOfView: Real, val aspect: Real, val 
     *
     * @return facing the camera, out of the frustum
     */
-  def genNearPlane(): RectangleOver[Real3, Real] =
+  def genNearPlane(): RectangleOver[Real3, RealF] =
   {
     val center = pos + lookingDir * zNear
 
@@ -40,7 +38,7 @@ class Frustum(val pos: Vec3[Real], val angleOfView: Real, val aspect: Real, val 
     val ext1v = v1 * (ext1 * aspect)
     val ext2v = up * ext1
 
-    val nearPlane:RectangleOver[Real3, Real] = new RectangleOver(center, ext1v, ext2v)
+    val nearPlane:RectangleOver[Real3, RealF] = new RectangleOver[](center, ext1v, ext2v)
 
     nearPlane
   }

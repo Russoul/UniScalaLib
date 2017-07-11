@@ -1,16 +1,15 @@
 package Russoul.lib.common.helper.model
 
 import Russoul.lib.common._
-import Russoul.lib.common.math.algebra.{Mat, Mat4, Vec2, Vec3}
 import Russoul.lib.common.utils.Arr
-
+import Russoul.lib.common.Implicits._
 
 
 class WaveFrontObject(name: String)
 {
-  private val vertexList = new Arr[Vec3[Real]]()
-  private val normalList = new Arr[Vec3[Real]]()
-  private val textureList = new Arr[Vec2[Real]]()
+  private val vertexList = new Arr[Vec3[RealF]]()
+  private val normalList = new Arr[Vec3[RealF]]()
+  private val textureList = new Arr[Vec2[RealF]]()
 
   private val vertexIndicesTriangleList = new Arr[Int]()
   private val texCoordsIndicesTriangleList = new Arr[Int]()
@@ -29,30 +28,29 @@ class WaveFrontObject(name: String)
     normalIndicesTriangleList += n
   }
 
-  def addVertex(vertex: Vec3[Real]) =
+  def addVertex(vertex: Vec3[RealF]) =
   {
     vertexList += vertex
   }
 
-  def addNormal(normal: Vec3[Real]) =
+  def addNormal(normal: Vec3[RealF]) =
   {
     normalList += normal
   }
 
-  def addTextureCoord(tex: Vec2[Real]): Unit =
+  def addTextureCoord(tex: Vec2[RealF]): Unit =
   {
     textureList += tex
   }
 
   def getName() = name
 
-  import Implicits._
 
 
-  def scale(v3: Vec3[Real])(implicit iv3: V3, iv4: V4): WaveFrontObject =
+  def scale(v3: Vec3[RealF])(implicit iv3: V3, iv4: V4): WaveFrontObject =
   {
-    val mat = Mat4.matrixSCALE(v3)
-    vertexList.map(_ ⨯ mat)
+    val mat = Mat4F.matrixSCALE(v3)
+    vertexList.map(x => {val temp = Float4(x, 0) ⨯ mat; Float3(temp.x, temp.y, temp.z)})
     this
   }
 

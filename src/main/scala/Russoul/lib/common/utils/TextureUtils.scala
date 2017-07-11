@@ -1,7 +1,7 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.TypeClasses.{Euclidean, Field, Orderable}
-import Russoul.lib.common.math.algebra.Vec2
+import Russoul.lib.common.Vec2
+import Russoul.lib.common.Implicits._
 
 /**
   * Created by russoul on 26.03.17.

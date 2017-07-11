@@ -1,6 +1,9 @@
 package Russoul.lib.common
 
+import Russoul.lib.common.StaticContainerTypeClasses.{MatIsStaticMatrix, VecIsStaticVector}
 import Russoul.lib.common.TypeClasses._
+import Russoul.lib.common.math.algebra.{Vec2, Vec4}
+import shapeless.Nat
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
@@ -30,42 +33,7 @@ object Instances {
     implicit val complexIsField = new ComplexIsField
   }
   
-  
-  trait Int2Instances{
-    implicit val int2IsModule2 = new Int2IsModuleOverInt
-  }
 
-  trait Int3Instances{
-    implicit val int3IsModule3 = new Int3IsModuleOverInt
-  }
-  
-  trait TurpleDouble3Instances{
-    implicit val turpleDouble3IsField = new Double3IsField
-  }
-  
-  trait Double3Instances{
-    implicit val double3CanEuclideanSpace3 = new Vec3IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
-  }
-
-  trait Double4Instances{
-    implicit val double4CanEuclideanSpace4 = new Vec4IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
-  }
-
-  trait Double2Instances{
-    implicit val double2CanEuclideanSpace2 = new Vec2IsCanonicalEuclideanSpaceOverField[Double](new DoubleIsFullField)
-  }
-
-  trait Float3Instances{
-    implicit val float3CanEuclideanSpace3 = new Vec3IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
-  }
-
-  trait Float4Instances{
-    implicit val float4CanEuclideanSpace4 = new Vec4IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
-  }
-
-  trait Float2Instances{
-    implicit val float2CanEuclideanSpace2 = new Vec2IsCanonicalEuclideanSpaceOverField[Float](new FloatIsFullField)
-  }
 
   trait ArrayInstances{
 
@@ -83,11 +51,20 @@ object Instances {
     //def ArrayAsEuclideanSpace[@specialized F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
   }
 
-  trait SpecialIntances{
+  trait DefaultAlgebraicTypeInstances{
+    implicit def vecIsStaticVector[@specialized T : ClassTag] = new VecIsStaticVector[T]
+    implicit def matIsStaticMatrix[@specialized T : ClassTag] = new MatIsStaticMatrix[T]
+
+    implicit def vecIsCanEuclideanSpace[@sp F, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
+
+    implicit def vec2HasOrtho[@sp F] = new Vec2HasOrtho[F]
+    implicit def vec3HasCrossProduct[@sp F] = new Vec3HasCrossProduct[F]
+  }
+
+  trait SpecialInstances{
 
   }
 
-  object ArrayInstances extends ArrayInstances
 
 
 
@@ -96,16 +73,8 @@ object Instances {
     FloatInstances with
     DoubleInstances with
     ComplexInstances with
-    Int2Instances with
-    Int3Instances with
-    TurpleDouble3Instances with
-    Double2Instances with
-    Double3Instances with
-    Double4Instances with
-    Float2Instances with
-    Float3Instances with
-    Float4Instances with
-    ArrayInstances
+    ArrayInstances with
+    DefaultAlgebraicTypeInstances
   
   
 
