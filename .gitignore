@@ -1,9 +1,7 @@
 .idea/
 project/project
 project/target
-project_lib/project
-project_lib/target
-project_macros/project
-project_macros/target
-project_test/project
-project_test/target
+target/
+*.jar
+*.class
+*.log

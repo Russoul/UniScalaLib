@@ -112,7 +112,7 @@ object StaticContainerTypeClasses {
 
 
   class VecIsStaticVector[@sp T : ClassTag] extends StaticVector[T, Vec]{
-    override val factory: AlgebraicTypeFactory[T, Vec, _] = new DefaultAlgebraicFactory[T]
+    override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
   }
 
   class MatIsStaticMatrix[@sp T : ClassTag] extends StaticSquareMatrix[T, Vec, Mat]{

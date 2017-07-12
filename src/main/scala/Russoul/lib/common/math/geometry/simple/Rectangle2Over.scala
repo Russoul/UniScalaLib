@@ -15,10 +15,10 @@ import scala.reflect.ClassTag
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Rectangle2Over[V[_,_], @specialized F : ClassTag : Field](val center:V[F,_2],val extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F]{
+@immutable class Rectangle2Over[V[_,_], @specialized F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F]{
 
   override def translate(v: V[F,_2]): Rectangle2Over[V,F] = {
-    Rectangle2Over(center + v, extent)
+    new Rectangle2Over(center + v, extent)
   }
 
   def genVertices(): Array[V[F,_2]] = Array[V[F,_2]](center - extent, center + ev.staticContainer.factory.makeVector[_2](extent.x, -extent.y), center + extent, center + ev.staticContainer.factory.makeVector[_2](-extent.x, extent.y))
@@ -52,9 +52,11 @@ import scala.reflect.ClassTag
 
 object Rectangle2Over
 {
-  def fromMinMax[V : ClassTag,@specialized F : Field](min:V, max:V)(implicit ev : CanonicalEuclideanSpaceOverField[V,F] , c: ConvertibleFromDouble[F]):Rectangle2Over[V,F] =
+  def fromMinMax[V[_,_],@specialized F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F]):Rectangle2Over[V,F] =
   {
-    val t = (max - min)*c.fromDouble(0.5D)
+    val t = (max - min)* 0.5D.as[F]
     Rectangle2Over(min + t, t)
   }
+
+  def apply[V[_,_], @specialized F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) = new Rectangle2Over[V,F](center, extent)
 }

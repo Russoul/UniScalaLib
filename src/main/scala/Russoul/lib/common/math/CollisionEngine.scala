@@ -6,7 +6,6 @@ import Russoul.lib.common._
 import Russoul.lib.common.math.geometry.simple._
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.TypeClasses._
-import Russoul.lib.common.math.algebra.{Vec2, Vec3}
 import Russoul.lib.common.math.algebra.Mat
 
 import scala.language.postfixOps
@@ -17,12 +16,12 @@ import Implicits._
 object CollisionEngine
 {
 
-  def genGramOrtho3[@specialized F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
+  /*def genGramOrtho3[@specialized F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
   {
     Mat[F](3,3, Array[F](ev.one, ev.zero, ev.zero,
                     ev.zero, ev.one, ev.zero,
                     ev.zero, ev.zero, ev.one))
-  }
+  }*/
 
   /**
     *
@@ -69,7 +68,7 @@ object CollisionEngine
   }
 
 
-  private def checkRayBox(ray:Ray, recs:Arr[Rectangle]):Option[(Real, Rectangle)] =
+  private def checkRayBox(ray:Ray, recs:Array[Rectangle]):Option[(Real, Rectangle)] =
   {
     var tmin = -1D
     var re:Rectangle = null
@@ -104,7 +103,7 @@ object CollisionEngine
     * @return unit dist, face of intersection
     */
   def checkRayBox(ray:Ray, obb:OBB):Option[(Real, Rectangle)] ={
-    val recs = obb.genRectangles()
+    val recs:Array[Rectangle] = obb.genRectangles()
 
     checkRayBox(ray, recs)
   }
@@ -116,7 +115,7 @@ object CollisionEngine
     * @return unit dist, face of intersection
     */
   def checkRayBox(ray:Ray, aabb:AABB):Option[(Real, Rectangle)] ={
-    val recs = aabb.genRectangles()
+    val recs:Array[Rectangle] = aabb.genRectangles()
 
     checkRayBox(ray, recs)
   }
@@ -142,8 +141,8 @@ object CollisionEngine
 
     val normals = new Arr[Real3]
 
-    val recs = checkThis.genRectangles()
-    recs ++= checkWith.genRectangles()
+    var recs = checkThis.genRectangles()
+    recs = recs ++ checkWith.genRectangles() //TODO fast enough ?
 
     for(i <- 0 until recs.size/2 )
     {
@@ -184,8 +183,8 @@ object CollisionEngine
 
     val normals = Arr[Real3](16)
 
-    val recs = checkThis.genRectangles()
-    recs ++= checkWith.genRectangles()
+    var recs = checkThis.genRectangles()
+    recs = recs ++ checkWith.genRectangles()
 
     for(i <- 0 until recs.size/2 )
     {
@@ -460,7 +459,7 @@ object CollisionEngine
     * @param vertices
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  private def checkBoxFrustum(vertices: Arr[Real3], planes: Arr[Plane]): Int =
+  private def checkBoxFrustum(vertices: Array[Real3], planes: Arr[Plane]): Int =
   {
 
     var totalIn = 0
@@ -657,10 +656,10 @@ object CollisionEngine
 
     val vertices = rec.genVertices()
 
-    val l0 = new Line2Over[Real2,Real](vertices(0), vertices(1))
-    val l1 = new Line2Over[Real2,Real](vertices(1), vertices(2))
-    val l2 = new Line2Over[Real2,Real](vertices(2), vertices(3))
-    val l3 = new Line2Over[Real2,Real](vertices(3), vertices(0))
+    val l0 = Line2Over(vertices(0), vertices(1))
+    val l1 = Line2Over(vertices(1), vertices(2))
+    val l2 = Line2Over(vertices(2), vertices(3))
+    val l3 = Line2Over(vertices(3), vertices(0))
 
     val i0 = checkLine2Line2(line, l0)
     val i1 = checkLine2Line2(line, l1)
@@ -736,8 +735,8 @@ object CollisionEngine
 
     val v1 = line.end-line.start
 
-    val ray1 = Ray2Over[Real2,Real](line.start, v1)
-    val ray2 = Ray2Over[Real2,Real](circle.center, ray1.dir.⟂())
+    val ray1 = Ray2Over(line.start, v1)
+    val ray2 = Ray2Over(circle.center, ray1.dir.⟂())
 
 
     val dist = checkRay2Ray2(ray1, ray2).get //can be always found as rays are orthogonal

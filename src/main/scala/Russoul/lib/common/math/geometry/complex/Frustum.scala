@@ -4,12 +4,13 @@ import Russoul.lib.common.{Real, Real3, RealF, Vec3}
 import Russoul.lib.common.math.geometry.simple.{PlaneOver, RectangleOver, SphereOver}
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.Implicits._
+import Russoul.lib.common.math.algebra.Vec
 
 
 class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, val lookingDir: Vec3[RealF], val zNear: RealF, val zFar: RealF, val up: Vec3[RealF])
 {
 
-  def genSphericalBound(near: RectangleOver[Real3,RealF], far: RectangleOver[Real3, RealF]): SphereOver[Real3, RealF] =
+  def genSphericalBound(near: RectangleOver[Vec,RealF], far: RectangleOver[Vec, RealF]): SphereOver[Vec, RealF] =
   {
     val centerf = (zFar - zNear) / 2
     val n = -far.genNormal()
@@ -25,7 +26,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     *
     * @return facing the camera, out of the frustum
     */
-  def genNearPlane(): RectangleOver[Real3, RealF] =
+  def genNearPlane(): RectangleOver[Vec, RealF] =
   {
     val center = pos + lookingDir * zNear
 
@@ -38,7 +39,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     val ext1v = v1 * (ext1 * aspect)
     val ext2v = up * ext1
 
-    val nearPlane:RectangleOver[Real3, RealF] = new RectangleOver[](center, ext1v, ext2v)
+    val nearPlane = RectangleOver(center, ext1v, ext2v)
 
     nearPlane
   }
@@ -47,7 +48,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     *
     * @return facing the camera, out of the frustum
     */
-  def genFarPlane(): RectangleOver[Real3, Real] =
+  def genFarPlane(): RectangleOver[Vec, RealF] =
   {
     val center = pos + lookingDir * zFar
 
@@ -60,7 +61,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     val ext1v = v1 * (ext1 * aspect)
     val ext2v = up * ext1
 
-    val farPlane = new RectangleOver[Real3, Real](center, ext1v, ext2v)
+    val farPlane = RectangleOver(center, ext1v, ext2v)
 
     farPlane
   }
@@ -70,7 +71,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     *
     * @return normals face into the frustum, list of planes, point and normal for each
     */
-  def genExtraPlanes(): Arr[PlaneOver[Real3, Real]] =
+  def genExtraPlanes(): Array[PlaneOver[Vec, RealF]] =
   {
     val n = genNearPlane()
     val f = genFarPlane()
@@ -109,7 +110,7 @@ class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, v
     val normalBottom = nb.⨯(-rb).normalize()
 
 
-    Arr[PlaneOver[Real3, Real]](PlaneOver[Real3, Real](nlb, normalLeft), PlaneOver[Real3, Real](nrb, normalRight), PlaneOver[Real3, Real](frt, normalTop), PlaneOver[Real3, Real](flb, normalBottom))
+    Array[PlaneOver[Vec, RealF]](PlaneOver(nlb, normalLeft), PlaneOver(nrb, normalRight), PlaneOver(frt, normalTop), PlaneOver(flb, normalBottom))
   }
 }
 

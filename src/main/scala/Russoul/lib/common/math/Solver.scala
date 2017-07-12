@@ -2,10 +2,10 @@ package Russoul.lib.common.math
 
 import java.lang
 
-import Russoul.lib.common.Real
+import Russoul.lib.common.{Real, Vec2}
 import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.Implicits._
-import Russoul.lib.common.math.algebra.{Vec, Vec2}
+import Russoul.lib.common.math.algebra.Vec
 
 import scala.annotation.tailrec
 import scala.reflect.ClassTag
@@ -50,7 +50,7 @@ object Solver
   /**
     * X³ + pX + q = 0
     */
-  def findRealRootsCanonicalPolynomial3[A : ClassTag](p : A, q: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Vec[A] = {
+  def findRealRootsCanonicalPolynomial3[A : ClassTag](p : A, q: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Array[A] = {
 
     val Q = ev.pow(p / 3D.as[A], 3D.as[A]) + ev.pow(q/2D.as[A], 2D.as[A])
     val sqrtQ = ev.sqrt(Q)
@@ -62,11 +62,11 @@ object Solver
 
 
     if(Q > 0D.as[A]){ //1 Real, 2 Complex conjugated roots
-      Vec(sum)
+      Array(sum)
     }else if(Q =? 0D.as[A]){
       val r = -sum/2D.as[A]
 
-      Vec(alpha + beta, r, r)
+      Array(alpha + beta, r, r)
     }else{
       val phi = if(q < 0D.as[A]){
         ev.atan(ev.sqrt(-Q)/(-q/2D.as[A]))
@@ -79,30 +79,30 @@ object Solver
       val r2 = ev.sqrt(-p/3D.as[A]) * ev.cos(phi/3D.as[A] + ev.fromDouble(2D * Math.PI / 3D)) * 2D.as[A]
       val r3 = ev.sqrt(-p/3D.as[A]) * ev.cos(phi/3D.as[A] + ev.fromDouble(4D * Math.PI / 3D)) * 2D.as[A]
 
-      Vec(r1,r2,r3)
+      Array(r1,r2,r3)
     }
   }
 
   /**
     * aX³ + bX² + cX + d = 0, a ≠ 0
     */
-  def findRealRootsPolynomial3[A : ClassTag](a: A, b: A, c: A, d: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Vec[A] = {
+  def findRealRootsPolynomial3[A : ClassTag](a: A, b: A, c: A, d: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Array[A] = {
     val p = (a*c*3D.as[A] - b*b)/(a*a*3D.as[A])
     val q = (b*b*b*2D.as[A] - a*b*c*9D.as[A] + a*a*d*27D.as[A])/(a*a*a*27D.as[A])
 
     val findCanonical = findRealRootsCanonicalPolynomial3(p,q)
-    val res = new Array[A](findCanonical.dim())
-    for(i <- 1 to findCanonical.dim()){
+    val res = new Array[A](findCanonical.size())
+    for(i <- 1 to findCanonical.size()){
       res(i-1) = findCanonical(i) - b/(a*3D.as[A])
     }
 
-    Vec[A](res)//TODO does not work, fix : http://math.intemodino.com/ru/algebra/equations/cardano%27s-formula-for-solving-cubic-equations.html
+    res
   }
 
   /**
     * aX⁴ + bX³ + cX² + dX + e = 0, a ≠ 0
     */
-  def findRealRootsPolynomial4[A : ClassTag](a: A, b: A, c: A, d: A, e: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Option[Vec[A]] = {
+  def findRealRootsPolynomial4[A : ClassTag](a: A, b: A, c: A, d: A, e: A)(implicit ev: Field[A] with Orderable[A] with ConvertibleFromDouble[A] with Euclidean[A] with Trig[A]): Option[Array[A]] = {
 
     val A = b/a
     val B = c/a
@@ -129,14 +129,14 @@ object Solver
           case None =>
             None
           case some =>
-            Some(Vec(some.get.x, some.get.y))
+            Some(Array(some.get.x, some.get.y))
         }
       case some =>
         r2 match{
           case None =>
-            Some(Vec(some.get.x, some.get.y))
+            Some(Array(some.get.x, some.get.y))
           case also =>
-            Some(Vec(some.get.x, some.get.y, also.get.x, also.get.y))
+            Some(Array(some.get.x, some.get.y, also.get.x, also.get.y))
         }
     }
   }

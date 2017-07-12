@@ -63,6 +63,10 @@ package object common
   type Vec3[@sp T] = Vec[T, Nat._3]
   type Vec4[@sp T] = Vec[T, Nat._4]
 
+  type Mat2[@sp A] = Mat[A, Nat._2]
+  type Mat3[@sp A] = Mat[A, Nat._3]
+  type Mat4[@sp A] = Mat[A, Nat._4]
+
   object Vec2{
     @inline def apply[@specialized A : ClassTag](x: A, y: A): Vec[A, Nat._2] = Vec[A,Nat._2](x,y)
   }
@@ -77,80 +81,78 @@ package object common
   type Double2 = Real2
   type Double3 = Real3
   type Double4 = Real4
-  //type DoubleN = Vec[Double]
   //...................
   
   type Float2 = Vec[Float, Nat._2]
   type Float3 = Vec[Float, Nat._3]
   type Float4 = Vec[Float, Nat._4]
-  //type FloatN = Vec[Float]
-  
+
   type Int2 = Vec[Int, Nat._2]
   type Int3 = Vec[Int, Nat._3]
   type Int4 = Vec[Int, Nat._4]
 
+
   type Mat4D = Mat[Double, Nat._4]
   type Mat4F = Mat[Float, Nat._4]
 
-  
   //--------------------------------------
 
   //Common simple geometric objects over reals--------------
-  type AABB = AABBOver[Real3, Real]
+  type AABB = AABBOver[Vec, Real]
   object AABB{
-    def apply(center: Real3, extent: Real3) = AABBOver[Real3,Real](center, extent)
+    def apply(center: Real3, extent: Real3) = AABBOver[Vec,Real](center, extent)
   }
-  type Circle = CircleOver[Real2, Real]
+  type Circle = CircleOver[Vec, Real]
   object Circle{
-    def apply(center : Real2, rad: Real) = CircleOver(center, rad)
+    def apply(center : Real2, rad: Real) = CircleOver[Vec,Real](center, rad)
   }
-  type Line2 = Line2Over[Real2, Real]
+  type Line2 = Line2Over[Vec, Real]
   object Line2{
-    def apply(start : Real2, end : Real2): Line2 = Line2Over[Real2, Real](start, end)
+    def apply(start : Real2, end : Real2): Line2 = Line2Over[Vec, Real](start, end)
   }
-  type Line = LineOver[Real3, Real]
+  type Line = LineOver[Vec, Real]
   object Line{
-    def apply(start: Real3, end: Real3): Line = LineOver[Real3, Real](start, end)
+    def apply(start: Real3, end: Real3): Line = LineOver[Vec, Real](start, end)
   }
   type OBB = OBBOverReal
   object OBB{
-    def apply(center: Real3, right: Real3, up: Real3, extentRight: Real, extentUp: Real, extentLook: Real): OBB = new OBBOverReal(center, right, up, extentRight, extentUp, extentLook)
+    def apply(center: Real3, right: Real3, up: Real3, extentRight: Real, extentUp: Real, extentLook: Real): OBB = OBBOverReal(center, right, up, extentRight, extentUp, extentLook)
   }
-  type Plane = PlaneOver[Real3, Real]
+  type Plane = PlaneOver[Vec, Real]
   object Plane{
-    def apply(point: Real3, normal: Real3): Plane = PlaneOver[Real3, Real](point, normal)
+    def apply(point: Real3, normal: Real3): Plane = PlaneOver[Vec, Real](point, normal)
   }
-  type Ray2 = Ray2Over[Real2, Real]
+  type Ray2 = Ray2Over[Vec, Real]
   object Ray2{
-    def apply(start: Real2, end: Real2): Ray2 = Ray2Over[Real2,Real](start, end)
+    def apply(start: Real2, end: Real2): Ray2 = Ray2Over[Vec,Real](start, end)
   }
-  type Ray = RayOver[Real3, Real]
+  type Ray = RayOver[Vec, Real]
   object Ray{
-    def apply(start: Real3, end: Real3): Ray = RayOver[Real3, Real](start, end)
+    def apply(start: Real3, end: Real3): Ray = RayOver[Vec, Real](start, end)
   }
-  type Rectangle2 = Rectangle2Over[Real2, Real]
+  type Rectangle2 = Rectangle2Over[Vec, Real]
   object Rectangle2{
-    def apply(center: Real2, extent: Real2): Rectangle2 = Rectangle2Over[Real2,Real](center, extent)
+    def apply(center: Real2, extent: Real2): Rectangle2 = Rectangle2Over[Vec,Real](center, extent)
   }
-  type Rectangle = RectangleOver[Real3, Real]
+  type Rectangle = RectangleOver[Vec, Real]
   object Rectangle{
-    def apply(center: Real3, right : Real3, up : Real3): Rectangle = RectangleOver[Real3, Real](center, right, up)
+    def apply(center: Real3, right : Real3, up : Real3): Rectangle = RectangleOver[Vec, Real](center, right, up)
   }
-  type Sphere = SphereOver[Real3, Real]
+  type Sphere = SphereOver[Vec, Real]
   object Sphere{
-    def apply(center: Real3, rad: Real): Sphere = SphereOver[Real3, Real](center, rad)
+    def apply(center: Real3, rad: Real): Sphere = SphereOver[Vec, Real](center, rad)
   }
-  type Square2 = Square2Over[Real2, Real]
+  type Square2 = Square2Over[Vec, Real]
   object Square2{
-    def apply(center: Real2, extent: Real): Square2 = Square2Over[Real2, Real](center, extent)
+    def apply(center: Real2, extent: Real): Square2 = Square2Over(center, extent)
   }
-  type Triangle = TriangleOver[Real3, Real]
+  type Triangle = TriangleOver[Vec, Real]
   object Triangle{
-    def apply(p1: Real3, p2: Real3, p3: Real3): Triangle = TriangleOver[Real3, Real](p1, p2, p3)
+    def apply(p1: Real3, p2: Real3, p3: Real3): TriangleOver[Vec,Real] = TriangleOver(p1, p2, p3)
   }
-  type OBB2 = OBB2Over[Real2, Real]
+  type OBB2 = OBB2Over[Vec, Real]
   object OBB2{
-    def apply(center: Real2, right: Real2, up: Real2, extentRight: Real, extentUp: Real): OBB2 = OBB2Over(center, right, up, extentRight, extentUp)
+    def apply(center: Real2, right: Real2, up: Real2, extentRight: Real, extentUp: Real): OBB2Over[Vec, Real] = OBB2Over(center, right, up, extentRight, extentUp)
   }
 
 
@@ -172,70 +174,81 @@ package object common
 
 
 
-
   //Common simple geometric objects over Floats--------------
-  type AABBF = AABBOver[Float3, Float]
+  type AABBF = AABBOver[Vec, Float]
   object AABBF{
-    def apply(center: Float3, extent: Float3) = AABBOver[Float3, Float](center, extent)
+    def apply(center: Float3, extent: Float3) = AABBOver[Vec, Float](center, extent)
   }
-  type CircleF = CircleOver[Float2, Float]
+  type CircleF = CircleOver[Vec, Float]
   object CircleF{
     def apply(center : Float2, rad: Float) = CircleOver(center, rad)
   }
-  type Line2F = Line2Over[Float2, Float]
+  type Line2F = Line2Over[Vec, Float]
   object Line2F{
-    def apply(start : Float2, end : Float2) = Line2Over[Float2, Float](start, end)
+    def apply(start : Float2, end : Float2) = Line2Over[Vec, Float](start, end)
   }
-  type LineF = LineOver[Float3, Float]
+  type LineF = LineOver[Vec, Float]
   object LineF{
-    def apply(start: Float3, end: Float3) = LineOver[Float3, Float](start, end)
+    def apply(start: Float3, end: Float3) = LineOver[Vec, Float](start, end)
   }
-  type OBBF = OBBOver[Float3,Float]
+  type OBBF = OBBOver[Vec,Float]
   object OBBF{
-    def apply(center: Float3, right: Float3, up: Float3, extentRight: Float, extentUp: Float, extentLook: Float) = new OBBOver(center, right, up, extentRight, extentUp, extentLook)
+    def apply(center: Float3, right: Float3, up: Float3, extentRight: Float, extentUp: Float, extentLook: Float) = OBBOver(center, right, up, extentRight, extentUp, extentLook)
   }
-  type PlaneF = PlaneOver[Float3, Float]
+  type PlaneF = PlaneOver[Vec, Float]
   object PlaneF{
-    def apply(point: Float3, normal: Float3) = PlaneOver[Float3, Float](point, normal)
+    def apply(point: Float3, normal: Float3) = PlaneOver[Vec, Float](point, normal)
   }
-  type Ray2F = Ray2Over[Float2, Float]
+  type Ray2F = Ray2Over[Vec, Float]
   object Ray2F{
-    def apply(start: Float2, end: Float2) = Ray2Over[Float2,Float](start, end)
+    def apply(start: Float2, end: Float2) = Ray2Over[Vec,Float](start, end)
   }
-  type RayF = RayOver[Float3, Float]
+  type RayF = RayOver[Vec, Float]
   object RayF{
-    def apply(start: Float3, end: Float3) = RayOver[Float3, Float](start, end)
+    def apply(start: Float3, end: Float3) = RayOver[Vec, Float](start, end)
   }
-  type Rectangle2F = Rectangle2Over[Float2, Float]
+  type Rectangle2F = Rectangle2Over[Vec, Float]
   object Rectangle2F{
-    def apply(center: Float2, extent: Float2) = Rectangle2Over[Float2,Float](center, extent)
+    def apply(center: Float2, extent: Float2) = Rectangle2Over[Vec,Float](center, extent)
   }
-  type RectangleF = RectangleOver[Float3, Float]
+  type RectangleF = RectangleOver[Vec, Float]
   object RectangleF{
-    def apply(center: Float3, right : Float3, up : Float3) = RectangleOver[Float3, Float](center, right, up)
+    def apply(center: Float3, right : Float3, up : Float3) = RectangleOver[Vec, Float](center, right, up)
   }
-  type SphereF = SphereOver[Float3, Float]
+  type SphereF = SphereOver[Vec, Float]
   object SphereF{
-    def apply(center: Float3, rad: Float) = SphereOver[Float3, Float](center, rad)
+    def apply(center: Float3, rad: Float) = SphereOver[Vec, Float](center, rad)
   }
-  type Square2F = Square2Over[Float2, Float]
+  type Square2F = Square2Over[Vec, Float]
   object Square2F{
-    def apply(center: Float2, extent: Float) = Square2Over[Float2, Float](center, extent)
+    def apply(center: Float2, extent: Float) = Square2Over[Vec, Float](center, extent)
   }
-  type TriangleF = TriangleOver[Float3, Float]
+  type TriangleF = TriangleOver[Vec, Float]
   object TriangleF{
-    def apply(p1: Float3, p2: Float3, p3: Float3) = TriangleOver[Float3, Float](p1, p2, p3)
+    def apply(p1: Float3, p2: Float3, p3: Float3) = TriangleOver[Vec, Float](p1, p2, p3)
   }
-  type OBB2F = OBB2Over[Float2, Float]
+  type OBB2F = OBB2Over[Vec, Float]
   object OBB2F{
     def apply(center: Float2, right: Float2, up: Float2, extentRight: Float, extentUp: Float): OBB2F = OBB2Over(center, right, up, extentRight, extentUp)
   }
   //--------------------------------------------------------
   
-  
-  
-  
-  
+
+  //SOME SYNTACTIC GOODIES
+  //used as fully infered function
+  @inline def makeVector[Dim <: Nat, Vec[_,_], @sp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim]) = ev.staticContainer.factory.makeVector[Dim](args : _*)
+  @inline def transform(a: Real3, b: Mat4D) : Real3 = {
+    val temp = Real4(a, 0D)
+    val temp2 = temp ⨯ b
+    Real3(temp2.x, temp2.y, temp.z)
+  }
+  @inline def transform(a: Real3F, b: Mat4F) : Real3F = {
+    val temp = Real4F(a, 0F)
+    val temp2 = temp ⨯ b
+    Real3F(temp2.x, temp2.y, temp.z)
+  }
+
+  //........................
   
 
   //common algebraic structures-----------------------------
@@ -530,56 +543,55 @@ package object common
     }
   }
 
-  //TODO
-  /*object Mat4D
+  object Mat4D
   {
 
 
     //common transformations for V₃ over Real------------------------------------------
-    def matrixIdentity(): Mat4[Real] =
+    def matrixIdentity(): Mat4D =
     {
 
 
 
-      Mat4[Real](1D, 0D, 0D, 0D,
+      Mat(1D, 0D, 0D, 0D,
         0D, 1D, 0D, 0D,
         0D, 0D, 1D, 0D,
         0D, 0D, 0D, 1D)
     }
 
-    def matrixSCALE(x: Real, y: Real, z: Real): Mat4[Real] =
+    def matrixSCALE(x: Real, y: Real, z: Real): Mat4D =
     {
-      Mat4[Real](x, 0D, 0D, 0D,
+      Mat(x, 0D, 0D, 0D,
         0D, y, 0D, 0D,
         0D, 0D, z, 0D,
         0D, 0D, 0D, 1D)
     }
 
-    def matrixSCALE(v: Vec3[Real]): Mat4[Real] =
+    def matrixSCALE(v: Vec3[Real]): Mat4D =
     {
-      Mat4[Real](v.x, 0, 0, 0,
+      Mat(v.x, 0, 0, 0,
         0, v.y, 0, 0,
         0, 0, v.z, 0,
         0, 0, 0, 1)
     }
 
-    def matrixTRANSLATION(x: Real, y: Real, z: Real): Mat4[Real] =
+    def matrixTRANSLATION(x: Real, y: Real, z: Real): Mat4D =
     {
-      Mat4[Real](1, 0, 0, 0,
+      Mat(1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1)
     }
 
-    def matrixTRANSLATION(v: Vec3[Real]): Mat4[Real] =
+    def matrixTRANSLATION(v: Vec3[Real]): Mat4D =
     {
-      Mat4[Real](1, 0, 0, 0,
+      Mat(1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         v.x, v.y, v.z, 1)
     }
 
-    def matrixROTATION(axis: Vec3[Real], angleInDegrees: Real): Mat4[Real] =
+    def matrixROTATION(axis: Vec3[Real], angleInDegrees: Real): Mat4D =
     {
       val rad = angleInDegrees * scala.math.Pi / 180
       val cos = scala.math.cos(rad)
@@ -587,14 +599,14 @@ package object common
       val x = axis.x
       val y = axis.y
       val z = axis.z
-      Mat4[Real](cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
+      Mat[Real,_4](cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
         y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
         z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
         0, 0, 0, 1)
 
     }
 
-    def matrixROTATIONRad(axis: Vec3[Real], angleInRadians: Real): Mat4[Real] =
+    def matrixROTATIONRad(axis: Vec3[Real], angleInRadians: Real): Mat4D =
     {
 
       val cos = scala.math.cos(angleInRadians)
@@ -602,44 +614,44 @@ package object common
       val x = axis.x * axis.x
       val y = axis.y * axis.y
       val z = axis.z * axis.z
-      Mat4[Real](cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
+      Mat(cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
         y * x * (1D - cos) + z * sin, cos + y * y * (1D - cos), y * z * (1D - cos) - x * sin, 0D,
         z * x * (1D - cos) - y * sin, z * y * (1D - cos) + x * sin, cos + z * z * (1D - cos), 0D,
         0D, 0D, 0D, 1D)
 
     }
 
-    def matrixORTHOGRAPHIC(left: Real, right: Real, bottom: Real, top: Real, near: Real, far: Real): Mat4[Real] =
+    def matrixORTHOGRAPHIC(left: Real, right: Real, bottom: Real, top: Real, near: Real, far: Real): Mat4D =
     {
 
-      Mat4[Real](2 / (right - left), 0, 0, -(right + left) / (right - left),
+      Mat[Real,_4](2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
         0, 0, -2 / (far - near), (far + near) / (far - near),
         0, 0, 0, 1).transpose()
     }
 
 
-    def matrixPERSPECTIVE(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4[Real] =
+    def matrixPERSPECTIVE(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4D =
     {
       val top:Real = near * scala.math.tan(scala.math.Pi / 180 * angleInDegrees / 2)
       val bottom = -top
       val right = top * aspect
       val left = -right
 
-      Mat4(2 * near / (right - left), 0, (right + left) / (right - left), 0, //OpenGL form(column-major) not transposed, transposed - row-major form
-        0, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0,
+      Mat[Real,_4](2 * near / (right - left), 0D, (right + left) / (right - left), 0D, //OpenGL form(column-major) not transposed, transposed - row-major form
+        0D, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0D,
         0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
         0, 0, -1, 0).transpose()
     }
 
-    def matrixPERSPECTIVEDIRECTX(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4[Real] = //Directx way doesn't work
+    def matrixPERSPECTIVEDIRECTX(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4D = //Directx way doesn't work
     {
       val fov = scala.math.tan(angleInDegrees / 2 / 180 * scala.math.Pi)
       val r = aspect
       val n = near
       val f = far
 
-      Mat4(1 / (r * fov), 0, 0, 0,
+      Mat(1 / (r * fov), 0, 0, 0,
         0, 1 / fov, 0, 0,
         0, 0, f / (f - n), 1,
         0, 0, -f * n / (f - n), 0)
@@ -647,44 +659,44 @@ package object common
     }
 
 
-    def matrixVIEW(pos: Vec3[Real], target: Vec3[Real], up: Vec3[Real]): Mat4[Real] =
+    def matrixVIEW(pos: Vec3[Real], target: Vec3[Real], up: Vec3[Real]): Mat4D =
     {
 
       val za = (target - pos).normalize()
       val xa = up.⨯(za).normalize()
       val ya = za.⨯(xa)
-      Mat4[Real](
+      Mat[Real,_4](
         xa.x, ya.x, za.x, 0D,
         xa.y, ya.y, za.y, 0D,
         xa.z, ya.z, za.z, 0D,
         -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
     }
 
-    def matrixVIEWDir(pos: Vec3[Real], look: Vec3[Real], up: Vec3[Real]): Mat4[Real] =
+    def matrixVIEWDir(pos: Vec3[Real], look: Vec3[Real], up: Vec3[Real]): Mat4D =
     {
 
 
       val za = -look
       val xa = up.⨯(za).normalize()
       val ya = za.⨯(xa)
-      Mat4[Real](
+      Mat(
         xa.x, ya.x, za.x, 0D,
         xa.y, ya.y, za.y, 0D,
         xa.z, ya.z, za.z, 0D,
         -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
     }
 
-    def matrixVIEW(pos: Vec3[Real], rotX: Real, rotY: Real, rotZ: Real): Mat4[Real] =
+    def matrixVIEW(pos: Vec3[Real], rotX: Real, rotY: Real, rotZ: Real): Mat4D =
     {
 
       var mat = matrixIdentity()
-      mat *= matrixTRANSLATION(-pos)
-      mat *= matrixROTATION(Vec3(0D, 1D, 0D), rotY)
-      mat *= matrixROTATION(Vec3(1D, 0D, 0D), rotX)
-      mat *= matrixROTATION(Vec3(0D, 0D, 1D), rotZ)
+      mat ⨯= matrixTRANSLATION(-pos)
+      mat ⨯= matrixROTATION(Vec3(0D, 1D, 0D), rotY)
+      mat ⨯= matrixROTATION(Vec3(1D, 0D, 0D), rotX)
+      mat ⨯= matrixROTATION(Vec3(0D, 0D, 1D), rotZ)
       mat
     }
-  }*/
+  }
 
 
 }

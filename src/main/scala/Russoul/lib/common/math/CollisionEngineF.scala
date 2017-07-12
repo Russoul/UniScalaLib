@@ -6,7 +6,6 @@ import Russoul.lib.common._
 import Russoul.lib.common.math.geometry.simple._
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.TypeClasses._
-import Russoul.lib.common.math.algebra.{Vec2, Vec3}
 //import Russoul.lib.common.TypeClasses.FloatIsFullField._
 import Russoul.lib.common.math.algebra.Mat
 
@@ -19,12 +18,12 @@ import Implicits._
 object CollisionEngineF
 {
 
-  def genGramOrtho3[@specialized F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
+  /*def genGramOrtho3[@specialized F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
   {
     Mat[F](3,3, Array[F](ev.one, ev.zero, ev.zero,
       ev.zero, ev.one, ev.zero,
       ev.zero, ev.zero, ev.one))
-  }
+  }*/
 
   /**
     *
@@ -67,7 +66,7 @@ object CollisionEngineF
   }
 
 
-  private def checkRayBox(ray:RayF, recs:Arr[RectangleF]):Option[(Float, RectangleF)] =
+  private def checkRayBox(ray:RayF, recs:Array[RectangleF]):Option[(Float, RectangleF)] =
   {
     var tmin = -1F
     var re:RectangleF = null
@@ -140,8 +139,8 @@ object CollisionEngineF
 
     val normals = new Arr[Float3]
 
-    val recs = checkThis.genRectangles()
-    recs ++= checkWith.genRectangles()
+    var recs = checkThis.genRectangles()
+    recs = recs ++ checkWith.genRectangles()
 
     for(i <- 0 until recs.size/2 )
     {
@@ -182,8 +181,8 @@ object CollisionEngineF
 
     val normals = Arr[Float3](16)
 
-    val recs = checkThis.genRectangles()
-    recs ++= checkWith.genRectangles()
+    var recs = checkThis.genRectangles()
+    recs = recs ++ checkWith.genRectangles()
 
     for(i <- 0 until recs.size/2 )
     {
@@ -458,7 +457,7 @@ object CollisionEngineF
     * @param vertices
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  private def checkBoxFrustum(vertices: Arr[Float3], planes: Arr[PlaneF]): Int =
+  private def checkBoxFrustum(vertices: Array[Float3], planes: Arr[PlaneF]): Int =
   {
 
     var totalIn = 0
@@ -655,10 +654,10 @@ object CollisionEngineF
 
     val vertices = rec.genVertices()
 
-    val l0 = Line2Over[Float2,Float](vertices(0), vertices(1))
-    val l1 = Line2Over[Float2,Float](vertices(1), vertices(2))
-    val l2 = Line2Over[Float2,Float](vertices(2), vertices(3))
-    val l3 = Line2Over[Float2,Float](vertices(3), vertices(0))
+    val l0 = Line2Over(vertices(0), vertices(1))
+    val l1 = Line2Over(vertices(1), vertices(2))
+    val l2 = Line2Over(vertices(2), vertices(3))
+    val l3 = Line2Over(vertices(3), vertices(0))
 
     val i0 = checkLine2Line2(line, l0)
     val i1 = checkLine2Line2(line, l1)
@@ -734,8 +733,8 @@ object CollisionEngineF
 
     val v1 = line.end-line.start
 
-    val ray1 = Ray2Over[Float2,Float](line.start, v1)
-    val ray2 = Ray2Over[Float2,Float](circle.center, ray1.dir.⟂())
+    val ray1 = Ray2Over(line.start, v1)
+    val ray2 = Ray2Over(circle.center, ray1.dir.⟂())
 
 
     val dist = checkRay2Ray2(ray1, ray2).get //can be always found as rays are orthogonal

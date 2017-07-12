@@ -1,15 +1,17 @@
-import Russoul.lib.common.TypeClasses.StaticVector
+import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, StaticVector}
 import shapeless._
 import shapeless.ops.nat
 
 import scala.reflect.ClassTag
+import Russoul.lib.common.Implicits._
+import Russoul.lib.common.math.algebra.Vec
 
 /**
   * Created by russoul on 03.07.2017.
   */
 object Test extends App{
 
-  case class Vec2[@specialized A : ClassTag](array: Array[A]) extends StaticVector[A, Vec2[A], Nat._2] {
+  /*case class Vec2[@specialized A : ClassTag](array: Array[A]) extends StaticVector[A, Vec2[A], Nat._2] {
 
     def x = array(0)
     def y = array(1)
@@ -46,6 +48,8 @@ object Test extends App{
   add(Vec2(1,2), Vec2(2,3))
 
   val v = Vec2(1,2)
-  v.get(Nat._0)
+  v.get(Nat._0)*/
 
+
+  val t = implicitly[CanonicalEuclideanSpaceOverField[Vec,Float,Nat._5]]
 }

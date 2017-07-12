@@ -2,6 +2,9 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     High:
+        //name abbreviations correctly
+        //performant way to represent generic field literals ?
+        //string-inter-macro type literals
         //make int a can eu space or think of a better solution to be a able to create say Triangle holding ints
         //rename Implicits to lowercase and rename Russoul package to lowercase
         //implement mat4 and mat3 using StaticMatrix

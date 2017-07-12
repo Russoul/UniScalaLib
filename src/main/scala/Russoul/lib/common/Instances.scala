@@ -2,8 +2,8 @@ package Russoul.lib.common
 
 import Russoul.lib.common.StaticContainerTypeClasses.{MatIsStaticMatrix, VecIsStaticVector}
 import Russoul.lib.common.TypeClasses._
-import Russoul.lib.common.math.algebra.{Vec2, Vec4}
 import shapeless.Nat
+import shapeless.ops.nat.ToInt
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
@@ -55,7 +55,7 @@ object Instances {
     implicit def vecIsStaticVector[@specialized T : ClassTag] = new VecIsStaticVector[T]
     implicit def matIsStaticMatrix[@specialized T : ClassTag] = new MatIsStaticMatrix[T]
 
-    implicit def vecIsCanEuclideanSpace[@sp F, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
+    implicit def vecIsCanEuclideanSpace[@sp F, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
 
     implicit def vec2HasOrtho[@sp F] = new Vec2HasOrtho[F]
     implicit def vec3HasCrossProduct[@sp F] = new Vec3HasCrossProduct[F]

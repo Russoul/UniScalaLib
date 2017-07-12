@@ -15,7 +15,7 @@ import shapeless.Nat._
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Square2Over[V[_,_] : ClassTag,@specialized F : Field](val center:V[F,_2], val extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2])  extends CenteredShape2[V[F,_2],F]{
+@immutable class Square2Over[V[_,_] : ClassTag,@specialized F : Field]private(val center:V[F,_2], val extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2])  extends CenteredShape2[V[F,_2],F]{
 
 
 
@@ -48,4 +48,8 @@ import shapeless.Nat._
     "Square2(center = "+center.toString() + ";extent = " + extent + ")"
   }
 
+}
+
+object Square2Over{
+  def apply[V[_,_] : ClassTag,@specialized F : Field](center:V[F,_2], extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2]) = new Square2Over[V,F](center, extent)
 }

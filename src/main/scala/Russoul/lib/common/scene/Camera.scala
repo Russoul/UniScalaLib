@@ -1,10 +1,11 @@
 package Russoul.lib.common.scene
 
-import Russoul.lib.common.{Mat4F, Real, Real3, Real3F, TypeClasses, V4, Vec3}
+import Russoul.lib.common.{Mat4F, Real, Real3, Real3F, RealF, TypeClasses, V4, Vec3}
 import Russoul.lib.common.math.geometry.complex.Frustum
 import Russoul.lib.common.math.geometry.simple.{RayOver, RectangleOver}
 import Russoul.lib.common.Implicits._
-
+import Russoul.lib.common.math.algebra.Vec
+import Russoul.lib.common._
 
 class Camera private
 {
@@ -24,7 +25,7 @@ class Camera private
 
   var frustum: Frustum = null
 
-  var width = 800D;var height = 600D;var screenX = 0D;var screenY = 0D
+  var width = 800F;var height = 600F;var screenX = 0F;var screenY = 0F
 
 
   var mat_perspective = Mat4F.matrixIdentity()
@@ -33,7 +34,7 @@ class Camera private
 
 
 
-  def this(width:Real, height:Real, x:Real = 0, y:Real = 0)
+  def this(width:RealF, height:RealF, x:RealF = 0F, y:RealF = 0F)
   {
     this()
 
@@ -44,9 +45,9 @@ class Camera private
     this.screenY = y
   }
 
-  def genLookingRay(): RayOver[Real3, Real] =
+  def genLookingRay(): RayOver[Vec, RealF] =
   {
-    new RayOver(pos, look)
+    RayOver(pos, look)
   }
 
   def genRight() = {
@@ -54,28 +55,28 @@ class Camera private
     look ⨯ up
   }
 
-  def genNearPlaneRectangle():RectangleOver[Real3, Real] =
+  def genNearPlaneRectangle():RectangleOver[Vec, RealF] =
   {
 
     val center = pos + look * zNear
 
-    val t:Real = scala.math.tan(angleOfView/2 * Math.PI / 180)
+    val t = scala.math.tan(angleOfView/2 * Math.PI / 180).toFloat
     val ext1 = t * zNear//width/2
     val v1 = up.⨯(up)
     val ext1v = v1 * (ext1*aspect)
     val ext2v = up * ext1
 
-    new RectangleOver(center, ext1v, ext2v)
+    RectangleOver(center, ext1v, ext2v)
   }
 
-  def updateDimensionsAndAspect(w:Real, h:Real) =
+  def updateDimensionsAndAspect(w:RealF, h:RealF) =
   {
     aspect = w/h
     this.width = w
     this.height = h
   }
 
-  def updateScreenPosition(px:Real, py:Real)=
+  def updateScreenPosition(px:RealF, py:RealF)=
   {
     screenX = px
     screenY = py
@@ -92,20 +93,20 @@ class Camera private
   {
     mat_perspective = Mat4F.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
     mat_orthographic = Mat4F.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
-    mat_view = Mat4F.matrixVIEWDir(pos, look, up)
+    mat_view = Mat4F.matrixVIEWFir(pos, look, up)
   }
 
-  def updateTransformation(droll:Real, dyaw:Real, dpitch:Real, dforward:Real, dright:Real, dup:Real): Unit =
+  def updateTransformation(droll:RealF, dyaw:RealF, dpitch:RealF, dforward:RealF, dright:RealF, dup:RealF): Unit =
   {
-    val yaw = dyaw/180*Math.PI
-    val pitch = dpitch/180*Math.PI
+    val yaw = dyaw/180*Math.PI.toFloat
+    val pitch = dpitch/180*Math.PI.toFloat
 
 
-    val upTransform = Mat4.matrixROTATION(look, -droll)
-    var newUp = (up ⨯ upTransform).normalize() //new base : look, newUp, newRight
+    val upTransform = Mat4F.matrixROTATION(look, -droll)
+    var newUp = transform(up , upTransform).normalize() //new base : look, newUp, newRight
     var newRight = (look ⨯ newUp).normalize()
 
-    val newLook = (newRight * math.sin(yaw) + look * math.cos(yaw) + newUp * math.sin(pitch)).normalize(); //new look based on dpitch and dyaw in new base
+    val newLook = (newRight * scala.math.sin(yaw).toFloat + look * scala.math.cos(yaw).toFloat + newUp * scala.math.sin(pitch).toFloat).normalize(); //new look based on dpitch and dyaw in new base
     newRight = (newLook ⨯ newUp).normalize()
     newUp = (newLook ⨯ (-newRight)).normalize()
 

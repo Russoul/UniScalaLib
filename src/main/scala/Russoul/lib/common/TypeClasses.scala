@@ -43,21 +43,37 @@ object TypeClasses {
 
   class DefaultAlgebraicFactory[@specialized T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
 
-    override def makeVector[Size <: Nat](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
-    override def makeMatrix[Size <: Nat](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
+    override def makeVector[Size <: Nat : ToInt](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
+    override def makeMatrix[Size <: Nat : ToInt](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
 
-    override protected def get[Size <: Nat](vec: Vec[T, Size], index: Int): T = vec(index)
-    override protected def get[Size <: Nat](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
+    override protected def get[Size <: Nat : ToInt](vec: Vec[T, Size], index: Int): T = vec(index)
+    override protected def get[Size <: Nat : ToInt](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
   }
+
+
+  //TENSORS----------------------
+  trait Tensor[@sp T, Dim <: Nat]
+  trait Tensor0[@sp T] extends Tensor[T, Nat._0]
+  trait Tensor1[@sp T, Vec[_,_], A1 <: Nat] extends Tensor[T, Nat._1]{
+    def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
+  }
+  trait Tensor2[@sp T, Mat[_,_,_],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{
+    def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A1]) : Mat[T, A1, A2]
+  }
+  //--------------------------------------------------------------------------------------
+
+
+  //TODO
+
 
   abstract class AlgebraicTypeFactory[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
 
-    def makeVector[Size <: Nat](args: T*) : Vec[T, Size]
-    def makeMatrix[Size <: Nat](args: T*) : Mat[T, Size]
+    def makeVector[Size <: Nat : ToInt](args: T*) : Vec[T, Size]
+    def makeMatrix[Size <: Nat : ToInt](args: T*) : Mat[T, Size]
 
     //should not be used by user
-    def get[Size <: Nat](vec: Vec[T,Size], index: Int) : T
-    def get[Size <: Nat](mat: Mat[T,Size], i: Int, j: Int) : T
+    def get[Size <: Nat : ToInt](vec: Vec[T,Size], index: Int) : T
+    def get[Size <: Nat : ToInt](mat: Mat[T,Size], i: Int, j: Int) : T
   }
 
   //indices start from 0
@@ -68,7 +84,10 @@ object TypeClasses {
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
   abstract class StaticVector[@specialized T : ClassTag, Vec[_,_]]{
 
-    val factory: AlgebraicTypeFactory[T, Vec, _]
+    //val factory: AlgebraicTypeFactory[T, Vec, Mat]
+
+    val tensor0 : Tensor0[T]
+    val tensor1 : Tensor1[T, Vec, ] //add size to StaticVector ?
 
     @inline def get[Size <: Nat, Index <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index]) : T = factory.get[Size](vec, index())
 
@@ -80,7 +99,7 @@ object TypeClasses {
   //algebraic matrices
   abstract class StaticSquareMatrix[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
 
-    type Space[Size] = CanonicalEuclideanSpaceOverField[Vec[T,Size], T, Size]
+    type Space[Size] = CanonicalEuclideanSpaceOverField[Vec, T, Size]
 
     protected val factory: AlgebraicTypeFactory[T, Vec, Mat]
 
@@ -211,14 +230,14 @@ object TypeClasses {
     def map(a: V[F,Dim], b: V[F,Dim]): V[F,Dim]
   }
 
-  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_], @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
+  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_], Mat[_,_], @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
 
     def map(a: V[F,Nat._3], b: V[F,Nat._3]): V[F,Nat._3] = {
       space.staticContainer.factory.makeVector(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
     }
   }
 
-  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_], @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
+  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_], Mat[_,_], @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
     override def map(a: V[F, Nat._2]): V[F, Nat._2] = {
       space.staticContainer.factory.makeVector(-a.y, a.x)
     }
@@ -281,13 +300,13 @@ object TypeClasses {
   }
 
 
-  trait ModuleOverRing[V[_,_], @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
+  trait ModuleOverRing[V[_,_], Mat[_,_], @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
     type Vector = V[R,Dim]
 
     val dim = implicitly[ToInt[Dim]].apply() //TODO ok ??
     implicit def scalar: Ring[R]
-    implicit def staticContainer: StaticVector[R, V] //V must be static container
+    implicit def staticContainer: StaticVector[R, V, Mat] //V must be static container
 
 
 
