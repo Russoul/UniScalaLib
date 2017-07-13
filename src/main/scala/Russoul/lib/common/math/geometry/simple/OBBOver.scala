@@ -17,7 +17,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class OBBOver[V[_,_ <: Nat], @specialized F : ClassTag : Field]private[geometry](val center:V[F,_3], val right:V[F,_3], val up:V[F,_3], val extentRight:F, val extentUp:F, val extentLook:F)(implicit evTag: ClassTag[V[F,_3]],ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3])  extends CenteredShape3[V[F,_3],F] {
+@immutable class OBBOver[V[_,_ <: Nat], @tbsp F : ClassTag : Field]private[geometry](val center:V[F,_3], val right:V[F,_3], val up:V[F,_3], val extentRight:F, val extentUp:F, val extentLook:F)(implicit evTag: ClassTag[V[F,_3]],ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3])  extends CenteredShape3[V[F,_3],F] {
 
 
   def this(aabb :AABBOver[V,F])(implicit evTag: ClassTag[V[F,_3]], ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3])
@@ -146,8 +146,8 @@ import scala.reflect.ClassTag
 }
 
 object OBBOver{
-  def apply[V[_,_ <: Nat], @specialized F : ClassTag : Field](center:V[F,_3], right:V[F,_3], up:V[F,_3], extentRight:F, extentUp:F, extentLook:F)(implicit evTag: ClassTag[V[F,_3]], ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) = new OBBOver[V,F](center, right, up, extentRight, extentUp, extentLook)
-  def apply[V[_,_ <: Nat], @specialized F : ClassTag : Field](aabb: AABBOver[V,F])(implicit evTag: ClassTag[V[F,_3]],  ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]): OBBOver[V,F] = new OBBOver[V,F](aabb)
+  def apply[V[_,_ <: Nat], @tbsp F : ClassTag : Field](center:V[F,_3], right:V[F,_3], up:V[F,_3], extentRight:F, extentUp:F, extentLook:F)(implicit evTag: ClassTag[V[F,_3]], ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) = new OBBOver[V,F](center, right, up, extentRight, extentUp, extentLook)
+  def apply[V[_,_ <: Nat], @tbsp F : ClassTag : Field](aabb: AABBOver[V,F])(implicit evTag: ClassTag[V[F,_3]],  ev: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]): OBBOver[V,F] = new OBBOver[V,F](aabb)
 
 }
 

@@ -39,7 +39,7 @@ object Test1 {
   }
 
 
-  implicit def innerProductSpaceToNormedInner[V,@specialized F](innerProductSpace: InnerProductSpace[V,F])(implicit ev: NRoot[F]) = new NormedInnerProductSpace[V, F] {
+  implicit def innerProductSpaceToNormedInner[V,@tbsp F](innerProductSpace: InnerProductSpace[V,F])(implicit ev: NRoot[F]) = new NormedInnerProductSpace[V, F] {
     def space = innerProductSpace
     def nroot: NRoot[F] = ev
   }

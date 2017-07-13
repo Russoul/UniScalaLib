@@ -21,7 +21,7 @@ Priority:
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
         0)remove Vec use Array instead !
         1)write tests
-        2)see if @specialized is set in all places needed
+        2)see if @tbsp is set in all places needed
         3)assertions
         4)//TODO fix Mat.apply calls indexing from 0 but not from 1
         5)make Vec, Mat and other containers be scala friendly(support native operations or

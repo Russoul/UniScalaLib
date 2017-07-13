@@ -5,7 +5,7 @@ package Russoul.lib.common.math.algebra.deprecated;
   */
 
 //TODO redundant, do not use this class, use array instead
-@immutable class Vec[@specialized F : ClassTag](private val array:Array[F], var isColumn:Boolean = true)(implicit ev: Field[F]){
+@immutable class Vec[@tbsp F : ClassTag](private val array:Array[F], var isColumn:Boolean = true)(implicit ev: Field[F]){
 
 
   @inline @straight def x: F = array(0)

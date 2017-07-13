@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.geometry.simple
 
-import Russoul.lib.common.immutable
+import Russoul.lib.common.{immutable, tbsp}
 import Russoul.lib.common.math.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.utils.Arr
 
@@ -16,7 +16,7 @@ import shapeless.Nat._
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Square2Over[V[_,_ <: Nat],@specialized F : ClassTag : Field]private(val center:V[F,_2], val extent:F)(implicit evTag: ClassTag[V[F,_2]],ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2])  extends CenteredShape2[V[F,_2],F]{
+@immutable class Square2Over[V[_,_ <: Nat],@tbsp F : ClassTag : Field]private(val center:V[F,_2], val extent:F)(implicit evTag: ClassTag[V[F,_2]],ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2])  extends CenteredShape2[V[F,_2],F]{
 
 
 
@@ -52,5 +52,5 @@ import shapeless.Nat._
 }
 
 object Square2Over{
-  def apply[V[_,_ <: Nat],@specialized F : ClassTag : Field](center:V[F,_2], extent:F)(implicit evTag: ClassTag[V[F,_2]], ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Square2Over[V,F](center, extent)
+  def apply[V[_,_ <: Nat],@tbsp F : ClassTag : Field](center:V[F,_2], extent:F)(implicit evTag: ClassTag[V[F,_2]], ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Square2Over[V,F](center, extent)
 }

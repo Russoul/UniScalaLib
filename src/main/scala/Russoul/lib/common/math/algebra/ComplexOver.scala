@@ -2,13 +2,13 @@ package Russoul.lib.common.math.algebra
 
 import Russoul.lib.common.TypeClasses.{Euclidean, Field}
 import Russoul.lib.common.Implicits._
-import Russoul.lib.common.{Real, immutable}
+import Russoul.lib.common.{Real, immutable, tbsp}
 import Russoul.lib.common.utils.Arr
 
 /**
   * Created by russoul on 20.05.17.
   */
-@immutable case class ComplexOver[@specialized A](real: A, imaginary:A)(implicit ev: Field[A] with Euclidean[A]) {
+@immutable case class ComplexOver[@tbsp A](real: A, imaginary:A)(implicit ev: Field[A] with Euclidean[A]) {
 
   @inline def +(that:ComplexOver[A]): ComplexOver[A] =
   {

@@ -13,7 +13,7 @@ import shapeless.Nat
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable class CircleOver[V[_,_ <: Nat] ,@specialized F : ClassTag : Field]private(val center:V[F,_2],val rad:F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F] {
+@immutable class CircleOver[V[_,_ <: Nat] ,@tbsp F : ClassTag : Field]private(val center:V[F,_2],val rad:F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F] {
 
 
   override def translate(v: V[F,_2]): CircleOver[V,F] = {
@@ -39,5 +39,5 @@ import shapeless.Nat
 }
 
 object CircleOver{
-  def apply[V[_,_ <: Nat],@specialized F : ClassTag : Field](center:V[F,_2], rad:F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new CircleOver[V,F](center, rad)
+  def apply[V[_,_ <: Nat],@tbsp F : ClassTag : Field](center:V[F,_2], rad:F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new CircleOver[V,F](center, rad)
 }

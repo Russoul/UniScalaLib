@@ -7,7 +7,7 @@ import scala.specialized;
   * Created by russoul on 01.06.2017.
   */
 
-@mutable class Mat[@specialized F : ClassTag](val rows:Int, val columns:Int, val ar: Array[F])(implicit ev: Field[F]) {
+@mutable class Mat[@tbsp F : ClassTag](val rows:Int, val columns:Int, val ar: Array[F])(implicit ev: Field[F]) {
 
 //Double definition error
   /*@inline @straight def apply(i:Int)(j:Int): F ={

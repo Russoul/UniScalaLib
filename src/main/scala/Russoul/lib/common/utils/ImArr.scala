@@ -1,6 +1,6 @@
 package Russoul.lib.common.utils
 
-import Russoul.lib.common.immutable
+import Russoul.lib.common.{immutable, tbsp}
 
 import scala.reflect.ClassTag
 
@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
   */
 
 //TODO probably remove it
-@immutable class ImArr[@specialized T : ClassTag](private val array: Array[T]) {
+@immutable class ImArr[@tbsp T : ClassTag](private val array: Array[T]) {
 
   def apply(index:Int): T = array(index)
 
@@ -47,5 +47,5 @@ import scala.reflect.ClassTag
   }
 }
 object ImArr{
-  def apply[@specialized T : ClassTag](seq: T*) : ImArr[T] = new ImArr[T](seq.toArray[T])
+  def apply[@tbsp T : ClassTag](seq: T*) : ImArr[T] = new ImArr[T](seq.toArray[T])
 }

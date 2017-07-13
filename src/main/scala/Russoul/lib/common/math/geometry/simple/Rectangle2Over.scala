@@ -3,7 +3,7 @@ package Russoul.lib.common.math.geometry.simple
 import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.TypeClasses.Field
 import Russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
-import Russoul.lib.common.immutable
+import Russoul.lib.common.{immutable, tbsp}
 import Russoul.lib.common.math.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.Implicits._
@@ -17,7 +17,7 @@ import scala.reflect.ClassTag
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Rectangle2Over[V[_,_ <: Nat], @specialized F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F]{
+@immutable class Rectangle2Over[V[_,_ <: Nat], @tbsp F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F]{
 
   override def translate(v: V[F,_2]): Rectangle2Over[V,F] = {
     new Rectangle2Over(center + v, extent)
@@ -54,11 +54,11 @@ import scala.reflect.ClassTag
 
 object Rectangle2Over
 {
-  def fromMinMax[V[_,_ <: Nat],@specialized F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_2]):Rectangle2Over[V,F] =
+  def fromMinMax[V[_,_ <: Nat],@tbsp F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_2]):Rectangle2Over[V,F] =
   {
     val t = (max - min)* 0.5D.as[F]
     Rectangle2Over(min + t, t)
   }
 
-  def apply[V[_,_ <: Nat], @specialized F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Rectangle2Over[V,F](center, extent)
+  def apply[V[_,_ <: Nat], @tbsp F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Rectangle2Over[V,F](center, extent)
 }

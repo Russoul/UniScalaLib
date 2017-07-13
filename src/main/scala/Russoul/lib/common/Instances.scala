@@ -39,7 +39,7 @@ object Instances {
   trait ArrayInstances{
 
     /*private val hashTableArrayInstances = new mutable.HashMap[ClassTag[_], ArrayIsContainerAny[_]]()
-    implicit def arrayIsContainerAny[@specialized T](implicit tag : ClassTag[T]): ArrayIsContainerAny[T] = {
+    implicit def arrayIsContainerAny[@tbsp T](implicit tag : ClassTag[T]): ArrayIsContainerAny[T] = {
       if(hashTableArrayInstances.contains(tag)){
         hashTableArrayInstances(tag).asInstanceOf[ArrayIsContainerAny[T]]
       }else{
@@ -49,23 +49,23 @@ object Instances {
       }
     }*/
 
-    //def ArrayAsEuclideanSpace[@specialized F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
+    //def ArrayAsEuclideanSpace[@tbsp F : ClassTag](dim: Int)(implicit field: Field[F] with Trig[F] with Euclidean[F]) = new ArrayIsCanonicalEuclideanSpaceOverField[F](dim, field)
   }
 
   trait DefaultAlgebraicTypeInstances{
-    implicit def TIsTensor0[@specialized T : ClassTag] = new TIsTensor0[T]
-    implicit def vecIsTensor1[@specialized T : ClassTag, A1 <: Nat] = new VecIsTensor1[T,A1]
-    implicit def matIsTensor2[@specialized T : ClassTag, A1 <: Nat, A2 <: Nat] = new MatIsTensor2[T,A1,A2]
+    implicit def TIsTensor0[@tbsp T : ClassTag] = new TIsTensor0[T]
+    implicit def vecIsTensor1[@tbsp T : ClassTag, A1 <: Nat] = new VecIsTensor1[T,A1]
+    implicit def matIsTensor2[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] = new MatIsTensor2[T,A1,A2]
 
     //we get this for free because they are tensors
-    implicit def vecIsAlgebraicVector[@specialized T : ClassTag] = new AlgebraicVector[T, Vec]
-    implicit def matIsAlgebraicSquareMatrix[@specialized T : ClassTag] = new AlgebraicSquareMatrix[T, Vec, Mat]
+    implicit def vecIsAlgebraicVector[@tbsp T : ClassTag] = new AlgebraicVector[T, Vec]
+    implicit def matIsAlgebraicSquareMatrix[@tbsp T : ClassTag] = new AlgebraicSquareMatrix[T, Vec, Mat]
     //...
 
-    implicit def vecIsCanEuclideanSpace[@specialized F : ClassTag, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
+    implicit def vecIsCanEuclideanSpace[@tbsp F : ClassTag, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
 
-    implicit def vec2HasOrtho[@specialized F] = new Vec2HasOrtho[F]
-    implicit def vec3HasCrossProduct[@specialized F] = new Vec3HasCrossProduct[F]
+    implicit def vec2HasOrtho[@tbsp F] = new Vec2HasOrtho[F]
+    implicit def vec3HasCrossProduct[@tbsp F] = new Vec3HasCrossProduct[F]
   }
 
   trait SpecialInstances{

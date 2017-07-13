@@ -1,7 +1,7 @@
 package Russoul.lib.common.math.geometry.simple
 
 import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field, Tensor1}
-import Russoul.lib.common.immutable
+import Russoul.lib.common.{immutable, tbsp}
 import Russoul.lib.common.math.geometry.simple.general.{CenteredShape2, Shape2}
 import Russoul.lib.common.Implicits._
 import Russoul.lib.common.utils.Arr
@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 01.07.2017.
   */
-@immutable class OBB2Over[V[_,_ <: Nat], @specialized F : Field : ClassTag]private(val center: V[F,_2], val right: V[F,_2], val up: V[F,_2], val extentRight : F, val extentUp: F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F, _2], tensor1:Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F] {
+@immutable class OBB2Over[V[_,_ <: Nat], @tbsp F : Field : ClassTag]private(val center: V[F,_2], val right: V[F,_2], val up: V[F,_2], val extentRight : F, val extentUp: F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F, _2], tensor1:Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F] {
 
   /**
     *
@@ -41,5 +41,5 @@ import scala.reflect.ClassTag
 }
 
 object OBB2Over{
-  def apply[V[_,_ <: Nat], @specialized F : Field : ClassTag](center: V[F,_2], right: V[F,_2], up: V[F,_2], extentRight : F, extentUp: F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F, _2], tensor1:Tensor1[F,V,_2]) = new OBB2Over[V,F](center, right, up, extentRight, extentUp)
+  def apply[V[_,_ <: Nat], @tbsp F : Field : ClassTag](center: V[F,_2], right: V[F,_2], up: V[F,_2], extentRight : F, extentUp: F)(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F, _2], tensor1:Tensor1[F,V,_2]) = new OBB2Over[V,F](center, right, up, extentRight, extentUp)
 }

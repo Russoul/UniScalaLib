@@ -22,20 +22,20 @@ object TypeClasses {
   class OperationUnsupportedException(str: String) extends Exception(str)
 
 
-  trait Container1[@specialized T, Con]{
+  trait Container1[@tbsp T, Con]{
     def x(con: Con): T
   }
-  trait Container2[@specialized T, Con] extends Container1[T,Con]{
+  trait Container2[@tbsp T, Con] extends Container1[T,Con]{
     def y(con: Con): T
   }
-  trait Container3[@specialized T, Con] extends Container2[T,Con]{
+  trait Container3[@tbsp T, Con] extends Container2[T,Con]{
     def z(con: Con): T
   }
-  trait Container4[@specialized T, Con] extends Container3[T,Con]{
+  trait Container4[@tbsp T, Con] extends Container3[T,Con]{
     def w(con: Con): T
   }
 
-  trait ContainerAny[@specialized T, Con] extends Container4[T,Con]{
+  trait ContainerAny[@tbsp T, Con] extends Container4[T,Con]{
     def apply(con: Con, i: Int) : T
     def size(con: Con) : Int
   }
@@ -52,13 +52,13 @@ object TypeClasses {
   //so algebraic representations(i.e AlgebraicVector, AlgebraicMatrix and so on) should be used as they provide the later
   //Tensors are used just to provide evidence that a particular type is a 'data-tensor'
 
-  trait Tensor[@specialized T, Dim <: Nat]
-  trait Tensor0[@specialized T] extends Tensor[T, Nat._0] // == scalar
-  trait Tensor1[@specialized T, Vec[_,_<: Nat], A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
+  trait Tensor[@tbsp T, Dim <: Nat]
+  trait Tensor0[@tbsp T] extends Tensor[T, Nat._0] // == scalar
+  trait Tensor1[@tbsp T, Vec[_,_<: Nat], A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
     def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
     def get(a: Vec[T, A1], i: Int) : T
   }
-  trait Tensor2[@specialized T, Mat[_,_<: Nat,_<: Nat],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
+  trait Tensor2[@tbsp T, Mat[_,_<: Nat,_<: Nat],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
     def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A2]) : Mat[T, A1, A2]
     def get(a: Mat[T, A1, A2], i: Int, j: Int) : T
   }
@@ -68,7 +68,7 @@ object TypeClasses {
 
   //TODO to be removed
 
-  /*class DefaultAlgebraicFactory[@specialized T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
+  /*class DefaultAlgebraicFactory[@tbsp T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
 
     override def makeVector[Size <: Nat : ToInt](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
     override def makeMatrix[Size <: Nat : ToInt](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
@@ -77,7 +77,7 @@ object TypeClasses {
     override protected def get[Size <: Nat : ToInt](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
   }*/
 
-  abstract class AlgebraicTypeFactory[@specialized T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat]]{
+  abstract class AlgebraicTypeFactory[@tbsp T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat]]{
 
     def makeVector[Size <: Nat : ToInt](args: T*) : Vec[T, Size]
     def makeMatrix[Size <: Nat : ToInt](args: T*) : Mat[T, Size]
@@ -97,7 +97,7 @@ object TypeClasses {
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
-  final class AlgebraicVector[@specialized T, Vec[_,_<: Nat]]{
+  final class AlgebraicVector[@tbsp T, Vec[_,_<: Nat]]{
 
     //val factory: AlgebraicTypeFactory[T, Vec, Mat]
 
@@ -112,7 +112,7 @@ object TypeClasses {
 
   //indices start from 0
   //algebraic matrices
-  final class AlgebraicSquareMatrix[@specialized T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_ <: Nat]]{
+  final class AlgebraicSquareMatrix[@tbsp T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_ <: Nat]]{
 
 
 
@@ -234,7 +234,7 @@ object TypeClasses {
   //...........
 
   //also called Linear operator
-  trait LinearMap[V[_,_ <: Nat], @specialized F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait LinearMap[V[_,_ <: Nat], @tbsp F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
@@ -244,7 +244,7 @@ object TypeClasses {
     def map(a: V[F,Dim]): V[F,Dim]
   }
 
-  trait BilinearMap[V[_,_ <: Nat], @specialized F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait BilinearMap[V[_,_ <: Nat], @tbsp F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
@@ -254,14 +254,14 @@ object TypeClasses {
     def map(a: V[F,Dim], b: V[F,Dim]): V[F,Dim]
   }
 
-  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_<: Nat], @specialized F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
+  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_<: Nat], @tbsp F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
 
     override def map(a: V[F,Nat._3], b: V[F,Nat._3]): V[F,Nat._3] = {
       space.tensor1.make(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
     }
   }
 
-  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_ <: Nat], @specialized F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
+  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_ <: Nat], @tbsp F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
     override def map(a: V[F, Nat._2]): V[F, Nat._2] = {
       space.tensor1.make(-a.y, a.x)
     }
@@ -269,33 +269,33 @@ object TypeClasses {
 
 
 
-  trait Addable[@specialized A] {
+  trait Addable[@tbsp A] {
     @inline def plus(x: A, y:A): A
 
     override def toString: String
   }
 
 
-  trait MultiplicativeMonoid[@specialized A]{
+  trait MultiplicativeMonoid[@tbsp A]{
     def times(x : A, y: A) : A
     def one : A
   }
 
-  trait CanBeNegated[@specialized A]{
+  trait CanBeNegated[@tbsp A]{
     @inline def negate(x: A): A
   }
 
-  trait Orderable[@specialized A] extends CanBeNegated[A] with Ordering[A]{
+  trait Orderable[@tbsp A] extends CanBeNegated[A] with Ordering[A]{
     @inline def abs(x:A): A = max(x, negate(x))
   }
 
 
-  trait CommutativeAdditiveGroup[@specialized A] extends Addable[A] with CanBeNegated[A]{
+  trait CommutativeAdditiveGroup[@tbsp A] extends Addable[A] with CanBeNegated[A]{
     @inline def zero: A
     @inline def minus(x: A, y: A): A = plus(x, negate(y))
   }
 
-  trait Trig[@specialized A]{
+  trait Trig[@tbsp A]{
     @inline def atan2(x:A, y:A) : A
     @inline def toRadians(x:A): A
     @inline def cos(x:A): A
@@ -304,7 +304,7 @@ object TypeClasses {
     def atan(x: A) : A
   }
 
-  trait Euclidean[@specialized A]
+  trait Euclidean[@tbsp A]
   {
     @inline def sqrt(x:A) : A
     @inline def pow(x: A, y:A): A
@@ -312,20 +312,20 @@ object TypeClasses {
   }
 
   //means that its is dim is 1
-  trait ConvertibleFromDouble[@specialized A]{
+  trait ConvertibleFromDouble[@tbsp A]{
     @inline def fromDouble(x: Double) : A
   }
 
-  trait Ring[@specialized A] extends CommutativeAdditiveGroup[A] with MultiplicativeMonoid[A]
+  trait Ring[@tbsp A] extends CommutativeAdditiveGroup[A] with MultiplicativeMonoid[A]
 
-  trait Field[@specialized A] extends Ring[A]{
+  trait Field[@tbsp A] extends Ring[A]{
     @inline def inv(x: A): A
     @inline def div(x: A, y: A): A = times(x, inv(y))
 
   }
 
 
-  trait ModuleOverRing[V[_,_<: Nat], @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
+  trait ModuleOverRing[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
     type Vector = V[R,Dim]
 
@@ -404,7 +404,7 @@ object TypeClasses {
 
 
 
-  trait VectorSpaceOverField[V[_,_<: Nat],@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
+  trait VectorSpaceOverField[V[_,_<: Nat],@tbsp F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
 
     override implicit def scalar: Field[F]
     @inline def div(a:V[F,Dim], k:F):V[F,Dim] = times(a, scalar.inv(k))
@@ -414,18 +414,18 @@ object TypeClasses {
 
 
   //TODO D E P R E C A T E D ---------------------------------------------------------------------------------------
- /* trait ElementOps2[@specialized T]{
+ /* trait ElementOps2[@tbsp T]{
     @inline def x: T
     @inline def y: T
   }
 
-  trait ElementOps3[@specialized T]{
+  trait ElementOps3[@tbsp T]{
     @inline def x: T
     @inline def y: T
     @inline def z: T
   }
 
-  trait ElementOps4[@specialized T]{
+  trait ElementOps4[@tbsp T]{
     @inline def x: T
     @inline def y: T
     @inline def z: T
@@ -445,7 +445,7 @@ object TypeClasses {
   trait CrossProduct
 
   //used to specify the area where the matrix may be used (great for implicits)
-  class GramMixin[@specialized F : ClassTag](implicit ev: Field[F]) extends MixinForMutables[Mat[F], Gram]{
+  class GramMixin[@tbsp F : ClassTag](implicit ev: Field[F]) extends MixinForMutables[Mat[F], Gram]{
     /**
       *
       * @param mat
@@ -470,7 +470,7 @@ object TypeClasses {
   }
 
   //used to specify the area where the matrix may be used (great for implicits)
-  class CrossProductMixin[@specialized F : ClassTag](implicit ev: Field[F]) extends MixinForMutables[Mat[F], CrossProduct]{
+  class CrossProductMixin[@tbsp F : ClassTag](implicit ev: Field[F]) extends MixinForMutables[Mat[F], CrossProduct]{
     /**
       *
       * @param mat
@@ -513,7 +513,7 @@ object TypeClasses {
     def crossProduct(a: V, b: V) : V
   }
 
-  trait Mat4Mult[V, @specialized F]{
+  trait Mat4Mult[V, @tbsp F]{
     def multM(v : V, mat : Mat4[F]) : V
   }
 
@@ -521,7 +521,7 @@ object TypeClasses {
     def ortho(a: V) : V
   }
 
-  trait EuclideanSpaceOverField[V,@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim]{
+  trait EuclideanSpaceOverField[V,@tbsp F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim]{
 
     override implicit def scalar : Field[F] with Trig[F] with Euclidean[F]
 
@@ -550,7 +550,7 @@ object TypeClasses {
 
 
   //using canonical basis
-  trait CanonicalEuclideanSpaceOverField[V[_,_<: Nat],@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
+  trait CanonicalEuclideanSpaceOverField[V[_,_<: Nat],@tbsp F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
 
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F]
 
@@ -751,7 +751,7 @@ object TypeClasses {
   }
 
 
-  class VecIsCanonicalEuclideanSpaceOverField[@specialized F : ClassTag, Dim <: Nat](field : Field[F] with Trig[F] with Euclidean[F])(implicit evDim: ToInt[Dim]) extends CanonicalEuclideanSpaceOverField[Vec, F, Dim]{
+  class VecIsCanonicalEuclideanSpaceOverField[@tbsp F : ClassTag, Dim <: Nat](field : Field[F] with Trig[F] with Euclidean[F])(implicit evDim: ToInt[Dim]) extends CanonicalEuclideanSpaceOverField[Vec, F, Dim]{
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F] = field
     override def staticContainer: AlgebraicVector[F, Vec] = new AlgebraicVector[F, Vec]
     override def tensor1: Tensor1[F, Vec, Dim] = new VecIsTensor1[F,Dim]()
@@ -761,29 +761,29 @@ object TypeClasses {
     override val dim: ToInt[Dim] = evDim
   }
 
-  class Vec3HasCrossProduct[@specialized F] extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{
+  class Vec3HasCrossProduct[@tbsp F] extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._3] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._3]]
   }
 
-  class Vec2HasOrtho[@specialized F] extends TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec, F]{
+  class Vec2HasOrtho[@tbsp F] extends TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec, F]{
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._2] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._2]]
   }
 
 
   //Those are just normal containers with dynamic sizes (not known at compile time, moreover size cannot change across instances of collection even at compile time)
-  class Tuple2IsContainer2[@specialized T] extends Container2[T, (T,T)]{
+  class Tuple2IsContainer2[@tbsp T] extends Container2[T, (T,T)]{
     override def x(v: (T,T)): T = v._1
 
     override def y(v: (T,T)): T = v._2
   }
-  class Tuple3IsContainer3[@specialized T] extends Container3[T, (T,T,T)]{
+  class Tuple3IsContainer3[@tbsp T] extends Container3[T, (T,T,T)]{
     override def x(v: (T,T,T)): T = v._1
 
     override def y(v: (T,T,T)): T = v._2
 
     override def z(v: (T,T,T)): T = v._3
   }
-  class Tuple4IsContainer4[@specialized T] extends Container4[T, (T,T,T,T)]{
+  class Tuple4IsContainer4[@tbsp T] extends Container4[T, (T,T,T,T)]{
     override def x(v: (T,T,T,T)): T = v._1
 
     override def y(v: (T,T,T,T)): T = v._2
@@ -792,19 +792,19 @@ object TypeClasses {
 
     override def w(v: (T,T,T,T)): T = v._4
   }
-  class Vec2IsContainer2[@specialized T] extends Container2[T, Vec2[T]]{
+  class Vec2IsContainer2[@tbsp T] extends Container2[T, Vec2[T]]{
     override def x(v: Vec2[T]): T = v(0)
 
     override def y(v: Vec2[T]): T = v(1)
   }
-  class Vec3IsContainer3[@specialized T] extends Container3[T, Vec3[T]]{
+  class Vec3IsContainer3[@tbsp T] extends Container3[T, Vec3[T]]{
     override def x(v: Vec3[T]): T = v(0)
 
     override def y(v: Vec3[T]): T = v(1)
 
     override def z(v: Vec3[T]): T = v(2)
   }
-  class Vec4IsContainer4[@specialized T] extends Container4[T, Vec4[T]]{
+  class Vec4IsContainer4[@tbsp T] extends Container4[T, Vec4[T]]{
     override def x(v: Vec4[T]): T = v(0)
 
     override def y(v: Vec4[T]): T = v(1)
@@ -813,7 +813,7 @@ object TypeClasses {
 
     override def w(v: Vec4[T]): T = v(3)
   }
-  class ArrayIsContainerAny[@specialized T] extends ContainerAny[T, Array[T]]{
+  class ArrayIsContainerAny[@tbsp T] extends ContainerAny[T, Array[T]]{
     override def x(v: Array[T]): T = v(0)
 
     override def y(v: Array[T]): T = v(1)
@@ -983,7 +983,7 @@ object TypeClasses {
 
 
   //DEPRECATED, only static collections are ok
-  /*class ArrayIsCanonicalEuclideanSpaceOverField[@specialized F : ClassTag](final val dimensions: Int, field: Field[F] with Trig[F] with Euclidean[F]) extends CanonicalEuclideanSpaceOverField[Array[F], F]{
+  /*class ArrayIsCanonicalEuclideanSpaceOverField[@tbsp F : ClassTag](final val dimensions: Int, field: Field[F] with Trig[F] with Euclidean[F]) extends CanonicalEuclideanSpaceOverField[Array[F], F]{
 
 
 
@@ -1077,7 +1077,7 @@ object TypeClasses {
     override def w(v: Array[F]) = v(3)
   }*/
 
-  /*class Vec3IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] with CrossProductOverCanonicalEuclideanSpaceOverField[Vec3[T], T]{
+  /*class Vec3IsCanonicalEuclideanSpaceOverField[@tbsp T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] with CrossProductOverCanonicalEuclideanSpaceOverField[Vec3[T], T]{
 
 
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec3[T], T, Nat._3] = this
@@ -1114,7 +1114,7 @@ object TypeClasses {
     override def negate(a: Vec3[T]): Vec3[T] = Vec3[T](-a.x, -a.y, -a.z)
   }
 
-  class Vec4IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4]{
+  class Vec4IsCanonicalEuclideanSpaceOverField[@tbsp T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4]{
 
 
 
@@ -1149,7 +1149,7 @@ object TypeClasses {
     override def negate(a: Vec4[T]): Vec4[T] = Vec4[T](-a.x, -a.y, -a.z, -a.w)
   }
 
-  class Vec2IsCanonicalEuclideanSpaceOverField[@specialized T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] with TwoDimensionalVectorOrhoOperatorOverCanonicalEuclideanSpaceOverField[Vec2[T], T]{
+  class Vec2IsCanonicalEuclideanSpaceOverField[@tbsp T : ClassTag](field: Field[T] with Trig[T] with Euclidean[T]) extends CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] with TwoDimensionalVectorOrhoOperatorOverCanonicalEuclideanSpaceOverField[Vec2[T], T]{
 
 
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] = this

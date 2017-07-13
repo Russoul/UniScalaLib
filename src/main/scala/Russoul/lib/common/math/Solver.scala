@@ -2,7 +2,7 @@ package Russoul.lib.common.math
 
 import java.lang
 
-import Russoul.lib.common.{Real, Vec2}
+import Russoul.lib.common.{Real, Vec2, tbsp}
 import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.Implicits._
 import Russoul.lib.common.math.algebra.Vec
@@ -19,12 +19,12 @@ object Solver
   /**
     * aX + b = 0
     */
-  @inline def findRealRootsPolynomial1[@specialized A](a:A, b:A)(implicit ev: Field[A]): Option[A] ={
+  @inline def findRealRootsPolynomial1[@tbsp A](a:A, b:A)(implicit ev: Field[A]): Option[A] ={
     if(a != 0) Some(-b/a) else None
   }
 
 
-  @inline def findDiscriminantOfPolynomial2[@specialized A](a:A, b:A, c:A)(implicit ev: Field[A] with ConvertibleFromDouble[A]) : A =
+  @inline def findDiscriminantOfPolynomial2[@tbsp A](a:A, b:A, c:A)(implicit ev: Field[A] with ConvertibleFromDouble[A]) : A =
   {
     b * b - 4D.as[A] * a * c
   }

@@ -38,8 +38,10 @@ package object common
   //............................................
 
 
+
   //specialization
   type sp = specialized
+  class tbsp extends Annotation //tbsp for to be specialized; currently specialization does not work well
   //....
 
   //simple types---------------------------
@@ -62,31 +64,31 @@ package object common
 
   type ComplexF = ComplexOver[Float]
 
-  type Vec2[@specialized T] = Vec[T, Nat._2]
-  type Vec3[@specialized T] = Vec[T, Nat._3]
-  type Vec4[@specialized T] = Vec[T, Nat._4]
+  type Vec2[@tbsp T] = Vec[T, Nat._2]
+  type Vec3[@tbsp T] = Vec[T, Nat._3]
+  type Vec4[@tbsp T] = Vec[T, Nat._4]
 
-  type Mat2[@specialized A] = Mat[A, Nat._2, Nat._2]
-  type Mat3[@specialized A] = Mat[A, Nat._3, Nat._3]
-  type Mat4[@specialized A] = Mat[A, Nat._4, Nat._4]
+  type Mat2[@tbsp A] = Mat[A, Nat._2, Nat._2]
+  type Mat3[@tbsp A] = Mat[A, Nat._3, Nat._3]
+  type Mat4[@tbsp A] = Mat[A, Nat._4, Nat._4]
 
 
   object Vec2{
-    @inline def apply[@specialized A : ClassTag](x: A, y: A): Vec[A, Nat._2] = Vec[A,Nat._2](x,y)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A): Vec[A, Nat._2] = Vec[A,Nat._2](x,y)
   }
   object Vec3{
-    @inline def apply[@specialized A : ClassTag](x: A, y: A, z: A): Vec[A, Nat._3] = Vec[A,Nat._3](x,y,z)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A): Vec[A, Nat._3] = Vec[A,Nat._3](x,y,z)
   }
   object Vec4{
-    @inline def apply[@specialized A : ClassTag](x: A, y: A, z: A, w: A): Vec[A, Nat._4] = Vec[A,Nat._4](x,y,z,w)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A, w: A): Vec[A, Nat._4] = Vec[A,Nat._4](x,y,z,w)
   }
-  
+
   //The same as Real
   type Double2 = Real2
   type Double3 = Real3
   type Double4 = Real4
   //...................
-  
+
   type Float2 = Vec[Float, Nat._2]
   type Float3 = Vec[Float, Nat._3]
   type Float4 = Vec[Float, Nat._4]
@@ -236,11 +238,11 @@ package object common
     def apply(center: Float2, right: Float2, up: Float2, extentRight: Float, extentUp: Float): OBB2F = OBB2Over(center, right, up, extentRight, extentUp)
   }
   //--------------------------------------------------------
-  
+
 
   //SOME SYNTACTIC GOODIES
   //used as fully infered function
-  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @specialized F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim], toInt: ToInt[Dim]) = ev.tensor1.make(args : _*)
+  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @tbsp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim], toInt: ToInt[Dim]) = ev.tensor1.make(args : _*)
   @inline def transformd(a: Real3, b: Mat4D) : Real3 = {
     val temp = Real4(a, 0D)
     val temp2 = temp * b

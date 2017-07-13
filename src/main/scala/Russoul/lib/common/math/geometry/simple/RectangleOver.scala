@@ -36,7 +36,7 @@ import shapeless.Nat._
   * @tparam V
   * @tparam F
   */
-@immutable class RectangleOver[V[_,_ <: Nat], @specialized F : Field : ClassTag]private (val center: V[F,_3], val right: V[F,_3], val up: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) extends CenteredShape3[V[F,_3],F] {
+@immutable class RectangleOver[V[_,_ <: Nat], @tbsp F : Field : ClassTag]private (val center: V[F,_3], val right: V[F,_3], val up: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) extends CenteredShape3[V[F,_3],F] {
 
   override def translate(v: V[F,_3]): RectangleOver[V,F] = {
     new RectangleOver(center + v, right, up)
@@ -88,12 +88,12 @@ import shapeless.Nat._
 
 object RectangleOver
 {
-  def fromMinMax2DParallelToZ[V[_,_ <: Nat], @specialized F : ClassTag : Field](min:V[F,_2], max:V[F,_2], z:F)(implicit evTag: ClassTag[V[F,_3]], ev2: CanonicalEuclideanSpaceOverField[V,F,_2], ev3: CanonicalEuclideanSpaceOverField[V,F,_3], cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], ev : ConvertibleFromDouble[F], tensor11: Tensor1[F,V,_2],tensor12: Tensor1[F,V,_3] ): RectangleOver[V,F] =
+  def fromMinMax2DParallelToZ[V[_,_ <: Nat], @tbsp F : ClassTag : Field](min:V[F,_2], max:V[F,_2], z:F)(implicit evTag: ClassTag[V[F,_3]], ev2: CanonicalEuclideanSpaceOverField[V,F,_2], ev3: CanonicalEuclideanSpaceOverField[V,F,_3], cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], ev : ConvertibleFromDouble[F], tensor11: Tensor1[F,V,_2],tensor12: Tensor1[F,V,_3] ): RectangleOver[V,F] =
   {
     val t: V[F,_3] = makeVector(_3, max.x, max.y ,ev3.scalar.zero) - makeVector(_3, min.x, min.y,ev3.scalar.zero)
     new RectangleOver(makeVector(_3, min.x, min.y,z) + t * 0.5D.as[F], makeVector(_3, t.x / 2D.as[F], ev3.scalar.zero, ev3.scalar.zero), makeVector(_3, ev3.scalar.zero, t.y / 2D.as[F] ,ev3.scalar.zero))
   }
 
-  def apply[V[_,_ <: Nat], @specialized F : ClassTag : Field](center: V[F,_3], right: V[F,_3], up: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) = new RectangleOver[V,F](center, right, up)
+  def apply[V[_,_ <: Nat], @tbsp F : ClassTag : Field](center: V[F,_3], right: V[F,_3], up: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1: Tensor1[F,V,_3]) = new RectangleOver[V,F](center, right, up)
 
 }

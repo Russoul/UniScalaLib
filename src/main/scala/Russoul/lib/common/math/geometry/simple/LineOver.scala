@@ -13,7 +13,7 @@ import shapeless.Nat
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class LineOver[V[_,_ <: Nat], @specialized F : Field]private(val start:V[F,_3], val end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3])  extends Shape3[V[F,_3],F] {
+@immutable class LineOver[V[_,_ <: Nat], @tbsp F : Field]private(val start:V[F,_3], val end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3])  extends Shape3[V[F,_3],F] {
 
   override def translate(v: V[F,_3]): LineOver[V,F] = {
     new LineOver(start + v, end + v)
@@ -31,7 +31,7 @@ import shapeless.Nat
 
 object LineOver
 {
-  def apply[V[_,_ <: Nat], @specialized F : Field](pos: V[F,_3], start: F, end: F, yaw: F, pitch: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_3]): LineOver[V,F] = {
+  def apply[V[_,_ <: Nat], @tbsp F : Field](pos: V[F,_3], start: F, end: F, yaw: F, pitch: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_3]): LineOver[V,F] = {
     val alpha = -yaw
     val t = ev.scalar.toRadians(90D.as[F] - alpha)
     val cosT = ev.scalar.cos(t)
@@ -48,5 +48,5 @@ object LineOver
     new LineOver(p1, p2)
   }
 
-  def apply[V[_,_ <: Nat], @specialized F : Field](start:V[F,_3], end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3]) = new LineOver[V,F](start, end)
+  def apply[V[_,_ <: Nat], @tbsp F : Field](start:V[F,_3], end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3]) = new LineOver[V,F](start, end)
 }
