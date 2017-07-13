@@ -8,7 +8,7 @@ import scala.math.Ordering
 import scala.reflect.ClassTag
 import Implicits._
 import Russoul.lib.common.Ops.{CanonicalEuclideanSpaceOps, FieldOps}
-import Russoul.lib.common.StaticContainerTypeClasses.VecIsStaticVector
+import Russoul.lib.common.StaticContainerTypeClasses.VecIsTensor1
 import Russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
 import shapeless.ops.nat
 import shapeless.ops.nat.{Diff, GT, Sum, ToInt}
@@ -41,32 +41,43 @@ object TypeClasses {
   }
 
 
-  class DefaultAlgebraicFactory[@specialized T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
+
+
+
+  //TENSORS(just as data (scalars, vectors, matrices, 3d matrices, 4d matrices and so on))----------------------
+  //TODO better name for this kind of stuff ? Real tensors must also provide a law according to which each 'data-tensor' is transformed (switching basis)
+
+  //these guys do not provide a safe way to get index a 'data-tensor'
+  //and they also do not provide any common operations on them
+  //so algebraic representations(i.e AlgebraicVector, AlgebraicMatrix and so on) should be used as they provide the later
+  //Tensors are used just to provide evidence that a particular type is a 'data-tensor'
+
+  trait Tensor[@sp T, Dim <: Nat]
+  trait Tensor0[@sp T] extends Tensor[T, Nat._0] // == scalar
+  trait Tensor1[@sp T, Vec[_,_<: Nat], A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
+    def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
+    def get(a: Vec[T, A1], i: Int) : T
+  }
+  trait Tensor2[@sp T, Mat[_,_<: Nat,_<: Nat],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
+    def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A1]) : Mat[T, A1, A2]
+    def get(a: Mat[T, A1, A2], i: Int, j: Int) : T
+  }
+  //--------------------------------------------------------------------------------------
+
+
+
+  //TODO to be removed
+
+  /*class DefaultAlgebraicFactory[@specialized T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
 
     override def makeVector[Size <: Nat : ToInt](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
     override def makeMatrix[Size <: Nat : ToInt](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
 
     override protected def get[Size <: Nat : ToInt](vec: Vec[T, Size], index: Int): T = vec(index)
     override protected def get[Size <: Nat : ToInt](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
-  }
+  }*/
 
-
-  //TENSORS----------------------
-  trait Tensor[@sp T, Dim <: Nat]
-  trait Tensor0[@sp T] extends Tensor[T, Nat._0]
-  trait Tensor1[@sp T, Vec[_,_], A1 <: Nat] extends Tensor[T, Nat._1]{
-    def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
-  }
-  trait Tensor2[@sp T, Mat[_,_,_],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{
-    def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A1]) : Mat[T, A1, A2]
-  }
-  //--------------------------------------------------------------------------------------
-
-
-  //TODO
-
-
-  abstract class AlgebraicTypeFactory[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
+  abstract class AlgebraicTypeFactory[@specialized T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat]]{
 
     def makeVector[Size <: Nat : ToInt](args: T*) : Vec[T, Size]
     def makeMatrix[Size <: Nat : ToInt](args: T*) : Mat[T, Size]
@@ -75,6 +86,10 @@ object TypeClasses {
     def get[Size <: Nat : ToInt](vec: Vec[T,Size], index: Int) : T
     def get[Size <: Nat : ToInt](mat: Mat[T,Size], i: Int, j: Int) : T
   }
+  //TODO...............
+
+
+  //The stuff below is algebra on tensors(once more: tensors here are just data with no functions or laws)
 
   //indices start from 0
   //compile time static collection
@@ -82,14 +97,14 @@ object TypeClasses {
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
-  abstract class StaticVector[@specialized T : ClassTag, Vec[_,_]]{
+  final class AlgebraicVector[@specialized T : ClassTag, Vec[_,_<: Nat]]{
 
     //val factory: AlgebraicTypeFactory[T, Vec, Mat]
 
-    val tensor0 : Tensor0[T]
-    val tensor1 : Tensor1[T, Vec, ] //add size to StaticVector ?
+    //val tensor0 : Tensor0[T]
+    //val tensor1 : Tensor1[T, Vec, Size] //add size to StaticVector ?
 
-    @inline def get[Size <: Nat, Index <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index]) : T = factory.get[Size](vec, index())
+    @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: Size <:!< Index, tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
 
   }
 
@@ -97,21 +112,26 @@ object TypeClasses {
 
   //indices start from 0
   //algebraic matrices
-  abstract class StaticSquareMatrix[@specialized T : ClassTag, Vec[_,_], Mat[_,_]]{
-
-    type Space[Size] = CanonicalEuclideanSpaceOverField[Vec, T, Size]
-
-    protected val factory: AlgebraicTypeFactory[T, Vec, Mat]
+  final class AlgebraicSquareMatrix[@specialized T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_ <: Nat]]{
 
 
 
-    @inline def get[Size <: Nat, IndexI <: Nat, IndexJ <: Nat](mat: Mat[T,Size], i: IndexI, j: IndexJ)(implicit ev1: Size <:!< IndexI, toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ, toIntJ: ToInt[IndexJ]) : T = {
-      factory.get(mat, toIntI(), toIntJ())
+    //protected val factory: AlgebraicTypeFactory[T, Vec, Mat]
+
+
+
+    @inline def get[Size <: Nat, IndexI <: Nat, IndexJ <: Nat](mat: Mat[T,Size,Size],
+                                                               i: IndexI,
+                                                               j: IndexJ)(implicit ev1: Size <:!< IndexI,
+                                                               toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ,
+                                                               toIntJ: ToInt[IndexJ],
+                                                                          tensor2: Tensor2[T, Mat, Size, Size]) : T = {
+      tensor2.get(mat, toIntI(), toIntJ())
     }
 
 
     //private dynamic variants
-    private def row[Size <: Nat](mat: Mat[T,Size], row: Int)(implicit sizeEv: ToInt[Size]) : Vec[T,Size] = {
+    private def row[Size <: Nat](mat: Mat[T,Size,Size], row: Int)(implicit sizeEv: ToInt[Size], tensor1: Tensor1[T,Vec,Size]) : Vec[T,Size] = {
 
       val size = sizeEv()
 
@@ -121,10 +141,10 @@ object TypeClasses {
         seq(i) = get(mat, row, i)
       }
 
-      factory.makeVector(seq : _*)
+      tensor1.make(seq : _*)
     }
 
-    private def column[Size <: Nat](mat: Mat[T,Size], column: Int)(implicit sizeEv: ToInt[Size]) : Vec[T,Size] = {
+    private def column[Size <: Nat](mat: Mat[T,Size,Size], column: Int)(implicit sizeEv: ToInt[Size], tensor1: Tensor1[T,Vec,Size]) : Vec[T,Size] = {
 
       val size = sizeEv()
 
@@ -134,21 +154,21 @@ object TypeClasses {
         seq(i) = get(mat, i, column)
       }
 
-      factory.makeVector(seq : _*)
+      tensor1.make(seq : _*)
     }
 
 
     //...
 
-    @inline def row[Size <: Nat, Index <: Nat](mat: Mat[T,Size], row: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], rowEv : ToInt[Index]) : Vec[T,Size] = {
+    @inline def row[Size <: Nat, Index <: Nat](mat: Mat[T,Size,Size], row: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], rowEv : ToInt[Index], tensor1: Tensor1[T,Vec,Size]) : Vec[T,Size] = {
       this.row[Size](mat, rowEv.apply())
     }
 
-    @inline def column[Size <: Nat, Index <: Nat](mat: Mat[T,Size], column: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], colEv : ToInt[Index]) : Vec[T,Size] = {
+    @inline def column[Size <: Nat, Index <: Nat](mat: Mat[T,Size,Size], column: Index)(implicit ev1: Size <:!< Index, sizeEv: ToInt[Size], colEv : ToInt[Index], tensor1: Tensor1[T,Vec,Size]) : Vec[T,Size] = {
       this.column(mat, colEv.apply())
     }
 
-    def transpose[Size <: Nat](mat: Mat[T,Size])(implicit sizeEv: ToInt[Size]) : Mat[T,Size] = {
+    def transpose[Size <: Nat](mat: Mat[T,Size,Size])(implicit sizeEv: ToInt[Size], tensor2: Tensor2[T,Mat,Size,Size]) : Mat[T,Size,Size] = {
       val size = sizeEv()
 
       val seq = new Array[T](size)
@@ -158,12 +178,12 @@ object TypeClasses {
         }
       }
 
-      factory.makeMatrix(seq: _*)
+      tensor2.make(seq: _*)
 
     }
 
-
-    def matrixMultiplication[Size <: Nat](a: Mat[T,Size], b: Mat[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]) : Mat[T,Size] = {
+    type Space[Size] = CanonicalEuclideanSpaceOverField[Vec, T, Size]
+    def matrixMultiplication[Size <: Nat](a: Mat[T,Size,Size], b: Mat[T,Size,Size])(implicit sizeEv: ToInt[Size], space: Space[Size], tensor2: Tensor2[T, Mat, Size, Size]) : Mat[T,Size,Size] = {
 
       val size = sizeEv()
 
@@ -177,12 +197,12 @@ object TypeClasses {
         }
       }
 
-      factory.makeMatrix(seq: _*)
+      tensor2.make(seq: _*)
     }
 
 
     //vector is supposed to be a row-vector
-    def vectorMultiplication[Size <: Nat](a: Vec[T,Size], b: Mat[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]): Vec[T,Size] = {
+    def vectorMultiplication[Size <: Nat](a: Vec[T,Size], b: Mat[T,Size,Size])(implicit sizeEv: ToInt[Size], space: Space[Size], tensor1: Tensor1[T,Vec,Size]): Vec[T,Size] = {
       val size = sizeEv()
 
       val seq = new Array[T](size)
@@ -191,11 +211,11 @@ object TypeClasses {
         seq(i) = a dot column(b,i)
       }
 
-      factory.makeVector(seq: _*)
+      tensor1.make(seq: _*)
     }
 
     //vector is supposed to be a column-vector
-    def vectorMultiplication[Size <: Nat](a:Mat[T,Size], b: Vec[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size]): Vec[T,Size] = {
+    def vectorMultiplication[Size <: Nat](a:Mat[T,Size,Size], b: Vec[T,Size])(implicit sizeEv: ToInt[Size], space: Space[Size], tensor1: Tensor1[T,Vec,Size]): Vec[T,Size] = {
       val size = sizeEv()
 
       val seq = new Array[T](size)
@@ -204,7 +224,7 @@ object TypeClasses {
         seq(i) = row(a, i) dot b
       }
 
-      factory.makeVector(seq: _*)
+      tensor1.make(seq: _*)
     }
 
   }
@@ -214,7 +234,7 @@ object TypeClasses {
   //...........
 
   //also called Linear operator
-  trait LinearMap[V[_,_], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait LinearMap[V[_,_ <: Nat], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
@@ -222,7 +242,7 @@ object TypeClasses {
     def map(a: V[F,Dim]): V[F,Dim]
   }
 
-  trait BilinearMap[V[_,_], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
+  trait BilinearMap[V[_,_ <: Nat], @sp(Float, Double) F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
     implicit val scalar = space.scalar
@@ -230,18 +250,19 @@ object TypeClasses {
     def map(a: V[F,Dim], b: V[F,Dim]): V[F,Dim]
   }
 
-  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_], Mat[_,_], @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
+  trait CrossProductOverCanonicalEuclideanSpaceOverField[V[_,_<: Nat], @sp(Float, Double) F] extends BilinearMap[V,F, Nat._3, CanonicalEuclideanSpaceOverField[V, F, Nat._3]]{
 
     def map(a: V[F,Nat._3], b: V[F,Nat._3]): V[F,Nat._3] = {
-      space.staticContainer.factory.makeVector(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
+      space.tensor1.make(a.y * b.z - b.y * a.z, -(a.x*b.z - b.x*a.z), a.x * b.y - b.x * a.y)
     }
   }
 
-  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_], Mat[_,_], @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
+  trait TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V[_,_ <: Nat], @sp(Float, Double) F] extends LinearMap[V,F,Nat._2, CanonicalEuclideanSpaceOverField[V, F, Nat._2]]{
     override def map(a: V[F, Nat._2]): V[F, Nat._2] = {
-      space.staticContainer.factory.makeVector(-a.y, a.x)
+      space.tensor1.make(-a.y, a.x)
     }
   }
+
 
 
   trait Addable[@specialized A] {
@@ -300,14 +321,16 @@ object TypeClasses {
   }
 
 
-  trait ModuleOverRing[V[_,_], Mat[_,_], @specialized R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
+  abstract class ModuleOverRing[V[_,_<: Nat], @specialized R, Dim <: Nat : ToInt] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
     type Vector = V[R,Dim]
+    val dim = implicitly[ToInt[Dim]].apply()
 
-    val dim = implicitly[ToInt[Dim]].apply() //TODO ok ??
+
+
     implicit def scalar: Ring[R]
-    implicit def staticContainer: StaticVector[R, V, Mat] //V must be static container
-
+    def staticContainer: AlgebraicVector[R, V] //V must be static container
+    def tensor1: Tensor1[R,V,Dim]
 
 
 
@@ -320,7 +343,7 @@ object TypeClasses {
         i += 1
       }
 
-      staticContainer.factory.makeVector[Dim](seq : _*)
+      tensor1.make(seq : _*)
     }
 
     override def plus(a: V[R, Dim], b: V[R, Dim]): V[R, Dim] = {
@@ -328,11 +351,11 @@ object TypeClasses {
 
       var i = 0
       while(i < dim){
-        seq(i) = staticContainer.factory.get(a, i) + staticContainer.factory.get(b, i)
+        seq(i) = tensor1.get(a, i) + tensor1.get(b, i)
         i += 1
       }
 
-      staticContainer.factory.makeVector[Dim](seq : _*)
+      tensor1.make(seq : _*)
     }
 
     override def negate(a: V[R, Dim]): V[R, Dim] = {
@@ -340,11 +363,11 @@ object TypeClasses {
 
       var i = 0
       while(i < dim){
-        seq(i) = -staticContainer.factory.get(a, i)
+        seq(i) = -tensor1.get(a, i)
         i += 1
       }
 
-      staticContainer.factory.makeVector[Dim](seq : _*)
+      tensor1.make(seq : _*)
     }
 
 
@@ -353,11 +376,11 @@ object TypeClasses {
 
       var i = 0
       while(i < dim){
-        seq(i) = staticContainer.factory.get(a, i) * k
+        seq(i) = tensor1.get(a, i) * k
         i += 1
       }
 
-      staticContainer.factory.makeVector[Dim](seq : _*)
+      tensor1.make(seq : _*)
     }
 
 
@@ -367,17 +390,17 @@ object TypeClasses {
 
       var k = 0
       while(k < dim){
-        seq(k) = staticContainer.factory.get(a, k) * staticContainer.factory.get(b, k)
+        seq(k) = tensor1.get(a, k) * tensor1.get(b, k)
         k += 1
       }
 
-      staticContainer.factory.makeVector[Dim](seq : _*)
+      tensor1.make(seq : _*)
     }
   }
 
 
 
-  trait VectorSpaceOverField[V[_,_],@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
+  trait VectorSpaceOverField[V[_,_<: Nat],@specialized F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
 
     override implicit def scalar: Field[F]
     @inline def div(a:V[F,Dim], k:F):V[F,Dim] = times(a, scalar.inv(k))
@@ -523,7 +546,7 @@ object TypeClasses {
 
 
   //using canonical basis
-  trait CanonicalEuclideanSpaceOverField[V[_,_],@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
+  trait CanonicalEuclideanSpaceOverField[V[_,_<: Nat],@specialized F, Dim <: Nat] extends VectorSpaceOverField[V,F,Dim] {
 
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F]
 
@@ -532,7 +555,7 @@ object TypeClasses {
 
       var i = 0
       while(i < dim){
-        res += staticContainer.factory.get(a, i) * staticContainer.factory.get(b, i)
+        res += tensor1.get(a, i) * tensor1.get(b, i)
         i += 1
       }
 
@@ -726,8 +749,8 @@ object TypeClasses {
 
   class VecIsCanonicalEuclideanSpaceOverField[@sp F, Dim <: Nat](field : Field[F] with Trig[F] with Euclidean[F])(implicit dim: ToInt[Dim]) extends CanonicalEuclideanSpaceOverField[Vec, F, Dim]{
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F] = field
-    override implicit def staticContainer: StaticVector[F, Vec] = new VecIsStaticVector[F]
-
+    override def staticContainer: AlgebraicVector[F, Vec] = new AlgebraicVector[F, Vec]
+    override def tensor1: Tensor1[F, Vec, Dim] = new VecIsTensor1[F,Dim]
   }
 
   class Vec3HasCrossProduct[@sp F] extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{

@@ -110,14 +110,26 @@ object StaticContainerTypeClasses {
     }
   }*/
 
+  //TODO require it to be a field ?
+  class TIsTensor0[@sp T : ClassTag] extends Tensor0[T]
 
-  class VecIsStaticVector[@sp T : ClassTag] extends StaticVector[T, Vec]{
+  class VecIsTensor1[@sp T : ClassTag, A1 <: Nat] extends Tensor1[T, Vec, A1]{
+    override def make(args: T*)(implicit ev1: nat.ToInt[A1]): Vec[T, A1] = Vec(args : _*)
+    override def get(a: Vec[T, A1], i: Int): T = a(i)
+  }
+
+  class MatIsTensor2[@sp T : ClassTag, A1 <: Nat, A2 <: Nat] extends Tensor2[T,Mat,A1,A2]{
+    override def make(args: T*)(implicit ev1: nat.ToInt[A1], ev2: nat.ToInt[A1]): Mat[T, A1, A2] = Mat[T,A1,A2](args : _*)
+    override def get(a: Mat[T, A1, A2], i: Int, j: Int): T = a(i,j)
+  }
+
+  /*class VecIsAlgebraicVector[@sp T : ClassTag] extends AlgebraicVector[T, Vec]{
     override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
   }
 
-  class MatIsStaticMatrix[@sp T : ClassTag] extends StaticSquareMatrix[T, Vec, Mat]{
+  class MatIsAlgebraicMatrix[@sp T : ClassTag] extends AlgebraicSquareMatrix[T, Vec, Mat]{
     override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
-  }
+  }*/
 
   
 

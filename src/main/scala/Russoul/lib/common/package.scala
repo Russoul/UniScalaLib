@@ -32,6 +32,9 @@ package object common
     def ||>(f: (A,B) => R): R = f(a._1,a._2)
   }
 
+
+
+
   //............................................
 
 
@@ -66,6 +69,7 @@ package object common
   type Mat2[@sp A] = Mat[A, Nat._2]
   type Mat3[@sp A] = Mat[A, Nat._3]
   type Mat4[@sp A] = Mat[A, Nat._4]
+
 
   object Vec2{
     @inline def apply[@specialized A : ClassTag](x: A, y: A): Vec[A, Nat._2] = Vec[A,Nat._2](x,y)
@@ -436,9 +440,9 @@ package object common
         v.x, v.y, v.z, 1)
     }
 
-    def matrixROTATION(axis: Float3, angleInFegrees: Float): Mat4F =
+    def matrixROTATION(axis: Float3, angleInDegrees: Float): Mat4F =
     {
-      val rad = angleInFegrees * scala.math.Pi / 180
+      val rad = angleInDegrees * scala.math.Pi / 180
       val cos = scala.math.cos(rad).toFloat
       val sin = scala.math.sin(rad).toFloat
       val x = axis.x

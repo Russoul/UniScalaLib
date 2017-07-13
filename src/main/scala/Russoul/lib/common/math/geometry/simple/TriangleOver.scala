@@ -11,7 +11,7 @@ import shapeless.Nat._
 /**
   * Created by Russoul on 23.07.2016.
   */
-@immutable class TriangleOver[V[_,_], @specialized F] private(val p1:V[F,_3], val p2:V[F,_3], val p3:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) extends Shape3[V[F,_3],F] {
+@immutable class TriangleOver[V[_,_], @specialized F : Field] private(val p1:V[F,_3], val p2:V[F,_3], val p3:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) extends Shape3[V[F,_3],F] {
 
 
   override def translate(v: V[F,_3]): TriangleOver[V,F] = {

@@ -1,7 +1,8 @@
 package Russoul.lib.common
 
-import Russoul.lib.common.StaticContainerTypeClasses.{MatIsStaticMatrix, VecIsStaticVector}
+import Russoul.lib.common.StaticContainerTypeClasses._
 import Russoul.lib.common.TypeClasses._
+import Russoul.lib.common.math.algebra.{Mat, Vec}
 import shapeless.Nat
 import shapeless.ops.nat.ToInt
 
@@ -52,8 +53,14 @@ object Instances {
   }
 
   trait DefaultAlgebraicTypeInstances{
-    implicit def vecIsStaticVector[@specialized T : ClassTag] = new VecIsStaticVector[T]
-    implicit def matIsStaticMatrix[@specialized T : ClassTag] = new MatIsStaticMatrix[T]
+    implicit def TIsTensor0[@sp T : ClassTag] = new TIsTensor0[T]
+    implicit def vecIsTensor1[@sp T : ClassTag, A1 <: Nat] = new VecIsTensor1[T,A1]
+    implicit def matIsTensor2[@sp T : ClassTag, A1 <: Nat, A2 <: Nat] = new MatIsTensor2[T,A1,A2]
+
+    //we get this for free because they are tensors
+    implicit def vecIsAlgebraicVector[@sp T : ClassTag] = new AlgebraicVector[T, Vec]
+    implicit def matIsAlgebraicSquareMatrix[@sp T : ClassTag] = new AlgebraicSquareMatrix[T, Vec, Mat]
+    //...
 
     implicit def vecIsCanEuclideanSpace[@sp F, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
 

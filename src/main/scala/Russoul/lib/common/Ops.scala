@@ -43,7 +43,7 @@ object Ops {
   }
 
 
-  class StaticVectorOps[@specialized T : ClassTag, Vec[_,_], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: StaticVector[T,Vec]){
+  class StaticVectorOps[@specialized T : ClassTag, Vec[_,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicVector[T,Vec]){
     @inline def _0 = ev.get(lhs, Nat._0) //(implicit ev: GT[Size, ])
     @inline def _1(implicit ev1: GT[Size, Nat._1]) = ev.get(lhs, Nat._1)
     @inline def _2(implicit ev1: GT[Size, Nat._2]) = ev.get(lhs, Nat._2)
@@ -51,30 +51,30 @@ object Ops {
 
   }
 
-  class CrossProductOps[@specialized T, Vec[_,_]](lhs: Vec[T, Nat._3])(implicit ev: CrossProductOverCanonicalEuclideanSpaceOverField[Vec, T]){
+  class CrossProductOps[@specialized T, Vec[_,_<: Nat]](lhs: Vec[T, Nat._3])(implicit ev: CrossProductOverCanonicalEuclideanSpaceOverField[Vec, T]){
     @inline def ⨯(rhs: Vec[T, Nat._3]) = ev.map(lhs, rhs)
   }
 
-  class OrthoOps[@specialized T, Vec[_,_]](lhs: Vec[T, Nat._2]) (implicit ev: TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec,T]){
+  class OrthoOps[@specialized T, Vec[_,_<: Nat]](lhs: Vec[T, Nat._2]) (implicit ev: TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec,T]){
     @inline def ⟂() = ev.map(lhs)
   }
 
-  class SquareMatrixOpsVectorFirst[@specialized T : ClassTag, Vec[_,_], Mat[_,_], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: StaticSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]){
-    def ⨯(rhs: Mat[T,Size]) = ev.vectorMultiplication(lhs, rhs)
+  class SquareMatrixOpsVectorFirst[@specialized T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]){
+    def ⨯(rhs: Mat[T,Size,Size]) = ev.vectorMultiplication(lhs, rhs)
   }
 
-  class SquareMatrixOps[@specialized T : ClassTag, Vec[_,_], Mat[_,_], Size <: Nat : ToInt](lhs: Mat[T,Size])(implicit ev: StaticSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]){
-    def ⨯(rhs: Mat[T,Size]) = ev.matrixMultiplication(lhs, rhs)
+  class SquareMatrixOps[@specialized T : ClassTag, Vec[_,_<: Nat], Mat[_,_,_ <: Nat], Size <: Nat : ToInt](lhs: Mat[T,Size,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]){
+    def ⨯(rhs: Mat[T,Size,Size]) = ev.matrixMultiplication(lhs, rhs)
     def ⨯(rhs: Vec[T,Size]) = ev.vectorMultiplication(lhs, rhs)
-    def transpose() : Mat[T,Size] = ev.transpose(lhs)
+    def transpose() : Mat[T,Size,Size] = ev.transpose(lhs)
   }
 
-  class ModuleOpsCommon[V[_,_],@specialized R, Dim <: Nat : ToInt](lhs: V[R,Dim])(implicit ev: ModuleOverRing[V,R,Dim]){
+  class ModuleOpsCommon[V[_,_<: Nat],@specialized R, Dim <: Nat : ToInt](lhs: V[R,Dim])(implicit ev: ModuleOverRing[V,R,Dim]){
     @inline def *(rhs: R) : V[R,Dim] = ev.times(lhs, rhs)
     @inline def ⊗(rhs: V[R,Dim]) : V[R,Dim] = ev.timesByElement(lhs, rhs)
 
     //starting from 1
-    @inline def apply(i:Int): R = ev.staticContainer.factory.get(lhs, i)
+    @inline def apply(i:Int): R = ev.tensor1.get(lhs, i)
 
 
     /*@inline def x: R = ev.x(lhs)
@@ -96,18 +96,18 @@ object Ops {
   }
 
 
-  class ModuleOps2[V[_,_],@specialized R](lhs: V[R,Nat._2])(implicit ev: ModuleOverRing[V,R,Nat._2]){
+  class ModuleOps2[V[_,_<: Nat],@specialized R](lhs: V[R,Nat._2])(implicit ev: ModuleOverRing[V,R,Nat._2]){
     @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
   }
 
-  class ModuleOps3[V[_,_],@specialized R](lhs: V[R,Nat._3])(implicit ev: ModuleOverRing[V,R,Nat._3]){
+  class ModuleOps3[V[_,_<: Nat],@specialized R](lhs: V[R,Nat._3])(implicit ev: ModuleOverRing[V,R,Nat._3]){
     @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
     @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
   }
 
-  class ModuleOps4[V[_,_],@specialized R](lhs: V[R,Nat._4])(implicit ev: ModuleOverRing[V,R,Nat._4]){
+  class ModuleOps4[V[_,_<: Nat],@specialized R](lhs: V[R,Nat._4])(implicit ev: ModuleOverRing[V,R,Nat._4]){
     @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
     @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
@@ -141,7 +141,7 @@ object Ops {
     @inline def size(): Int = ev.size(lhs)
   }
 
-  class VectorSpaceOps[V[_,_],@specialized F, Dim <: Nat](lhs: V[F,Dim])(implicit ev: VectorSpaceOverField[V,F,Dim]){
+  class VectorSpaceOps[V[_,_<: Nat],@specialized F, Dim <: Nat](lhs: V[F,Dim])(implicit ev: VectorSpaceOverField[V,F,Dim]){
     @inline def /(rhs: F) : V[F,Dim] = ev.div(lhs, rhs)
   }
 
@@ -156,7 +156,7 @@ object Ops {
   }*/
 
 
-  class CanonicalEuclideanSpaceOps[V[_,_],@specialized F, Dim <: Nat](lhs: V[F, Dim])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,Dim]){
+  class CanonicalEuclideanSpaceOps[V[_,_<: Nat],@specialized F, Dim <: Nat](lhs: V[F, Dim])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,Dim]){
     @inline def ⋅(rhs: V[F,Dim]) : F = ev.dotProduct(lhs, rhs)
     @inline def dot(rhs: V[F,Dim]) : F = ev.dotProduct(lhs, rhs)
     //can't use * operator because of JVM type erasure (we already have this operator in Field[F] both are erased to Object => Object)
@@ -202,19 +202,19 @@ object Ops {
   object FieldImplicits extends FieldImplicits
 
   trait ModuleOverRingImplicits{
-    implicit def infixModuleOps[V[_,_],@specialized R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: ModuleOverRing[V,R,Dim]) = new ModuleOpsCommon[V,R,Dim](x)
-    implicit def infixModuleOps2[V[_,_],@specialized R](x: V[R,Nat._2])(implicit num: ModuleOverRing[V,R,Nat._2]) = new ModuleOps2[V,R](x)
-    implicit def infixModuleOps3[V[_,_],@specialized R](x: V[R,Nat._3])(implicit num: ModuleOverRing[V,R,Nat._3]) = new ModuleOps3[V,R](x)
-    implicit def infixModuleOps4[V[_,_],@specialized R](x: V[R,Nat._4])(implicit num: ModuleOverRing[V,R,Nat._4]) = new ModuleOps4[V,R](x)
+    implicit def infixModuleOps[V[_,_<: Nat],@specialized R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: ModuleOverRing[V,R,Dim]) = new ModuleOpsCommon[V,R,Dim](x)
+    implicit def infixModuleOps2[V[_,_<: Nat],@specialized R](x: V[R,Nat._2])(implicit num: ModuleOverRing[V,R,Nat._2]) = new ModuleOps2[V,R](x)
+    implicit def infixModuleOps3[V[_,_<: Nat],@specialized R](x: V[R,Nat._3])(implicit num: ModuleOverRing[V,R,Nat._3]) = new ModuleOps3[V,R](x)
+    implicit def infixModuleOps4[V[_,_<: Nat],@specialized R](x: V[R,Nat._4])(implicit num: ModuleOverRing[V,R,Nat._4]) = new ModuleOps4[V,R](x)
   }
 
   trait VectorSpaceOverFieldImplicits{
-    implicit def infixVectorSpaceOps[V[_,_],@specialized F,Dim <: Nat : ToInt](x: V[F,Dim])(implicit num: VectorSpaceOverField[V,F,Dim]) = new VectorSpaceOps[V,F,Dim](x)
+    implicit def infixVectorSpaceOps[V[_,_<: Nat],@specialized F,Dim <: Nat : ToInt](x: V[F,Dim])(implicit num: VectorSpaceOverField[V,F,Dim]) = new VectorSpaceOps[V,F,Dim](x)
   }
 
   trait MatrixImplicits{
-    implicit def infixMatrixOps[@specialized T : ClassTag, Vec[_,_], Mat[_,_], Size <: Nat : ToInt](x: Mat[T, Size])(implicit ev: StaticSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]) = new SquareMatrixOps[T,Vec,Mat,Size](x)
-    implicit def infixMatrixOpsVectorFirst[@specialized T : ClassTag, Vec[_,_], Mat[_,_], Size <: Nat : ToInt](x: Vec[T,Size])(implicit ev: StaticSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]) = new SquareMatrixOpsVectorFirst[T,Vec,Mat,Size](x)
+    implicit def infixMatrixOps[@specialized T : ClassTag, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Mat[T, Size,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]) = new SquareMatrixOps[T,Vec,Mat,Size](x)
+    implicit def infixMatrixOpsVectorFirst[@specialized T : ClassTag, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Vec[T,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size]) = new SquareMatrixOpsVectorFirst[T,Vec,Mat,Size](x)
   }
 
   trait EuclideanSpaceImplicits{
@@ -222,17 +222,17 @@ object Ops {
   }
 
   trait CanonicalEuclideanSpaceOverFieldImplicits{
-    implicit def infixCanonicalEuclideanSpaceOps[V[_,_],@specialized F, Dim <: Nat : ToInt](x: V[F, Dim])(implicit num: CanonicalEuclideanSpaceOverField[V,F,Dim]) = new CanonicalEuclideanSpaceOps[V,F, Dim](x)
+    implicit def infixCanonicalEuclideanSpaceOps[V[_,_<: Nat],@specialized F, Dim <: Nat : ToInt](x: V[F, Dim])(implicit num: CanonicalEuclideanSpaceOverField[V,F,Dim]) = new CanonicalEuclideanSpaceOps[V,F, Dim](x)
   }
 
   trait AlgebraicTypesImplicits{
-    implicit def infixVectorOps[V[_,_], @sp F : ClassTag, Dim <: Nat : ToInt](x: V[F,Dim])(implicit ev: StaticVector[F, V]) = new StaticVectorOps[F, V, Dim](x)
+    implicit def infixVectorOps[V[_,_<: Nat], @sp F : ClassTag, Dim <: Nat : ToInt](x: V[F,Dim])(implicit ev: AlgebraicVector[F, V]) = new StaticVectorOps[F, V, Dim](x)
 
   }
 
   trait ExtraImplicits{
-    implicit def infixVector2Ops[V[_,_], @sp F: ClassTag](x: V[F, Nat._2])(implicit ev: TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V, F]) = new OrthoOps[F,V](x)
-    implicit def infixVector3Ops[V[_,_], @sp F: ClassTag](x: V[F, Nat._3])(implicit ev: CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) = new CrossProductOps[F, V](x)
+    implicit def infixVector2Ops[V[_,_<: Nat], @sp F: ClassTag](x: V[F, Nat._2])(implicit ev: TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[V, F]) = new OrthoOps[F,V](x)
+    implicit def infixVector3Ops[V[_,_<: Nat], @sp F: ClassTag](x: V[F, Nat._3])(implicit ev: CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) = new CrossProductOps[F, V](x)
   }
 
   trait ConvertibleFromDoubleImplicits{

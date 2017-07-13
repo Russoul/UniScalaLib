@@ -27,6 +27,7 @@ object CollisionEngine
     *
     * @param ray
     * @return unit distance from start of the ray to the point of intersection
+    *
     */
   def checkRayRectangle(ray: Ray, rec: Rectangle): Option[Real] = {
 

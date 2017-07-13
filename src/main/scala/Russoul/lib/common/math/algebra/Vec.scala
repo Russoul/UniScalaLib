@@ -14,7 +14,6 @@ import scala.reflect.ClassTag
 
   @inline def apply(i: Int): A = array(i - 1)
 
-
 }
 
 object Vec {
