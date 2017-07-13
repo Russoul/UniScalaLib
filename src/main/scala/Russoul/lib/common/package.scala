@@ -62,13 +62,13 @@ package object common
 
   type ComplexF = ComplexOver[Float]
 
-  type Vec2[@sp T] = Vec[T, Nat._2]
-  type Vec3[@sp T] = Vec[T, Nat._3]
-  type Vec4[@sp T] = Vec[T, Nat._4]
+  type Vec2[@specialized T] = Vec[T, Nat._2]
+  type Vec3[@specialized T] = Vec[T, Nat._3]
+  type Vec4[@specialized T] = Vec[T, Nat._4]
 
-  type Mat2[@sp A] = Mat[A, Nat._2, Nat._2]
-  type Mat3[@sp A] = Mat[A, Nat._3, Nat._3]
-  type Mat4[@sp A] = Mat[A, Nat._4, Nat._4]
+  type Mat2[@specialized A] = Mat[A, Nat._2, Nat._2]
+  type Mat3[@specialized A] = Mat[A, Nat._3, Nat._3]
+  type Mat4[@specialized A] = Mat[A, Nat._4, Nat._4]
 
 
   object Vec2{
@@ -240,15 +240,15 @@ package object common
 
   //SOME SYNTACTIC GOODIES
   //used as fully infered function
-  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @sp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim]) = ev.tensor1.make(args : _*)
-  @inline def transform(a: Real3, b: Mat4D) : Real3 = {
+  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @specialized F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim], toInt: ToInt[Dim]) = ev.tensor1.make(args : _*)
+  @inline def transformd(a: Real3, b: Mat4D) : Real3 = {
     val temp = Real4(a, 0D)
-    val temp2 = temp ⨯ b
+    val temp2 = temp * b
     Real3(temp2.x, temp2.y, temp.z)
   }
-  @inline def transform(a: Real3F, b: Mat4F) : Real3F = {
+  @inline def transformf(a: Real3F, b: Mat4F) : Real3F = {
     val temp = Real4F(a, 0F)
-    val temp2 = temp ⨯ b
+    val temp2 = temp * b
     Real3F(temp2.x, temp2.y, temp.z)
   }
 
@@ -257,13 +257,13 @@ package object common
 
   //common algebraic structures-----------------------------
   type Reals = Field[Real]
-  type V4 = CanonicalEuclideanSpaceOverField[Real4, Real, Nat._4]
-  type V3 = CanonicalEuclideanSpaceOverField[Real3, Real, Nat._3]
-  type V2 = CanonicalEuclideanSpaceOverField[Real2, Real, Nat._2]
+  type V4 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._4]
+  type V3 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._3]
+  type V2 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._2]
 
-  type I2 = ModuleOverRing[Int2, Int, Nat._2]
-  type I3 = ModuleOverRing[Int3, Int, Nat._3]
-  type I4 = ModuleOverRing[Int4, Int, Nat._4]
+  type R2 = ModuleOverRing[Vec, Int, Nat._2]
+  type R3 = ModuleOverRing[Vec, Int, Nat._3]
+  type R4 = ModuleOverRing[Vec, Int, Nat._4]
 
 
   object Real2{

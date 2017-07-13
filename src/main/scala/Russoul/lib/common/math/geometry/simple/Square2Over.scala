@@ -6,7 +6,7 @@ import Russoul.lib.common.utils.Arr
 
 import scala.reflect.ClassTag
 import Russoul.lib.common.Implicits._
-import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field}
+import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field, Tensor1}
 import shapeless.Nat
 import shapeless.Nat._
 
@@ -16,7 +16,7 @@ import shapeless.Nat._
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Square2Over[V[_,_ <: Nat] : ClassTag,@specialized F : Field]private(val center:V[F,_2], val extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2])  extends CenteredShape2[V[F,_2],F]{
+@immutable class Square2Over[V[_,_ <: Nat],@specialized F : ClassTag : Field]private(val center:V[F,_2], val extent:F)(implicit evTag: ClassTag[V[F,_2]],ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2])  extends CenteredShape2[V[F,_2],F]{
 
 
 
@@ -28,7 +28,7 @@ import shapeless.Nat._
     new Square2Over(center * factor, extent * factor)
   }
 
-  def genVertices(): Array[V[F,_2]] = Array(center - ev.staticContainer.factory.makeVector(extent,extent), center + ev.staticContainer.factory.makeVector[_2](extent, -extent), center + ev.staticContainer.factory.makeVector[_2](extent,extent), center + ev.staticContainer.factory.makeVector[_2](-extent, extent))
+  def genVertices(): Array[V[F,_2]] = Array(center - ev.tensor1.make(extent,extent), center + ev.tensor1.make(extent, -extent), center + ev.tensor1.make(extent,extent), center + ev.tensor1.make(-extent, extent))
 
 
   /**
@@ -41,7 +41,7 @@ import shapeless.Nat._
 
   def toRectangle2():Rectangle2Over[V,F] =
   {
-    Rectangle2Over[V,F](center, ev.staticContainer.factory.makeVector[_2](extent, extent))
+    Rectangle2Over[V,F](center, ev.tensor1.make(extent, extent))
   }
 
   override def toString: String =
@@ -52,5 +52,5 @@ import shapeless.Nat._
 }
 
 object Square2Over{
-  def apply[V[_,_ <: Nat] : ClassTag,@specialized F : Field](center:V[F,_2], extent:F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_2]) = new Square2Over[V,F](center, extent)
+  def apply[V[_,_ <: Nat],@specialized F : ClassTag : Field](center:V[F,_2], extent:F)(implicit evTag: ClassTag[V[F,_2]], ev: CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Square2Over[V,F](center, extent)
 }

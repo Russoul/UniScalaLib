@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
   */
 object StaticContainerTypeClasses {
 
-  /*class Vec2IsStaticVector[@sp T : ClassTag] extends StaticVector[T,Vec2[T],Nat._2, Vec3[T], Unit]{
+  /*class Vec2IsStaticVector[@specialized T : ClassTag] extends StaticVector[T,Vec2[T],Nat._2, Vec3[T], Unit]{
 
     override def get[Index <: Nat](con: Vec2[T], index: Index)(implicit ev: shapeless.<:!<[Nat._2, Index], toInt: nat.ToInt[Index]): T = {
       con(toInt())
@@ -32,7 +32,7 @@ object StaticContainerTypeClasses {
     }
   }
 
-  class Vec3IsStaticVector[@sp T : ClassTag] extends StaticVector[T,Vec3[T],Nat._3, Vec4[T], Vec2[T]]{
+  class Vec3IsStaticVector[@specialized T : ClassTag] extends StaticVector[T,Vec3[T],Nat._3, Vec4[T], Vec2[T]]{
 
     override def get[Index <: Nat](con: Vec3[T], index: Index)(implicit ev: shapeless.<:!<[Nat._3, Index], toInt: nat.ToInt[Index]): T = {
       con(toInt())
@@ -49,7 +49,7 @@ object StaticContainerTypeClasses {
     override def higher[C <: Nat](self: Vec3[T], tail: T)(implicit sizePlusOne: Sum.Aux[Nat._3, Nat._1, C]): Vec4[T] = ???
   }
 
-  class Vec4IsStaticVector[@sp T : ClassTag] extends StaticVector[T,Vec4[T],Nat._4]{
+  class Vec4IsStaticVector[@specialized T : ClassTag] extends StaticVector[T,Vec4[T],Nat._4]{
 
     override def get[Index <: Nat](con: Vec4[T], index: Index)(implicit ev: shapeless.<:!<[Nat._4, Index], toInt: nat.ToInt[Index]): T = {
       con(toInt())
@@ -61,7 +61,7 @@ object StaticContainerTypeClasses {
   }
 
   //paired with Vec2
-  class Mat2IsStaticSquareMatrix[@sp T: ClassTag](spaceArg : CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2]) extends StaticSquareMatrix[T, Vec2[T], Mat2[T], Nat._2]{
+  class Mat2IsStaticSquareMatrix[@specialized T: ClassTag](spaceArg : CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2]) extends StaticSquareMatrix[T, Vec2[T], Mat2[T], Nat._2]{
     override implicit val vector: StaticVector[T, Vec2[T], Nat._2] = _
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec2[T], T, Nat._2] = spaceArg
 
@@ -71,7 +71,7 @@ object StaticContainerTypeClasses {
   }
 
   //paired with Vec4
-  class Mat4IsStaticSquareMatrix[@sp T: ClassTag](spaceArg : CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4]) extends StaticSquareMatrix[T, Vec4[T], Mat4[T], Nat._4]{
+  class Mat4IsStaticSquareMatrix[@specialized T: ClassTag](spaceArg : CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4]) extends StaticSquareMatrix[T, Vec4[T], Mat4[T], Nat._4]{
     override implicit val vector: StaticVector[T, Vec4[T], Nat._4] = _
     override implicit val space: CanonicalEuclideanSpaceOverField[Vec4[T], T, Nat._4] = spaceArg
 
@@ -80,7 +80,7 @@ object StaticContainerTypeClasses {
     override def make(args: T*): Mat4[T] = Mat4[T](args : _*)
   }
 
-  class Tuple2IsStaticVector[@sp T: ClassTag] extends StaticVector[T,(T,T), Nat._2]{
+  class Tuple2IsStaticVector[@specialized T: ClassTag] extends StaticVector[T,(T,T), Nat._2]{
     override def get[Index <: Nat](con: (T, T), index: Index)(implicit ev: shapeless.<:!<[Nat._2, Index], toInt: nat.ToInt[Index]): T = {
       con.productElement(toInt()).asInstanceOf[T]
     }
@@ -90,7 +90,7 @@ object StaticContainerTypeClasses {
     }
   }
 
-  class Tuple3IsStaticVector[@sp T: ClassTag] extends StaticVector[T,(T,T,T), Nat._3]{
+  class Tuple3IsStaticVector[@specialized T: ClassTag] extends StaticVector[T,(T,T,T), Nat._3]{
     override def get[Index <: Nat](con: (T, T, T), index: Index)(implicit ev: shapeless.<:!<[Nat._3, Index], toInt: nat.ToInt[Index]): T = {
       con.productElement(toInt()).asInstanceOf[T]
     }
@@ -100,7 +100,7 @@ object StaticContainerTypeClasses {
     }
   }
 
-  class Tuple4IsStaticVector[@sp T: ClassTag] extends StaticVector[T,(T,T,T,T), Nat._4]{
+  class Tuple4IsStaticVector[@specialized T: ClassTag] extends StaticVector[T,(T,T,T,T), Nat._4]{
     override def get[Index <: Nat](con: (T, T, T, T), index: Index)(implicit ev: shapeless.<:!<[Nat._4, Index], toInt: nat.ToInt[Index]): T = {
       con.productElement(toInt()).asInstanceOf[T]
     }
@@ -111,23 +111,23 @@ object StaticContainerTypeClasses {
   }*/
 
   //TODO require it to be a field ?
-  class TIsTensor0[@sp T : ClassTag] extends Tensor0[T]
+  class TIsTensor0[@specialized T : ClassTag] extends Tensor0[T]
 
-  class VecIsTensor1[@sp T : ClassTag, A1 <: Nat] extends Tensor1[T, Vec, A1]{
+  class VecIsTensor1[@specialized T : ClassTag, A1 <: Nat] extends Tensor1[T, Vec, A1]{
     override def make(args: T*)(implicit ev1: nat.ToInt[A1]): Vec[T, A1] = Vec(args : _*)
     override def get(a: Vec[T, A1], i: Int): T = a(i)
   }
 
-  class MatIsTensor2[@sp T : ClassTag, A1 <: Nat, A2 <: Nat] extends Tensor2[T,Mat,A1,A2]{
-    override def make(args: T*)(implicit ev1: nat.ToInt[A1], ev2: nat.ToInt[A1]): Mat[T, A1, A2] = Mat[T,A1,A2](args : _*)
+  class MatIsTensor2[@specialized T : ClassTag, A1 <: Nat, A2 <: Nat] extends Tensor2[T,Mat,A1,A2]{
+    override def make(args: T*)(implicit ev1: nat.ToInt[A1], ev2: nat.ToInt[A2]): Mat[T, A1, A2] = Mat[T,A1,A2](args : _*)
     override def get(a: Mat[T, A1, A2], i: Int, j: Int): T = a(i,j)
   }
 
-  /*class VecIsAlgebraicVector[@sp T : ClassTag] extends AlgebraicVector[T, Vec]{
+  /*class VecIsAlgebraicVector[@specialized T : ClassTag] extends AlgebraicVector[T, Vec]{
     override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
   }
 
-  class MatIsAlgebraicMatrix[@sp T : ClassTag] extends AlgebraicSquareMatrix[T, Vec, Mat]{
+  class MatIsAlgebraicMatrix[@specialized T : ClassTag] extends AlgebraicSquareMatrix[T, Vec, Mat]{
     override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
   }*/
 

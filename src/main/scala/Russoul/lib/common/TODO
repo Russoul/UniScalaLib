@@ -1,6 +1,9 @@
 Priority:
     Errors:
         1)see Mat4 (specialize it !)
+    Performance issues:
+        //Each geometric object currently stores implicits as fields (possible solution is abstracting over each shape, like we did with Vec and Mat)
+        //lots of object creation when resolving explicits (implicit def ... should be cached for better performance)
     High:
         //name abbreviations correctly
         //performant way to represent generic field literals ?
@@ -18,7 +21,7 @@ Priority:
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
         0)remove Vec use Array instead !
         1)write tests
-        2)see if @sp is set in all places needed
+        2)see if @specialized is set in all places needed
         3)assertions
         4)//TODO fix Mat.apply calls indexing from 0 but not from 1
         5)make Vec, Mat and other containers be scala friendly(support native operations or

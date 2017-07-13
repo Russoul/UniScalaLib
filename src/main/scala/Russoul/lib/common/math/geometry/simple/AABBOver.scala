@@ -1,6 +1,6 @@
 package Russoul.lib.common.math.geometry.simple
 
-import Russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, ConvertibleFromDouble, CrossProductOverCanonicalEuclideanSpaceOverField, Field}
+import Russoul.lib.common.TypeClasses._
 import Russoul.lib.common.math.geometry.simple.general.{CenteredShape3, Shape3}
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.immutable
@@ -11,7 +11,7 @@ import shapeless.Nat
 
 import scala.reflect.ClassTag
 
-@immutable class AABBOver[V[_,_ <: Nat] : ClassTag, @specialized F : Field : ClassTag]private (val center: V[F,_3],val extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) extends CenteredShape3[V[F,_3],F] {
+@immutable class AABBOver[V[_,_ <: Nat], @specialized F : Field : ClassTag]private (val center: V[F,_3],val extent: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1:Tensor1[F,V,_3]) extends CenteredShape3[V[F,_3],F] {
 
   def genMin(): V[F,_3] = center - extent
   def genMax(): V[F,_3] = center + extent
@@ -65,12 +65,12 @@ import scala.reflect.ClassTag
     val sz = extent.z
 
 
-    a(0) = new RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,-sz))//top
-    a(1) = new RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, -sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,sz))//bottom
-    a(2) = new RectangleOver[V,F](center + makeVector(_3,-sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//left
-    a(3) = new RectangleOver[V,F](center + makeVector(_3,sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,-sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//right
-    a(4) = new RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, -sz), makeVector(_3,-sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//back
-    a(5) = new RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, sz), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//front
+    a(0) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,-sz))//top
+    a(1) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, -sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,sz))//bottom
+    a(2) = RectangleOver[V,F](center + makeVector(_3,-sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//left
+    a(3) = RectangleOver[V,F](center + makeVector(_3,sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,-sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//right
+    a(4) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, -sz), makeVector(_3,-sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//back
+    a(5) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, sz), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//front
     
     
     a
@@ -86,7 +86,7 @@ import scala.reflect.ClassTag
 
 object AABBOver
 {
-  def genFromMinMax[V[_,_ <: Nat] : ClassTag,@specialized F : Field : ClassTag](min:V[F,_3], max:V[F,_3])(implicit v: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], c: ConvertibleFromDouble[F]):AABBOver[V,F] =
+  def genFromMinMax[V[_,_ <: Nat],@specialized F : Field : ClassTag](min:V[F,_3], max:V[F,_3])(implicit evTag: ClassTag[V[F,_3]], v: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], c: ConvertibleFromDouble[F], tensor1:Tensor1[F,V,_3]):AABBOver[V,F] =
   {
     val extent = (max-min) * 0.5D.as[F]
     val center = min + extent
@@ -94,5 +94,5 @@ object AABBOver
     new AABBOver[V,F](center,extent)
   }
 
-  def apply[V[_,_ <: Nat] : ClassTag, @specialized F : Field : ClassTag](center: V[F,_3], extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) = new AABBOver[V,F](center, extent)
+  def apply[V[_,_ <: Nat], @specialized F : Field : ClassTag](center: V[F,_3], extent: V[F,_3])(implicit evTag: ClassTag[V[F,_3]],  ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1:Tensor1[F,V,_3]) = new AABBOver[V,F](center, extent)
 }

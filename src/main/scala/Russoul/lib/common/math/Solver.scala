@@ -91,8 +91,8 @@ object Solver
     val q = (b*b*b*2D.as[A] - a*b*c*9D.as[A] + a*a*d*27D.as[A])/(a*a*a*27D.as[A])
 
     val findCanonical = findRealRootsCanonicalPolynomial3(p,q)
-    val res = new Array[A](findCanonical.size())
-    for(i <- 1 to findCanonical.size()){
+    val res = new Array[A](findCanonical.size)
+    for(i <- 1 to findCanonical.size){
       res(i-1) = findCanonical(i) - b/(a*3D.as[A])
     }
 
@@ -112,7 +112,7 @@ object Solver
 
     val y0 = findRealRootsPolynomial3[A](1D.as[A], -B, A*C - D * 4D.as[A], -A*A*D + B*D * 4D.as[A] - C*C)
 
-    val y1 = y0.x
+    val y1 = y0(0)
 
 
     val n1 = ev.sqrt(A*A/4D.as[A] - B + y1)

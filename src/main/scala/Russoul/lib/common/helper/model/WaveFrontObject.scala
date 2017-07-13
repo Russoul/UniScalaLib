@@ -50,7 +50,7 @@ class WaveFrontObject(name: String)
   def scale(v3: Vec3[RealF])(implicit iv3: V3, iv4: V4): WaveFrontObject =
   {
     val mat = Mat4F.matrixSCALE(v3)
-    vertexList.map(x => {val temp = Float4(x, 0) ⨯ mat; Float3(temp.x, temp.y, temp.z)})
+    vertexList.map(x => {val temp = Float4(x, 0) * mat; Float3(temp.x, temp.y, temp.z)})
     this
   }
 

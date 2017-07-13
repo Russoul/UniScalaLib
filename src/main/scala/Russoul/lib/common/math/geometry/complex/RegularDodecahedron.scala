@@ -2,7 +2,6 @@ package Russoul.lib.common.math.geometry.complex
 
 import Russoul.lib.common.math.Math
 import Russoul.lib.common.TypeClasses.Field
-import Russoul.lib.common.math.algebra.Vec3
 import Russoul.lib.common.utils.Arr
 
 /**

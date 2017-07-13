@@ -20,15 +20,16 @@ libraryDependencies in Scope.GlobalScope += "com.chuusai" %% "shapeless" % "2.3.
 
 unmanagedJars in Compile += file("libs/scalamacroslibrary_2.11-1.0.jar")
 
+
 //scalacOptions += "-Yliteral-types"
 
-scalacOptions in Runtime ++= Seq("-optimise", "-Yclosure-elim", "-Yinline", "-Xdisable-assertions")//optimizations
-scalacOptions in Runtime += "-Xplugin-require:scalaxy-streams"
+//scalacOptions in Runtime ++= Seq("-optimise", "-Yclosure-elim", "-Yinline", "-Xdisable-assertions")//optimizations
+//scalacOptions in Runtime += "-Xplugin-require:scalaxy-streams"
 scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
 scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
 scalacOptions in Test ~= (_ filterNot (_ == "-Xdisable-assertions"))
 autoCompilerPlugins := true
-addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
+//addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")
 
 
 

@@ -103,7 +103,7 @@ class Camera private
 
 
     val upTransform = Mat4F.matrixROTATION(look, -droll)
-    var newUp = transform(up , upTransform).normalize() //new base : look, newUp, newRight
+    var newUp = transformf(up , upTransform).normalize() //new base : look, newUp, newRight
     var newRight = (look ⨯ newUp).normalize()
 
     val newLook = (newRight * scala.math.sin(yaw).toFloat + look * scala.math.cos(yaw).toFloat + newUp * scala.math.sin(pitch).toFloat).normalize(); //new look based on dpitch and dyaw in new base
