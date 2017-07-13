@@ -7,7 +7,9 @@ import Russoul.lib.common.immutable
 import Russoul.lib.common.math.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.utils.Arr
 import Russoul.lib.common.Implicits._
+import shapeless.Nat
 import shapeless.Nat._
+
 import scala.reflect.ClassTag
 
 /**
@@ -15,7 +17,7 @@ import scala.reflect.ClassTag
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Rectangle2Over[V[_,_], @specialized F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F]{
+@immutable class Rectangle2Over[V[_,_ <: Nat], @specialized F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F]{
 
   override def translate(v: V[F,_2]): Rectangle2Over[V,F] = {
     new Rectangle2Over(center + v, extent)
@@ -52,11 +54,11 @@ import scala.reflect.ClassTag
 
 object Rectangle2Over
 {
-  def fromMinMax[V[_,_],@specialized F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F]):Rectangle2Over[V,F] =
+  def fromMinMax[V[_,_ <: Nat],@specialized F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F]):Rectangle2Over[V,F] =
   {
     val t = (max - min)* 0.5D.as[F]
     Rectangle2Over(min + t, t)
   }
 
-  def apply[V[_,_], @specialized F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) = new Rectangle2Over[V,F](center, extent)
+  def apply[V[_,_ <: Nat], @specialized F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) = new Rectangle2Over[V,F](center, extent)
 }

@@ -7,10 +7,11 @@ import Russoul.lib.common.immutable
 import Russoul.lib.common.Implicits._
 import shapeless.Nat._
 import Russoul.lib.common._
+import shapeless.Nat
 
 import scala.reflect.ClassTag
 
-@immutable class AABBOver[V[_,_] : ClassTag, @specialized F : Field : ClassTag]private (val center: V[F,_3],val extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) extends CenteredShape3[V[F,_3],F] {
+@immutable class AABBOver[V[_,_ <: Nat] : ClassTag, @specialized F : Field : ClassTag]private (val center: V[F,_3],val extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) extends CenteredShape3[V[F,_3],F] {
 
   def genMin(): V[F,_3] = center - extent
   def genMax(): V[F,_3] = center + extent
@@ -85,7 +86,7 @@ import scala.reflect.ClassTag
 
 object AABBOver
 {
-  def genFromMinMax[V[_,_] : ClassTag,@specialized F : Field : ClassTag](min:V[F,_3], max:V[F,_3])(implicit v: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], c: ConvertibleFromDouble[F]):AABBOver[V,F] =
+  def genFromMinMax[V[_,_ <: Nat] : ClassTag,@specialized F : Field : ClassTag](min:V[F,_3], max:V[F,_3])(implicit v: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], c: ConvertibleFromDouble[F]):AABBOver[V,F] =
   {
     val extent = (max-min) * 0.5D.as[F]
     val center = min + extent
@@ -93,5 +94,5 @@ object AABBOver
     new AABBOver[V,F](center,extent)
   }
 
-  def apply[V[_,_] : ClassTag, @specialized F : Field : ClassTag](center: V[F,_3], extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) = new AABBOver[V,F](center, extent)
+  def apply[V[_,_ <: Nat] : ClassTag, @specialized F : Field : ClassTag](center: V[F,_3], extent: V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F]) = new AABBOver[V,F](center, extent)
 }

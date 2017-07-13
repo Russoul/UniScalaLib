@@ -5,13 +5,15 @@ import Russoul.lib.common.immutable
 import Russoul.lib.common.math.geometry.simple.general.CenteredShape2
 import Russoul.lib.common.Implicits._
 import shapeless.Nat._
+
 import scala.reflect.ClassTag
 import Russoul.lib.common._
+import shapeless.Nat
 
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable class CircleOver[V[_,_] : ClassTag,@specialized F : Field]private(val center:V[F,_2],val rad:F)(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F] {
+@immutable class CircleOver[V[_,_ <: Nat] : ClassTag,@specialized F : Field]private(val center:V[F,_2],val rad:F)(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) extends CenteredShape2[V[F,_2],F] {
 
 
   override def translate(v: V[F,_2]): CircleOver[V,F] = {
@@ -37,5 +39,5 @@ import Russoul.lib.common._
 }
 
 object CircleOver{
-  def apply[V[_,_] : ClassTag,@specialized F : Field](center:V[F,_2], rad:F)(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) = new CircleOver[V,F](center, rad)
+  def apply[V[_,_ <: Nat] : ClassTag,@specialized F : Field](center:V[F,_2], rad:F)(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_2]) = new CircleOver[V,F](center, rad)
 }

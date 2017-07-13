@@ -7,6 +7,7 @@ import java.util.regex.{Matcher, Pattern}
 
 import scala.collection.mutable
 import Russoul.lib.common.{Real, Vec3}
+import Russoul.lib.common.Implicits._
 
 
 /**
@@ -90,6 +91,7 @@ object ImageUtils
           val byte = this.byteBuffer.get(y*bitsPerRow/8 + x)
           for(i <- 0 until 8){
             val bit = ((byte & 0xFF) >> (7-i)) & 1
+
             buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 0, (color.x * 255 * bit).toByte)
             buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 1, (color.y * 255 * bit).toByte)
             buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 2, (color.z * 255 * bit).toByte)

@@ -5,11 +5,12 @@ import Russoul.lib.common.math.geometry.simple.general.CenteredShape3
 import Russoul.lib.common.immutable
 import shapeless.Nat._
 import Russoul.lib.common.Implicits._
+import shapeless.Nat
 
 /**
   * Created by Russoul on 21.04.2016.
   */
-@immutable class SphereOver[V[_,_],@specialized F : Field]private (val center:V[F,_3],val rad: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) extends CenteredShape3[V[F,_3],F] {
+@immutable class SphereOver[V[_,_ <: Nat],@specialized F : Field]private (val center:V[F,_3],val rad: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) extends CenteredShape3[V[F,_3],F] {
 
   override def translate(v: V[F,_3]): SphereOver[V,F] = {
     new SphereOver(center + v, rad)
@@ -30,5 +31,5 @@ import Russoul.lib.common.Implicits._
 }
 
 object SphereOver{
-  def apply[V[_,_],@specialized F : Field](center:V[F,_3],rad: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) = new SphereOver[V,F](center, rad)
+  def apply[V[_,_ <: Nat],@specialized F : Field](center:V[F,_3],rad: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3]) = new SphereOver[V,F](center, rad)
 }

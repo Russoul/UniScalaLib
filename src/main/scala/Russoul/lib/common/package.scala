@@ -66,9 +66,9 @@ package object common
   type Vec3[@sp T] = Vec[T, Nat._3]
   type Vec4[@sp T] = Vec[T, Nat._4]
 
-  type Mat2[@sp A] = Mat[A, Nat._2]
-  type Mat3[@sp A] = Mat[A, Nat._3]
-  type Mat4[@sp A] = Mat[A, Nat._4]
+  type Mat2[@sp A] = Mat[A, Nat._2, Nat._2]
+  type Mat3[@sp A] = Mat[A, Nat._3, Nat._3]
+  type Mat4[@sp A] = Mat[A, Nat._4, Nat._4]
 
 
   object Vec2{
@@ -96,8 +96,8 @@ package object common
   type Int4 = Vec[Int, Nat._4]
 
 
-  type Mat4D = Mat[Double, Nat._4]
-  type Mat4F = Mat[Float, Nat._4]
+  type Mat4D = Mat4[Double]
+  type Mat4F = Mat4[Float]
 
   //--------------------------------------
 
@@ -240,7 +240,7 @@ package object common
 
   //SOME SYNTACTIC GOODIES
   //used as fully infered function
-  @inline def makeVector[Dim <: Nat, Vec[_,_], @sp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim]) = ev.staticContainer.factory.makeVector[Dim](args : _*)
+  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @sp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim]) = ev.tensor1.make(args : _*)
   @inline def transform(a: Real3, b: Mat4D) : Real3 = {
     val temp = Real4(a, 0D)
     val temp2 = temp ⨯ b
@@ -418,7 +418,7 @@ package object common
 
     def matrixSCALE(v: Float3): Mat4F =
     {
-      Mat(v.x, 0, 0, 0,
+      Mat[Float,Nat._4](v.x, 0, 0, 0,
         0, v.y, 0, 0,
         0, 0, v.z, 0,
         0, 0, 0, 1)
@@ -426,7 +426,7 @@ package object common
 
     def matrixTRANSLATION(x: Float, y: Float, z: Float): Mat4F =
     {
-      Mat(1, 0, 0, 0,
+      Mat[Float,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1)
@@ -434,7 +434,7 @@ package object common
 
     def matrixTRANSLATION(v: Float3): Mat4F =
     {
-      Mat(1, 0, 0, 0,
+      Mat[Float,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         v.x, v.y, v.z, 1)
@@ -448,7 +448,7 @@ package object common
       val x = axis.x
       val y = axis.y
       val z = axis.z
-      Mat(cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
+      Mat[Float,Nat._4](cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
         y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
         z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
         0, 0, 0, 1)
@@ -463,7 +463,7 @@ package object common
       val x = axis.x * axis.x
       val y = axis.y * axis.y
       val z = axis.z * axis.z
-      Mat(cos + x * x * (1F - cos), x * y * (1F - cos) - z * sin, x * z * (1F - cos) + y * sin, 0F,
+      Mat[Float,Nat._4](cos + x * x * (1F - cos), x * y * (1F - cos) - z * sin, x * z * (1F - cos) + y * sin, 0F,
         y * x * (1F - cos) + z * sin, cos + y * y * (1F - cos), y * z * (1F - cos) - x * sin, 0F,
         z * x * (1F - cos) - y * sin, z * y * (1F - cos) + x * sin, cos + z * z * (1F - cos), 0F,
         0F, 0F, 0F, 1F)
@@ -500,7 +500,7 @@ package object common
       val n = near
       val f = far
 
-      Mat(1 / (r * fov), 0, 0, 0,
+      Mat[Float,Nat._4](1 / (r * fov), 0, 0, 0,
         0, 1 / fov, 0, 0,
         0, 0, f / (f - n), 1,
         0, 0, -f * n / (f - n), 0)
@@ -514,7 +514,7 @@ package object common
       val za = (target - pos).normalize()
       val xa = up.⨯(za).normalize()
       val ya = za.⨯(xa)
-      Mat(
+      Mat[Float,Nat._4](
         xa.x, ya.x, za.x, 0F,
         xa.y, ya.y, za.y, 0F,
         xa.z, ya.z, za.z, 0F,
@@ -528,7 +528,7 @@ package object common
       val za = -look
       val xa = up.⨯(za).normalize()
       val ya = za.⨯(xa)
-      Mat(
+      Mat[Float,Nat._4](
         xa.x, ya.x, za.x, 0F,
         xa.y, ya.y, za.y, 0F,
         xa.z, ya.z, za.z, 0F,
@@ -555,9 +555,7 @@ package object common
     def matrixIdentity(): Mat4D =
     {
 
-
-
-      Mat(1D, 0D, 0D, 0D,
+      Mat[Double,Nat._4](1D, 0D, 0D, 0D,
         0D, 1D, 0D, 0D,
         0D, 0D, 1D, 0D,
         0D, 0D, 0D, 1D)
@@ -565,7 +563,7 @@ package object common
 
     def matrixSCALE(x: Real, y: Real, z: Real): Mat4D =
     {
-      Mat(x, 0D, 0D, 0D,
+      Mat[Double,Nat._4](x, 0D, 0D, 0D,
         0D, y, 0D, 0D,
         0D, 0D, z, 0D,
         0D, 0D, 0D, 1D)
@@ -573,7 +571,7 @@ package object common
 
     def matrixSCALE(v: Vec3[Real]): Mat4D =
     {
-      Mat(v.x, 0, 0, 0,
+      Mat[Double,Nat._4](v.x, 0, 0, 0,
         0, v.y, 0, 0,
         0, 0, v.z, 0,
         0, 0, 0, 1)
@@ -581,7 +579,7 @@ package object common
 
     def matrixTRANSLATION(x: Real, y: Real, z: Real): Mat4D =
     {
-      Mat(1, 0, 0, 0,
+      Mat[Double,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1)
@@ -589,7 +587,7 @@ package object common
 
     def matrixTRANSLATION(v: Vec3[Real]): Mat4D =
     {
-      Mat(1, 0, 0, 0,
+      Mat[Double,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         v.x, v.y, v.z, 1)
@@ -618,7 +616,7 @@ package object common
       val x = axis.x * axis.x
       val y = axis.y * axis.y
       val z = axis.z * axis.z
-      Mat(cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
+      Mat[Double,Nat._4](cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
         y * x * (1D - cos) + z * sin, cos + y * y * (1D - cos), y * z * (1D - cos) - x * sin, 0D,
         z * x * (1D - cos) - y * sin, z * y * (1D - cos) + x * sin, cos + z * z * (1D - cos), 0D,
         0D, 0D, 0D, 1D)
@@ -655,7 +653,7 @@ package object common
       val n = near
       val f = far
 
-      Mat(1 / (r * fov), 0, 0, 0,
+      Mat[Double,Nat._4](1 / (r * fov), 0, 0, 0,
         0, 1 / fov, 0, 0,
         0, 0, f / (f - n), 1,
         0, 0, -f * n / (f - n), 0)
@@ -683,7 +681,7 @@ package object common
       val za = -look
       val xa = up.⨯(za).normalize()
       val ya = za.⨯(xa)
-      Mat(
+      Mat[Double,Nat._4](
         xa.x, ya.x, za.x, 0D,
         xa.y, ya.y, za.y, 0D,
         xa.z, ya.z, za.z, 0D,
