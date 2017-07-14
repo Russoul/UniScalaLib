@@ -12,6 +12,7 @@ import shapeless.ops.nat.ToInt
 import scala.annotation.Annotation
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
+import scala.util.{Failure, Success, Try}
 
 
 /**
@@ -32,12 +33,44 @@ package object common
     def ||>(f: (A,B) => R): R = f(a._1,a._2)
   }
 
-
-
-
   //............................................
 
 
+  //try with resources
+
+  def cleanly[A, B](resource: A)(cleanup: A => Unit)(doWork: A => B): Try[B] = {
+    try {
+      Success(doWork(resource))
+    } catch {
+      case e: Exception => Failure(e)
+    }
+    finally {
+      try {
+        if (resource != null) {
+          cleanup(resource)
+        }
+      } catch {
+        case e: Exception => println(e) // should be logged
+      }
+    }
+  }
+
+  def auto[A <: AutoCloseable, B](resource: A)(doWork: A => B): Try[B] = {
+    try {
+      Success(doWork(resource))
+    } catch {
+      case e: Exception => Failure(e)
+    }
+    finally {
+      try {
+        if (resource != null) {
+          resource.close()
+        }
+      } catch {
+        case e: Exception => println(e) // should be logged
+      }
+    }
+  }
 
   //specialization
   type sp = specialized
