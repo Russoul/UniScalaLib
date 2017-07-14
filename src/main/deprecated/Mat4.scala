@@ -1,6 +1,6 @@
-package Russoul.lib.common.math.algebra
+package russoul.lib.common.math.algebra
 
-import Russoul.lib.common.{immutable, sp}
+import russoul.lib.common.{immutable, sp}
 
 import scala.reflect.ClassTag
 

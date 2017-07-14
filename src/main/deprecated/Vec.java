@@ -1,4 +1,4 @@
-package Russoul.lib.common.math.algebra.deprecated;
+package russoul.lib.common.math.algebra.deprecated;
 
 /**
   * Created by russoul on 01.06.2017.

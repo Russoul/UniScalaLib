@@ -1,8 +1,8 @@
-package Russoul.lib.common.math.algebra
+package russoul.lib.common.math.algebra
 
-import Russoul.lib.common.NotNothing
-import Russoul.lib.common.TypeClasses.{Euclidean, Field}
-import Russoul.lib.common.math.immutable.algebra._
+import russoul.lib.common.NotNothing
+import russoul.lib.common.TypeClasses.{Euclidean, Field}
+import russoul.lib.common.math.immutable.algebra._
 
 
 import scala.reflect.ClassTag

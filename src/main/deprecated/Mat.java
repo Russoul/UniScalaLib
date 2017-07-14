@@ -1,4 +1,4 @@
-package Russoul.lib.common.math.algebra.deprecated;
+package russoul.lib.common.math.algebra.deprecated;
 
 import scala.inline;
 import scala.specialized;

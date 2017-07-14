@@ -1,8 +1,6 @@
-import Russoul.lib.common.{TypeClasses, immutable}
-import Russoul.lib.common.math.geometry.simple.general.Shape3
+import russoul.lib.common.{TypeClasses, immutable}
+import russoul.lib.common.math.geometry.simple.general.Shape3
 import shapeless.Nat
-import russoul.lib.typechecker._
-import russoul.lib.macros._
 
 import scala.language.higherKinds
 
@@ -10,6 +8,8 @@ import scala.language.higherKinds
   * Created by russoul on 04.07.2017.
   */
 object Test1 {
+
+  russoul.lib.common.auto()
 
  /* import spire.algebra._   // provides algebraic type classes
   import spire.implicits._ // provides infix operators, instances and conversions
