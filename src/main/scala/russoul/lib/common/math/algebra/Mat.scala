@@ -14,6 +14,8 @@ import scala.reflect.ClassTag
 
   def apply(i: Int, j: Int) = array(i * a2() + j)
 
+  def toArray = array.clone()
+
 }
 object Mat{
 

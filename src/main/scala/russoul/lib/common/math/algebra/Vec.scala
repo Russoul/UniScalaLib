@@ -14,6 +14,8 @@ import scala.reflect.ClassTag
 
   @inline def apply(i: Int): A = array(i - 1)
 
+  def toArray = array.clone()
+
 }
 
 object Vec {

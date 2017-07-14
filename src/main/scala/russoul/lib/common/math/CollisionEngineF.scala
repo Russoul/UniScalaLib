@@ -179,7 +179,7 @@ object CollisionEngineF
   def checkOBBAABBSeparatingAxisTheorem(checkThis:OBBF, checkWith:AABBF)(implicit v3: Orderable[Float]):Boolean =
   {
 
-    val normals = Arr[Float3](16)
+    val normals = new Arr[Float3](16)
 
     var recs = checkThis.genRectangles()
     recs = recs ++ checkWith.genRectangles()

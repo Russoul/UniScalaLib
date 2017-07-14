@@ -11,11 +11,11 @@ import scala.reflect.ClassTag
   *
   * mutable fast implementation of Vector
   */
-@mutable class Arr[@tbsp T](var array:Array[T], var size:Int)(implicit val ct: ClassTag[T])
+@mutable class Arr[@specialized T](var array:Array[T], var size:Int)(implicit val ct: ClassTag[T])
 {
 
 
-  def discard() = size = 0
+  def clearSize() = size = 0
 
   /**
     *
@@ -29,13 +29,7 @@ import scala.reflect.ClassTag
   {
     this(new Array[T](Arr.DEFAULT_SIZE), 0)
   }
-
-  def this(args:T*)(implicit ct: ClassTag[T]) = //exact amount
-  {
-    this(new Array[T](args.size), args.size)
-
-    setSeq(args)
-  }
+  
 
   def length() = size
 
@@ -515,10 +509,10 @@ object Arr
   /**
     * Allocate an empty Buffer.
     */
-  def emptyOptimum[@tbsp T: ClassTag](): Arr[T] =
+  def emptyOptimum[@specialized T: ClassTag](): Arr[T] =
     ofSizeOptimum[T](DEFAULT_SIZE)
 
-  def empty[@tbsp T: ClassTag](): Arr[T] =
+  def empty[@specialized T: ClassTag](): Arr[T] =
     ofSize[T](0)
 
   /**
@@ -528,23 +522,14 @@ object Arr
     * This method is useful if you know you'll be adding a large number
     * of elements in advance and you want to save a few resizes.
     */
-  def ofSizeOptimum[@tbsp T: ClassTag](n: Int): Arr[T] =
+  def ofSizeOptimum[@specialized T: ClassTag](n: Int): Arr[T] =
     new Arr(new Array[T](Math.nextPowerOfTwo(n)), 0)
 
-  def ofSize[@tbsp T: ClassTag](n: Int): Arr[T] =
+  def ofSize[@specialized T: ClassTag](n: Int): Arr[T] =
     new Arr(new Array[T](n), 0)
 
-  def apply[@tbsp T: ClassTag](): Arr[T] =
-  {
-    new Arr[T]()
-  }
 
-  def apply[@tbsp T: ClassTag](allocSize:Int): Arr[T] =
-  {
-    new Arr[T](allocSize)
-  }
-
-  def apply[@tbsp T: ClassTag](args:T*): Arr[T] =
+  def apply[@specialized T: ClassTag](args:T*): Arr[T] =
   {
     val re = new Arr[T](args.size)
 
