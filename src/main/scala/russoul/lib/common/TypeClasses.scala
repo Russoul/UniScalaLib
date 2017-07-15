@@ -324,6 +324,12 @@ object TypeClasses {
 
   }
 
+  //pseudo fields are not real fields, so not all algebraic rules are satisfied, used to make something like int a field
+  trait PseudoField[@tbsp A] extends Field[A]
+
+  //all algebraic properties are met, used to differ between `real` fields and `not real`, `pseudo` fields
+  trait RealField[@tbsp A] extends Field[A]
+
 
   trait ModuleOverRing[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
@@ -603,12 +609,12 @@ object TypeClasses {
     override def negate(x: Int): Int = -x
   }
 
-  trait IntIsRing extends IntIsCommutativeAdditiveGroup with Ring[Int]{
+  /*trait IntIsRing extends IntIsCommutativeAdditiveGroup with Ring[Int]{
     override def times(x: Int, y: Int): Int = x * y
     override def one: Int = 1
-  }
+  }*/
 
-  class IntIsFullRing extends IntIsRing with IntIsOrderable
+  class IntIsFullPseudoField extends IntIsPseudoField with IntIsOrderable
 
 
   trait FloatIsTrig extends Trig[Float]{
@@ -646,7 +652,7 @@ object TypeClasses {
   }
 
 
-  trait FloatIsField extends Field[Float]{
+  trait FloatIsField extends RealField[Float]{
     override def times(x: Float, y: Float): Float = x * y
     override def inv(x: Float): Float = 1/x
     override def one: Float = 1F
@@ -658,6 +664,8 @@ object TypeClasses {
     }
 
   }
+
+
 
   trait FloatIsOrderable extends Orderable[Float] with Ordering.FloatOrdering{
     override def negate(x: Float): Float = -x
@@ -699,7 +707,7 @@ object TypeClasses {
     override def cbrt(x: Real): Real = Math.cbrt(x)
   }
 
-  trait DoubleIsField extends Field[Double]{
+  trait DoubleIsField extends RealField[Double]{
     override def times(x: Double, y: Double): Double = x * y
     override def inv(x: Double): Double = 1/x
     override def one: Double = 1D
@@ -712,6 +720,20 @@ object TypeClasses {
     }
 
 
+  }
+
+  trait IntIsPseudoField extends PseudoField[Int]{
+    override def inv(x: Int): Int = 1 / x //this part breaks the rules
+
+    override def zero: Int = 0
+
+    override def times(x: Int, y: Int): Int = x * y
+
+    override def one: Int = 1
+
+    override def plus(x: Int, y: Int): Int = x + y
+
+    override def negate(x: Int): Int = -x
   }
 
 

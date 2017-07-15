@@ -19,7 +19,7 @@ object Instances {
   object AllInstances extends AllInstances
 
   trait IntInstances{
-    implicit val intIsFullRing = new IntIsFullRing
+    implicit val intIsFullPseudoField = new IntIsFullPseudoField
   }
 
   trait FloatInstances{
