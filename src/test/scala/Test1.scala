@@ -63,8 +63,8 @@ object Test1 extends App{
   def testAbstraction(): Unit ={
 
     def combine[Vector[_,_ <: Nat], R, Dim <: Nat]
-    (args: Vector[R,Dim]*)(implicit ring: Ring[R], t1: T1[R,Vector,Dim], ces: Module[Vector,R,Dim]): Vector[R,Dim] ={
-      args.foldRight(ces.zero){_ + _}
+    (args: Vector[R,Dim]*)(implicit ring: Ring[R], t1: T1[R,Vector,Dim], module: Module[Vector,R,Dim]): Vector[R,Dim] ={
+      args.foldRight(module.zero){_ + _}
     }
 
     assert(combine(Int2(1,2), Int2(2,4), Int2(4,5), Int2(7,1)) == Int2(14, 12))
