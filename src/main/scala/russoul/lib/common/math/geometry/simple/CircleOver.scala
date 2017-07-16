@@ -13,7 +13,7 @@ import russoul.lib.common.math.geometry.simple.general.CenteredShape
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable class CircleOver[V[_,_ <: Nat] ,@tbsp F]private(override val center:V[F,_2],val rad:F) extends CenteredShape[V,F,_2] {
+@immutable case class CircleOver[V[_,_ <: Nat] ,@tbsp F]private(override val center:V[F,_2],val rad:F) extends CenteredShape[V,F,_2] {
 
 
   override def translate(v: V[F,_2])(implicit ev1 : CES[V,F,_2], tensor1: T1[F,V,_2], field: Field[F]): CircleOver[V,F] = {

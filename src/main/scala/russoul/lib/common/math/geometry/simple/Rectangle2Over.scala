@@ -19,7 +19,7 @@ import scala.reflect.ClassTag
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Rectangle2Over[V[_,_ <: Nat], @tbsp F]private(override val center:V[F,_2],val extent:V[F,_2]) extends CenteredShape[V,F,_2]{
+@immutable case class Rectangle2Over[V[_,_ <: Nat], @tbsp F]private(override val center:V[F,_2],val extent:V[F,_2]) extends CenteredShape[V,F,_2]{
 
   override def translate(v: V[F,_2])(implicit ev1 : CES[V,F,_2], ev2: T1[F,V,_2], ev3 : Field[F]): Rectangle2Over[V,F] = {
     new Rectangle2Over(center + v, extent)

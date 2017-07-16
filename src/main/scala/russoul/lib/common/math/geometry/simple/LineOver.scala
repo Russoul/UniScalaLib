@@ -12,7 +12,7 @@ import russoul.lib.common.math.geometry.simple.general.GeometricShape
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class LineOver[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_3], val end:V[F,_3]) extends GeometricShape[V,F,_3] {
+@immutable case class LineOver[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_3], val end:V[F,_3]) extends GeometricShape[V,F,_3] {
 
   override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]): LineOver[V,F] = {
     new LineOver(start + v, end + v)

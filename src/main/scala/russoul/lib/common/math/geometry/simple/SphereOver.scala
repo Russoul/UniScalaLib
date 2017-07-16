@@ -11,7 +11,7 @@ import russoul.lib.common.Abstraction._
 /**
   * Created by Russoul on 21.04.2016.
   */
-@immutable class SphereOver[V[_,_ <: Nat],@tbsp F]private (override val center:V[F,_3],val rad: F) extends CenteredShape[V,F,_3] {
+@immutable case class SphereOver[V[_,_ <: Nat],@tbsp F]private (override val center:V[F,_3],val rad: F) extends CenteredShape[V,F,_3] {
 
   override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], ev2: T1[F,V,_3], ev3: Field[F]): SphereOver[V,F] = {
     new SphereOver(center + v, rad)

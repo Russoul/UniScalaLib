@@ -25,12 +25,26 @@ package object common
   //Functional
 
   //TODO this currently does not work with functions that take implicit parameters, fixed in dotty ?
+
+  implicit class PipeVarags[A,R](a: Seq[A]){
+    def |*>(f: (A*) => R): R = f(a : _*)
+  }
+
   implicit class Pipe1[A,R](a: A){
     def |>(f: A => R): R = f(a)
   }
 
+
   implicit class Pipe2[A,B,R](a: (A,B)){
     def ||>(f: (A,B) => R): R = f(a._1,a._2)
+  }
+
+  implicit class Pipe3[A,B,C,R](a: (A,B,C)){
+    def |||>(f: (A,B,C) => R): R = f(a._1,a._2,a._3)
+  }
+
+  implicit class Pipe4[A,B,C,D,R](a: (A,B,C,D)){
+    def ||||>(f: (A,B,C,D) => R): R = f(a._1,a._2,a._3,a._4)
   }
 
   //............................................

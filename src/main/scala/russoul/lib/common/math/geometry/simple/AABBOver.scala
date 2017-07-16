@@ -12,7 +12,7 @@ import Abstraction._
 
 import scala.reflect.ClassTag
 
-@immutable class AABBOver[V[_,_ <: Nat], @tbsp F]private (override val center: V[F,_3],val extent: V[F,_3]) extends CenteredShape[V,F,_3] {
+@immutable case class AABBOver[V[_,_ <: Nat], @tbsp F]private (override val center: V[F,_3],val extent: V[F,_3]) extends CenteredShape[V,F,_3] {
 
   def genMin()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): V[F,_3] = center - extent
   def genMax()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): V[F,_3] = center + extent
@@ -100,5 +100,5 @@ object AABBOver
     new AABBOver[V,F](center,extent)
   }
 
-  def apply[V[_,_ <: Nat], @tbsp F : Field : ClassTag](center: V[F,_3], extent: V[F,_3])(implicit evTag: ClassTag[V[F,_3]],  ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1:Tensor1[F,V,_3]) = new AABBOver[V,F](center, extent)
+  def apply[V[_,_ <: Nat], @tbsp F](center: V[F,_3], extent: V[F,_3]) = new AABBOver[V,F](center, extent)
 }

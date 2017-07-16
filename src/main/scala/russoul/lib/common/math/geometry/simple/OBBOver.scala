@@ -17,7 +17,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class OBBOver[V[_,_ <: Nat], @tbsp F]private[geometry](override val center:V[F,_3], val right:V[F,_3], val up:V[F,_3], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[V,F,_3] {
+@immutable case class OBBOver[V[_,_ <: Nat], @tbsp F]private[geometry](override val center:V[F,_3], val right:V[F,_3], val up:V[F,_3], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[V,F,_3] {
 
 
   private[geometry] def this(aabb :AABBOver[V,F])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]) {

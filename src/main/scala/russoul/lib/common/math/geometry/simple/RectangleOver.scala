@@ -34,7 +34,7 @@ import Abstraction._
   * @tparam V
   * @tparam F
   */
-@immutable class RectangleOver[V[_,_ <: Nat], @tbsp F]private (override val center: V[F,_3], val right: V[F,_3], val up: V[F,_3]) extends CenteredShape[V,F,_3] {
+@immutable case class RectangleOver[V[_,_ <: Nat], @tbsp F]private (override val center: V[F,_3], val right: V[F,_3], val up: V[F,_3]) extends CenteredShape[V,F,_3] {
 
   override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], ev2: T1[F,V,_3], ev3 : Field[F]): RectangleOver[V,F] = {
     new RectangleOver(center + v, right, up)

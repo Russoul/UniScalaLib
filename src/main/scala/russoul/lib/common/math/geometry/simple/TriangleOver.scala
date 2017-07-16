@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 23.07.2016.
   */
-@immutable class TriangleOver[V[_,_ <: Nat], @tbsp F] private(val p1:V[F,_3], val p2:V[F,_3], val p3:V[F,_3]) extends GeometricShape[V,F,_3] {
+@immutable case class TriangleOver[V[_,_ <: Nat], @tbsp F] private(val p1:V[F,_3], val p2:V[F,_3], val p3:V[F,_3]) extends GeometricShape[V,F,_3] {
 
 
 

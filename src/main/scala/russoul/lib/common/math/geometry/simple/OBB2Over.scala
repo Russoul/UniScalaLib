@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 01.07.2017.
   */
-@immutable class OBB2Over[V[_,_ <: Nat], @tbsp F]private(override val center: V[F,_2], val right: V[F,_2], val up: V[F,_2], val extentRight : F, val extentUp: F) extends CenteredShape[V,F,_2] {
+@immutable case class OBB2Over[V[_,_ <: Nat], @tbsp F]private(override val center: V[F,_2], val right: V[F,_2], val up: V[F,_2], val extentRight : F, val extentUp: F) extends CenteredShape[V,F,_2] {
 
   /**
     *

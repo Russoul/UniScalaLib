@@ -5,6 +5,7 @@ import russoul.lib.common.TypeClasses._
 import russoul.lib.common.math.algebra.{Mat, Vec}
 import shapeless.Nat
 import shapeless.ops.nat.ToInt
+import Nat._
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
@@ -62,10 +63,11 @@ object Instances {
     implicit def matIsAlgebraicSquareMatrix[@tbsp T : ClassTag] = new AlgebraicSquareMatrix[T, Vec, Mat]
     //...
 
-    implicit def vecIsCanEuclideanSpace[@tbsp F : ClassTag, Dim <: Nat](implicit field: Field[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
+    implicit def vecIsModule[@tbsp R : ClassTag, Dim <: Nat](implicit ring: Ring[R], toInt: ToInt[Dim], notField: NoImplicit[RealField[R]]) = new VecIsModuleOverRing[R,Dim](ring, toInt)
+    implicit def vecIsCanEuclideanSpace[@tbsp F : ClassTag, Dim <: Nat](implicit field: RealField[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
 
-    implicit def vec2HasOrtho[@tbsp F] = new Vec2HasOrtho[F]
-    implicit def vec3HasCrossProduct[@tbsp F] = new Vec3HasCrossProduct[F]
+    implicit def vec2HasOrtho[@tbsp F](implicit space: CanonicalEuclideanSpaceOverField[Vec,F,_2]) = new Vec2HasOrtho[F](space)
+    implicit def vec3HasCrossProduct[@tbsp F](implicit space: CanonicalEuclideanSpaceOverField[Vec,F,_3]) = new Vec3HasCrossProduct[F](space)
   }
 
   trait SpecialInstances{

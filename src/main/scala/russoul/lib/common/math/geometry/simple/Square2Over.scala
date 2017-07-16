@@ -17,7 +17,7 @@ import shapeless.Nat._
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Square2Over[V[_,_ <: Nat],@tbsp F]private(override val center:V[F,_2], val extent:F) extends CenteredShape[V,F, _2]{
+@immutable case class Square2Over[V[_,_ <: Nat],@tbsp F]private(override val center:V[F,_2], val extent:F) extends CenteredShape[V,F, _2]{
 
 
 

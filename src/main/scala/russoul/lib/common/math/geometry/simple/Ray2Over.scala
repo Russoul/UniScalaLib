@@ -11,7 +11,7 @@ import Abstraction._
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable class Ray2Over[V[_,_ <: Nat], @tbsp F]private(val start: V[F,_2],val dir: V[F,_2]) extends GeometricShape[V,F,_2] {
+@immutable case class Ray2Over[V[_,_ <: Nat], @tbsp F]private(val start: V[F,_2],val dir: V[F,_2]) extends GeometricShape[V,F,_2] {
 
   override def translate(v: V[F,_2])(implicit ev1: CES[V,F,_2], ev2:T1[F,V,_2], field: Field[F]): Ray2Over[V,F] = {
     new Ray2Over(start + v, dir)

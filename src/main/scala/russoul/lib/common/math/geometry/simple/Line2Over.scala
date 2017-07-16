@@ -10,7 +10,7 @@ import Abstraction._
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable class Line2Over[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_2], val end:V[F,_2]) extends GeometricShape[V,F,_2] {
+@immutable case class Line2Over[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_2], val end:V[F,_2]) extends GeometricShape[V,F,_2] {
 
 
   def genDir()(implicit ev1: CES[V,F,_2], ev2: T1[F,V,_2], field: Field[F]): V[F,_2] = (end - start).normalize()

@@ -11,7 +11,7 @@ import russoul.lib.common.math.geometry.simple.general.GeometricShape
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class PlaneOver[V[_,_ <: Nat],@tbsp F]private(val point:V[F,_3],val normal:V[F,_3]) extends GeometricShape[V,F,_3]{
+@immutable case class PlaneOver[V[_,_ <: Nat],@tbsp F]private(val point:V[F,_3],val normal:V[F,_3]) extends GeometricShape[V,F,_3]{
 
 
   override def translate(v: V[F,_3])(implicit ev1 : CES[V,F,_3], ev2: T1[F,V,_3], ev3: Field[F]): PlaneOver[V,F] = new PlaneOver[V,F](point, normal)
