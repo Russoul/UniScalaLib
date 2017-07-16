@@ -4,11 +4,13 @@ import russoul.lib.common.TypeClasses._
 import russoul.lib.common.TypeClasses.Field
 import russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
 import russoul.lib.common.{immutable, tbsp}
-import russoul.lib.common.math.geometry.simple.general.CenteredShape2
+import russoul.lib.common.math.geometry.simple.general.{CenteredShape}
 import russoul.lib.common.utils.Arr
 import russoul.lib.common.Implicits._
 import shapeless.Nat
 import shapeless.Nat._
+import russoul.lib.common.Abstraction._
+import russoul.lib.common._
 
 import scala.reflect.ClassTag
 
@@ -17,23 +19,23 @@ import scala.reflect.ClassTag
   *
   * AXIS ALIGNED !!!
   */
-@immutable class Rectangle2Over[V[_,_ <: Nat], @tbsp F : ClassTag : Field]private(val center:V[F,_2],val extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) extends CenteredShape2[V[F,_2],F]{
+@immutable case class Rectangle2Over[V[_,_ <: Nat], @tbsp F]private(override val center:V[F,_2],val extent:V[F,_2]) extends CenteredShape[V,F,_2]{
 
-  override def translate(v: V[F,_2]): Rectangle2Over[V,F] = {
+  override def translate(v: V[F,_2])(implicit ev1 : CES[V,F,_2], ev2: T1[F,V,_2], ev3 : Field[F]): Rectangle2Over[V,F] = {
     new Rectangle2Over(center + v, extent)
   }
 
-  def genVertices(): Array[V[F,_2]] = Array[V[F,_2]](center - extent, center + ev.tensor1.make(extent.x, -extent.y), center + extent, center + ev.tensor1.make(-extent.x, extent.y))
+  def genVertices()(implicit evTag: ClassTag[V[F,_2]],ev1 : CES[V,F,_2], ev2: T1[F,V,_2], ev3 : Field[F]): Array[V[F,_2]] = Array[V[F,_2]](center - extent, center + makeVector(_2, extent.x, -extent.y), center + extent, center + makeVector(_2, -extent.x, extent.y))
 
   /**
     * scaling around center of this rectangle
     */
-  def scale(scalar:F): Rectangle2Over[V,F] =
+  def scale(scalar:F)(implicit ev1 : CES[V,F,_2], ev2: T1[F,V,_2], ev3 : Field[F]): Rectangle2Over[V,F] =
   {
     new Rectangle2Over(center, extent * scalar)
   }
 
-  def scaleAroundBasis(scalar:F):Rectangle2Over[V,F] =
+  def scaleAroundBasis(scalar:F)(implicit ev1 : CES[V,F,_2], ev2: T1[F,V,_2], ev3 : Field[F]):Rectangle2Over[V,F] =
   {
     new Rectangle2Over(center * scalar, extent * scalar)
   }
@@ -44,9 +46,9 @@ import scala.reflect.ClassTag
   }
 
 
-  def toRectangleParallelToZ(zLevel:F)(implicit evTag3 : ClassTag[V[F,_3]], v3: CanonicalEuclideanSpaceOverField[V,F,_3], tensor11: Tensor1[F,V,_3], cross: CrossProductOverCanonicalEuclideanSpaceOverField[V,F]): RectangleOver[V,F] =
+  def toRectangleParallelToZ(zLevel:F)(implicit ev1 : CES[V,F,_2], ev2: T1[F,V,_2], field : Field[F], ev3: CES[V,F,_3]): RectangleOver[V,F] =
   {
-    RectangleOver[V,F](v3.tensor1.make(center.x, center.y, zLevel), v3.tensor1.make(extent.x, v3.scalar.zero,v3.scalar.zero), v3.tensor1.make(v3.scalar.zero,extent.y, v3.scalar.zero))
+    RectangleOver[V,F](makeVector(_3, center.x, center.y, zLevel), makeVector(_3, extent.x, field.zero, field.zero), makeVector(_3, field.zero,extent.y, field.zero))
   }
 
 
@@ -54,11 +56,11 @@ import scala.reflect.ClassTag
 
 object Rectangle2Over
 {
-  def fromMinMax[V[_,_ <: Nat],@tbsp F : ClassTag : Field](min:V[F,_2], max:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2] , c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_2]):Rectangle2Over[V,F] =
+  def fromMinMax[V[_,_ <: Nat],@tbsp F](min:V[F,_2], max:V[F,_2])(implicit ev : CES[V,F,_2] , c: Con[F], tensor1: T1[F,V,_2]):Rectangle2Over[V,F] =
   {
     val t = (max - min)* 0.5D.as[F]
     Rectangle2Over(min + t, t)
   }
 
-  def apply[V[_,_ <: Nat], @tbsp F : ClassTag : Field](center:V[F,_2], extent:V[F,_2])(implicit evTag: ClassTag[V[F,_2]], ev : CanonicalEuclideanSpaceOverField[V,F,_2], tensor1: Tensor1[F,V,_2]) = new Rectangle2Over[V,F](center, extent)
+  def apply[V[_,_ <: Nat], @tbsp F](center:V[F,_2], extent:V[F,_2]) = new Rectangle2Over[V,F](center, extent)
 }

@@ -123,13 +123,6 @@ object StaticContainerTypeClasses {
     override def get(a: Mat[T, A1, A2], i: Int, j: Int): T = a(i,j)
   }
 
-  /*class VecIsAlgebraicVector[@tbsp T : ClassTag] extends AlgebraicVector[T, Vec]{
-    override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
-  }
-
-  class MatIsAlgebraicMatrix[@tbsp T : ClassTag] extends AlgebraicSquareMatrix[T, Vec, Mat]{
-    override val factory: AlgebraicTypeFactory[T, Vec, Mat] = new DefaultAlgebraicFactory[T]
-  }*/
 
   
 

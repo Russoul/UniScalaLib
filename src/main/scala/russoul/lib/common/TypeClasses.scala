@@ -97,7 +97,7 @@ object TypeClasses {
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
-  final class AlgebraicVector[@tbsp T, Vec[_,_<: Nat]]{
+  final class AlgebraicVector[@tbsp T : ClassTag, Vec[_,_<: Nat]]{
 
     //val factory: AlgebraicTypeFactory[T, Vec, Mat]
 
@@ -171,7 +171,7 @@ object TypeClasses {
     def transpose[Size <: Nat](mat: Mat[T,Size,Size])(implicit sizeEv: ToInt[Size], tensor2: Tensor2[T,Mat,Size,Size]) : Mat[T,Size,Size] = {
       val size = sizeEv()
 
-      val seq = new Array[T](size)
+      val seq = new Array[T](size * size)
       for(i <- 0 until size){
         for(j <- 0 until size){
           seq(i + j * size) = tensor2.get(mat, j, i)
@@ -226,6 +226,8 @@ object TypeClasses {
 
       tensor1.make(seq: _*)
     }
+    
+
 
   }
 
@@ -237,9 +239,8 @@ object TypeClasses {
   trait LinearMap[V[_,_ <: Nat], @tbsp F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
-    implicit val scalar = space.scalar
-
-    implicit val tensor1 = space.tensor1
+    implicit val scalar: Field[F]
+    implicit val tensor1: Tensor1[F,V,Dim]
 
     def map(a: V[F,Dim]): V[F,Dim]
   }
@@ -247,9 +248,8 @@ object TypeClasses {
   trait BilinearMap[V[_,_ <: Nat], @tbsp F, Dim <: Nat, Space <: VectorSpaceOverField[V,F,Dim]]{
 
     implicit val space: Space
-    implicit val scalar = space.scalar
-
-    implicit val tensor1 = space.tensor1
+    implicit val field: Field[F]
+    implicit val tensor1: Tensor1[F,V,Dim]
 
     def map(a: V[F,Dim], b: V[F,Dim]): V[F,Dim]
   }
@@ -323,6 +323,12 @@ object TypeClasses {
     @inline def div(x: A, y: A): A = times(x, inv(y))
 
   }
+
+  //pseudo fields are not real fields, so not all algebraic rules are satisfied, used to make something like int a field
+  trait PseudoField[@tbsp A] extends Field[A]
+
+  //all algebraic properties are met, used to differ between `real` fields and `not real`, `pseudo` fields
+  trait RealField[@tbsp A] extends Field[A]
 
 
   trait ModuleOverRing[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
@@ -603,12 +609,12 @@ object TypeClasses {
     override def negate(x: Int): Int = -x
   }
 
-  trait IntIsRing extends IntIsCommutativeAdditiveGroup with Ring[Int]{
+  /*trait IntIsRing extends IntIsCommutativeAdditiveGroup with Ring[Int]{
     override def times(x: Int, y: Int): Int = x * y
     override def one: Int = 1
-  }
+  }*/
 
-  class IntIsFullRing extends IntIsRing with IntIsOrderable
+  class IntIsFullPseudoField extends IntIsPseudoField with IntIsOrderable
 
 
   trait FloatIsTrig extends Trig[Float]{
@@ -646,7 +652,7 @@ object TypeClasses {
   }
 
 
-  trait FloatIsField extends Field[Float]{
+  trait FloatIsField extends RealField[Float]{
     override def times(x: Float, y: Float): Float = x * y
     override def inv(x: Float): Float = 1/x
     override def one: Float = 1F
@@ -658,6 +664,8 @@ object TypeClasses {
     }
 
   }
+
+
 
   trait FloatIsOrderable extends Orderable[Float] with Ordering.FloatOrdering{
     override def negate(x: Float): Float = -x
@@ -699,7 +707,7 @@ object TypeClasses {
     override def cbrt(x: Real): Real = Math.cbrt(x)
   }
 
-  trait DoubleIsField extends Field[Double]{
+  trait DoubleIsField extends RealField[Double]{
     override def times(x: Double, y: Double): Double = x * y
     override def inv(x: Double): Double = 1/x
     override def one: Double = 1D
@@ -712,6 +720,20 @@ object TypeClasses {
     }
 
 
+  }
+
+  trait IntIsPseudoField extends PseudoField[Int]{
+    override def inv(x: Int): Int = 1 / x //this part breaks the rules
+
+    override def zero: Int = 0
+
+    override def times(x: Int, y: Int): Int = x * y
+
+    override def one: Int = 1
+
+    override def plus(x: Int, y: Int): Int = x + y
+
+    override def negate(x: Int): Int = -x
   }
 
 
@@ -751,6 +773,17 @@ object TypeClasses {
   }
 
 
+  class VecIsModuleOverRing[@tbsp R : ClassTag, Dim <: Nat](ring: Ring[R], dimToInt: ToInt[Dim]) extends ModuleOverRing[Vec,R,Dim]{
+    override val scalarTag: ClassTag[R] = implicitly[ClassTag[R]]
+    override val dim: ToInt[Dim] = dimToInt
+
+    override implicit def scalar: Ring[R] = ring
+
+    override def staticContainer: AlgebraicVector[R, Vec] = new AlgebraicVector[R, Vec]
+
+    override def tensor1: Tensor1[R, Vec, Dim] = new VecIsTensor1[R,Dim]()
+  }
+
   class VecIsCanonicalEuclideanSpaceOverField[@tbsp F : ClassTag, Dim <: Nat](field : Field[F] with Trig[F] with Euclidean[F])(implicit evDim: ToInt[Dim]) extends CanonicalEuclideanSpaceOverField[Vec, F, Dim]{
     override implicit def scalar: Field[F] with Trig[F] with Euclidean[F] = field
     override def staticContainer: AlgebraicVector[F, Vec] = new AlgebraicVector[F, Vec]
@@ -761,12 +794,14 @@ object TypeClasses {
     override val dim: ToInt[Dim] = evDim
   }
 
-  class Vec3HasCrossProduct[@tbsp F] extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{
-    override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._3] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._3]]
+  class Vec3HasCrossProduct[@tbsp F](override val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._3]) extends CrossProductOverCanonicalEuclideanSpaceOverField[Vec, F]{
+    override val field: Field[F] = space.scalar
+    override val tensor1: Tensor1[F, Vec, Nat._3] = space.tensor1
   }
 
-  class Vec2HasOrtho[@tbsp F] extends TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec, F]{
-    override implicit val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._2] = implicitly[CanonicalEuclideanSpaceOverField[Vec, F, Nat._2]]
+  class Vec2HasOrtho[@tbsp F](override val space: CanonicalEuclideanSpaceOverField[Vec, F, Nat._2]) extends TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec, F]{
+    override val scalar: Field[F] = space.scalar
+    override val tensor1: Tensor1[F, Vec, Nat._2] = space.tensor1
   }
 
 

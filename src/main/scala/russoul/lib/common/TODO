@@ -2,6 +2,9 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     Performance issues:
+        //TODO CACHING OF IMPLICITS !!!
+        //TODO move geometric objects' implicits from constructors to methods, create implicit groups that group multiple implicits into one + add auto grouping using implicit conversions
+        //for now vec,mat and geos are case classes (@sp is currently removed), remove case class notation and add custom equals and hashocode method before adding @sp back
         //Each geometric object currently stores implicits as fields (possible solution is abstracting over each shape, like we did with Vec and Mat)
         //lots of object creation when resolving explicits (implicit def ... should be cached for better performance)
     High:

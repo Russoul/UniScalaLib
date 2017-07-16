@@ -7,7 +7,7 @@ import russoul.lib.common.Implicits._
 import russoul.lib.common.math.algebra.Vec
 
 
-class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, val lookingDir: Vec3[RealF], val zNear: RealF, val zFar: RealF, val up: Vec3[RealF])
+case class Frustum(val pos: Vec3[RealF], val angleOfView: RealF, val aspect: RealF, val lookingDir: Vec3[RealF], val zNear: RealF, val zFar: RealF, val up: Vec3[RealF])
 {
 
   def genSphericalBound(near: RectangleOver[Vec,RealF], far: RectangleOver[Vec, RealF]): SphereOver[Vec, RealF] =

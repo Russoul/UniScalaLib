@@ -11,7 +11,7 @@ import russoul.lib.common.{Real2, sp}
 /**
   * Created by russoul on 03.07.2017.
   */
-object Test extends App{
+object Test extends App {
 
 
 }

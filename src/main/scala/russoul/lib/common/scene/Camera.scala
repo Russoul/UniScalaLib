@@ -28,9 +28,9 @@ class Camera private
   var width = 800F;var height = 600F;var screenX = 0F;var screenY = 0F
 
 
-  var mat_perspective = Mat4F.matrixIdentity()
-  var mat_orthographic = Mat4F.matrixIdentity()
-  var mat_view = Mat4F.matrixIdentity()
+  var mat_perspective = Mat4F.identity()
+  var mat_orthographic = Mat4F.identity()
+  var mat_view = Mat4F.identity()
 
 
 
@@ -91,9 +91,9 @@ class Camera private
 
   def updateMatrices(): Unit =
   {
-    mat_perspective = Mat4F.matrixPERSPECTIVE(angleOfView, aspect, zNear, zFar)
-    mat_orthographic = Mat4F.matrixORTHOGRAPHIC(0, width, 0, height, -1, 1)
-    mat_view = Mat4F.matrixVIEWFir(pos, look, up)
+    mat_perspective = Mat4F.perspective(angleOfView, aspect, zNear, zFar)
+    mat_orthographic = Mat4F.ortho(0, width, 0, height, -1, 1)
+    mat_view = Mat4F.viewDir(pos, look, up)
   }
 
   def updateTransformation(droll:RealF, dyaw:RealF, dpitch:RealF, dforward:RealF, dright:RealF, dup:RealF): Unit =
@@ -102,7 +102,7 @@ class Camera private
     val pitch = dpitch/180*Math.PI.toFloat
 
 
-    val upTransform = Mat4F.matrixROTATION(look, -droll)
+    val upTransform = Mat4F.rotationDeg(look, -droll)
     var newUp = transformf(up , upTransform).normalize() //new base : look, newUp, newRight
     var newRight = (look ⨯ newUp).normalize()
 

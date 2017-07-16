@@ -9,7 +9,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 11.07.2017.
   */
-@immutable class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] private()(implicit a1: ToInt[A1], a2: ToInt[A2]){
+@immutable case class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] private()(implicit a1: ToInt[A1], a2: ToInt[A2]){
   private val array = new Array[T](a1() * a2())
 
   def apply(i: Int, j: Int) = array(i * a2() + j)

@@ -9,10 +9,10 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 11.07.2017.
   */
-@immutable @straight class Vec[@tbsp A : ClassTag, Size <: Nat]private ()(implicit size: ToInt[Size]){
+@immutable @straight case class Vec[@tbsp A : ClassTag, Size <: Nat]private ()(implicit size: ToInt[Size]){
   private val array = new Array[A](size())
 
-  @inline def apply(i: Int): A = array(i - 1)
+  @inline def apply(i: Int): A = array(i)
 
   def toArray = array.clone()
 
