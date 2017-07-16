@@ -1,19 +1,25 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.{immutable, tbsp}
-import russoul.lib.common.math.geometry.simple.general.{CenteredShape3, Shape3}
+import russoul.lib.common._
 import russoul.lib.common.Implicits._
-import russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field}
+import russoul.lib.common.TypeClasses.Field
 import shapeless.Nat
 import shapeless.Nat._
+import Abstraction._
+import russoul.lib.common.math.geometry.simple.general.GeometricShape
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class PlaneOver[V[_,_ <: Nat],@tbsp F : Field]private(val point:V[F,_3],val normal:V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3]) extends Shape3[V[F,_3],F]{
+@immutable class PlaneOver[V[_,_ <: Nat],@tbsp F]private(val point:V[F,_3],val normal:V[F,_3]) extends GeometricShape[V,F,_3]{
 
 
-  override def translate(v: V[F,_3]): PlaneOver[V,F] = new PlaneOver[V,F](point, normal)
+  override def translate(v: V[F,_3])(implicit ev1 : CES[V,F,_3], ev2: T1[F,V,_3], ev3: Field[F]): PlaneOver[V,F] = new PlaneOver[V,F](point, normal)
+
+
+  override def scaleAroundBasis(factor: F)(implicit ev1: CES[V, F, _3], ev2: T1[F, V, _3], ev3: Field[F]): PlaneOver[V, F] = {
+    new PlaneOver(point * factor, normal)
+  }
 
   override def toString(): String = {
     "Plane( point = " + point + "; normal = " + normal + " )"
@@ -22,5 +28,5 @@ import shapeless.Nat._
 }
 
 object PlaneOver{
-  def apply[V[_,_ <: Nat],@tbsp F : Field](point:V[F,_3], normal:V[F,_3])(implicit ev : CanonicalEuclideanSpaceOverField[V,F,_3]) = new PlaneOver[V,F](point, normal)
+  def apply[V[_,_ <: Nat],@tbsp F](point:V[F,_3], normal:V[F,_3]) = new PlaneOver[V,F](point, normal)
 }

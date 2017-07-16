@@ -1,27 +1,31 @@
 package russoul.lib.common.math.geometry.simple
 
 import russoul.lib.common.TypeClasses._
-import russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
 import russoul.lib.common.Implicits._
 import russoul.lib.common.immutable
-import russoul.lib.common.math.algebra.Mat
-import russoul.lib.common.math.geometry.simple.general.{CenteredShape3, Shape3}
 import shapeless.Nat._
 import russoul.lib.common._
 import shapeless.Nat
+import Abstraction._
+import russoul.lib.common.math.geometry.simple.general.GeometricShape
 
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable class LineOver[V[_,_ <: Nat], @tbsp F : Field]private(val start:V[F,_3], val end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3])  extends Shape3[V[F,_3],F] {
+@immutable class LineOver[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_3], val end:V[F,_3]) extends GeometricShape[V,F,_3] {
 
-  override def translate(v: V[F,_3]): LineOver[V,F] = {
+  override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]): LineOver[V,F] = {
     new LineOver(start + v, end + v)
   }
 
-  def genDir(): V[F,_3] = (end - start).normalize()
+  def genDir()(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]): V[F,_3] = (end - start).normalize()
 
-  def genRay() = RayOver[V,F](start, genDir())
+  def genRay()(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]) = RayOver[V,F](start, genDir())
+
+
+  override def scaleAroundBasis(factor: F)(implicit ev1: CES[V, F, _3], ev2: T1[F, V, _3], ev3: Field[F]): LineOver[V, F] = {
+    new LineOver[V,F](start * factor, end * factor)
+  }
 
   override def toString(): String = {
     "Line(start = " + start + ";end = " + end + " )"
@@ -31,14 +35,14 @@ import shapeless.Nat
 
 object LineOver
 {
-  def apply[V[_,_ <: Nat], @tbsp F : Field](pos: V[F,_3], start: F, end: F, yaw: F, pitch: F)(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], c: ConvertibleFromDouble[F], tensor1: Tensor1[F,V,_3]): LineOver[V,F] = {
+  def apply[V[_,_ <: Nat], @tbsp F](pos: V[F,_3], start: F, end: F, yaw: F, pitch: F)(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F], con: Con[F], trig: Trig[F]): LineOver[V,F] = {
     val alpha = -yaw
-    val t = ev.scalar.toRadians(90D.as[F] - alpha)
-    val cosT = ev.scalar.cos(t)
-    val sinT = ev.scalar.sin(t)
-    val t2 = ev.scalar.toRadians(pitch)
-    val sinT2 = ev.scalar.sin(t2)
-    val cosT2 = ev.scalar.cos(t2)
+    val t = trig.toRadians(90D.as[F] - alpha)
+    val cosT = trig.cos(t)
+    val sinT = trig.sin(t)
+    val t2 = trig.toRadians(pitch)
+    val sinT2 = trig.sin(t2)
+    val cosT2 = trig.cos(t2)
 
     val k = makeVector(_3, cosT * cosT2, sinT2, -sinT * cosT2)
 
@@ -48,5 +52,5 @@ object LineOver
     new LineOver(p1, p2)
   }
 
-  def apply[V[_,_ <: Nat], @tbsp F : Field](start:V[F,_3], end:V[F,_3])(implicit ev: CanonicalEuclideanSpaceOverField[V,F,_3], tensor1: Tensor1[F,V,_3]) = new LineOver[V,F](start, end)
+  def apply[V[_,_ <: Nat], @tbsp F](start:V[F,_3], end:V[F,_3]) = new LineOver[V,F](start, end)
 }

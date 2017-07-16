@@ -2,6 +2,8 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     Performance issues:
+        //TODO move geometric objects' implicits from constructors to methods, create implicit groups that group multiple implicits into one + add auto grouping using implicit conversions
+
         //Each geometric object currently stores implicits as fields (possible solution is abstracting over each shape, like we did with Vec and Mat)
         //lots of object creation when resolving explicits (implicit def ... should be cached for better performance)
     High:

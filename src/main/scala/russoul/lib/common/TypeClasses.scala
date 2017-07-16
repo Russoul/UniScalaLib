@@ -97,7 +97,7 @@ object TypeClasses {
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
-  final class AlgebraicVector[@tbsp T, Vec[_,_<: Nat]]{
+  final class AlgebraicVector[@tbsp T : ClassTag, Vec[_,_<: Nat]]{
 
     //val factory: AlgebraicTypeFactory[T, Vec, Mat]
 

@@ -1,22 +1,23 @@
 package russoul.lib.common.math.geometry.simple
 
 import russoul.lib.common.TypeClasses._
-import russoul.lib.common.math.geometry.simple.general.{CenteredShape3, Shape3}
 import russoul.lib.common.utils.Arr
 import russoul.lib.common.immutable
 import russoul.lib.common.Implicits._
 import shapeless.Nat._
 import russoul.lib.common._
+import russoul.lib.common.math.geometry.simple.general.{CenteredShape, GeometricShape}
 import shapeless.Nat
+import Abstraction._
 
 import scala.reflect.ClassTag
 
-@immutable class AABBOver[V[_,_ <: Nat], @tbsp F : Field : ClassTag]private (val center: V[F,_3],val extent: V[F,_3])(implicit evTag: ClassTag[V[F,_3]], ev : CanonicalEuclideanSpaceOverField[V,F,_3] , cross:  CrossProductOverCanonicalEuclideanSpaceOverField[V,F], tensor1:Tensor1[F,V,_3]) extends CenteredShape3[V[F,_3],F] {
+@immutable class AABBOver[V[_,_ <: Nat], @tbsp F]private (override val center: V[F,_3],val extent: V[F,_3]) extends CenteredShape[V,F,_3] {
 
-  def genMin(): V[F,_3] = center - extent
-  def genMax(): V[F,_3] = center + extent
+  def genMin()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): V[F,_3] = center - extent
+  def genMax()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): V[F,_3] = center + extent
 
-  override def translate(v: V[F,_3]): AABBOver[V,F] =
+  override def translate(v: V[F,_3])(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): AABBOver[V,F] =
   {
     new AABBOver(center + v, extent)
   }
@@ -25,12 +26,17 @@ import scala.reflect.ClassTag
     *
     * @return scaled version (around AABB's center point)
     */
-  override def scale(s:F): AABBOver[V,F] =
+  override def scale(s:F)(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F]): AABBOver[V,F] =
   {
     new AABBOver(center, extent * s)
   }
 
-  def genVertices(): Array[V[F,_3]] =
+
+  override def scaleAroundBasis(factor: F)(implicit ev1: CES[V, F, _3], ev2: T1[F, V, _3], ev3: Field[F]): AABBOver[V, F] = {
+    new AABBOver(center * factor, extent * factor)
+  }
+
+  def genVertices()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F], tag: ClassTag[V[F,_3]]): Array[V[F,_3]] =
   {
     val a = new Array[V[F,_3]](8)
 
@@ -55,7 +61,7 @@ import scala.reflect.ClassTag
     *
     *
     */
-  def genRectangles(): Array[RectangleOver[V,F]] =
+  def genRectangles()(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F], tag: ClassTag[V[F,_3]]): Array[RectangleOver[V,F]] =
   {
 
     val a = new Array[RectangleOver[V,F]](6)
@@ -65,12 +71,12 @@ import scala.reflect.ClassTag
     val sz = extent.z
 
 
-    a(0) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,-sz))//top
-    a(1) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, -sy, ev.scalar.zero), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,ev.scalar.zero,sz))//bottom
-    a(2) = RectangleOver[V,F](center + makeVector(_3,-sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//left
-    a(3) = RectangleOver[V,F](center + makeVector(_3,sx, ev.scalar.zero, ev.scalar.zero), makeVector(_3,ev.scalar.zero, ev.scalar.zero,-sz), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//right
-    a(4) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, -sz), makeVector(_3,-sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//back
-    a(5) = RectangleOver[V,F](center + makeVector(_3,ev.scalar.zero, ev.scalar.zero, sz), makeVector(_3,sx, ev.scalar.zero,ev.scalar.zero), makeVector(_3,ev.scalar.zero,sy,ev.scalar.zero))//front
+    a(0) = RectangleOver[V,F](center + makeVector(_3,field.zero, sy, field.zero), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,field.zero,-sz))//top
+    a(1) = RectangleOver[V,F](center + makeVector(_3,field.zero, -sy, field.zero), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,field.zero,sz))//bottom
+    a(2) = RectangleOver[V,F](center + makeVector(_3,-sx, field.zero, field.zero), makeVector(_3,field.zero, field.zero,sz), makeVector(_3,field.zero,sy,field.zero))//left
+    a(3) = RectangleOver[V,F](center + makeVector(_3,sx, field.zero, field.zero), makeVector(_3,field.zero, field.zero,-sz), makeVector(_3,field.zero,sy,field.zero))//right
+    a(4) = RectangleOver[V,F](center + makeVector(_3,field.zero, field.zero, -sz), makeVector(_3,-sx, field.zero,field.zero), makeVector(_3,field.zero,sy,field.zero))//back
+    a(5) = RectangleOver[V,F](center + makeVector(_3,field.zero, field.zero, sz), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,sy,field.zero))//front
     
     
     a
@@ -86,7 +92,7 @@ import scala.reflect.ClassTag
 
 object AABBOver
 {
-  def genFromMinMax[V[_,_ <: Nat],@tbsp F : Field : ClassTag](min:V[F,_3], max:V[F,_3])(implicit evTag: ClassTag[V[F,_3]], v: CanonicalEuclideanSpaceOverField[V,F,_3] , cross : CrossProductOverCanonicalEuclideanSpaceOverField[V,F], c: ConvertibleFromDouble[F], tensor1:Tensor1[F,V,_3]):AABBOver[V,F] =
+  def genFromMinMax[V[_,_ <: Nat],@tbsp F](min:V[F,_3], max:V[F,_3])(implicit ev1 : CES[V,F,_3], tensor1:T1[F,V,_3], field: Field[F], tag: ClassTag[V[F,_3]], con: Con[F]):AABBOver[V,F] =
   {
     val extent = (max-min) * 0.5D.as[F]
     val center = min + extent
