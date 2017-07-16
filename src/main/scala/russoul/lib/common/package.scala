@@ -177,11 +177,11 @@ package object common
   }
   type Ray2 = Ray2Over[Vec, Real]
   object Ray2{
-    def apply(start: Real2, end: Real2): Ray2 = Ray2Over[Vec,Real](start, end)
+    def apply(start: Real2, dir: Real2): Ray2 = Ray2Over[Vec,Real](start, dir)
   }
   type Ray = RayOver[Vec, Real]
   object Ray{
-    def apply(start: Real3, end: Real3): Ray = RayOver[Vec, Real](start, end)
+    def apply(start: Real3, dir: Real3): Ray = RayOver[Vec, Real](start, dir)
   }
   type Rectangle2 = Rectangle2Over[Vec, Real]
   object Rectangle2{
