@@ -44,12 +44,12 @@ object Test1 extends App{
 
   def testMatrixOps() : Unit = {
     val v1 = Float4(1,2,3,0)
-    val m1 = Mat4F.matrixTRANSLATION(Float3(2,3,4))
+    val m1 = Mat4F.translation(Float3(2,3,4))
 
     assert(v1 * m1 == Float4(3,5,7,0))
 
     val v2 = Float4(1,0,0,0)
-    val m2 = Mat4F.matrixROTATION(Float3(0,0,1), -90F)
+    val m2 = Mat4F.rotationDeg(Float3(0,0,1), -90F)
 
     assert(v1 * m2 == Float4(0,1,0,0))
     assert(v1 * m2 == m2.transpose() * v1)
