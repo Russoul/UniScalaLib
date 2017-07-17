@@ -209,6 +209,7 @@ package object common
   }
 
 
+
   type AABBD = AABB
   type CircleD = Circle
   type Line2D = Line2
@@ -283,6 +284,10 @@ package object common
   type OBB2F = OBB2Over[Vec, Float]
   object OBB2F{
     def apply(center: Float2, right: Float2, up: Float2, extentRight: Float, extentUp: Float): OBB2F = OBB2Over(center, right, up, extentRight, extentUp)
+  }
+  type Triangle2F = Triangle2Over[Vec, Float]
+  object Triangle2F{
+    def apply(p1: Float2, p2: Float2, p3: Float2) = Triangle2Over[Vec,Float](p1,p2,p3)
   }
   //--------------------------------------------------------
 
