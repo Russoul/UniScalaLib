@@ -449,6 +449,7 @@ package object common
 
   object Mat4F{
 
+    //OPENGL uses column-major form, DirectX - row major
 
     //common transformations for V₃ over Floats------------------------------------------
     def identity(): Mat4F =
@@ -529,8 +530,8 @@ package object common
 
       Mat[Float, Nat._4](2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
-        0, 0, -2 / (far - near), (far + near) / (far - near),
-        0, 0, 0, 1).transpose()
+        0, 0, -2 / (far - near), -(far + near) / (far - near),
+        0, 0, 0, 1)
     }
 
 
@@ -544,22 +545,10 @@ package object common
       Mat[Float,Nat._4](2 * near / (right - left), 0, (right + left) / (right - left), 0, //OpenGL form(column-major) not transposed, transposed - row-major form
         0, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0,
         0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
-        0, 0, -1, 0).transpose()
+        0, 0, -1, 0)
     }
 
-    def perspectiveDX(angleInFegrees: Float, aspect: Float, near: Float, far: Float): Mat4F = //Firectx way doesn't work
-    {
-      val fov = scala.math.tan(angleInFegrees / 2 / 180 * scala.math.Pi).toFloat
-      val r = aspect
-      val n = near
-      val f = far
 
-      Mat[Float,Nat._4](1 / (r * fov), 0, 0, 0,
-        0, 1 / fov, 0, 0,
-        0, 0, f / (f - n), 1,
-        0, 0, -f * n / (f - n), 0)
-
-    }
 
 
     def view(pos: Float3, target: Float3, up: Float3): Mat4F =
@@ -606,7 +595,7 @@ package object common
 
 
     //common transformations for V₃ over Real------------------------------------------
-    def identity(): Mat4D =
+    def identity(): Mat4D = //row major
     {
 
       Mat[Double,Nat._4](1D, 0D, 0D, 0D,
@@ -615,7 +604,7 @@ package object common
         0D, 0D, 0D, 1D)
     }
 
-    def scale(x: Real, y: Real, z: Real): Mat4D =
+    def scale(x: Real, y: Real, z: Real): Mat4D = //row major
     {
       Mat[Double,Nat._4](x, 0D, 0D, 0D,
         0D, y, 0D, 0D,
@@ -623,7 +612,7 @@ package object common
         0D, 0D, 0D, 1D)
     }
 
-    def scale(v: Vec3[Real]): Mat4D =
+    def scale(v: Vec3[Real]): Mat4D = //row major
     {
       Mat[Double,Nat._4](v.x, 0, 0, 0,
         0, v.y, 0, 0,
@@ -631,7 +620,7 @@ package object common
         0, 0, 0, 1)
     }
 
-    def translation(x: Real, y: Real, z: Real): Mat4D =
+    def translation(x: Real, y: Real, z: Real): Mat4D = //row major
     {
       Mat[Double,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
@@ -639,7 +628,7 @@ package object common
         x, y, z, 1)
     }
 
-    def translation(v: Vec3[Real]): Mat4D =
+    def translation(v: Vec3[Real]): Mat4D = //row major
     {
       Mat[Double,Nat._4](1, 0, 0, 0,
         0, 1, 0, 0,
@@ -647,7 +636,7 @@ package object common
         v.x, v.y, v.z, 1)
     }
 
-    def rotationDeg(axis: Vec3[Real], angleInDegrees: Real): Mat4D =
+    def rotationDeg(axis: Vec3[Real], angleInDegrees: Real): Mat4D = //row major
     {
       val rad = angleInDegrees * scala.math.Pi / 180
       val cos = scala.math.cos(rad)
@@ -662,7 +651,7 @@ package object common
 
     }
 
-    def rotationRad(axis: Vec3[Real], angleInRadians: Real): Mat4D =
+    def rotationRad(axis: Vec3[Real], angleInRadians: Real): Mat4D = //row major
     {
 
       val cos = scala.math.cos(angleInRadians)
@@ -677,45 +666,32 @@ package object common
 
     }
 
-    def ortho(left: Real, right: Real, bottom: Real, top: Real, near: Real, far: Real): Mat4D =
+    def ortho(left: Real, right: Real, bottom: Real, top: Real, near: Real, far: Real): Mat4D = //column major
     {
 
       Mat[Real,_4](2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
-        0, 0, -2 / (far - near), (far + near) / (far - near),
-        0, 0, 0, 1).transpose()
+        0, 0, -2 / (far - near), -(far + near) / (far - near),
+        0, 0, 0, 1)
     }
 
 
-    def perspective(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4D =
+    def perspective(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4D = //column major
     {
       val top:Real = near * scala.math.tan(scala.math.Pi / 180 * angleInDegrees / 2)
       val bottom = -top
       val right = top * aspect
       val left = -right
 
-      Mat[Real,_4](2 * near / (right - left), 0D, (right + left) / (right - left), 0D, //OpenGL form(column-major) not transposed, transposed - row-major form
+      Mat[Real,_4](2 * near / (right - left), 0D, (right + left) / (right - left), 0D,
         0D, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0D,
         0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
-        0, 0, -1, 0).transpose()
-    }
-
-    def perspectiveDX(angleInDegrees: Real, aspect: Real, near: Real, far: Real): Mat4D = //Directx way doesn't work
-    {
-      val fov = scala.math.tan(angleInDegrees / 2 / 180 * scala.math.Pi)
-      val r = aspect
-      val n = near
-      val f = far
-
-      Mat[Double,Nat._4](1 / (r * fov), 0, 0, 0,
-        0, 1 / fov, 0, 0,
-        0, 0, f / (f - n), 1,
-        0, 0, -f * n / (f - n), 0)
-
+        0, 0, -1, 0)
     }
 
 
-    def view(pos: Vec3[Real], target: Vec3[Real], up: Vec3[Real]): Mat4D =
+
+    def view(pos: Vec3[Real], target: Vec3[Real], up: Vec3[Real]): Mat4D = //row major?
     {
 
       val za = (target - pos).normalize()
@@ -728,7 +704,7 @@ package object common
         -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
     }
 
-    def viewDir(pos: Vec3[Real], look: Vec3[Real], up: Vec3[Real]): Mat4D =
+    def viewDir(pos: Vec3[Real], look: Vec3[Real], up: Vec3[Real]): Mat4D = //row major?
     {
 
 
@@ -742,7 +718,7 @@ package object common
         -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
     }
 
-    def view(pos: Vec3[Real], rotX: Real, rotY: Real, rotZ: Real): Mat4D =
+    def view(pos: Vec3[Real], rotX: Real, rotY: Real, rotZ: Real): Mat4D = //row major?
     {
 
       var mat = identity()
