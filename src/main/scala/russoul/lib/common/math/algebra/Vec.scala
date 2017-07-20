@@ -23,7 +23,7 @@ import scala.reflect.ClassTag
 
     if(array.size > 1) str = str.dropRight(1)
 
-    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}]($str)"
+    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}]\n$str"
   }
 }
 

@@ -20,12 +20,11 @@ import scala.reflect.ClassTag
     var str = ""
 
     for(i <- 0 until a1()){
-      str += "("
       for(j <- 0 until a2()){
         str += this(i,j) + " "
       }
       str.dropRight(1)
-      str += ")\n"
+      str += "\n"
     }
 
     s"Mat[${implicitly[ClassTag[T]].toString()}, ${a1()}, ${a2()}]\n$str"

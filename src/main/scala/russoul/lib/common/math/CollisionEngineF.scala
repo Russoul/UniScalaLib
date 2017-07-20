@@ -721,6 +721,19 @@ object CollisionEngineF
     (b-a).length()
   }
 
+  /**
+    *
+    * @param point
+    * @param line
+    * @return distance to infinite! line
+    */
+  def distancePoint2Line2(point: Float2, line: Line2F) : Float = {
+    val d = line.start - line.end
+    val n = d.⟂
+    val vec = point - line.start
+    lang.Math.abs((n dot vec) / n.length())
+  }
+
 
   /**
     *

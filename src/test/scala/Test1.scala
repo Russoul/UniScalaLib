@@ -4,6 +4,7 @@ import russoul.lib.common._
 import russoul.lib.common.Abstraction._
 import russoul.lib.common.Implicits._
 import russoul.lib.common.TypeClasses.Ring
+import russoul.lib.common.math.CollisionEngineF
 import russoul.lib.common.utils.Arr
 import shapeless.Nat
 
@@ -99,20 +100,19 @@ object Test1 extends App{
   }
 
   def testError(): Unit ={
-    val extent = 8
-    val transformation = Mat4F.rotationDeg(Float3(1,0,0), 90)
+    val p = Float2(1,2)
 
-    println(transformation)
-    println(Mat4F.translation(Float3(8,8,0)))
-    println(transformation ⨯ Mat4F.translation(Float3(8,8,0)))
+    val line1 = Line2F(Float2(0,0), Float2(3,0))
+    val line2 = Line2F(Float2(0,0), Float2(4,0))
+    val line3 = Line2F(Float2(0,0), Float2(-3,0))
 
-    val t1 = transformf(Float3(-extent, 0, -extent), transformation) //ok
-    val t2 = transformf(t1 , Mat4F.translation(Float3(8,8,0))) //ok
-    val t3 = transformf(Float3(-extent, 0, -extent), transformation ⨯ Mat4F.translation(Float3(8,8,0))) //bad
 
-    println(t1)
-    println(t2)
-    println(t3)
+    val dist1 = CollisionEngineF.distancePoint2Line2(p, line1)
+    val dist2 = CollisionEngineF.distancePoint2Line2(p, line2)
+    val dist3 = CollisionEngineF.distancePoint2Line2(p, line3)
+    println(dist1)
+    println(dist2)
+    println(dist3)
   }
 
   testVectorCreation()

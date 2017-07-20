@@ -54,13 +54,73 @@ package object common
   //Functional mathematical Shape 2D
 
 
-  trait FShape2[@tbsp A]{
-    def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec,A,_2]) : A
+  //TODO better design FShape2, it is too verbose
+  trait FShape2[@tbsp A]{ self =>
+    def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec,A,_2], t1: Tensor1[A,Vec,_2]) : A
+
+    def &(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+      new FShape2[A] {
+        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+          order.max(self.density(p), that.density(p))
+        }
+      }
+    }
+
+    def |(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+      new FShape2[A] {
+        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+          order.min(self.density(p), that.density(p))
+        }
+      }
+    }
+
+    def -(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+      new FShape2[A] {
+        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+          order.max(self.density(p), -that.density(p))
+        }
+      }
+    }
   }
 
-  case class FCircle[@tbsp A](p : Vec2[A], r: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2]): A = {
-      (p dot p) - r * r
+  case class FCircle[@tbsp A](center : Vec2[A], rad: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      val d = p - center
+      (d dot d) - rad * rad
+    }
+  }
+
+  case class FHalfPlaneLeft[@tbsp A](x: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      p.x - x
+    }
+  }
+
+  case class FHalfPlaneRight[@tbsp A](x: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      x - p.x
+    }
+  }
+
+  case class FHalfPlaneUpper[@tbsp A](y: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      y - p.y
+    }
+  }
+
+  case class FHalfPlaneLower[@tbsp A](y: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      p.y - y
+    }
+  }
+
+  case class FRectangle2[@tbsp A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2], order: Orderable[A]) extends FShape2[A]{
+
+    val shape = FHalfPlaneRight(center.x - extent.x) & FHalfPlaneLeft(center.x + extent.x) &
+      FHalfPlaneLower(center.y + extent.y) & FHalfPlaneUpper(center.y - extent.y)
+
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+      shape.density(p)
     }
   }
 
