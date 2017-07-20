@@ -163,7 +163,7 @@ class OBBOverReal private(override val center:Real3, override val right:Real3, o
   def rotateAroundRight(rad:Real): OBBOver[Vec, Real] =
   {
     val mat = Mat4D.rotationRad(right, rad)
-    OBBOver(center,right,up = {val t = Real4(up,0D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
+    OBBOver(center,right,up = {val t = Real4(up,1D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
   }
 
 
@@ -171,15 +171,15 @@ class OBBOverReal private(override val center:Real3, override val right:Real3, o
   {
     val mat = Mat4D.rotationRad(up, rad)
 
-    OBBOver(center,right = {val t = Real4(right,0); val r = t * mat ; Real3(r.x,r.y,r.z)},up,extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Real4(right,1D); val r = t * mat ; Real3(r.x,r.y,r.z)},up,extentRight, extentUp, extentLook)
   }
 
 
   def rotateAroundLook(rad:Real):OBBOver[Vec, Real] =
   {
     val mat = Mat4D.rotationRad(right ⨯ up, rad)
-    OBBOver(center,right = {val t = Real4(right,0); val r = t * mat ; Real3(r.x,r.y,r.z)},
-      up = {val t = Real4(up,0D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Real4(right,1D); val r = t * mat ; Real3(r.x,r.y,r.z)},
+      up = {val t = Real4(up,1D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
   }
 }
 

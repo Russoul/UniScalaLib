@@ -8,6 +8,7 @@
 lazy val coreSettings = Seq(
   scalaOrganization := "org.scala-lang",
   scalaVersion  := "2.12.2",
+  //scalaVersion := "0.2.0-RC1",
   name  := "UniScalaLib",
   version := "0.0.1",
   organization := "org.russoul"

@@ -498,7 +498,16 @@ import scala.reflect.ClassTag
   }
 
   def toImmutable(): ImArr[T] = {
-    new ImArr[T](array.clone())
+    val ar = new Array[T](size)
+    for(i <- 0 until size) ar(i) = array(i)
+    ImArr[T](ar)
+  }
+
+  def toArray() : Array[T] = {
+    val ar = new Array[T](size)
+    for(i <- 0 until size) ar(i) = array(i)
+
+    ar
   }
 }
 

@@ -3,35 +3,24 @@ Priority:
         1)see Mat4 (specialize it !)
     Performance issues:
         //TODO CACHING OF IMPLICITS !!!
-        //TODO move geometric objects' implicits from constructors to methods, create implicit groups that group multiple implicits into one + add auto grouping using implicit conversions
+        //abstract over shapes ?
         //for now vec,mat and geos are case classes (@sp is currently removed), remove case class notation and add custom equals and hashocode method before adding @sp back
-        //Each geometric object currently stores implicits as fields (possible solution is abstracting over each shape, like we did with Vec and Mat)
-        //lots of object creation when resolving explicits (implicit def ... should be cached for better performance)
     High:
         //name abbreviations correctly
         //performant way to represent generic field literals ?
         //string-inter-macro type literals
         //make int a can eu space or think of a better solution to be a able to create say Triangle holding ints
-        //rename Implicits to lowercase and rename Russoul package to lowercase
-        //implement mat4 and mat3 using StaticMatrix
         //make some really powerful macros disabling typechecking(in macros), see c++ like templates project for scala
         //Type everything !
-        //TODO watch shapeless videos
-        //TODO make universal matrix and vector classes (probably use arrays for representation of both) + type-checked sizes
-        //the above thing is actually already partially implemented : StaticContainer - it is a one dim vector structure
        -3)matrices for 2d transformations
-       -2)TODO Shapeless for statically sized collections and more !!
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
-        0)remove Vec use Array instead !
         1)write tests
-        2)see if @tbsp is set in all places needed
+        2)see if @sp is set in all places needed
         3)assertions
         4)//TODO fix Mat.apply calls indexing from 0 but not from 1
         5)make Vec, Mat and other containers be scala friendly(support native operations or
          maybe even extend common types)
-        6)remove shitty column field in Vec, use special container or trait to indicate row vectors, column vectors are default
     Medium:
-       -1)make better renderers (RenderXXX), make them inherit common interface, make them smart, rethink whole idea
         0)write crossplatform rendering library
         1)instantiate typeclass from string at compile time ? or at least at run time
     Low:

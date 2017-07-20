@@ -42,11 +42,22 @@ object Ops {
   }
 
 
-  class StaticVectorOps[@tbsp T, Vec[_,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicVector[T,Vec], tensor1: Tensor1[T,Vec,Size]){
+  class StaticVectorOps[@tbsp T : ClassTag, Vec[_,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicVector[T,Vec], tensor1: Tensor1[T,Vec,Size]){
     @inline def _0 = ev.get(lhs, Nat._0) //(implicit ev: GT[Size, ])
     @inline def _1(implicit ev1: GT[Size, Nat._1]) = ev.get(lhs, Nat._1)
     @inline def _2(implicit ev1: GT[Size, Nat._2]) = ev.get(lhs, Nat._2)
     @inline def _3(implicit ev1: GT[Size, Nat._3]) = ev.get(lhs, Nat._3)
+
+    @inline def toArray : Array[T] = {
+      val size = ev.size(lhs)
+      val ar = new Array[T](size)
+
+      for(i <- 0 until size){
+        ar(i) = tensor1.get(lhs, i)
+      }
+
+      ar
+    }
 
   }
 
@@ -111,6 +122,8 @@ object Ops {
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
     @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
     @inline def w: R = ev.staticContainer.get(lhs, Nat._3)
+
+    @inline def xyz(implicit t1: Tensor1[R,V,_3]) = t1.make(tensor1.get(lhs, 0),tensor1.get(lhs, 1),tensor1.get(lhs, 2))
   }
 
   class Container1Ops[@tbsp T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
