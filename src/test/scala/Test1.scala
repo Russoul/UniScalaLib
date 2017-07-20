@@ -102,8 +102,17 @@ object Test1 extends App{
     val extent = 8
     val transformation = Mat4F.rotationDeg(Float3(1,0,0), 90)
 
-    println((Float4(-extent, 0, -extent, 1) * transformation).xyz)
-    println(transformf(Float3(-extent, 0, -extent), transformation))
+    println(transformation)
+    println(Mat4F.translation(Float3(8,8,0)))
+    println(transformation ⨯ Mat4F.translation(Float3(8,8,0)))
+
+    val t1 = transformf(Float3(-extent, 0, -extent), transformation) //ok
+    val t2 = transformf(t1 , Mat4F.translation(Float3(8,8,0))) //ok
+    val t3 = transformf(Float3(-extent, 0, -extent), transformation ⨯ Mat4F.translation(Float3(8,8,0))) //bad
+
+    println(t1)
+    println(t2)
+    println(t3)
   }
 
   testVectorCreation()

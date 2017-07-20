@@ -19,11 +19,11 @@ import scala.reflect.ClassTag
   override def toString() : String = {
     var str = ""
 
-    for(i <- array) str += i + ", "
+    for(i <- array) str += i + " "
 
-    if(array.size > 1) str = str.dropRight(2)
+    if(array.size > 1) str = str.dropRight(1)
 
-    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}](${str})"
+    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}]($str)"
   }
 }
 

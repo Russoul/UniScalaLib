@@ -16,6 +16,21 @@ import scala.reflect.ClassTag
 
   def toArray = array.clone()
 
+  override def toString : String = { //TODO probably use stringbuilder for better performance
+    var str = ""
+
+    for(i <- 0 until a1()){
+      str += "("
+      for(j <- 0 until a2()){
+        str += this(i,j) + " "
+      }
+      str.dropRight(1)
+      str += ")\n"
+    }
+
+    s"Mat[${implicitly[ClassTag[T]].toString()}, ${a1()}, ${a2()}]\n$str"
+  }
+
 }
 object Mat{
 

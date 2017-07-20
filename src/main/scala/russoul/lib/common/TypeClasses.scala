@@ -191,9 +191,7 @@ object TypeClasses {
 
       for(i <- 0 until size){
         for(j <- 0 until size){
-
-
-          seq(i + j * size) = row(a , i) dot column(b, j)
+          seq(i * size + j) = row(a , i) dot column(b, j)
         }
       }
 
