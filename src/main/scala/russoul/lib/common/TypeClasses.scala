@@ -105,7 +105,7 @@ object TypeClasses {
     //val tensor1 : Tensor1[T, Vec, Size] //add size to StaticVector ?
 
     @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: Size <:!< Index, tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
-
+    @inline def size[Size <: Nat](vec: Vec[T, Size])(implicit size: ToInt[Size], tensor1: Tensor1[T, Vec, Size]) = size()
   }
 
 

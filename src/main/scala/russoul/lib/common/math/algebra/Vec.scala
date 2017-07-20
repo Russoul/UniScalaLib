@@ -16,6 +16,15 @@ import scala.reflect.ClassTag
 
   def toArray = array.clone()
 
+  override def toString() : String = {
+    var str = ""
+
+    for(i <- array) str += i + ", "
+
+    if(array.size > 1) str = str.dropRight(2)
+
+    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}](${str})"
+  }
 }
 
 object Vec {

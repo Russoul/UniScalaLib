@@ -1,6 +1,7 @@
 package russoul.lib
 
 
+import russoul.lib.common.Abstraction.{CES, Module}
 import russoul.lib.common.TypeClasses._
 import russoul.lib.common.math.geometry.simple._
 import russoul.lib.common.Implicits._
@@ -48,6 +49,22 @@ package object common
   }
 
   //............................................
+
+
+  //Functional mathematical Shape 2D
+
+
+  trait FShape2[@tbsp A]{
+    def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec,A,_2]) : A
+  }
+
+  case class FCircle[@tbsp A](p : Vec2[A], r: A) extends FShape2[A]{
+    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2]): A = {
+      (p dot p) - r * r
+    }
+  }
+
+  //..........
 
 
   //try with resources
@@ -296,14 +313,14 @@ package object common
   //used as fully infered function
   @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @tbsp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim], toInt: ToInt[Dim]) = ev.tensor1.make(args : _*)
   @inline def transformd(a: Real3, b: Mat4D) : Real3 = {
-    val temp = Real4(a, 0D)
+    val temp = Real4(a, 1D)
     val temp2 = temp * b
-    Real3(temp2.x, temp2.y, temp.z)
+    Real3(temp2.x, temp2.y, temp2.z)
   }
   @inline def transformf(a: Real3F, b: Mat4F) : Real3F = {
-    val temp = Real4F(a, 0F)
+    val temp = Real4F(a, 1F)
     val temp2 = temp * b
-    Real3F(temp2.x, temp2.y, temp.z)
+    Real3F(temp2.x, temp2.y, temp2.z)
   }
 
   //........................
@@ -457,7 +474,8 @@ package object common
 
 
 
-      Mat[Float, Nat._4](1F, 0F, 0F, 0F,
+      Mat[Float, Nat._4](
+        1F, 0F, 0F, 0F,
         0F, 1F, 0F, 0F,
         0F, 0F, 1F, 0F,
         0F, 0F, 0F, 1F)
@@ -465,7 +483,8 @@ package object common
 
     def scale(x: Float, y: Float, z: Float): Mat4F =
     {
-      Mat[Float, Nat._4](x, 0F, 0F, 0F,
+      Mat[Float, Nat._4](
+        x, 0F, 0F, 0F,
         0F, y, 0F, 0F,
         0F, 0F, z, 0F,
         0F, 0F, 0F, 1F)
@@ -473,7 +492,8 @@ package object common
 
     def scale(v: Float3): Mat4F =
     {
-      Mat[Float,Nat._4](v.x, 0, 0, 0,
+      Mat[Float,Nat._4](
+        v.x, 0, 0, 0,
         0, v.y, 0, 0,
         0, 0, v.z, 0,
         0, 0, 0, 1)
@@ -481,7 +501,8 @@ package object common
 
     def translation(x: Float, y: Float, z: Float): Mat4F =
     {
-      Mat[Float,Nat._4](1, 0, 0, 0,
+      Mat[Float,Nat._4](
+        1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1)
@@ -489,7 +510,8 @@ package object common
 
     def translation(v: Float3): Mat4F =
     {
-      Mat[Float,Nat._4](1, 0, 0, 0,
+      Mat[Float,Nat._4](
+        1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         v.x, v.y, v.z, 1)
@@ -503,7 +525,8 @@ package object common
       val x = axis.x
       val y = axis.y
       val z = axis.z
-      Mat[Float,Nat._4](cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
+      Mat[Float,Nat._4](
+        cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
         y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
         z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
         0, 0, 0, 1)
@@ -518,7 +541,8 @@ package object common
       val x = axis.x * axis.x
       val y = axis.y * axis.y
       val z = axis.z * axis.z
-      Mat[Float,Nat._4](cos + x * x * (1F - cos), x * y * (1F - cos) - z * sin, x * z * (1F - cos) + y * sin, 0F,
+      Mat[Float,Nat._4](
+        cos + x * x * (1F - cos), x * y * (1F - cos) - z * sin, x * z * (1F - cos) + y * sin, 0F,
         y * x * (1F - cos) + z * sin, cos + y * y * (1F - cos), y * z * (1F - cos) - x * sin, 0F,
         z * x * (1F - cos) - y * sin, z * y * (1F - cos) + x * sin, cos + z * z * (1F - cos), 0F,
         0F, 0F, 0F, 1F)
@@ -528,7 +552,8 @@ package object common
     def ortho(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float): Mat4F =
     {
 
-      Mat[Float, Nat._4](2 / (right - left), 0, 0, -(right + left) / (right - left),
+      Mat[Float, Nat._4](
+        2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
         0, 0, -2 / (far - near), -(far + near) / (far - near),
         0, 0, 0, 1)
@@ -542,7 +567,8 @@ package object common
       val right = top * aspect
       val left = -right
 
-      Mat[Float,Nat._4](2 * near / (right - left), 0, (right + left) / (right - left), 0, //OpenGL form(column-major) not transposed, transposed - row-major form
+      Mat[Float,Nat._4](
+        2 * near / (right - left), 0, (right + left) / (right - left), 0, //OpenGL form(column-major) not transposed, transposed - row-major form
         0, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0,
         0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
         0, 0, -1, 0)
@@ -598,7 +624,8 @@ package object common
     def identity(): Mat4D = //row major
     {
 
-      Mat[Double,Nat._4](1D, 0D, 0D, 0D,
+      Mat[Double,Nat._4](
+        1D, 0D, 0D, 0D,
         0D, 1D, 0D, 0D,
         0D, 0D, 1D, 0D,
         0D, 0D, 0D, 1D)
@@ -606,7 +633,8 @@ package object common
 
     def scale(x: Real, y: Real, z: Real): Mat4D = //row major
     {
-      Mat[Double,Nat._4](x, 0D, 0D, 0D,
+      Mat[Double,Nat._4](
+        x, 0D, 0D, 0D,
         0D, y, 0D, 0D,
         0D, 0D, z, 0D,
         0D, 0D, 0D, 1D)
@@ -614,7 +642,8 @@ package object common
 
     def scale(v: Vec3[Real]): Mat4D = //row major
     {
-      Mat[Double,Nat._4](v.x, 0, 0, 0,
+      Mat[Double,Nat._4](
+        v.x, 0, 0, 0,
         0, v.y, 0, 0,
         0, 0, v.z, 0,
         0, 0, 0, 1)
@@ -622,7 +651,8 @@ package object common
 
     def translation(x: Real, y: Real, z: Real): Mat4D = //row major
     {
-      Mat[Double,Nat._4](1, 0, 0, 0,
+      Mat[Double,Nat._4](
+        1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         x, y, z, 1)
@@ -630,7 +660,8 @@ package object common
 
     def translation(v: Vec3[Real]): Mat4D = //row major
     {
-      Mat[Double,Nat._4](1, 0, 0, 0,
+      Mat[Double,Nat._4](
+        1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
         v.x, v.y, v.z, 1)
@@ -644,7 +675,8 @@ package object common
       val x = axis.x
       val y = axis.y
       val z = axis.z
-      Mat[Real,_4](cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
+      Mat[Real,_4](
+        cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
         y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
         z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
         0, 0, 0, 1)
@@ -659,7 +691,8 @@ package object common
       val x = axis.x * axis.x
       val y = axis.y * axis.y
       val z = axis.z * axis.z
-      Mat[Double,Nat._4](cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
+      Mat[Double,Nat._4](
+        cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
         y * x * (1D - cos) + z * sin, cos + y * y * (1D - cos), y * z * (1D - cos) - x * sin, 0D,
         z * x * (1D - cos) - y * sin, z * y * (1D - cos) + x * sin, cos + z * z * (1D - cos), 0D,
         0D, 0D, 0D, 1D)
@@ -669,7 +702,8 @@ package object common
     def ortho(left: Real, right: Real, bottom: Real, top: Real, near: Real, far: Real): Mat4D = //column major
     {
 
-      Mat[Real,_4](2 / (right - left), 0, 0, -(right + left) / (right - left),
+      Mat[Real,_4](
+        2 / (right - left), 0, 0, -(right + left) / (right - left),
         0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
         0, 0, -2 / (far - near), -(far + near) / (far - near),
         0, 0, 0, 1)
@@ -683,7 +717,8 @@ package object common
       val right = top * aspect
       val left = -right
 
-      Mat[Real,_4](2 * near / (right - left), 0D, (right + left) / (right - left), 0D,
+      Mat[Real,_4](
+        2 * near / (right - left), 0D, (right + left) / (right - left), 0D,
         0D, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0D,
         0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
         0, 0, -1, 0)

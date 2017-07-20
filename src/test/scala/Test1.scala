@@ -4,6 +4,7 @@ import russoul.lib.common._
 import russoul.lib.common.Abstraction._
 import russoul.lib.common.Implicits._
 import russoul.lib.common.TypeClasses.Ring
+import russoul.lib.common.utils.Arr
 import shapeless.Nat
 
 object Test1 extends App{
@@ -97,10 +98,20 @@ object Test1 extends App{
     assert(axisAlignedBoundingBox.scale(3) == AABBF(Float3(0,0,0), Float3(3,6,9)))
   }
 
+  def testError(): Unit ={
+    val extent = 8
+    val transformation = Mat4F.rotationDeg(Float3(1,0,0), 90)
+
+    println((Float4(-extent, 0, -extent, 1) * transformation).xyz)
+    println(transformf(Float3(-extent, 0, -extent), transformation))
+  }
+
   testVectorCreation()
   testVectorOps()
   testCESOps()
   testMatrixOps()
   testAbstraction()
   testGeo()
+
+  testError()
 }

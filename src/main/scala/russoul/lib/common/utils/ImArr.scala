@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
   */
 
 //TODO probably remove it
-@immutable class ImArr[@tbsp T : ClassTag](private val array: Array[T]) {
+@immutable class ImArr[@tbsp T : ClassTag] private (private val array: Array[T]) {
 
   def apply(index:Int): T = array(index)
 
@@ -48,4 +48,5 @@ import scala.reflect.ClassTag
 }
 object ImArr{
   def apply[@tbsp T : ClassTag](seq: T*) : ImArr[T] = new ImArr[T](seq.toArray[T])
+  def apply[@tbsp T : ClassTag](array: Array[T]) : ImArr[T] = new ImArr[T](array)
 }
