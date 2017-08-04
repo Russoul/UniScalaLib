@@ -27,6 +27,7 @@ libraryDependencies in Scope.GlobalScope += scalaOrganization.value % "scala-com
 //libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "kittens" % "1.0.0-M9" //auto typeclass derivation
 //libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //algebra and numeric computing
 libraryDependencies in Scope.GlobalScope += "com.chuusai" %% "shapeless" % "2.3.2"
+libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //using this just for cfor loop
 //libraryDependencies in Scope.GlobalScope += "eu.timepit" %% "singleton-ops" % "0.0.4"
 //see machinist project for macros that increase performance of type classes
 

@@ -543,6 +543,7 @@ object CollisionEngine
     p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
   }
 
+
   def checkRectangle2Rectangle2(a:Rectangle2, b:Rectangle2): Boolean =
   {
     a.center.x-a.extent.x <= b.center.x+b.extent.x && a.center.x+a.extent.x >= b.center.x-b.extent.x &&

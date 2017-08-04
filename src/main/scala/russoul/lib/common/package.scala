@@ -27,26 +27,33 @@ package object common
 
   //TODO this currently does not work with functions that take implicit parameters, fixed in dotty ?
 
-  implicit class PipeVarags[A,R](a: Seq[A]){
+  implicit class PipeVarags[A,R](val a: Seq[A]) extends AnyVal{ //AnyVal actually works ?
     def |*>(f: (A*) => R): R = f(a : _*)
   }
 
-  implicit class Pipe1[A,R](a: A){
+  implicit class Pipe1[A,R](val a: A) extends AnyVal{
     def |>(f: A => R): R = f(a)
   }
 
-
-  implicit class Pipe2[A,B,R](a: (A,B)){
+  //TODO
+  implicit class Pipe2[A,B,R](val a: (A,B)) extends AnyVal{
     def ||>(f: (A,B) => R): R = f(a._1,a._2)
   }
 
-  implicit class Pipe3[A,B,C,R](a: (A,B,C)){
+  implicit class Pipe3[A,B,C,R](val a: (A,B,C)) extends AnyVal{
     def |||>(f: (A,B,C) => R): R = f(a._1,a._2,a._3)
   }
 
-  implicit class Pipe4[A,B,C,D,R](a: (A,B,C,D)){
+  implicit class Pipe4[A,B,C,D,R](val a: (A,B,C,D)) extends AnyVal{
     def ||||>(f: (A,B,C,D) => R): R = f(a._1,a._2,a._3,a._4)
   }
+  //TODO............
+
+  implicit class FuncApply[A,B](val f : A => B) extends AnyVal{
+    def $(a : A) : B = f(a)
+  }
+
+
 
   //............................................
 

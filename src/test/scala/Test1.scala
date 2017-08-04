@@ -99,7 +99,7 @@ object Test1 extends App{
     assert(axisAlignedBoundingBox.scale(3) == AABBF(Float3(0,0,0), Float3(3,6,9)))
   }
 
-  def testError(): Unit ={
+  def testCollisionEngine(): Unit ={
     val p = Float2(1,2)
 
     val line1 = Line2F(Float2(0,0), Float2(3,0))
@@ -110,9 +110,8 @@ object Test1 extends App{
     val dist1 = CollisionEngineF.distancePoint2Line2(p, line1)
     val dist2 = CollisionEngineF.distancePoint2Line2(p, line2)
     val dist3 = CollisionEngineF.distancePoint2Line2(p, line3)
-    println(dist1)
-    println(dist2)
-    println(dist3)
+
+    assert(dist1 == dist2 && dist2 == dist3)
   }
 
   testVectorCreation()
@@ -121,6 +120,5 @@ object Test1 extends App{
   testMatrixOps()
   testAbstraction()
   testGeo()
-
-  testError()
+  testCollisionEngine()
 }

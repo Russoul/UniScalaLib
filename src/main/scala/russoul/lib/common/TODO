@@ -2,6 +2,7 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     Performance issues:
+        //rectangle2 as (min,max) ?
         //TODO CACHING OF IMPLICITS !!!
         //abstract over shapes ?
         //for now vec,mat and geos are case classes (@sp is currently removed), remove case class notation and add custom equals and hashocode method before adding @sp back

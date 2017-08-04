@@ -95,12 +95,19 @@ object Timer
     System.nanoTime().toDouble / 1000000
   }
 
-  def timed[T](str:String)(f: => T):T =
+  /**
+    *
+    * @param howToRender string the will be printed given delta time of provided operation in milliseconds
+    * @param f operation to be timed (lazy input)
+    * @tparam T
+    * @return result of operation
+    */
+  def timed[T](howToRender : Double => String)(f: => T):T =
   {
     val t1 = getTimeMilli()
     val res = f
     val t2 = getTimeMilli()
-    println(str +": "+(t2-t1))
+    println(howToRender(t2-t1))
     res
   }
 }

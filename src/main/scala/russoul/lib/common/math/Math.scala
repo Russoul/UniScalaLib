@@ -125,6 +125,39 @@ object Math
     minV + (maxV - minV) * k
   }
 
+  def vertexInterpolation(v1:Float2, v2:Float2, val1:Float, val2:Float):Float2 =
+  {
+
+    var min:Float = -1F
+    var max:Float = -1F
+
+    var minV = nil[Float2]
+    var maxV = nil[Float2]
+
+    if(val1 >= val2)
+    {
+      max = val1
+      min = val2
+
+      maxV = v1
+      minV = v2
+    }else
+    {
+      min = val1
+      max = val2
+
+      minV = v1
+      maxV = v2
+    }
+
+    val dist = max - min
+    val k = (-min)/(max-min)
+
+
+
+    minV + (maxV - minV) * k
+  }
+
 
 
 }
