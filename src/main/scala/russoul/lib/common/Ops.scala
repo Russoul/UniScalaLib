@@ -1,11 +1,17 @@
 package russoul.lib.common
 
+import scala.language.implicitConversions
+import scala.language.experimental.macros
 import russoul.lib.common.TypeClasses._
 import shapeless.Nat
 import shapeless.ops.nat.{GT, LT, ToInt}
 import Nat._
-import scala.language.implicitConversions
+import Implicits._
+
 import scala.reflect.ClassTag
+import machinist.DefaultOps
+import russoul.lib.macros.Enricher
+
 
 /**
   * Created by russoul on 13.06.2017.
@@ -13,32 +19,31 @@ import scala.reflect.ClassTag
 object Ops {
 
   class AddableOps[@tbsp A](lhs: A)(implicit ev: Addable[A]){
-    @inline def +(rhs: A): A = ev.plus(lhs, rhs)
-
+    @inline def +(rhs: A): A = macro DefaultOps.binop[A, A]
   }
 
   class OrderableOps[@tbsp A](lhs: A)(implicit ev: Orderable[A]){
-    @inline def >(rhs: A) : Boolean = ev.gt(lhs, rhs)
-    @inline def <(rhs: A) : Boolean = ev.lt(lhs, rhs)
-    @inline def >=(rhs: A) : Boolean = ev.gteq(lhs, rhs)
-    @inline def <=(rhs: A) : Boolean = ev.lteq(lhs, rhs)
-    @inline def =?(rhs: A) : Boolean = ev.equiv(lhs, rhs)
-    @inline def ≠?(rhs: A) : Boolean = !ev.equiv(lhs, rhs)
+    @inline def >(rhs: A) : Boolean = macro DefaultOps.binop[A, A]
+    @inline def <(rhs: A) : Boolean = macro DefaultOps.binop[A, A]
+    @inline def >=(rhs: A) : Boolean = macro DefaultOps.binop[A, A]
+    @inline def <=(rhs: A) : Boolean = macro DefaultOps.binop[A, A]
+    @inline def ===(rhs: A) : Boolean = macro Enricher.binop[A, A]
+    @inline def =!=(rhs: A) : Boolean = macro Enricher.binop[A, A]
   }
 
 
   class MultiplicativeMonoidOps[@tbsp A](lhs: A)(implicit ev: MultiplicativeMonoid[A]){
-    @inline def *(rhs: A) : A = ev.times(lhs, rhs)
+    @inline def *(rhs: A) : A = macro DefaultOps.binop[A, A]
   }
 
 
   class CommutativeGroupOps[@tbsp A](lhs: A)(implicit ev: CommutativeAdditiveGroup[A]){
-    @inline def -(rhs: A): A = ev.minus(lhs, rhs)
-    @inline def unary_-(): A = ev.negate(lhs)
+    @inline def -(rhs: A): A = macro DefaultOps.binop[A, A]
+    @inline def unary_-(): A = macro DefaultOps.unop[A]
   }
 
   class FieldOps[@tbsp A](lhs: A)(implicit ev: Field[A]){
-    @inline def /(rhs: A) : A = ev.div(lhs, rhs)
+    @inline def /(rhs: A) : A = macro DefaultOps.binop[A, A]
   }
 
 
@@ -62,11 +67,13 @@ object Ops {
   }
 
   class CrossProductOps[@tbsp T, Vec[_,_<: Nat]](lhs: Vec[T, Nat._3])(implicit ev: CrossProductOverCanonicalEuclideanSpaceOverField[Vec, T]){
-    @inline def ⨯(rhs: Vec[T, Nat._3]) = ev.map(lhs, rhs)
+    @inline def ⨯(rhs: Vec[T, Nat._3]) = macro Enricher.binop[Vec[T, Nat._3], Vec[T, Nat._3]]
+    @inline def cross(rhs: Vec[T, Nat._3]) = macro Enricher.binop[Vec[T, Nat._3], Vec[T, Nat._3]]
   }
 
   class OrthoOps[@tbsp T, Vec[_,_<: Nat]](lhs: Vec[T, Nat._2]) (implicit ev: TwoDimensionalVectorOrthoOperatorOverCanonicalEuclideanSpaceOverField[Vec,T]){
-    @inline def ⟂() = ev.map(lhs)
+    @inline def ⟂() = macro Enricher.unop[Vec[T, Nat._2]]
+    @inline def ortho() = macro Enricher.unop[Vec[T, Nat._2]]
   }
 
   class SquareMatrixOpsVectorFirst[@tbsp T, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size],tensor2: Tensor2[T, Mat, Size, Size]){
@@ -79,9 +86,12 @@ object Ops {
     def transpose() : Mat[T,Size,Size] = ev.transpose(lhs)
   }
 
-  class ModuleOpsCommon[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](lhs: V[R,Dim])(implicit ev: ModuleOverRing[V,R,Dim]){
+  class ModuleOpsCommon[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](lhs: V[R,Dim])(implicit ev: Module[V,R,Dim]){
+
     @inline def *(rhs: R) : V[R,Dim] = ev.times(lhs, rhs)
-    @inline def ⊗(rhs: V[R,Dim]) : V[R,Dim] = ev.timesByElement(lhs, rhs)
+    @inline def ⊗(rhs: V[R,Dim]) : V[R,Dim] = ev.elem(lhs, rhs)
+    @inline def elem(rhs: V[R,Dim]) : V[R,Dim] = ev.elem(lhs, rhs)
+
 
     //starting from 1
     @inline def apply(i:Int): R = ev.tensor1.get(lhs, i)
@@ -106,18 +116,18 @@ object Ops {
   }
 
 
-  class ModuleOps2[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._2])(implicit ev: ModuleOverRing[V,R,Nat._2], tensor1: Tensor1[R,V,Nat._2]){
-    @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
-    @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
+  class ModuleOps2[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._2])(implicit ev: Module[V,R,Nat._2]){
+    @inline def x(implicit ev1: Tensor1[R,V,Nat._2]): R = ev.staticContainer.get(lhs, Nat._0)
+    @inline def y(implicit ev1: Tensor1[R,V,Nat._2]): R = ev.staticContainer.get(lhs, Nat._1)
   }
 
-  class ModuleOps3[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._3])(implicit ev: ModuleOverRing[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]){
+  class ModuleOps3[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._3])(implicit ev: Module[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]){
     @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
     @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
   }
 
-  class ModuleOps4[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._4])(implicit ev: ModuleOverRing[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]){
+  class ModuleOps4[V[_,_<: Nat],@tbsp R](lhs: V[R,Nat._4])(implicit ev: Module[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]){
     @inline def x: R = ev.staticContainer.get(lhs, Nat._0)
     @inline def y: R = ev.staticContainer.get(lhs, Nat._1)
     @inline def z: R = ev.staticContainer.get(lhs, Nat._2)
@@ -214,10 +224,10 @@ object Ops {
   object FieldImplicits extends FieldImplicits
 
   trait ModuleOverRingImplicits{
-    implicit def infixModuleOps[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: ModuleOverRing[V,R,Dim],tensor1: Tensor1[R,V,Dim]) = new ModuleOpsCommon[V,R,Dim](x)
-    implicit def infixModuleOps2[V[_,_<: Nat],@tbsp R](x: V[R,Nat._2])(implicit num: ModuleOverRing[V,R,Nat._2], tensor1: Tensor1[R,V,Nat._2]) = new ModuleOps2[V,R](x)
-    implicit def infixModuleOps3[V[_,_<: Nat],@tbsp R](x: V[R,Nat._3])(implicit num: ModuleOverRing[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]) = new ModuleOps3[V,R](x)
-    implicit def infixModuleOps4[V[_,_<: Nat],@tbsp R](x: V[R,Nat._4])(implicit num: ModuleOverRing[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]) = new ModuleOps4[V,R](x)
+    implicit def infixModuleOps[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: Module[V,R,Dim], tensor1: Tensor1[R,V,Dim]) = new ModuleOpsCommon[V,R,Dim](x)
+    implicit def infixModuleOps2[V[_,_<: Nat],@tbsp R](x: V[R,Nat._2])(implicit num: Module[V,R,Nat._2], tensor1: Tensor1[R,V,Nat._2]) = new ModuleOps2[V,R](x)
+    implicit def infixModuleOps3[V[_,_<: Nat],@tbsp R](x: V[R,Nat._3])(implicit num: Module[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]) = new ModuleOps3[V,R](x)
+    implicit def infixModuleOps4[V[_,_<: Nat],@tbsp R](x: V[R,Nat._4])(implicit num: Module[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]) = new ModuleOps4[V,R](x)
   }
 
   trait VectorSpaceOverFieldImplicits{

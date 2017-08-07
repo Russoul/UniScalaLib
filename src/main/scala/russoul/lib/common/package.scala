@@ -1,7 +1,7 @@
 package russoul.lib
 
 
-import russoul.lib.common.Abstraction.{CES, Module}
+import russoul.lib.common.Abstraction._
 import russoul.lib.common.TypeClasses._
 import russoul.lib.common.math.geometry.simple._
 import russoul.lib.common.Implicits._
@@ -153,7 +153,7 @@ package object common
     }
   }
 
-  def auto[A <: AutoCloseable, B](resource: A)(doWork: A => B): Try[B] = {
+  def autoTry[A <: AutoCloseable, B](resource: A)(doWork: A => B): Try[B] = {
     try {
       Success(doWork(resource))
     } catch {
@@ -167,6 +167,14 @@ package object common
       } catch {
         case e: Exception => println(e) // should be logged
       }
+    }
+  }
+
+  def auto[A <: AutoCloseable, B](resource: A)(doWork: A => B): B = {
+    try{
+      doWork(resource)
+    } finally {
+      resource.close()
     }
   }
 
@@ -399,9 +407,9 @@ package object common
   type V3 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._3]
   type V2 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._2]
 
-  type R2 = ModuleOverRing[Vec, Int, Nat._2]
-  type R3 = ModuleOverRing[Vec, Int, Nat._3]
-  type R4 = ModuleOverRing[Vec, Int, Nat._4]
+  type R2 = Module[Vec, Int, Nat._2]
+  type R3 = Module[Vec, Int, Nat._3]
+  type R4 = Module[Vec, Int, Nat._4]
 
 
   object Real2{

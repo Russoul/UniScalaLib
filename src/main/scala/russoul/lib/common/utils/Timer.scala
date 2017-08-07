@@ -102,12 +102,35 @@ object Timer
     * @tparam T
     * @return result of operation
     */
-  def timed[T](howToRender : Double => String)(f: => T):T =
+  def timed[T](howToRender : Double => String)(f: => T) : T =
   {
     val t1 = getTimeMilli()
     val res = f
     val t2 = getTimeMilli()
     println(howToRender(t2-t1))
     res
+  }
+
+  /**
+    *
+    * @param timesForWarmUp
+    * @param accumulator used for preventing hotspot optimizations
+    * @param f
+    * @tparam T
+    */
+  def benchmark[T](name : String, timesForWarmUp : Int, timesForRecord : Int)(accumulator : T => Unit)(f : => T) : Unit = {
+    var k = 0
+    while(k < timesForWarmUp){
+      accumulator(f)
+      k += 1
+    }
+
+    k = 0
+    timed(dt => s"$name took $dt ms"){
+      while(k < timesForRecord){
+        accumulator(f)
+        k += 1
+      }
+    }
   }
 }

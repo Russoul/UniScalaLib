@@ -63,7 +63,7 @@ object Instances {
     implicit def matIsAlgebraicSquareMatrix[@tbsp T : ClassTag] = new AlgebraicSquareMatrix[T, Vec, Mat]
     //...
 
-    implicit def vecIsModule[@tbsp R : ClassTag, Dim <: Nat](implicit ring: Ring[R], toInt: ToInt[Dim], notField: NoImplicit[RealField[R]]) = new VecIsModuleOverRing[R,Dim](ring, toInt)
+    implicit def vecIsModule[@tbsp R : ClassTag, Dim <: Nat](implicit ring: Ring[R], toInt: ToInt[Dim], notField: NoImplicit[RealField[R]]) = new VecIsModule[R,Dim](ring, toInt)
     implicit def vecIsCanEuclideanSpace[@tbsp F : ClassTag, Dim <: Nat](implicit field: RealField[F] with Trig[F] with Euclidean[F], evDim: ToInt[Dim]) = new VecIsCanonicalEuclideanSpaceOverField[F, Dim](field)
 
     implicit def vec2HasOrtho[@tbsp F](implicit space: CanonicalEuclideanSpaceOverField[Vec,F,_2]) = new Vec2HasOrtho[F](space)

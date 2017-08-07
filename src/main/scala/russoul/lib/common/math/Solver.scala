@@ -63,7 +63,7 @@ object Solver
 
     if(Q > 0D.as[A]){ //1 Real, 2 Complex conjugated roots
       Array(sum)
-    }else if(Q =? 0D.as[A]){
+    }else if(Q === 0D.as[A]){
       val r = -sum/2D.as[A]
 
       Array(alpha + beta, r, r)

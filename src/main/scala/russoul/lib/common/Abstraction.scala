@@ -7,7 +7,6 @@ import shapeless.Nat
   * Created by russoul on 15.07.2017.
   */
 object Abstraction {
-  type Module[V[_,_ <: Nat],@tbsp R, Dim <: Nat] = ModuleOverRing[V,R,Dim]
   type CES[V[_,_ <: Nat],@tbsp F, Dim <: Nat] = CanonicalEuclideanSpaceOverField[V,F,Dim]
   type T0[@tbsp A] = Tensor0[A]
   type T1[@tbsp A, Vec[_,_ <: Nat], A1 <: Nat] = Tensor1[A,Vec,A1]

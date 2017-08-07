@@ -534,6 +534,11 @@ object CollisionEngineF
   //--------------------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------------------
 
+
+  def checkPoint2Circle(p: Float2, circle: CircleF) : Boolean = {
+    (p - circle.center).squaredLength() <= circle.rad * circle.rad
+  }
+
   def checkPoint2Rectangle2(p:Float2, rec:Rectangle2F):Boolean =
   {
     p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
@@ -576,7 +581,10 @@ object CollisionEngineF
       a.center.y + a.rad < b.center.y - b.extent.y || a.center.y - a.rad > b.center.y + b.extent.y)
   }
 
-
+  def checkCircleInsideRectangle2(a:CircleF, b:Rectangle2F) : Boolean = {
+    a.center.x - a.rad >= b.center.x - b.extent.x && a.center.x + a.rad <= b.center.x + b.extent.x &&
+      a.center.y - a.rad >= b.center.y - b.extent.y && a.center.y + a.rad <= b.center.y + b.extent.y
+  }
 
   /*def penetrationCircleRectangle2(a:Circle, b:Rectangle2) :Option[PenetrationData2] =
   {

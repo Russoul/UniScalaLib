@@ -104,6 +104,7 @@ object TypeClasses {
     //val tensor0 : Tensor0[T]
     //val tensor1 : Tensor1[T, Vec, Size] //add size to StaticVector ?
 
+
     @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: Size <:!< Index, tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
     @inline def size[Size <: Nat](vec: Vec[T, Size])(implicit size: ToInt[Size], tensor1: Tensor1[T, Vec, Size]) = size()
   }
@@ -285,6 +286,7 @@ object TypeClasses {
 
   trait Orderable[@tbsp A] extends CanBeNegated[A] with Ordering[A]{
     @inline def abs(x:A): A = max(x, negate(x))
+    def nequiv(a : A, b: A): Boolean = !super.equiv(a,b)
   }
 
 
@@ -329,7 +331,7 @@ object TypeClasses {
   trait RealField[@tbsp A] extends Field[A]
 
 
-  trait ModuleOverRing[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
+  trait Module[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
     type Vector = V[R,Dim]
 
@@ -393,7 +395,8 @@ object TypeClasses {
 
 
     //TODO Modules in general do not have this operation !
-    @inline def timesByElement(a: V[R,Dim], b: V[R,Dim]) : V[R,Dim] = {
+    //by element product
+    @inline def elem(a: V[R,Dim], b: V[R,Dim]) : V[R,Dim] = {
       val seq = new Array[R](dim())
 
       var k = 0
@@ -408,7 +411,7 @@ object TypeClasses {
 
 
 
-  trait VectorSpaceOverField[V[_,_<: Nat],@tbsp F, Dim <: Nat] extends ModuleOverRing[V,F,Dim]{
+  trait VectorSpaceOverField[V[_,_<: Nat],@tbsp F, Dim <: Nat] extends Module[V,F,Dim]{
 
     override implicit def scalar: Field[F]
     @inline def div(a:V[F,Dim], k:F):V[F,Dim] = times(a, scalar.inv(k))
@@ -771,7 +774,7 @@ object TypeClasses {
   }
 
 
-  class VecIsModuleOverRing[@tbsp R : ClassTag, Dim <: Nat](ring: Ring[R], dimToInt: ToInt[Dim]) extends ModuleOverRing[Vec,R,Dim]{
+  class VecIsModule[@tbsp R : ClassTag, Dim <: Nat](ring: Ring[R], dimToInt: ToInt[Dim]) extends Module[Vec,R,Dim]{
     override val scalarTag: ClassTag[R] = implicitly[ClassTag[R]]
     override val dim: ToInt[Dim] = dimToInt
 

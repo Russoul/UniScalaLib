@@ -112,6 +112,17 @@ object Test1 extends App{
     val dist3 = CollisionEngineF.distancePoint2Line2(p, line3)
 
     assert(dist1 == dist2 && dist2 == dist3)
+
+
+
+    val rec = Rectangle2F(Float2(0,0), Float2(1,1))
+    val circle1 = CircleF(Float2(0,0), 1)
+    val circle2 = CircleF(Float2(0,0), 2)
+    val circle3 = CircleF(Float2(3,0), 1)
+
+    assert(CollisionEngineF.checkCircleRectangle2(circle1, rec))
+    assert(CollisionEngineF.checkCircleRectangle2(circle2, rec))
+    assert(!CollisionEngineF.checkCircleRectangle2(circle3, rec))
   }
 
   testVectorCreation()
