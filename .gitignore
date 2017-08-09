@@ -1,9 +1,10 @@
 .idea/
 project/project
-project/target
+project/target/
 target/
 *.jar
 *.class
 *.log
 lib/
 macros/project/
+macros/target/
