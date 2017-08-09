@@ -24,7 +24,8 @@ object Test extends App {
   Float2(1,1).⟂
   Float2(1,1) ⊗ Float2(1,1)
   Float2(1,1) elem Float2(1,1)
-  Float2(1,1).x
+  println(Float2(1,1).x)
+  println(Float2(2,1).x)
 
 }
 

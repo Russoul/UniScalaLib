@@ -1,10 +1,11 @@
 Priority:
     idea:
         -container representing a reference to some memory area that should be cleaned up manually (i.e direct buffer), throw exception {when??} if the resource is not freed at some point
+        -integrate scalafmt
     Errors:
         1)see Mat4 (specialize it !)
     Performance issues:
-        //macro for all ops, probably scala meta
+        //macro for all ops, probably scala meta, NOPE. scala meta wont do, wait for scalamacros/scalamacros (macro lib and plugin depending on scala meta)
         //rectangle2 as (min,max) ?
         //TODO CACHING OF IMPLICITS !!!
         //abstract over shapes ?

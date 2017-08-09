@@ -48,10 +48,11 @@ object Ops {
 
 
   class StaticVectorOps[@tbsp T : ClassTag, Vec[_,_<: Nat], Size <: Nat : ToInt](lhs: Vec[T,Size])(implicit ev: AlgebraicVector[T,Vec], tensor1: Tensor1[T,Vec,Size]){
-    @inline def _0 = ev.get(lhs, Nat._0) //(implicit ev: GT[Size, ])
+    @inline def _0 = ev.get(lhs, Nat._0)
     @inline def _1(implicit ev1: GT[Size, Nat._1]) = ev.get(lhs, Nat._1)
     @inline def _2(implicit ev1: GT[Size, Nat._2]) = ev.get(lhs, Nat._2)
     @inline def _3(implicit ev1: GT[Size, Nat._3]) = ev.get(lhs, Nat._3)
+    @inline def apply[N <: Nat](nat : N)(implicit ev1 : GT[Size, N], ev2 : ToInt[N]) = ev.get(lhs, nat)
 
     @inline def toArray : Array[T] = {
       val size = ev.size(lhs)
@@ -81,7 +82,8 @@ object Ops {
   }
 
   class SquareMatrixOps[@tbsp T, Vec[_,_<: Nat], Mat[_,_ <: Nat,_ <: Nat], Size <: Nat : ToInt](lhs: Mat[T,Size,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size], tensor2: Tensor2[T,Mat,Size,Size]){
-    def ⨯(rhs: Mat[T,Size,Size]) = ev.matrixMultiplication(lhs, rhs)//t1 and t2 for diff method signature
+    def ⨯(rhs: Mat[T,Size,Size]) = ev.matrixMultiplication(lhs, rhs)
+    def mult(rhs: Mat[T,Size,Size]) = ev.matrixMultiplication(lhs, rhs) //same as ⨯
     def *(rhs: Vec[T,Size]) = ev.matrixVectorMultiplication(lhs, rhs)
     def transpose() : Mat[T,Size,Size] = ev.transpose(lhs)
   }
@@ -91,27 +93,6 @@ object Ops {
     @inline def *(rhs: R) : V[R,Dim] = ev.times(lhs, rhs)
     @inline def ⊗(rhs: V[R,Dim]) : V[R,Dim] = ev.elem(lhs, rhs)
     @inline def elem(rhs: V[R,Dim]) : V[R,Dim] = ev.elem(lhs, rhs)
-
-
-    //starting from 1
-    @inline def apply(i:Int): R = ev.tensor1.get(lhs, i)
-
-
-    /*@inline def x: R = ev.x(lhs)
-
-    //may be undefined !
-    @inline def y: R = ev.y(lhs)
-    @inline def z: R = ev.z(lhs)
-    @inline def w: R = ev.w(lhs)
-
-    @inline def withWZeroed[VP4](implicit v4: ModuleOverRing[VP4, R, Dim]) : VP4  = {
-      v4.create(x, y, z, v4.scalar.zero)
-    }
-
-    @inline def xyz[VP3](implicit v3: ModuleOverRing[VP3, R, Dim]) : VP3  = {
-      v3.create(x, y, z)
-    }*/
-    //.............
 
   }
 
@@ -224,31 +205,28 @@ object Ops {
   object FieldImplicits extends FieldImplicits
 
   trait ModuleOverRingImplicits{
-    implicit def infixModuleOps[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: Module[V,R,Dim], tensor1: Tensor1[R,V,Dim]) = new ModuleOpsCommon[V,R,Dim](x)
-    implicit def infixModuleOps2[V[_,_<: Nat],@tbsp R](x: V[R,Nat._2])(implicit num: Module[V,R,Nat._2], tensor1: Tensor1[R,V,Nat._2]) = new ModuleOps2[V,R](x)
-    implicit def infixModuleOps3[V[_,_<: Nat],@tbsp R](x: V[R,Nat._3])(implicit num: Module[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]) = new ModuleOps3[V,R](x)
-    implicit def infixModuleOps4[V[_,_<: Nat],@tbsp R](x: V[R,Nat._4])(implicit num: Module[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]) = new ModuleOps4[V,R](x)
+    implicit def infixModuleOps[V[_,_<: Nat],@tbsp R, Dim <: Nat : ToInt](x: V[R,Dim])(implicit num: Module[V,R,Dim], tensor1: Tensor1[R,V,Dim]) = ImplicitCache.cache(new ModuleOpsCommon[V,R,Dim](x))
+    implicit def infixModuleOps2[V[_,_<: Nat],@tbsp R](x: V[R,Nat._2])(implicit num: Module[V,R,Nat._2], tensor1: Tensor1[R,V,Nat._2]) = ImplicitCache.cache(new ModuleOps2[V,R](x))
+    implicit def infixModuleOps3[V[_,_<: Nat],@tbsp R](x: V[R,Nat._3])(implicit num: Module[V,R,Nat._3], tensor1: Tensor1[R,V,Nat._3]) = ImplicitCache.cache(new ModuleOps3[V,R](x))
+    implicit def infixModuleOps4[V[_,_<: Nat],@tbsp R](x: V[R,Nat._4])(implicit num: Module[V,R,Nat._4], tensor1: Tensor1[R,V,Nat._4]) = ImplicitCache.cache(new ModuleOps4[V,R](x))
   }
 
   trait VectorSpaceOverFieldImplicits{
-    implicit def infixVectorSpaceOps[V[_,_<: Nat],@tbsp F,Dim <: Nat : ToInt](x: V[F,Dim])(implicit num: VectorSpaceOverField[V,F,Dim]) = new VectorSpaceOps[V,F,Dim](x)
+    implicit def infixVectorSpaceOps[V[_,_<: Nat],@tbsp F,Dim <: Nat : ToInt](x: V[F,Dim])(implicit num: VectorSpaceOverField[V,F,Dim]) = ImplicitCache.cache(new VectorSpaceOps[V,F,Dim](x))
   }
 
   trait MatrixImplicits{
-    implicit def infixMatrixOps[@tbsp T, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Mat[T, Size,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size], tensor2: Tensor2[T,Mat,Size,Size]) = new SquareMatrixOps[T,Vec,Mat,Size](x)
-    implicit def infixMatrixOpsVectorFirst[@tbsp T, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Vec[T,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size],tensor2: Tensor2[T, Mat, Size, Size]) = new SquareMatrixOpsVectorFirst[T,Vec,Mat,Size](x)
+    implicit def infixMatrixOps[@tbsp T, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Mat[T, Size,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size], tensor2: Tensor2[T,Mat,Size,Size]) = ImplicitCache.cache(new SquareMatrixOps[T,Vec,Mat,Size](x))
+    implicit def infixMatrixOpsVectorFirst[@tbsp T, Vec[_,_<: Nat], Mat[_,_<: Nat,_<: Nat], Size <: Nat : ToInt](x: Vec[T,Size])(implicit ev: AlgebraicSquareMatrix[T,Vec,Mat], space : CanonicalEuclideanSpaceOverField[Vec,T,Size], tensor1: Tensor1[T,Vec,Size],tensor2: Tensor2[T, Mat, Size, Size]) = ImplicitCache.cache(new SquareMatrixOpsVectorFirst[T,Vec,Mat,Size](x))
   }
 
-  trait EuclideanSpaceImplicits{
-    //implicit def infixEuclideanSpaceOps[V,@tbsp F](x: V)(implicit num: EuclideanSpaceOverField[V,F,_]) = new EuclideanSpaceOps[V,F](x)
-  }
 
   trait CanonicalEuclideanSpaceOverFieldImplicits{
-    implicit def infixCanonicalEuclideanSpaceOps[V[_,_<: Nat],@tbsp F, Dim <: Nat : ToInt](x: V[F, Dim])(implicit num: CanonicalEuclideanSpaceOverField[V,F,Dim]) = new CanonicalEuclideanSpaceOps[V,F, Dim](x)
+    implicit def infixCanonicalEuclideanSpaceOps[V[_,_<: Nat],@tbsp F, Dim <: Nat : ToInt](x: V[F, Dim])(implicit num: CanonicalEuclideanSpaceOverField[V,F,Dim]) = ImplicitCache.cache(new CanonicalEuclideanSpaceOps[V,F, Dim](x))
   }
 
   trait AlgebraicTypesImplicits{
-    implicit def infixVectorOps[V[_,_<: Nat], @tbsp F : ClassTag, Dim <: Nat : ToInt](x: V[F,Dim])(implicit ev: AlgebraicVector[F, V], tensor1: Tensor1[F,V,Dim]) = new StaticVectorOps[F, V, Dim](x)
+    implicit def infixVectorOps[V[_,_<: Nat], @tbsp F : ClassTag, Dim <: Nat : ToInt](x: V[F,Dim])(implicit ev: AlgebraicVector[F, V], tensor1: Tensor1[F,V,Dim]) = ImplicitCache.cache(new StaticVectorOps[F, V, Dim](x))
 
   }
 
@@ -262,8 +240,7 @@ object Ops {
       def as[A](implicit ev:ConvertibleFromDouble[A]):A = ev.fromDouble(n)
     }
 
-    //TODO make it work !!!
-    //implicit def double2ConvertibleFromDouble[A](n: Double)(implicit ev:ConvertibleFromDouble[A]) = ev.fromDouble(n)
+    implicit def double2ConvertibleFromDouble[A](n: Double)(implicit ev:ConvertibleFromDouble[A]): A = ev.fromDouble(n)
   }
 
   trait ContainerImplicits{
@@ -282,7 +259,6 @@ object Ops {
   FieldImplicits with
   ModuleOverRingImplicits with
   VectorSpaceOverFieldImplicits with
-  EuclideanSpaceImplicits with
   CanonicalEuclideanSpaceOverFieldImplicits with
   ConvertibleFromDoubleImplicits with
   ContainerImplicits with

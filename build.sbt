@@ -1,35 +1,30 @@
-//import sbt.Keys.scalaVersion
-//scalaOrganization := "org.typelevel"
-//scalaVersion := "2.11.11-bin-typelevel-4"
-
-
-
-
 lazy val coreSettings = Seq(
   scalaOrganization := "org.scala-lang",
-  scalaVersion  := "2.12.2",
+  scalaVersion  := "2.12.3",
   //scalaVersion := "0.2.0-RC1",
-  name  := "UniScalaLib",
   version := "0.0.1",
   organization := "org.russoul"
 )
 
-lazy val uniScalaLib = (project in file(".")).settings(coreSettings)
+lazy val uniSettings = Seq(
+  libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.2",
+  libraryDependencies += "org.typelevel" %% "spire" % "0.14.1" //using this just for cfor loop
+)
+
+lazy val macrosSettings = Seq(
+  libraryDependencies+= scalaOrganization.value % "scala-reflect" % scalaVersion.value % "provided",
+  libraryDependencies += scalaOrganization.value % "scala-compiler" % scalaVersion.value % "provided",
+  libraryDependencies += "org.typelevel" %% "machinist" % "0.6.2"
+)
+
+lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, name := "MacrosScalaLib")
+lazy val uniScalaLib = (project in file(".")).settings(coreSettings, uniSettings, name := "UniScalaLib").dependsOn(macrosScalaLib)
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),
   Resolver.sonatypeRepo("snapshots")
 )
 
-libraryDependencies in Scope.GlobalScope += scalaOrganization.value % "scala-reflect" % scalaVersion.value % "provided"
-libraryDependencies in Scope.GlobalScope += scalaOrganization.value % "scala-compiler" % scalaVersion.value % "provided"
-//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "cats" % "0.9.0"
-//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "kittens" % "1.0.0-M9" //auto typeclass derivation
-//libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //algebra and numeric computing
-libraryDependencies in Scope.GlobalScope += "com.chuusai" %% "shapeless" % "2.3.2"
-libraryDependencies in Scope.GlobalScope += "org.typelevel" %% "spire" % "0.14.1" //using this just for cfor loop
-libraryDependencies += "org.typelevel" %% "machinist" % "0.6.2"
-libraryDependencies += "org.russoul" %% "scalamacroslib" % "0.0.1"
 //libraryDependencies in Scope.GlobalScope += "eu.timepit" %% "singleton-ops" % "0.0.4"
 //see machinist project for macros that increase performance of type classes
 
