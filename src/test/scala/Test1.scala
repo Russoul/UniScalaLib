@@ -3,7 +3,7 @@ import java.util.Random
 import russoul.lib.common._
 import russoul.lib.common.Abstraction._
 import russoul.lib.common.Implicits._
-import russoul.lib.common.TypeClasses.Ring
+import russoul.lib.common.TypeClasses.{Module, Ring}
 import russoul.lib.common.math.CollisionEngineF
 import russoul.lib.common.utils.Arr
 import shapeless.Nat
@@ -19,6 +19,8 @@ object Test1 extends App{
   def testVectorOps(): Unit ={
     val v1 = Float3(1,0,0)
     val v2 = Float3(0,1,0)
+
+    println(v1._0 + " " + v2._1)
 
     assert(v1._0 == v2._1)
     assert(v1(0) == v2(1))

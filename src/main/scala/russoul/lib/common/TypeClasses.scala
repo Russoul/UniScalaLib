@@ -57,6 +57,13 @@ object TypeClasses {
   trait Tensor1[@tbsp T, Vec[_,_<: Nat], A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
     def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
     def get(a: Vec[T, A1], i: Int) : T
+
+    //TODO for machinist to work, DO NOT USE ON YOUR OWN
+    def _0(a: Vec[T,A1])(implicit ev1: GT[A1, Nat._0]) = get(a, 0)
+    def _1(a: Vec[T,A1])(implicit ev1: GT[A1, Nat._1]) = get(a, 1)
+    def _2(a: Vec[T,A1])(implicit ev1: GT[A1, Nat._2]) = get(a, 2)
+    def _3(a: Vec[T,A1])(implicit ev1: GT[A1, Nat._3]) = get(a, 3)
+    //TODO find better way -------------------------
   }
   trait Tensor2[@tbsp T, Mat[_,_<: Nat,_<: Nat],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
     def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A2]) : Mat[T, A1, A2]
@@ -65,28 +72,6 @@ object TypeClasses {
   //--------------------------------------------------------------------------------------
 
 
-
-  //TODO to be removed
-
-  /*class DefaultAlgebraicFactory[@tbsp T : ClassTag] extends AlgebraicTypeFactory[T, Vec, Mat]{
-
-    override def makeVector[Size <: Nat : ToInt](args: T*): Vec[T, Size] = Vec[T,Size](args : _*)
-    override def makeMatrix[Size <: Nat : ToInt](args: T*): Mat[T, Size] = Mat[T,Size](args : _*)
-
-    override protected def get[Size <: Nat : ToInt](vec: Vec[T, Size], index: Int): T = vec(index)
-    override protected def get[Size <: Nat : ToInt](mat: Mat[T, Size], i: Int, j: Int): T = mat(i,j)
-  }*/
-
-  abstract class AlgebraicTypeFactory[@tbsp T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat]]{
-
-    def makeVector[Size <: Nat : ToInt](args: T*) : Vec[T, Size]
-    def makeMatrix[Size <: Nat : ToInt](args: T*) : Mat[T, Size]
-
-    //should not be used by user
-    def get[Size <: Nat : ToInt](vec: Vec[T,Size], index: Int) : T
-    def get[Size <: Nat : ToInt](mat: Mat[T,Size], i: Int, j: Int) : T
-  }
-  //TODO...............
 
 
   //The stuff below is algebra on tensors(once more: tensors here are just data with no functions or laws)
@@ -105,7 +90,7 @@ object TypeClasses {
     //val tensor1 : Tensor1[T, Vec, Size] //add size to StaticVector ?
 
 
-    @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: Size <:!< Index, tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
+    @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: GT[Size, Index], tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
     @inline def size[Size <: Nat](vec: Vec[T, Size])(implicit size: ToInt[Size], tensor1: Tensor1[T, Vec, Size]) = size()
   }
 
@@ -343,6 +328,12 @@ object TypeClasses {
     def tensor1: Tensor1[R,V,Dim]
 
 
+    //TODO find better way (problem is in infix operators performance), macros are probably the only solution
+    def x(a: V[R,Dim])(implicit ev1: GT[Dim, Nat._0]) = tensor1.get(a, 0)
+    def y(a: V[R,Dim])(implicit ev1: GT[Dim, Nat._1]) = tensor1.get(a, 1)
+    def z(a: V[R,Dim])(implicit ev1: GT[Dim, Nat._2]) = tensor1.get(a, 2)
+    def w(a: V[R,Dim])(implicit ev1: GT[Dim, Nat._3]) = tensor1.get(a, 3)
+    //TODO ---------------------------------------------------------------------------------
 
     override def zero: V[R, Dim] = {
       val seq = new Array[R](dim())
