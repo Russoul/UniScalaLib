@@ -243,11 +243,12 @@ object Ops {
   }
 
   trait ConvertibleFromDoubleImplicits{
-    implicit class DoubleAs(n:Double) {
-      def as[A](implicit ev:ConvertibleFromDouble[A]):A = ev.fromDouble(n)
+    class DoubleAs(n:Double) {
+      def as[A](implicit ev:ConvertibleFromDouble[A]) : A = macro Enricher.unopWithEv[ConvertibleFromDouble[A], A]
     }
 
-    implicit def double2ConvertibleFromDouble[A](n: Double)(implicit ev:ConvertibleFromDouble[A]): A = ev.fromDouble(n)
+
+    implicit def double2ConvertibleFromDouble[A](n: Double): DoubleAs = new DoubleAs(n)
   }
 
   trait ContainerImplicits{

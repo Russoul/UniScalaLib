@@ -32,8 +32,9 @@ package object macros {
       ("x", "x"),
       ("y", "y"),
       ("z", "z"),
-      ("w", "w")
-    )
+      ("w", "w"),
+      ("as", "fromDouble")
+    ) ++ (DefaultOps.operatorNames - "$eq$eq$eq")
   }
 
   object Enricher extends Ops with OperatorNames

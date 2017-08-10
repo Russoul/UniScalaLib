@@ -20,8 +20,6 @@ object Test1 extends App{
     val v1 = Float3(1,0,0)
     val v2 = Float3(0,1,0)
 
-    println(v1._0 + " " + v2._1)
-
     assert(v1._0 == v2._1)
     assert(v1(0) == v2(1))
 
