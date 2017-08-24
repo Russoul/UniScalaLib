@@ -5,9 +5,10 @@ import russoul.lib.common.utils.Timer
 import scala.util.Random
 import russoul.lib.common.math.geometry.complex.{Leaf, Node, QuadTree}
 import QuadTree._
-import russoul.lib.common.TypeClasses.{Addable, Ring}
+import russoul.lib.common.TypeClasses.{Addable, Ring, Tensor0}
 import spire.syntax.cfor._
 import Implicits._
+import russoul.lib.common.exp.Functional
 
 
 /**
@@ -15,18 +16,42 @@ import Implicits._
   */
 object Test extends App {
   //Benchmark.vecPerformance()
-  Benchmark.testAddable(1,2)
-  println(Float2(1,1)._0)
 
-  Float3(1,1,1) ⨯ Float3(1,1,1)
-  Float3(1,1,1) cross Float3(1,1,1)
-  Float2(1,1).⟂()
-  Float2(1,1).⟂
-  Float2(1,1) ⊗ Float2(1,1)
-  Float2(1,1) elem Float2(1,1)
-  println(Float2(1,1).x)
-  println(Float2(2,1).x)
 
+  def c_for[@specialized A](i : A)(pred : A => Boolean)(step : A => A)(body : A => Unit) : Unit = {
+    if (pred(i)){
+      body(i)
+
+      c_for(step(i))(pred)(step)(body)
+    }else{
+      Unit
+    }
+  }
+
+  trait Printer[@tbsp T]{
+    def print() : String
+  }
+
+  class AnyPrinter[T] extends Printer[T]{
+    def print = "anyPrinter"
+  }
+  class FloatPrinter extends Printer[Float]{
+    def print = "floatPrinter"
+  }
+
+
+
+  def tt[@sp(Float) T : Printer](t: T): Unit ={
+    println(implicitly[Printer[T]].print())
+  }
+
+  implicit def anyPrinter[T](implicit no : NoImplicit[Printer[Float]]) = new AnyPrinter[T]
+  implicit def floatPrinter = new FloatPrinter
+
+  tt(1F)
+
+  println(Vec3(1F,2F,3F) dot Vec3(1F,2F,3F))
+  println(Vec3(1F,2F,3F) dot Vec3(1F,2F,3F))
 }
 
 object Examples{

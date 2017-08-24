@@ -96,8 +96,11 @@ object TypeClasses {
 
 
 
+
+
   //indices start from 0
   //algebraic matrices
+  //TODO @tbsp does not compile
   final class AlgebraicSquareMatrix[@tbsp T : ClassTag, Vec[_,_ <: Nat], Mat[_,_ <: Nat,_ <: Nat]]{
 
 
@@ -110,8 +113,7 @@ object TypeClasses {
                                                                i: IndexI,
                                                                j: IndexJ)(implicit ev1: Size <:!< IndexI,
                                                                toIntI: ToInt[IndexI], ev2: Size <:!< IndexJ,
-                                                               toIntJ: ToInt[IndexJ],
-                                                                          tensor2: Tensor2[T, Mat, Size, Size]) : T = {
+                                                               toIntJ: ToInt[IndexJ], tensor2: Tensor2[T, Mat, Size, Size]) : T = {
       tensor2.get(mat, toIntI(), toIntJ())
     }
 
@@ -316,6 +318,7 @@ object TypeClasses {
   trait RealField[@tbsp A] extends Field[A]
 
 
+  //providing @tbsp only at trait level is enough ???
   trait Module[V[_,_<: Nat], @tbsp R, Dim <: Nat] extends CommutativeAdditiveGroup[V[R,Dim]]{
 
     type Vector = V[R,Dim]

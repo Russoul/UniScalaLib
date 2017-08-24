@@ -9,7 +9,10 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 11.07.2017.
   */
-@immutable case class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] private()(implicit a1: ToInt[A1], a2: ToInt[A2]){
+//TODO constructor should be private, but it does not compile this way due to bug with @sp
+@immutable class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] ()(implicit a1: ToInt[A1], a2: ToInt[A2]){
+
+
   private val array = new Array[T](a1() * a2())
 
   def apply(i: Int, j: Int) = array(i * a2() + j)
@@ -30,7 +33,20 @@ import scala.reflect.ClassTag
     s"Mat[${implicitly[ClassTag[T]].toString()}, ${a1()}, ${a2()}]\n$str"
   }
 
+  override def hashCode() = {
+    array.hashCode()
+  }
+
+  override def equals(obj: scala.Any) = {
+    obj match {
+      case that : Mat[T, A1,A2] => this.hashCode() == that.hashCode()
+      case _ => false
+    }
+  }
+
 }
+
+
 object Mat{
 
   def apply[@tbsp T : ClassTag, Size <: Nat](args: T*)(implicit size: ToInt[Size]) : Mat[T,Size,Size] = {
@@ -50,6 +66,8 @@ object Mat{
     result
   }
 
+
+
   def apply[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat](args: T*)(implicit a1: ToInt[A1], a2: ToInt[A2]) : Mat[T,A1,A2] = {
     val result = new Mat[T,A1,A2]()
 
@@ -66,4 +84,5 @@ object Mat{
 
     result
   }
+
 }

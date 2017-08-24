@@ -1,6 +1,6 @@
 package russoul.lib.common.exp
 
-object Naturals{
+object Nat{
 
   trait Nat{
     type N <: Nat
