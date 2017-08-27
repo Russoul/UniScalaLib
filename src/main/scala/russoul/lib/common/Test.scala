@@ -8,7 +8,6 @@ import QuadTree._
 import russoul.lib.common.TypeClasses.{Addable, Ring, Tensor0}
 import spire.syntax.cfor._
 import Implicits._
-import russoul.lib.common.exp.Functional
 
 
 /**
