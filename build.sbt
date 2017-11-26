@@ -19,6 +19,8 @@ lazy val macrosSettings = Seq(
 
 lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, name := "MacrosScalaLib")
 lazy val uniScalaLib = (project in file(".")).settings(coreSettings, uniSettings, name := "UniScalaLib").dependsOn(macrosScalaLib)
+lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib").dependsOn(uniScalaLib)
+lazy val uniScalaLibTest = (project in file("test")).settings(coreSettings, uniSettings, name := "UniScalaLibTest").dependsOn(macrosPostScalaLib, uniScalaLib)
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),

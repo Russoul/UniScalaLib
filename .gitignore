@@ -8,3 +8,7 @@ target/
 lib/
 macros/project/
 macros/target/
+macros_post/project/
+macros_post/target/
+test/project/
+test/target/

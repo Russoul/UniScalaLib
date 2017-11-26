@@ -10,6 +10,8 @@ import shapeless.Nat
 
 object Test1 extends App{
 
+
+
   def testVectorCreation(): Unit ={
     val v1 = Real3F(1F,2F,3F)
     val v2 = Double2(1D,2D)
@@ -32,6 +34,7 @@ object Test1 extends App{
 
     val v3 = v1 ⨯ v2
 
+    println(v3)
     assert(v3 == Float3(0,0,1))
 
     val v4 = v1 * 2F + v2 * 3F + v3 * 4F
@@ -127,9 +130,9 @@ object Test1 extends App{
 
   testVectorCreation()
   testVectorOps()
-  testCESOps()
-  testMatrixOps()
-  testAbstraction()
-  testGeo()
-  testCollisionEngine()
+  //testCESOps()
+  //testMatrixOps()
+  //testAbstraction()
+  //testGeo()
+  //testCollisionEngine()
 }
