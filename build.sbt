@@ -1,14 +1,36 @@
 lazy val coreSettings = Seq(
-  scalaOrganization := "org.scala-lang",
-  scalaVersion  := "2.12.3",
+  //scalaOrganization := "org.scala-lang",
+  scalaOrganization := "org.typelevel",
+  scalaVersion := "2.12.3-bin-typelevel-4",
+  //scalaVersion  := "2.12.3",
   //scalaVersion := "0.2.0-RC1",
   version := "0.0.1",
   organization := "org.russoul"
 )
 
+
 lazy val uniSettings = Seq(
   libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.2",
-  libraryDependencies += "org.typelevel" %% "spire" % "0.14.1" //using this just for cfor loop
+  libraryDependencies += "org.typelevel" %% "spire" % "0.14.1", //using this just for cfor loop
+  libraryDependencies += "eu.timepit" %% "singleton-ops" % "0.2.1",
+  scalacOptions += "-Yliteral-types",
+
+    scalacOptions ++= Seq(
+    "-deprecation",
+    "-encoding",
+    "UTF-8",
+    "-feature",
+    "-language:existentials",
+    "-language:experimental.macros",
+    "-language:higherKinds",
+    "-language:implicitConversions",
+    "-unchecked",
+    "-Xfuture",
+    "-Xlint:-unused,_",
+    //    "-Yliteral-types",
+    "-Yno-adapted-args",
+    //    "-Ywarn-value-discard"
+  )
 )
 
 lazy val macrosSettings = Seq(
@@ -17,7 +39,7 @@ lazy val macrosSettings = Seq(
   libraryDependencies += "org.typelevel" %% "machinist" % "0.6.2"
 )
 
-lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, name := "MacrosScalaLib")
+lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosScalaLib")
 lazy val uniScalaLib = (project in file(".")).settings(coreSettings, uniSettings, name := "UniScalaLib").dependsOn(macrosScalaLib)
 lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib").dependsOn(uniScalaLib)
 lazy val uniScalaLibTest = (project in file("test")).settings(coreSettings, uniSettings, name := "UniScalaLibTest").dependsOn(macrosPostScalaLib, uniScalaLib)

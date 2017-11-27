@@ -22,11 +22,18 @@ object FVec{
   val test : FVec[Int, Nat._3] = Cons (3, Cons (2, Cons(1, FNil)))
 }
 
+
+
 /**
   * Created by russoul on 11.07.2017.
   */
-@immutable class Vec[@tbsp A : ClassTag, Size <: Nat]private ()(implicit size: ToInt[Size]) extends Traversable[A]{
-  private val array = new Array[A](size())
+//size_arg is not a field !
+@immutable class Vec[@tbsp A : ClassTag, Size <: Nat]private (size_arg: Int) extends Traversable[A]{
+
+  type E = A
+  type N = Size
+
+  private val array = new Array[A](size_arg)
 
   @inline def apply(i: Int): A = array(i)
 
@@ -37,14 +44,14 @@ object FVec{
 
     for(i <- array) str += i + " "
 
-    if(array.size > 1) str = str.dropRight(1)
+    if(array.length > 1) str = str.dropRight(1)
 
-    s"Vec[${implicitly[ClassTag[A]].toString()}, ${implicitly[ToInt[Size]].apply()}]\n$str"
+    s"Vec[${implicitly[ClassTag[A]].toString()}, ${array.length}]\n$str"
   }
 
   override def foreach[U](f: (A) => U): Unit = {
     var k = 0
-    while (k < size()){
+    while (k < array.length){
       f +> array(k)
       k += 1
     }
@@ -64,14 +71,15 @@ object FVec{
 }
 
 object Vec {
-  @inline def apply[@tbsp A : ClassTag, Size <: Nat](args: A*)(implicit size: ToInt[Size]): Vec[A, Size] = {
-    val result = new Vec[A,Size]()
+  @inline def apply[@tbsp A : ClassTag, Size <: Nat](args: A*): Vec[A, Size] = {
+    val result = new Vec[A,Size](args.size)
 
     var k = 0
-    while(k < size()){
+    while(k < args.size){
       result.array(k) = args(k)
       k += 1
     }
+
 
     result
   }

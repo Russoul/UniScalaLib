@@ -54,8 +54,8 @@ object TypeClasses {
 
   trait Tensor[@tbsp T, Dim <: Nat]
   trait Tensor0[@tbsp T] extends Tensor[T, Nat._0] // == scalar
-  trait Tensor1[@tbsp T, Vec[_,_<: Nat], A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
-    def make(args: T*)(implicit ev1: ToInt[A1]) : Vec[T, A1]
+  trait Tensor1[@tbsp T, A1 <: Nat] extends Tensor[T, Nat._1]{ //== vector
+    def make(args: T*) : Vec[T, A1]
     def get(a: Vec[T, A1], i: Int) : T
 
     //TODO for machinist to work, DO NOT USE ON YOUR OWN
@@ -65,8 +65,8 @@ object TypeClasses {
     def _3(a: Vec[T,A1])(implicit ev1: GT[A1, Nat._3]) = get(a, 3)
     //TODO find better way -------------------------
   }
-  trait Tensor2[@tbsp T, Mat[_,_<: Nat,_<: Nat],  A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
-    def make(args: T*)(implicit ev1: ToInt[A1], ev2: ToInt[A2]) : Mat[T, A1, A2]
+  trait Tensor2[@tbsp T, A1 <: Nat, A2 <: Nat] extends Tensor[T, Nat._2]{ //== matrix
+    def make(n: Int, m: Int, args: T*) : Mat[T, A1, A2]
     def get(a: Mat[T, A1, A2], i: Int, j: Int) : T
   }
   //--------------------------------------------------------------------------------------
@@ -82,7 +82,7 @@ object TypeClasses {
   //size of a collection typeclassing this abstract class must be known at compile time
   //and size of any instance of this collection must be the same
   //we cant have Con as a higher kind because of https://issues.scala-lang.org/browse/SI-9227
-  final class AlgebraicVector[@tbsp T : ClassTag, Vec[_,_<: Nat]]{
+  final class AlgebraicVector[@tbsp T : ClassTag]{
 
     //val factory: AlgebraicTypeFactory[T, Vec, Mat]
 
@@ -90,7 +90,7 @@ object TypeClasses {
     //val tensor1 : Tensor1[T, Vec, Size] //add size to StaticVector ?
 
 
-    @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit index : ToInt[Index],ev1: GT[Size, Index], tensor1: Tensor1[T, Vec, Size]) : T = tensor1.get(vec, index())
+    @inline def get[Index <: Nat, Size <: Nat](vec: Vec[T,Size], i: Index)(implicit ev1: GT[Size, Index], tensor1: Tensor1[T, Size]) : T = tensor1.get(vec, i.)
     @inline def size[Size <: Nat](vec: Vec[T, Size])(implicit size: ToInt[Size], tensor1: Tensor1[T, Vec, Size]) = size()
   }
 

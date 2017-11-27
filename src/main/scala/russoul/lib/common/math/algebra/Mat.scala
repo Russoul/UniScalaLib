@@ -10,27 +10,34 @@ import scala.reflect.ClassTag
   * Created by russoul on 11.07.2017.
   */
 //TODO constructor should be private, but it does not compile this way due to bug with @sp
-@immutable class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] ()(implicit a1: ToInt[A1], a2: ToInt[A2]){
+//n is not a field
+@immutable class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] (n: Int, val m: Int){
+
+  type E = T
+  type N = A1
+  type M = A2
 
 
-  private val array = new Array[T](a1() * a2())
+  private val array = new Array[T](n * m)
 
-  def apply(i: Int, j: Int) = array(i * a2() + j)
+  def apply(i: Int, j: Int) = array(i * m + j)
 
   def toArray = array.clone()
 
   override def toString : String = { //TODO probably use stringbuilder for better performance
     var str = ""
 
-    for(i <- 0 until a1()){
-      for(j <- 0 until a2()){
+    val n = array.length / m
+
+    for(i <- 0 until n){
+      for(j <- 0 until m){
         str += this(i,j) + " "
       }
       str.dropRight(1)
       str += "\n"
     }
 
-    s"Mat[${implicitly[ClassTag[T]].toString()}, ${a1()}, ${a2()}]\n$str"
+    s"Mat[${implicitly[ClassTag[T]].toString()}, ${n}, ${m}]\n$str"
   }
 
   override def hashCode() = {
@@ -49,15 +56,16 @@ import scala.reflect.ClassTag
 
 object Mat{
 
-  def apply[@tbsp T : ClassTag, Size <: Nat](args: T*)(implicit size: ToInt[Size]) : Mat[T,Size,Size] = {
-    val result = new Mat[T,Size,Size]()
+  def apply[@tbsp T : ClassTag, Size <: Nat](args: T*) : Mat[T,Size,Size] = {
+    val n = Math.sqrt(args.size).toInt
+    val result = new Mat[T,Size,Size](n, n)
 
     var i = 0
 
-    while(i < size()){
+    while(i < n){
       var j = 0
-      while(j < size()){
-        result.array(j + i*size()) = args(j + i*size())
+      while(j < n){
+        result.array(j + i*n) = args(j + i*n)
         j += 1
       }
       i += 1
@@ -68,19 +76,20 @@ object Mat{
 
 
 
-  def apply[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat](args: T*)(implicit a1: ToInt[A1], a2: ToInt[A2]) : Mat[T,A1,A2] = {
-    val result = new Mat[T,A1,A2]()
+  def apply[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat](n: Int, m: Int, args: T*) : Mat[T,A1,A2] = {
+    val result = new Mat[T,A1,A2](n, m)
 
     var i = 0
 
-    while(i < a1()){
+    while(i < n){
       var j = 0
-      while(j < a2()){
-        result.array(j + i*a2()) = args(j + i*a2())
+      while(j < m){
+        result.array(j + i*m) = args(j + i*m)
         j += 1
       }
       i += 1
     }
+
 
     result
   }
