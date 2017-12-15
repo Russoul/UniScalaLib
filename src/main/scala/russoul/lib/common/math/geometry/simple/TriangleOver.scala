@@ -11,6 +11,11 @@ import russoul.lib.common.Abstraction._
 
 import scala.reflect.ClassTag
 
+
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by Russoul on 23.07.2016.
   */

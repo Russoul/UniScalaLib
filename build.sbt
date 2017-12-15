@@ -5,7 +5,10 @@ lazy val coreSettings = Seq(
   //scalaVersion  := "2.12.3",
   //scalaVersion := "0.2.0-RC1",
   version := "0.0.1",
-  organization := "org.russoul"
+  organization := "org.russoul",
+
+  ensimeScalaVersion in ThisBuild := "2.12.3",
+  ensimeIgnoreScalaMismatch in ThisBuild := true
 )
 
 
@@ -14,6 +17,7 @@ lazy val uniSettings = Seq(
   libraryDependencies += "org.typelevel" %% "spire" % "0.14.1", //using this just for cfor loop
   libraryDependencies += "eu.timepit" %% "singleton-ops" % "0.2.1",
   scalacOptions += "-Yliteral-types",
+
 
     scalacOptions ++= Seq(
     "-deprecation",
@@ -36,12 +40,23 @@ lazy val uniSettings = Seq(
 lazy val macrosSettings = Seq(
   libraryDependencies+= scalaOrganization.value % "scala-reflect" % scalaVersion.value % "provided",
   libraryDependencies += scalaOrganization.value % "scala-compiler" % scalaVersion.value % "provided",
-  libraryDependencies += "org.typelevel" %% "machinist" % "0.6.2"
+  libraryDependencies += "org.typelevel" %% "machinist" % "0.6.2",
+
+  resolvers ++= Seq(
+    Resolver.sonatypeRepo("releases"),
+    Resolver.sonatypeRepo("snapshots")
+  ),
+
+  libraryDependencies ++= Seq(
+    scalaOrganization.value %% "macro-compat" % "1.1.1",
+    scalaOrganization.value % "scala-compiler" % scalaVersion.value % "provided",
+    compilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.patch)
+  )
 )
 
 lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosScalaLib")
 lazy val uniScalaLib = (project in file(".")).settings(coreSettings, uniSettings, name := "UniScalaLib").dependsOn(macrosScalaLib)
-lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib").dependsOn(uniScalaLib)
+lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib").dependsOn(macrosScalaLib)
 lazy val uniScalaLibTest = (project in file("test")).settings(coreSettings, uniSettings, name := "UniScalaLibTest").dependsOn(macrosPostScalaLib, uniScalaLib)
 
 resolvers ++= Seq(

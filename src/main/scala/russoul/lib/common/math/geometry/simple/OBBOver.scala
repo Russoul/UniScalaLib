@@ -14,6 +14,10 @@ import russoul.lib.common.math.geometry.simple.general.{CenteredShape, Geometric
 
 import scala.reflect.ClassTag
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by Russoul on 18.07.2016.
   */

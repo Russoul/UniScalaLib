@@ -8,6 +8,11 @@ import shapeless.Nat._
 import russoul.lib.common._
 import Implicits._
 
+
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by russoul on 17.07.2017.
   */

@@ -11,6 +11,10 @@ import russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field, 
 import shapeless.Nat
 import shapeless.Nat._
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by russoul on 22.04.17.
   *

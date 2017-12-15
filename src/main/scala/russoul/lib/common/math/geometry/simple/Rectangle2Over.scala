@@ -14,6 +14,11 @@ import russoul.lib.common._
 
 import scala.reflect.ClassTag
 
+
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by russoul on 11.03.17.
   *

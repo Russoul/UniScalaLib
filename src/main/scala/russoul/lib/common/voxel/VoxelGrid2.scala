@@ -1,11 +1,11 @@
 package russoul.lib.common.voxel
 
-import russoul.lib.common.TypeClasses.{ConvertibleFromDouble, Field}
 import russoul.lib.common._
+import spire.algebra._
+import spire.math._
+import spire.implicits._
 
 import scala.reflect.ClassTag
-import Implicits._
-import Abstraction._
 
 /**
   * Created by russoul on 19.07.2017.
@@ -40,8 +40,8 @@ class VoxelGrid2[@sp(Float, Double) A : ClassTag] (val a: A, val sizeX: Int, val
     *
     * @return local to voxel grid coordinates of the point
     */
-  def getPoint(x: Int, y: Int)(implicit field : Field[A], con: Con[A]) : Vec2[A] = {
-    Vec2[A](a * x.as[A], a * y.as[A])
+  def getPoint(x: Int, y: Int)(implicit field : Field[A]) : Vec2[A] = {
+    Vec2[A](a * field.fromInt(x), a * field.fromInt(y))
   }
 
 }

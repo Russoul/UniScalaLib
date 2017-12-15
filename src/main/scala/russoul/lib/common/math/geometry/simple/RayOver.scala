@@ -9,6 +9,10 @@ import shapeless.Nat._
 import Abstraction._
 import russoul.lib.common.math.geometry.simple.general.GeometricShape
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 @immutable case class RayOver[V[_,_ <: Nat],@tbsp F]private (val start: V[F,_3],val dir: V[F,_3]) extends GeometricShape[V,F,_3] {
 
   override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], ev2:T1[F,V,_3], ev3: Field[F]): RayOver[V,F] = {

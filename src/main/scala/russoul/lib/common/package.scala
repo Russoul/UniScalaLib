@@ -9,12 +9,16 @@ import russoul.lib.common.math.algebra.{ComplexOver, Mat, Vec}
 import shapeless.Nat
 import shapeless.Nat._
 import shapeless.ops.nat.ToInt
+import spire.algebra.{Field, Order}
 
 import scala.annotation.Annotation
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
 
 /**
   * Created by russoul on 11.05.17.
@@ -72,27 +76,27 @@ package object common
 
   //TODO better design FShape2, it is too verbose
   trait FShape2[@tbsp A]{ self =>
-    def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec,A,_2], t1: Tensor1[A,Vec,_2]) : A
+    def density(p: Vec2[A])(implicit field: Field[A]) : A
 
-    def &(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+    def &(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
           order.max(self.density(p), that.density(p))
         }
       }
     }
 
-    def |(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+    def |(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
           order.min(self.density(p), that.density(p))
         }
       }
     }
 
-    def -(that: FShape2[A])(implicit order : Orderable[A]) : FShape2[A] = {
+    def -(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
           order.max(self.density(p), -that.density(p))
         }
       }
@@ -100,42 +104,42 @@ package object common
   }
 
   case class FCircle[@tbsp A](center : Vec2[A], rad: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
       val d = p - center
       (d dot d) - rad * rad
     }
   }
 
   case class FHalfPlaneLeft[@tbsp A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
-      p.x - x
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+      p(0) - x
     }
   }
 
   case class FHalfPlaneRight[@tbsp A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
-      x - p.x
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+      x - p(0)
     }
   }
 
   case class FHalfPlaneUpper[@tbsp A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
-      y - p.y
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+      y - p(1)
     }
   }
 
   case class FHalfPlaneLower[@tbsp A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
-      p.y - y
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+      p(1) - y
     }
   }
 
-  case class FRectangle2[@tbsp A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2], order: Orderable[A]) extends FShape2[A]{
+  case class FRectangle2[@tbsp A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], order: Order[A]) extends FShape2[A]{
 
-    val shape = FHalfPlaneRight(center.x - extent.x) & FHalfPlaneLeft(center.x + extent.x) &
-      FHalfPlaneLower(center.y + extent.y) & FHalfPlaneUpper(center.y - extent.y)
+    val shape = FHalfPlaneRight(center(0) - extent(0)) & FHalfPlaneLeft(center(0) + extent(0)) &
+      FHalfPlaneLower(center(1) + extent(1)) & FHalfPlaneUpper(center(1) - extent(1))
 
-    override def density(p: Vec2[A])(implicit field: Field[A], ces: CES[Vec, A, _2], t1: Tensor1[A,Vec,_2]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
       shape.density(p)
     }
   }
@@ -395,11 +399,11 @@ package object common
 
   //SOME SYNTACTIC GOODIES
   //used as fully infered function
-  @inline def makeVector[Dim <: Nat, Vec[_,_ <: Nat], @tbsp F](dim : Dim, args: F*)(implicit ev: CanonicalEuclideanSpaceOverField[Vec, F, Dim], toInt: ToInt[Dim]) = ev.tensor1.make(args : _*)
+  @inline def makeVector[Dim <: Nat, @tbsp F](dim : Dim, args: F*) = Vec[F, Dim](args : _*)
   @inline def transformd(a: Real3, b: Mat4D) : Real3 = {
     val temp = Real4(a, 1D)
     val temp2 = temp * b
-    Real3(temp2.x, temp2.y, temp2.z)
+    Real3(temp2, temp2.y, temp2.z)
   }
   @inline def transformf(a: Real3F, b: Mat4F) : Real3F = {
     val temp = Real4F(a, 1F)
@@ -412,13 +416,9 @@ package object common
 
   //common algebraic structures-----------------------------
   type Reals = Field[Real]
-  type V4 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._4]
-  type V3 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._3]
-  type V2 = CanonicalEuclideanSpaceOverField[Vec, Real, Nat._2]
-
-  type R2 = Module[Vec, Int, Nat._2]
-  type R3 = Module[Vec, Int, Nat._3]
-  type R4 = Module[Vec, Int, Nat._4]
+  type V4 = AlgVector[Real, Nat._4]
+  type V3 = AlgVector[Real, Nat._3]
+  type V2 = AlgVector[Real, Nat._2]
 
 
   object Real2{
@@ -427,12 +427,12 @@ package object common
   
   object Real3{
     @inline def apply(x: Real, y: Real, z: Real) = Vec[Real, _3](x,y,z)
-    @inline def apply(v2:Real2, z:Real) = Vec[Real, _3](v2.x, v2.y, z)
+    @inline def apply(v2:Real2, z:Real) = Vec[Real, _3](v2(0), v2(1), z)
   }
   
   object Real4{
     @inline def apply(x: Real, y: Real, z: Real, w: Real) = Vec[Real,_4](x,y,z,w)
-    @inline def apply(v:Real3, w:Real): Real4 = Vec[Real, _4](v.x, v.y, v.z, w)
+    @inline def apply(v:Real3, w:Real): Real4 = Vec[Real, _4](v(0), v(1), v(2), w)
   }
 
 
@@ -442,12 +442,12 @@ package object common
 
   object Double3{
     @inline def apply(x: Double, y: Double, z: Double) = Vec[Double, _3](x,y,z)
-    @inline def apply(v2:Double2, z:Double) = Vec[Double, _3](v2.x, v2.y, z)
+    @inline def apply(v2:Double2, z:Double) = Vec[Double, _3](v2(0), v2(1), z)
   }
 
   object Double4{
     @inline def apply(x: Double, y: Double, z: Double, w: Double)  = Vec[Double, _4](x,y,z,w)
-    @inline def apply(v:Double3, w:Double): Double4 = Vec[Double, _4](v.x, v.y, v.z, w)
+    @inline def apply(v:Double3, w:Double): Double4 = Vec[Double, _4](v(0), v(1), v(2), w)
   }
 
 
@@ -457,12 +457,12 @@ package object common
 
   object Float3{
     @inline def apply(x: Float, y: Float, z: Float) = Vec[Float, _3](x,y,z)
-    @inline def apply(v2:Float2, z:Float) = Vec[Float, _3](v2.x, v2.y, z)
+    @inline def apply(v2:Float2, z:Float) = Vec[Float, _3](v2(0), v2(1), z)
   }
 
   object Float4{
     @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Vec[Float, _4](x,y,z,w)
-    @inline def apply(v:Float3, w:Float): Float4 = Vec[Float, _4](v.x, v.y, v.z, w)
+    @inline def apply(v:Float3, w:Float): Float4 = Vec[Float, _4](v(0), v(1), v(2), w)
   }
 
 
@@ -472,12 +472,12 @@ package object common
 
   object Real3F{
     @inline def apply(x: Float, y: Float, z: Float) = Vec[RealF, _3](x,y,z)
-    @inline def apply(v2:Float2, z:Float) = Vec[RealF, _3](v2.x, v2.y, z)
+    @inline def apply(v2:Float2, z:Float) = Vec[RealF, _3](v2(0), v2(1), z)
   }
 
   object Real4F{
     @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Vec[RealF, _4](x,y,z,w)
-    @inline def apply(v:Float3, w:Float): Float4 = Vec[RealF, _4](v.x, v.y, v.z, w)
+    @inline def apply(v:Float3, w:Float): Float4 = Vec[RealF, _4](v(0), v(1), v(2), w)
   }
 
 
@@ -487,12 +487,12 @@ package object common
 
   object Int3{
     @inline def apply(x: Int, y: Int, z: Int) = Vec[Int, _3](x,y,z)
-    @inline def apply(v2:Int2, z:Int) = Vec[Int, _3](v2._0, v2._1, z)
+    @inline def apply(v2:Int2, z:Int) = Vec[Int, _3](v2(0), v2(1), z)
   }
 
   object Int4{
     @inline def apply(x: Int, y: Int, z: Int, w: Int)  = Vec[Int, _4](x,y,z,w)
-    @inline def apply(v:Int3, w:Int): Int4 = Vec[Int, _4](v._0, v._1, v._2, w)
+    @inline def apply(v:Int3, w:Int): Int4 = Vec[Int, _4](v(0), v(1), v(2), w)
   }
   
 

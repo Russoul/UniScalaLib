@@ -8,6 +8,10 @@ import shapeless.Nat
 import shapeless.Nat._
 import Abstraction._
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * Created by russoul on 23.04.17.
   */

@@ -15,6 +15,11 @@ import shapeless.Nat
 import shapeless.Nat._
 import Abstraction._
 
+
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 /**
   * @note extents must be orthogonal
   *
