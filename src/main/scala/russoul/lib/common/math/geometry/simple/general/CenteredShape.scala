@@ -3,13 +3,14 @@ package russoul.lib.common.math.geometry.simple.general
 import russoul.lib.common.math.algebra.Vec
 import russoul.lib.common.tbsp
 import shapeless.Nat
+import singleton.ops.XInt
 import spire.algebra.Field
 
 
 /**
   * Created by russoul on 11.05.17.
   */
-trait CenteredShape[@tbsp F, Dim <: Nat] extends GeometricShape[F,Dim]
+trait CenteredShape[@tbsp F, Dim <: XInt] extends GeometricShape[F,Dim]
 {
   def center:Vec[F,Dim]
 

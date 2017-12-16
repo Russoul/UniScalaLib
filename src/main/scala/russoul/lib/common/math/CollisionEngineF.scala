@@ -13,6 +13,9 @@ import scala.language.postfixOps
 import scala.reflect.ClassTag
 
 import Implicits._
+import spire.algebra._
+import spire.math._
+import spire.implicits._
 
 
 object CollisionEngineF
@@ -36,7 +39,7 @@ object CollisionEngineF
 
     val denom = ray.dir ⋅ n
 
-    if(implicitly[Orderable[Float]].abs(denom) < 1e-6){
+    if(abs(denom) < 1e-6){
       None
     }else{
       val temp = (rec.center - rec.up - rec.right) - ray.start

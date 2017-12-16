@@ -6,7 +6,7 @@ import java.nio.ByteBuffer
 import java.util.regex.{Matcher, Pattern}
 
 import scala.collection.mutable
-import russoul.lib.common.{Real, Vec3}
+import russoul.lib.common._
 import russoul.lib.common.Implicits._
 
 
@@ -82,7 +82,7 @@ object ImageUtils
       str
     }
 
-    def toRGBABitmapBuffer(color:Vec3[Real], direct:Boolean): ByteBuffer =
+    def toRGBABitmapBuffer(color:Vec3[Double], direct:Boolean): ByteBuffer =
     {
       val size = bitsPerRow * height * 4
       val buffer = if(!direct) ByteBuffer.allocate(size) else ByteBuffer.allocateDirect(size)
@@ -92,9 +92,9 @@ object ImageUtils
           for(i <- 0 until 8){
             val bit = ((byte & 0xFF) >> (7-i)) & 1
 
-            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 0, (color.x * 255 * bit).toByte)
-            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 1, (color.y * 255 * bit).toByte)
-            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 2, (color.z * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 0, (color(0) * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 1, (color(1) * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 2, (color(2) * 255 * bit).toByte)
             buffer.put(y*bitsPerRow*4+x*4*8 + 4*i + 3, (255 * bit).toByte)
           }
         }
@@ -104,7 +104,7 @@ object ImageUtils
     }
 
 
-    def toARGBBitmapBuffer(color:Vec3[Real], direct:Boolean): ByteBuffer =
+    def toARGBBitmapBuffer(color:Vec3[Double], direct:Boolean): ByteBuffer =
     {
       val size = bitsPerRow * height * 4
       val buffer = if(!direct) ByteBuffer.allocate(size) else ByteBuffer.allocateDirect(size)
@@ -116,9 +116,9 @@ object ImageUtils
 
             val bit:Int = ((byte & 0xFF) >> (7-i)) & 1
 
-            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 1, (color.x * 255 * bit).toByte)
-            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 2, (color.y * 255 * bit).toByte)
-            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 3, (color.z * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 1, (color(0) * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 2, (color(1) * 255 * bit).toByte)
+            buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 3, (color(2) * 255 * bit).toByte)
             buffer.put(y*bitsPerRow*4   +x*4*8 + 4*i + 0, (255 * bit).toByte)
           }
         }
@@ -168,8 +168,8 @@ object ImageUtils
     *
     * @param name
     * @param encoding
-    * @param width this is real width in pixels, the width of the bitmap maybe be higher (next multiple of 8)
-    * @param height the height is always the same for real pixels and bitmap size
+    * @param width this is Double width in pixels, the width of the bitmap maybe be higher (next multiple of 8)
+    * @param height the height is always the same for Double pixels and bitmap size
     * @param offsetX offsets count from bottom left corner of the glyph
     * @param offsetY offset of the boundingbox of the glyph
     * @param nextX offset in pixels to the next glyph
@@ -215,7 +215,7 @@ object ImageUtils
       * @param color
       * @return (data, width, height)
       */
-    def genARGBBitmapBuffer(range:Range, color:Vec3[Real], directBuffer:Boolean): (ByteBuffer, Int, Int) =
+    def genARGBBitmapBuffer(range:Range, color:Vec3[Double], directBuffer:Boolean): (ByteBuffer, Int, Int) =
     {
       var width:Int = 0
       var height:Int = 0
@@ -261,7 +261,7 @@ object ImageUtils
       * @param color
       * @return (data, width, height)
       */
-    def genRGBABitmapBuffer(range:Range, color:Vec3[Real], directBuffer:Boolean): (ByteBuffer, Int, Int) =
+    def genRGBABitmapBuffer(range:Range, color:Vec3[Double], directBuffer:Boolean): (ByteBuffer, Int, Int) =
     {
       var width:Int = 0
       var height:Int = 0

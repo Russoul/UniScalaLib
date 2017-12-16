@@ -22,7 +22,7 @@ object TextureUtils
     */
   def mapUVCoordinates(array:Array[Vec2[Float]], width:Float, height:Float): Array[Vec2[Float]] =
   {
-    array.map(coord => Vec2(coord.x/width, coord.y/height))
+    array.map(coord => Vec2(coord(0)/width, coord(1)/height))
   }
 
 

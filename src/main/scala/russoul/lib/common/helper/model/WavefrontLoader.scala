@@ -3,8 +3,7 @@ package russoul.lib.common.helper.model
 import java.io.{File, FileNotFoundException}
 import java.util.Scanner
 
-import russoul.lib.common.TypeClasses.DoubleIsFullField._
-import russoul.lib.common.{RealF, Vec2, Vec3}
+import russoul.lib.common._
 
 import scala.collection.mutable.ArrayBuffer
 
@@ -45,7 +44,7 @@ object WavefrontLoader
 
     def atLine() = ", line: " + curLineNumber
 
-    def parseRealF(s: String): RealF =
+    def parseRealF(s: String): Float =
     {
       try {
         s.toFloat

@@ -1,16 +1,12 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.TypeClasses.{CanonicalEuclideanSpaceOverField, Field, Tensor1}
-import russoul.lib.common._
-import russoul.lib.common.Implicits._
 import russoul.lib.common.utils.Arr
-import shapeless.Nat
-import shapeless.Nat._
-import Abstraction._
 import russoul.lib.common.math.geometry.simple.general.CenteredShape
 
 import scala.reflect.ClassTag
 
+import russoul.lib.common._
+import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -18,26 +14,26 @@ import spire.implicits._
 /**
   * Created by russoul on 01.07.2017.
   */
-@immutable case class OBB2Over[V[_,_ <: Nat], @tbsp F]private(override val center: V[F,_2], val right: V[F,_2], val up: V[F,_2], val extentRight : F, val extentUp: F) extends CenteredShape[V,F,_2] {
+@immutable case class OBB2Over[@tbsp F]private(override val center: Vec2[F], val right: Vec2[F], val up: Vec2[F], val extentRight : F, val extentUp: F) extends CenteredShape[F,_2] {
 
   /**
     *
     * @param factor
     * @return scaled around its center version
     */
-  override def scale(factor: F)(implicit ev1 : CES[V,F, _2], tensor1:T1[F,V,_2], field: Field[F]): OBB2Over[V, F] = {
+  override def scale(factor: F)(implicit field: Field[F]): OBB2Over[F] = {
     new OBB2Over(center, right, up, extentRight * factor, extentUp * factor)
   }
 
-  override def translate(v: V[F,_2])(implicit ev1 : CES[V,F, _2], tensor1:T1[F,V,_2], field: Field[F]): OBB2Over[V, F] = {
+  override def translate(v: Vec2[F])(implicit field: Field[F]): OBB2Over[F] = {
     new OBB2Over(center + v, right, up, extentRight, extentUp)
   }
 
-  override def scaleAroundBasis(factor: F)(implicit ev1 : CES[V,F, _2], tensor1:T1[F,V,_2], field: Field[F]): OBB2Over[V, F] = {
+  override def scaleAroundBasis(factor: F)(implicit field: Field[F]): OBB2Over[F] = {
     new OBB2Over(center * factor, right, up, extentRight * factor, extentUp * factor)
   }
 
-  def genVertices()(implicit ev1 : CES[V,F, _2], tensor1:T1[F,V,_2], field: Field[F], tag: ClassTag[V[F,_2]]): Array[V[F,_2]] = Array[V[F,_2]](center - right * extentRight - up * extentUp, center + right * extentRight - up * extentUp, center + right * extentRight + up * extentUp, center - right * extentRight + up * extentUp)
+  def genVertices()(implicit field: Field[F], tag: ClassTag[Vec2[F]]): Array[Vec2[F]] = Array[Vec2[F]](center - right * extentRight - up * extentUp, center + right * extentRight - up * extentUp, center + right * extentRight + up * extentUp, center - right * extentRight + up * extentUp)
 
   override def toString: String =
   {
@@ -46,5 +42,5 @@ import spire.implicits._
 }
 
 object OBB2Over{
-  def apply[V[_,_ <: Nat], @tbsp F](center: V[F,_2], right: V[F,_2], up: V[F,_2], extentRight : F, extentUp: F) = new OBB2Over[V,F](center, right, up, extentRight, extentUp)
+  def apply[@tbsp F](center: Vec2[F], right: Vec2[F], up: Vec2[F], extentRight : F, extentUp: F) = new OBB2Over[F](center, right, up, extentRight, extentUp)
 }

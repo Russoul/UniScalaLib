@@ -13,6 +13,10 @@ import scala.reflect.ClassTag
 
 import Implicits._
 
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 object CollisionEngine
 {
 
@@ -29,7 +33,7 @@ object CollisionEngine
     * @return unit distance from start of the ray to the point of intersection
     *
     */
-  def checkRayRectangle(ray: Ray, rec: Rectangle): Option[Real] = {
+  def checkRayRectangle(ray: Ray, rec: Rectangle): Option[Double] = {
 
     import Implicits._
 
@@ -39,11 +43,11 @@ object CollisionEngine
 
 
 
-    if(implicitly[Orderable[Real]].abs(denom) < 1e-6){
+    if(abs(denom) < 1e-6){
       None
     }else{
       val temp = (rec.center - rec.up - rec.right) - ray.start
-      val num = temp ⋅ n
+      val num = temp dot n
       val t = num/denom
       if(t >= 0){ //in front the ray
         val point = ray.start + ray.dir * t
@@ -69,17 +73,17 @@ object CollisionEngine
   }
 
 
-  private def checkRayBox(ray:Ray, recs:Array[Rectangle]):Option[(Real, Rectangle)] =
+  private def checkRayBox(ray:Ray, recs:Array[Rectangle]):Option[(Double, Rectangle)] =
   {
     var tmin = -1D
     var re:Rectangle = null
 
 
     for(rec <- recs){
-      val res:Option[Real] = checkRayRectangle(ray, rec)
+      val res:Option[Double] = checkRayRectangle(ray, rec)
       res match{
         case None =>
-        case e:Some[Real] =>
+        case e:Some[Double] =>
           if(re == null)
           {
             tmin = e.get
@@ -103,7 +107,7 @@ object CollisionEngine
     * @param obb
     * @return unit dist, face of intersection
     */
-  def checkRayBox(ray:Ray, obb:OBB):Option[(Real, Rectangle)] ={
+  def checkRayBox(ray:Ray, obb:OBB):Option[(Double, Rectangle)] ={
     val recs:Array[Rectangle] = obb.genRectangles()
 
     checkRayBox(ray, recs)
@@ -115,7 +119,7 @@ object CollisionEngine
     * @param aabb
     * @return unit dist, face of intersection
     */
-  def checkRayBox(ray:Ray, aabb:AABB):Option[(Real, Rectangle)] ={
+  def checkRayBox(ray:Ray, aabb:AABB):Option[(Double, Rectangle)] ={
     val recs:Array[Rectangle] = aabb.genRectangles()
 
     checkRayBox(ray, recs)
@@ -137,10 +141,10 @@ object CollisionEngine
             amin.z >= bmin.z && amax.z <= bmax.z
   }
 
-  def checkOBBOBBSeparatingAxisTheorem(checkThis:OBB, checkWith:OBB)(implicit v3: Orderable[Real]):Boolean =
+  def checkOBBOBBSeparatingAxisTheorem(checkThis:OBB, checkWith:OBB):Boolean =
   {
 
-    val normals = new Arr[Real3]
+    val normals = new Arr[Double3]
 
     var recs = checkThis.genRectangles()
     recs = recs ++ checkWith.genRectangles() //TODO fast enough ?
@@ -168,10 +172,10 @@ object CollisionEngine
     {
       val n = normals(i)
 
-      val S = v3.abs(cToC ⋅ n)
+      val S = abs(cToC ⋅ n)
 
-      val s1 = v3.abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + v3.abs( (checkThis.up * checkThis.extentUp) ⋅ n) + v3.abs ( (look1 * checkThis.extentLook) ⋅ n)
-      val s2 = v3.abs(( checkWith.right * checkWith.extentRight ) ⋅ n) + v3.abs( (checkWith.up * checkWith.extentUp) ⋅ n) + v3.abs ( (look2 * checkWith.extentLook) ⋅ n)
+      val s1 = abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + abs( (checkThis.up * checkThis.extentUp) ⋅ n) + abs ( (look1 * checkThis.extentLook) ⋅ n)
+      val s2 = abs(( checkWith.right * checkWith.extentRight ) ⋅ n) + abs( (checkWith.up * checkWith.extentUp) ⋅ n) + abs ( (look2 * checkWith.extentLook) ⋅ n)
 
       if(S > s1 + s2) return false
     }
@@ -179,10 +183,10 @@ object CollisionEngine
     true
   }
 
-  def checkOBBAABBSeparatingAxisTheorem(checkThis:OBB, checkWith:AABB)(implicit v3: Orderable[Real]):Boolean =
+  def checkOBBAABBSeparatingAxisTheorem(checkThis:OBB, checkWith:AABB):Boolean =
   {
 
-    val normals = new Arr[Real3](16)
+    val normals = new Arr[Double3](16)
 
     var recs = checkThis.genRectangles()
     recs = recs ++ checkWith.genRectangles()
@@ -214,10 +218,10 @@ object CollisionEngine
     {
       val n = normals(i)
 
-      val S = v3.abs(cToC ⋅ n)
+      val S = abs(cToC ⋅ n)
 
-      val s1 = v3.abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + v3.abs( (checkThis.up * checkThis.extentUp) ⋅ n) + v3.abs ( (look1 * checkThis.extentLook) ⋅ n)
-      val s2 = v3.abs(( r2 * checkWith.extent.x ) ⋅ n) + v3.abs( (u2 * checkWith.extent.y) ⋅ n) + v3.abs ( (look2 * checkWith.extent.z) ⋅ n)
+      val s1 = abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + abs( (checkThis.up * checkThis.extentUp) ⋅ n) + abs ( (look1 * checkThis.extentLook) ⋅ n)
+      val s2 = abs(( r2 * checkWith.extent.x ) ⋅ n) + abs( (u2 * checkWith.extent.y) ⋅ n) + abs ( (look2 * checkWith.extent.z) ⋅ n)
 
       if(S > s1 + s2) return false
     }
@@ -225,13 +229,13 @@ object CollisionEngine
     true
   }
 
-  def checkPointSphere(point:Real3, sphere:Sphere):Boolean =
+  def checkPointSphere(point:Double3, sphere:Sphere):Boolean =
   {
     (point-sphere.center).squaredLength() <= sphere.rad*sphere.rad
   }
 
 
-  def checkPointOBB(p:Real3, b:OBB):Boolean =
+  def checkPointOBB(p:Double3, b:OBB):Boolean =
   {
     val r = b.right
     val u = b.up
@@ -251,7 +255,7 @@ object CollisionEngine
 
   }
 
-  def checkPointOBBi(p:Real3, b:OBB):Int =
+  def checkPointOBBi(p:Double3, b:OBB):Int =
   {
     val r = b.right
     val u = b.up
@@ -272,7 +276,7 @@ object CollisionEngine
   }
 
 
-  def checkPointAABB(point: Real3, container: AABB): Boolean =
+  def checkPointAABB(point: Double3, container: AABB): Boolean =
   {
     val cmin = container.genMin()
     val cmax = container.genMax()
@@ -283,7 +287,7 @@ object CollisionEngine
       cmax.x >= point.x && cmax.y >= point.y && cmax.z >= point.z
   }
 
-  def checkPointAABBi(p:Real3, b:AABB):Int =
+  def checkPointAABBi(p:Double3, b:AABB):Int =
   {
 
     val min = b.genMin()
@@ -391,8 +395,8 @@ object CollisionEngine
   }
 
 
-  //TODO CHECK IF IT REALLY WORKS ???
-  def checkPointRectangle(p: Real3, rec: Rectangle): Boolean =
+  //TODO CHECK IF IT DoubleLY WORKS ???
+  def checkPointRectangle(p: Double3, rec: Rectangle): Boolean =
   {
     val vs = rec.genVertices()
 
@@ -416,7 +420,7 @@ object CollisionEngine
     *
     * @return if point is to the side of plane's normal
     */
-  def checkPointPlaneNormal(p: Real3, plane:Plane): Boolean =
+  def checkPointPlaneNormal(p: Double3, plane:Plane): Boolean =
   {
     //plane equation: "n*(p-p0) = 0"
     val n = plane.normal
@@ -460,7 +464,7 @@ object CollisionEngine
     * @param vertices
     * @return 0 - inside, 1 - intersects, 2 - outside
     */
-  private def checkBoxFrustum(vertices: Array[Real3], planes: Arr[Plane]): Int =
+  private def checkBoxFrustum(vertices: Array[Double3], planes: Arr[Plane]): Int =
   {
 
     var totalIn = 0
@@ -537,7 +541,7 @@ object CollisionEngine
   //--------------------------------------------------------------------------------------------------------------------------------
   //--------------------------------------------------------------------------------------------------------------------------------
 
-  def checkPoint2Rectangle2(p:Real2, rec:Rectangle2):Boolean =
+  def checkPoint2Rectangle2(p:Double2, rec:Rectangle2):Boolean =
   {
     p.x >= rec.center.x - rec.extent.x && p.x <= rec.center.x + rec.extent.x &&
     p.y >= rec.center.y - rec.extent.y && p.y <= rec.center.y + rec.extent.y
@@ -551,7 +555,7 @@ object CollisionEngine
 
   }
 
-  def checkPoint2OBB2(p: Real2, obb: OBB2) : Boolean = {
+  def checkPoint2OBB2(p: Double2, obb: OBB2) : Boolean = {
     val centerPoint = p - obb.center
 
     val projRight = centerPoint dot obb.right
@@ -591,7 +595,7 @@ object CollisionEngine
   }*/
 
 
-  def checkPoint2Square2(p:Real2, centerOfSquare:Real2, extentOfSquare:Real): Boolean ={
+  def checkPoint2Square2(p:Double2, centerOfSquare:Double2, extentOfSquare:Double): Boolean ={
     p.x >= centerOfSquare.x-extentOfSquare &&
       p.x <= centerOfSquare.x + extentOfSquare &&
       p.y >= centerOfSquare.y - extentOfSquare &&
@@ -612,7 +616,7 @@ object CollisionEngine
     * @param b
     * @return singular intersection point, None in other cases
     */
-  def checkLine2Line2(a:Line2, b:Line2) : Option[Real2] =
+  def checkLine2Line2(a:Line2, b:Line2) : Option[Double2] =
   {
 
 
@@ -653,7 +657,7 @@ object CollisionEngine
     *
     * @return point and line of intersection of rectangle
     */
-  def checkLine2Rectangle2Min(line:Line2, rec:Rectangle2): Option[(Real2, Line2)] =
+  def checkLine2Rectangle2Min(line:Line2, rec:Rectangle2): Option[(Double2, Line2)] =
   {
 
     val vertices = rec.genVertices()
@@ -669,10 +673,10 @@ object CollisionEngine
     val i3 = checkLine2Line2(line, l3)
 
     var min = Double.MaxValue
-    var minV = Real2(0D,0D)
+    var minV = Double2(0D,0D)
     var minL:Line2 = null
 
-    var temp:Real = 0D
+    var temp:Double = 0D
 
     if(i0.isDefined && {temp = i0.get.squaredLength();temp} < min){
       minV = i0.get
@@ -700,7 +704,7 @@ object CollisionEngine
 
   }
 
-  def checkRay2Ray2(a:Ray2, b:Ray2):Option[Real2] =
+  def checkRay2Ray2(a:Ray2, b:Ray2):Option[Double2] =
   {
     val A1 = a.dir.y
     val B1 = -a.dir.x
@@ -720,7 +724,7 @@ object CollisionEngine
     Some(Vec2(x,y))
   }
 
-  def distancePoint2Point2(a:Real2, b:Real2): Real =
+  def distancePoint2Point2(a:Double2, b:Double2): Double =
   {
     (b-a).length()
   }
@@ -745,7 +749,7 @@ object CollisionEngine
     * @param line
     * @return distance and point of closest distance
     */
-  def distanceCircleLine(circle:Circle, line:Line2) : (Real,Real2) =
+  def distanceCircleLine(circle:Circle, line:Line2) : (Double,Double2) =
   {
 
     val v1 = line.end-line.start
@@ -768,7 +772,7 @@ object CollisionEngine
       val l1 = (circle.center - line.start).squaredLength()
       val l2 = (circle.center - line.end).squaredLength()
 
-      val ev = implicitly[Euclidean[Real]]
+      val ev = implicitly[Euclidean[Double]]
 
       if(l1 > l2)
         (ev.sqrt(l2) - circle.rad, line.end)
@@ -786,7 +790,7 @@ object CollisionEngine
     *         if intersection ret 0 else 4 dists between corners or 4 dists between edges possible (just draw it to understand)
     *         returning distance
     */
-  def distanceRectangle2Square2(a:Rectangle2, b:Square2):Real =
+  def distanceRectangle2Square2(a:Rectangle2, b:Square2):Double =
   {
 
 

@@ -3,6 +3,7 @@ package russoul.lib.common.math.algebra
 import russoul.lib.common.{immutable, sp, tbsp}
 import shapeless.Nat
 import shapeless.ops.nat.ToInt
+import singleton.ops.XInt
 
 import scala.reflect.ClassTag
 
@@ -11,7 +12,7 @@ import scala.reflect.ClassTag
   */
 //TODO constructor should be private, but it does not compile this way due to bug with @sp
 //n is not a field
-@immutable class Mat[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat] (n: Int, val m: Int){
+@immutable class Mat[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt] (n: Int, val m: Int){
 
   type E = T
   type N = A1
@@ -21,6 +22,10 @@ import scala.reflect.ClassTag
   private val array = new Array[T](n * m)
 
   def apply(i: Int, j: Int) = array(i * m + j)
+  def apply(i : Int) = array(i)
+
+  //total number of elements
+  def size() : Int = array.length
 
   def toArray = array.clone()
 
@@ -56,7 +61,7 @@ import scala.reflect.ClassTag
 
 object Mat{
 
-  def apply[@tbsp T : ClassTag, Size <: Nat](args: T*) : Mat[T,Size,Size] = {
+  def apply[@tbsp T : ClassTag, Size <: XInt](args: T*) : Mat[T,Size,Size] = {
     val n = Math.sqrt(args.size).toInt
     val result = new Mat[T,Size,Size](n, n)
 
@@ -76,7 +81,7 @@ object Mat{
 
 
 
-  def apply[@tbsp T : ClassTag, A1 <: Nat, A2 <: Nat](n: Int, m: Int, args: T*) : Mat[T,A1,A2] = {
+  def apply[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt](n: Int, m: Int, args: T*) : Mat[T,A1,A2] = {
     val result = new Mat[T,A1,A2](n, m)
 
     var i = 0

@@ -1,14 +1,9 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.TypeClasses._
-import russoul.lib.common.Implicits._
-import russoul.lib.common.immutable
-import shapeless.Nat._
-import russoul.lib.common._
-import shapeless.Nat
-import Abstraction._
 import russoul.lib.common.math.geometry.simple.general.GeometricShape
 
+import russoul.lib.common._
+import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -18,19 +13,19 @@ import spire.implicits._
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class LineOver[V[_,_ <: Nat], @tbsp F]private(val start:V[F,_3], val end:V[F,_3]) extends GeometricShape[V,F,_3] {
+@immutable case class LineOver[@tbsp F]private(val start:Vec3[F], val end:Vec3[F]) extends GeometricShape[F,_3] {
 
-  override def translate(v: V[F,_3])(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]): LineOver[V,F] = {
+  override def translate(v: Vec3[F])(implicit field: Field[F]): LineOver[F] = {
     new LineOver(start + v, end + v)
   }
 
-  def genDir()(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]): V[F,_3] = (end - start).normalize()
+  def genDir()(implicit field: Field[F]): Vec3[F] = (end - start).normalize()
 
-  def genRay()(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F]) = RayOver[V,F](start, genDir())
+  def genRay()(implicit field: Field[F]) = RayOver[F](start, genDir())
 
 
-  override def scaleAroundBasis(factor: F)(implicit ev1: CES[V, F, _3], ev2: T1[F, V, _3], ev3: Field[F]): LineOver[V, F] = {
-    new LineOver[V,F](start * factor, end * factor)
+  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F]): LineOver[F] = {
+    new LineOver[F](start * factor, end * factor)
   }
 
   override def toString(): String = {
@@ -41,22 +36,22 @@ import spire.implicits._
 
 object LineOver
 {
-  def apply[V[_,_ <: Nat], @tbsp F](pos: V[F,_3], start: F, end: F, yaw: F, pitch: F)(implicit ev1: CES[V,F,_3], tensor1: T1[F,V,_3], field: Field[F], con: Con[F], trig: Trig[F]): LineOver[V,F] = {
+  def apply[@tbsp F](pos: Vec3[F], start: F, end: F, yaw: F, pitch: F)(implicit field: Field[F], trig: Trig[F]): LineOver[F] = {
     val alpha = -yaw
-    val t = trig.toRadians(90D.as[F] - alpha)
+    val t = trig.toRadians(field.fromDouble(90D) - alpha)
     val cosT = trig.cos(t)
     val sinT = trig.sin(t)
     val t2 = trig.toRadians(pitch)
     val sinT2 = trig.sin(t2)
     val cosT2 = trig.cos(t2)
 
-    val k = makeVector(_3, cosT * cosT2, sinT2, -sinT * cosT2)
+    val k = Vec3[F](cosT * cosT2, sinT2, -sinT * cosT2)
 
-    val p1 = k * start + pos
-    val p2 = k * end + pos
+    val p1 = k *: start + pos
+    val p2 = k *: end + pos
 
     new LineOver(p1, p2)
   }
 
-  def apply[V[_,_ <: Nat], @tbsp F](start:V[F,_3], end:V[F,_3]) = new LineOver[V,F](start, end)
+  def apply[@tbsp F](start:Vec3[F], end:Vec3[F]) = new LineOver[F](start, end)
 }

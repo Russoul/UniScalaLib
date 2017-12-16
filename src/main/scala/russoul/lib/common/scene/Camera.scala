@@ -1,11 +1,15 @@
 package russoul.lib.common.scene
 
-import russoul.lib.common.{Mat4F, Real, Real3, Real3F, RealF, TypeClasses, V4, Vec3}
+import russoul.lib.common._
 import russoul.lib.common.math.geometry.complex.Frustum
 import russoul.lib.common.math.geometry.simple.{RayOver, RectangleOver}
 import russoul.lib.common.Implicits._
 import russoul.lib.common.math.algebra.Vec
 import russoul.lib.common._
+
+import spire.algebra._
+import spire.math._
+import spire.implicits._
 
 class Camera private
 {
@@ -16,12 +20,12 @@ class Camera private
 
 
 
-  var pos = Real3F(0F,0F,1.5F)
+  var pos = Float3(0F,0F,1.5F)
 
   //normalized
-  var up = Real3F(0F, 1F, 0F)
+  var up = Float3(0F, 1F, 0F)
   //normalized
-  var look = Real3F(0F, 0F, -1F)
+  var look = Float3(0F, 0F, -1F)
 
   var frustum: Frustum = null
 
@@ -34,7 +38,7 @@ class Camera private
 
 
 
-  def this(width:RealF, height:RealF, x:RealF = 0F, y:RealF = 0F)
+  def this(width:Float, height:Float, x:Float = 0F, y:Float = 0F)
   {
     this()
 
@@ -45,7 +49,7 @@ class Camera private
     this.screenY = y
   }
 
-  def genLookingRay(): RayOver[Vec, RealF] =
+  def genLookingRay(): RayOver[Float] =
   {
     RayOver(pos, look)
   }
@@ -55,7 +59,7 @@ class Camera private
     look ⨯ up
   }
 
-  def genNearPlaneRectangle():RectangleOver[Vec, RealF] =
+  def genNearPlaneRectangle():RectangleOver[Float] =
   {
 
     val center = pos + look * zNear
@@ -69,14 +73,14 @@ class Camera private
     RectangleOver(center, ext1v, ext2v)
   }
 
-  def updateDimensionsAndAspect(w:RealF, h:RealF) =
+  def updateDimensionsAndAspect(w:Float, h:Float) =
   {
     aspect = w/h
     this.width = w
     this.height = h
   }
 
-  def updateScreenPosition(px:RealF, py:RealF)=
+  def updateScreenPosition(px:Float, py:Float)=
   {
     screenX = px
     screenY = py
@@ -86,7 +90,7 @@ class Camera private
 
   def updateFrustum(): Unit =
   {
-    this.frustum = new Frustum(pos, angleOfView, aspect, look, zNear, zFar, up)
+    this.frustum = Frustum(pos, angleOfView, aspect, look, zNear, zFar, up)
   }
 
   def updateMatrices(): Unit =
@@ -96,7 +100,7 @@ class Camera private
     mat_view = Mat4F.viewDir(pos, look, up)
   }
 
-  def updateTransformation(droll:RealF, dyaw:RealF, dpitch:RealF, dforward:RealF, dright:RealF, dup:RealF): Unit =
+  def updateTransformation(droll:Float, dyaw:Float, dpitch:Float, dforward:Float, dright:Float, dup:Float): Unit =
   {
     val yaw = dyaw/180*Math.PI.toFloat
     val pitch = dpitch/180*Math.PI.toFloat

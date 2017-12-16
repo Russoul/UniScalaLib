@@ -3,15 +3,18 @@ package russoul.lib.common
 import scala.language.implicitConversions
 import scala.language.experimental.macros
 import russoul.lib.common.TypeClasses._
-import shapeless.Nat
-import shapeless.ops.nat.{GT, LT, ToInt}
-import Nat._
-import Implicits._
-import russoul.lib.common.math.algebra.Vec
+
+import algebra.ring.AdditiveGroup
+import russoul.lib.common.math.algebra.{Mat, Vec}
 
 import scala.reflect.ClassTag
 import russoul.lib.macros.Enricher
+import singleton.ops.XInt
 
+import Implicits._
+import spire.algebra._
+import spire.math._
+import spire.implicits._
 
 /**
   * Created by russoul on 13.06.2017.
@@ -19,27 +22,6 @@ import russoul.lib.macros.Enricher
 object Ops {
 
 
-
-  class VectorsOps[@tbsp F : ClassTag, Dim <: Nat](lhs: Vec[F,Dim])(implicit ev: AlgVector[F,Dim]){
-
-    @inline def *(rhs: F) : Vec[F,Dim] = macro Enricher.binop[Vec[F,Dim], Vec[F,Dim]]
-    @inline def /(rhs: F) : Vec[F,Dim] = macro Enricher.binop[Vec[F,Dim], Vec[F,Dim]]
-    @inline def ⊗(rhs: Vec[F,Dim]) : Vec[F,Dim] = macro Enricher.binop[Vec[F,Dim], Vec[F,Dim]]
-    @inline def elem(rhs: Vec[F,Dim]) : Vec[F,Dim] = macro Enricher.binop[Vec[F,Dim], Vec[F,Dim]]
-
-    @inline def x(implicit ev1: GT[Dim, Nat._0]) = macro Enricher.unopWithEv2[GT[Dim, Nat._0], F]
-    @inline def y(implicit ev1: GT[Dim, Nat._1]) = macro Enricher.unopWithEv2[GT[Dim, Nat._1], F]
-    @inline def z(implicit ev1: GT[Dim, Nat._2]) = macro Enricher.unopWithEv2[GT[Dim, Nat._2], F]
-    @inline def w(implicit ev1: GT[Dim, Nat._3]) = macro Enricher.unopWithEv2[GT[Dim, Nat._3], F]
-
-
-    @inline def ⋅(rhs: Vec[F,Dim]) : F = ev.dotProduct(lhs, rhs)
-    @inline def dot(rhs: Vec[F,Dim]) : F = ev.dotProduct(lhs, rhs)
-    //can't use * operator because of JVM type erasure (we already have this operator in Field[F] both are erased to Object => Object)
-    @inline def normalize() : Vec[F,Dim] = ev.normalize(lhs)
-    @inline def squaredLength() : F = ev.squaredLength(lhs)
-    @inline def length() : F = ev.scalar.sqrt(ev.squaredLength(lhs))
-  }
 
 
   class Container1Ops[@tbsp T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
@@ -70,6 +52,141 @@ object Ops {
   }
 
 
+  class VecOps[@tbsp A : ClassTag, Size <: XInt](a : Vec[A, Size]){
+    def *[M <: XInt](b : Mat[A, Size, M])(implicit field : Field[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
+      val ar = new Array[A](b.m)
+
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = a dot b.column(i)
+        i += 1
+      }
+
+      Vec[A, M](ar : _*)
+    }
+  }
+
+  class Vec4Ops[@tbsp A : ClassTag](a : Vec[A, _4]){
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+    def z = a(2)
+    def w = a(3)
+  }
+
+  class Vec3Ops[@tbsp A : ClassTag](a : Vec[A, _3]){
+    def ⨯(b : Vec[A, _3])(implicit ring : Field[A]) : Vec[A,_3] = {
+      Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+    }
+
+    def cross(b : Vec[A, _3])(implicit ring : Field[A]) : Vec[A,_3] = {
+      Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+    }
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+    def z = a(2)
+  }
+
+  class Vec2Ops[@tbsp A : ClassTag](a : Vec[A, _2]){
+    def ⟂()(implicit ev : Ring[A]) : Vec[A, _2] = {
+      Vec2[A](-a(1), a(0))
+    }
+
+    def ortho()(implicit ev : Ring[A]) : Vec[A, _2] = {
+      Vec2[A](-a(1), a(0))
+    }
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+  }
+
+  class MatrixOps[@tbsp A : ClassTag , A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2]){
+    def +(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
+
+      val n = lhs.size() / lhs.m
+      val ar = new Array[A](lhs.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(i) + rhs(i)
+        i += 1
+      }
+
+      Mat[A, A1, A2](n, lhs.m, ar : _*)
+    }
+
+    def -(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
+
+      val n = lhs.size() / lhs.m
+      val ar = new Array[A](lhs.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(i) - rhs(i)
+        i += 1
+      }
+
+      Mat[A, A1, A2](n, lhs.m, ar : _*)
+    }
+
+    def *(rhs : A)(implicit ev : Field[A]): Mat[A, A1, A2] ={
+
+      val n = lhs.size() / lhs.m
+      val ar = new Array[A](lhs.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(i) * rhs
+        i += 1
+      }
+
+      Mat[A, A1, A2](n, lhs.m, ar : _*)
+    }
+
+    def row(index : Int) : Vec[A, A2] = {
+      val ar = new Array[A](lhs.m)
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(index, i)
+        i += 1
+      }
+
+      Vec[A, A2](ar : _*)
+    }
+
+    def column(index : Int) : Vec[A, A1] = {
+      val ar = new Array[A](lhs.m)
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(i, index)
+        i += 1
+      }
+
+      Vec[A, A1](ar : _*)
+    }
+
+    def ⨯[A3 <: XInt](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
+      val n = lhs.size() / lhs.m
+      val m = rhs.m
+
+      val ar = new Array[A](n * m)
+
+      for(i <- 0 until n){
+        for(j <- 0 until m){
+          ar(i * m + j) = lhs.row(i) dot rhs.column(j)
+        }
+      }
+
+      Mat[A, A1, A3](n, m, ar : _*)
+    }
+
+
+  }
+
 
 
   trait ContainerImplicits{
@@ -80,14 +197,24 @@ object Ops {
     implicit def ContainerAnyOps[@tbsp T, Con](x: Con)(implicit ev : ContainerAny[T,Con]): ContainerAnyOps[T,Con] = new ContainerAnyOps[T,Con](x)
   }
 
-  trait VectorImplicits{
-    implicit def VectorOps[@tbsp F : ClassTag, Size <: Nat](lhs : Vec[F,Size])(implicit vec : AlgVector[F, Size]): VectorsOps[F, Size] = new VectorsOps[F,Size](lhs)
+  trait MatrixImplicits{
+    implicit def matrixOps[@tbsp A, A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
   }
+
+  trait VectorImplicits{
+    implicit def vector4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : Vec4Ops[A] = new Vec4Ops[A](lhs)
+    implicit def vector3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : Vec3Ops[A] = new Vec3Ops[A](lhs)
+    implicit def vector2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : Vec2Ops[A] = new Vec2Ops[A](lhs)
+    implicit def vectorOps[@tbsp A : ClassTag : Field, N <: XInt](lhs : Vec[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
+  }
+
+
 
   object ContainerImplicits extends ContainerImplicits
 
   trait AllOps extends
   ContainerImplicits with
-  VectorImplicits
+    MatrixImplicits with
+    VectorImplicits
 
 }

@@ -1,44 +1,37 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.TypeClasses._
-import russoul.lib.common.TypeClasses.Field
-import russoul.lib.common.TypeClasses.CanonicalEuclideanSpaceOverField
 import russoul.lib.common.math.algebra.{Mat, Vec}
 import russoul.lib.common.utils.Arr
-import russoul.lib.common.Implicits._
-import shapeless.Nat._
-import russoul.lib.common._
-import shapeless.Nat
-import Abstraction._
 import russoul.lib.common.math.geometry.simple.general.{CenteredShape, GeometricShape}
 
 import scala.reflect.ClassTag
 
+import russoul.lib.common._
+import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
-
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class OBBOver[V[_,_ <: Nat], @tbsp F]private[geometry](override val center:V[F,_3], val right:V[F,_3], val up:V[F,_3], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[V,F,_3] {
+@immutable case class OBBOver[@tbsp F]private[geometry](override val center:Vec3[F], val right:Vec3[F], val up:Vec3[F], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[F,_3] {
 
 
-  private[geometry] def this(aabb :AABBOver[V,F])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]) {
-    this(aabb.center, makeVector(_3,field.one,field.zero,field.zero), makeVector(_3,field.zero,field.one,field.zero), aabb.extent.x, aabb.extent.y, aabb.extent.z)
+  private[geometry] def this(aabb :AABBOver[F])(implicit field: Field[F]) {
+    this(aabb.center, Vec3[F](field.one,field.zero,field.zero), Vec3[F](field.zero,field.one,field.zero), aabb.extent(0), aabb.extent(1), aabb.extent(2))
   }
 
   
-  def genMax()(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F]): V[F,_3] =
+  def genMax()(implicit field: Field[F]): Vec3[F] =
   {
-    val fe = (right ⨯ up)*extentLook
-    val ue =  up*extentUp
-    val re = right*extentRight
+    val fe = (right ⨯ up) :* extentLook
+    val ue =  up :* extentUp
+    val re = right :* extentRight
 
     center + ue + re + fe
   }
 
-  def genMin()(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F]): V[F,_3] =
+  def genMin()(implicit field: Field[F]): Vec3[F] =
   {
     val fe = (right ⨯ up)*extentLook
     val ue =  up*extentUp
@@ -47,40 +40,40 @@ import spire.implicits._
     center - ue - re - fe
   }
 
-  def genRightLine(length:F)(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): LineOver[V,F] =
+  def genRightLine(length:F)(implicit field: Field[F]): LineOver[F] =
   {
-    LineOver(center, center + right * length)
+    LineOver(center, center + (right :* length))
   }
 
-  def genUpLine(length:F)(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F]): LineOver[V,F] = {
-    LineOver(center, center + up * length)
+  def genUpLine(length:F)(implicit field: Field[F]): LineOver[F] = {
+    LineOver(center, center + (up :* length))
   }
 
-  def genLookLine(length:F)(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F]): LineOver[V,F] = {
-    LineOver[V,F](center, center + (right ⨯ up) * length)
+  def genLookLine(length:F)(implicit field: Field[F]): LineOver[F] = {
+    LineOver[V,F](center, center + ((right ⨯ up) :* length))
   }
 
 
-  override def translate(tr:V[F,_3])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): OBBOver[V,F] =
+  override def translate(tr:Vec3[F])(implicit field: Field[F]): OBBOver[F] =
   {
     new OBBOver(center + tr, right, up, extentRight, extentUp, extentLook)
   }
 
-  def scale(s:F)(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): OBBOver[V,F] =
+  def scale(s:F)(implicit field: Field[F]): OBBOver[F] =
   {
     new OBBOver(center, right, up, extentRight * s, extentUp * s, extentLook * s)
   }
 
 
-  override def scaleAroundBasis(factor: F)(implicit ev1: CES[V, F, _3], ev2: T1[F, V, _3], ev3: Field[F]): OBBOver[V, F] = {
+  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F]): OBBOver[F] = {
     new OBBOver(center * factor, right, up, extentRight * factor, extentUp * factor, extentLook * factor)
   }
 
 
 
-  def genRectangles()(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F], tag: ClassTag[V[F,_3]]):Array[RectangleOver[V,F]]=
+  def genRectangles()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[RectangleOver[F]]=
   {
-    val out = new Array[RectangleOver[V,F]](6)
+    val out = new Array[RectangleOver[F]](6)
 
     val fe = (right ⨯ up) * extentLook
     val ue = up * extentUp
@@ -93,19 +86,19 @@ import spire.implicits._
     val ba = center - fe
     val f = center + fe
 
-    out(0) = RectangleOver[V,F](t, re, -fe)
-    out(1) = RectangleOver[V,F](b, re, fe)
-    out(2) = RectangleOver[V,F](l, fe, ue)
-    out(3) = RectangleOver[V,F](r, -fe, ue)
-    out(4) = RectangleOver[V,F](ba, -re, ue)
-    out(5) = RectangleOver[V,F](f, re, ue)
+    out(0) = RectangleOver[F](t, re, -fe)
+    out(1) = RectangleOver[F](b, re, fe)
+    out(2) = RectangleOver[F](l, fe, ue)
+    out(3) = RectangleOver[F](r, -fe, ue)
+    out(4) = RectangleOver[F](ba, -re, ue)
+    out(5) = RectangleOver[F](f, re, ue)
 
     out
   }
 
-  def genVertices()(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F], tag: ClassTag[V[F,_3]]):Array[V[F,_3]] =
+  def genVertices()(implicit field: Field[F], tag: ClassTag[Vec3[F]]):Array[Vec3[F]] =
   {
-    val out = new Array[V[F,_3]](8)
+    val out = new Array[Vec3[F]](8)
 
     val fe = (right ⨯ up)*extentLook
     val ue =  up*extentUp
@@ -124,9 +117,9 @@ import spire.implicits._
     out
   }
 
-  def genVerticesCounterClockwise()(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F], cp: CP[V,F], tag: ClassTag[V[F,_3]]): Array[V[F,_3]] =
+  def genVerticesCounterClockwise()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[Vec3[F]] =
   {
-    val out = new Array[V[F,_3]](8)
+    val out = new Array[Vec3[F]](8)
 
     val l = (right ⨯ up)*extentLook
     val u =  up*extentUp
@@ -154,41 +147,41 @@ import spire.implicits._
 }
 
 object OBBOver{
-  def apply[V[_,_ <: Nat], @tbsp F](center:V[F,_3], right:V[F,_3], up:V[F,_3], extentRight:F, extentUp:F, extentLook:F) = new OBBOver[V,F](center, right, up, extentRight, extentUp, extentLook)
-  def apply[V[_,_ <: Nat], @tbsp F](aabb: AABBOver[V,F])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): OBBOver[V,F] = new OBBOver[V,F](aabb)
+  def apply[@tbsp F](center:Vec3[F], right:Vec3[F], up:Vec3[F], extentRight:F, extentUp:F, extentLook:F) = new OBBOver[F](center, right, up, extentRight, extentUp, extentLook)
+  def apply[@tbsp F](aabb: AABBOver[V,F])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): OBBOver[F] = new OBBOver[F](aabb)
 
 }
 
 
-class OBBOverReal private(override val center:Real3, override val right:Real3, override val up:Real3, override val extentRight:Real, override val extentUp:Real, override val extentLook:Real) extends OBBOver[Vec, Real](center, right, up, extentRight, extentUp, extentLook){
+class OBBOverDouble private(override val center:Double3, override val right:Double3, override val up:Double3, override val extentRight:Double, override val extentUp:Double, override val extentLook:Double) extends OBBOver[Double](center, right, up, extentRight, extentUp, extentLook){
 
   
   
-  def rotateAroundRight(rad:Real): OBBOver[Vec, Real] =
+  def rotateAroundRight(rad:Double): OBBOver[Double] =
   {
     val mat = Mat4D.rotationRad(right, rad)
-    OBBOver(center,right,up = {val t = Real4(up,1D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
+    OBBOver(center,right,up = {val t = Double4(up,1D); val r = t * mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
   }
 
 
-  def rotateAroundUp(rad:Real): OBBOver[Vec, Real] =
+  def rotateAroundUp(rad:Double): OBBOver[Double] =
   {
     val mat = Mat4D.rotationRad(up, rad)
 
-    OBBOver(center,right = {val t = Real4(right,1D); val r = t * mat ; Real3(r.x,r.y,r.z)},up,extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Double4(right,1D); val r = t * mat ; Double3(r(0),r(1),r(2))},up,extentRight, extentUp, extentLook)
   }
 
 
-  def rotateAroundLook(rad:Real):OBBOver[Vec, Real] =
+  def rotateAroundLook(rad:Double):OBBOver[Double] =
   {
     val mat = Mat4D.rotationRad(right ⨯ up, rad)
-    OBBOver(center,right = {val t = Real4(right,1D); val r = t * mat ; Real3(r.x,r.y,r.z)},
-      up = {val t = Real4(up,1D); val r = t * mat; Real3(r.x,r.y,r.z)},extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Double4(right,1D); val r = t * mat ; Double3(r(0),r(1),r(2))},
+      up = {val t = Double4(up,1D); val r = t * mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
   }
 }
 
-object OBBOverReal{
-  def apply(center: Real3, right: Real3, up : Real3, extentRight: Real, extentUp: Real, extentLook: Real)(implicit v3 : V3) = new OBBOverReal(center, right, up, extentRight, extentUp, extentLook)
+object OBBOverDouble{
+  def apply(center: Double3, right: Double3, up : Double3, extentRight: Double, extentUp: Double, extentLook: Double) = new OBBOverDouble(center, right, up, extentRight, extentUp, extentLook)
 }
 
 

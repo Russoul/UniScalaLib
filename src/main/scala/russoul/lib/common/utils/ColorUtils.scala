@@ -34,7 +34,7 @@ object ColorUtils
 
   def genRGB(color: Vec3[Float]): Int =
   {
-    genRGB(color.x, color.y, color.z)
+    genRGB(color(0), color(1), color(2))
   }
 
   def genRGB(r: Float, g: Float, b: Float): Int =

@@ -1,20 +1,16 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.TypeClasses._
 import russoul.lib.common.utils.Arr
-import russoul.lib.common.immutable
-import russoul.lib.common.Implicits._
-import shapeless.Nat._
-import russoul.lib.common._
 import russoul.lib.common.math.geometry.simple.general.{CenteredShape, GeometricShape}
-import shapeless.Nat
-import Abstraction._
 import russoul.lib.common.math.algebra.Vec
 
 import scala.reflect.ClassTag
+import russoul.lib.common._
+import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+
 
 @immutable case class AABBOver[@tbsp F]private (override val center: Vec[F,_3],val extent: Vec[F,_3]) extends CenteredShape[F,_3] {
 
@@ -44,19 +40,19 @@ import spire.implicits._
   {
     val a = new Array[Vec[F,_3]](8)
 
-    val sx = extent.x
-    val sy = extent.y
-    val sz = extent.z
+    val sx = extent(0)
+    val sy = extent(1)
+    val sz = extent(2)
 
 
-    a(0) = Vec[F, _3](center.x-sx, center.y-sy, center.z-sz)
-    a(1) = Vec[F, _3](center.x-sx, center.y-sy, center.z+sz)
-    a(2) = Vec[F, _3](center.x+sx, center.y-sy, center.z+sz)
-    a(3) = Vec[F, _3](center.x+sx, center.y-sy, center.z-sz)
-    a(4) = Vec[F, _3](center.x-sx, center.y+sy, center.z-sz)
-    a(5) = Vec[F, _3](center.x-sx, center.y+sy, center.z+sz)
-    a(6) = Vec[F, _3](center.x+sx, center.y+sy, center.z+sz)
-    a(7) = Vec[F, _3](center.x+sx, center.y+sy, center.z-sz)
+    a(0) = Vec[F, _3](center(0)-sx, center(1)-sy, center(2)-sz)
+    a(1) = Vec[F, _3](center(0)-sx, center(1)-sy, center(2)+sz)
+    a(2) = Vec[F, _3](center(0)+sx, center(1)-sy, center(2)+sz)
+    a(3) = Vec[F, _3](center(0)+sx, center(1)-sy, center(2)-sz)
+    a(4) = Vec[F, _3](center(0)-sx, center(1)+sy, center(2)-sz)
+    a(5) = Vec[F, _3](center(0)-sx, center(1)+sy, center(2)+sz)
+    a(6) = Vec[F, _3](center(0)+sx, center(1)+sy, center(2)+sz)
+    a(7) = Vec[F, _3](center(0)+sx, center(1)+sy, center(2)-sz)
 
     a
   }
@@ -65,22 +61,22 @@ import spire.implicits._
     *
     *
     */
-  def genRectangles()(implicit field: Field[F], tag: ClassTag[V[F,_3]]): Array[RectangleOver[F]] =
+  def genRectangles()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[RectangleOver[F]] =
   {
 
     val a = new Array[RectangleOver[F]](6)
 
-    val sx = extent.x
-    val sy = extent.y
-    val sz = extent.z
+    val sx = extent(0)
+    val sy = extent(1)
+    val sz = extent(2)
 
 
-    a(0) = RectangleOver[V,F](center + makeVector(_3,field.zero, sy, field.zero), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,field.zero,-sz))//top
-    a(1) = RectangleOver[V,F](center + makeVector(_3,field.zero, -sy, field.zero), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,field.zero,sz))//bottom
-    a(2) = RectangleOver[V,F](center + makeVector(_3,-sx, field.zero, field.zero), makeVector(_3,field.zero, field.zero,sz), makeVector(_3,field.zero,sy,field.zero))//left
-    a(3) = RectangleOver[V,F](center + makeVector(_3,sx, field.zero, field.zero), makeVector(_3,field.zero, field.zero,-sz), makeVector(_3,field.zero,sy,field.zero))//right
-    a(4) = RectangleOver[V,F](center + makeVector(_3,field.zero, field.zero, -sz), makeVector(_3,-sx, field.zero,field.zero), makeVector(_3,field.zero,sy,field.zero))//back
-    a(5) = RectangleOver[V,F](center + makeVector(_3,field.zero, field.zero, sz), makeVector(_3,sx, field.zero,field.zero), makeVector(_3,field.zero,sy,field.zero))//front
+    a(0) = RectangleOver[F](center + Vec3[F](field.zero, sy, field.zero), Vec3[F](sx, field.zero,field.zero), Vec3[F](field.zero,field.zero,-sz))//top
+    a(1) = RectangleOver[F](center + Vec3[F](field.zero, -sy, field.zero), Vec3[F](sx, field.zero,field.zero), Vec3[F](field.zero,field.zero,sz))//bottom
+    a(2) = RectangleOver[F](center + Vec3[F](-sx, field.zero, field.zero), Vec3[F](field.zero, field.zero,sz), Vec3[F](field.zero,sy,field.zero))//left
+    a(3) = RectangleOver[F](center + Vec3[F](sx, field.zero, field.zero), Vec3[F](field.zero, field.zero,-sz), Vec3[F](field.zero,sy,field.zero))//right
+    a(4) = RectangleOver[F](center + Vec3[F](field.zero, field.zero, -sz), Vec3[F](-sx, field.zero,field.zero), Vec3[F](field.zero,sy,field.zero))//back
+    a(5) = RectangleOver[F](center + Vec3[F](field.zero, field.zero, sz), Vec3[F](sx, field.zero,field.zero), Vec3[F](field.zero,sy,field.zero))//front
     
     
     a
@@ -96,13 +92,13 @@ import spire.implicits._
 
 object AABBOver
 {
-  def genFromMinMax[V[_,_ <: Nat],@tbsp F](min:V[F,_3], max:V[F,_3])(implicit field: Field[F], tag: ClassTag[V[F,_3]], con: Con[F]):AABBOver[V,F] =
+  def genFromMinMax[@tbsp F](min:Vec3[F], max:Vec3[F])(implicit field: Field[F], tag: ClassTag[Vec3[F]]):AABBOver[F] =
   {
-    val extent = (max-min) * 0.5D.as[F]
+    val extent = (max-min) * field.fromDouble(0.5D)
     val center = min + extent
 
-    new AABBOver[V,F](center,extent)
+    new AABBOver[F](center,extent)
   }
 
-  def apply[V[_,_ <: Nat], @tbsp F](center: V[F,_3], extent: V[F,_3]) = new AABBOver[V,F](center, extent)
+  def apply[@tbsp F](center: Vec3[F], extent: Vec3[F]) = new AABBOver[F](center, extent)
 }
