@@ -31,7 +31,7 @@ object RayOver
 
   def apply[@tbsp F](pos: Vec3[F], look: Vec3[F], zNear: F, zFar: F)(implicit field: Field[F]): RayOver[F] =
   {
-    new RayOver(pos + (look :* zNear), look)
+    new RayOver(pos + (look * zNear), look)
   }
 
   def apply[@tbsp F](start: Vec3[F], dir: Vec3[F]) = new RayOver[F](start, dir)

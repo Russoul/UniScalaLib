@@ -24,7 +24,7 @@ import spire.implicits._
     new Rectangle2Over(center + v, extent)
   }
 
-  def genVertices()(implicit evTag: ClassTag[Vec2[F]], ev3 : Field[F]): Array[Vec2[F]] = Array[Vec2[F]](center - extent, center + Vec2[F](extent(0), -extent(1)), center + extent, center + Vec2[F](-extent(0), extent(1))
+  def genVertices()(implicit evTag: ClassTag[Vec2[F]], ev3 : Field[F]): Array[Vec2[F]] = Array[Vec2[F]](center - extent, center + Vec2[F](extent(0), -extent(1)), center + extent, center + Vec2[F](-extent(0), extent(1)))
 
   /**
     * scaling around center of this rectangle

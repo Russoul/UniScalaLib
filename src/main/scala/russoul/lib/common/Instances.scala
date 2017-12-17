@@ -3,16 +3,13 @@ package russoul.lib.common
 import russoul.lib.common.TypeClasses._
 import russoul.lib.common.math.algebra.{Mat, Vec}
 import shapeless.Nat
-import shapeless.ops.nat.ToInt
-import Nat._
 import singleton.ops.XInt
-import spire.algebra._
-import spire.{NoImplicit, sp}
+
 
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
-
+import spire._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -23,6 +20,9 @@ import spire.implicits._
 object Instances {
 
 
+  object VecSupport{
+    //TODO
+  }
 
 
   object AllInstances extends AllInstances
@@ -139,7 +139,7 @@ object Instances {
       val ar = new Array[F](v.size)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = r * v(i)
         i += 1
       }
@@ -151,7 +151,7 @@ object Instances {
       val ar = new Array[F](v.size)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = -v(i)
         i += 1
       }
@@ -163,7 +163,7 @@ object Instances {
       val ar = new Array[F](_size.value)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = scalar.zero
         i += 1
       }
@@ -203,7 +203,7 @@ object Instances {
       val ar = new Array[F](v.size)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = r * v(i)
         i += 1
       }
@@ -215,7 +215,7 @@ object Instances {
       val ar = new Array[F](v.size)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = -v(i)
         i += 1
       }
@@ -227,7 +227,7 @@ object Instances {
       val ar = new Array[F](_size.value)
 
       var i = 0
-      while (i < ar.size){
+      while (i < ar.length){
         ar(i) = scalar.zero
         i += 1
       }
@@ -262,14 +262,14 @@ object Instances {
   }
 
   trait VecInstanceM1 {
-    type NI0[F,S <: XInt] = NoImplicit[VectorSpace[Vec[F,S], F]]
+    type NI0[F,S <: XInt] = spire.NoImplicit[VectorSpace[Vec[F,S], F]]
 
     implicit def vecModule[@sp(Int,Long,Float,Double) F: ClassTag: Ring, Size <: XInt : ValueOf](implicit no : NI0[F,Size]): VecIsModule[F, Size] =
       new VecIsModule[F,Size]
   }
 
   trait VecInstance0 extends VecInstanceM1{
-    type NI1[F,S <: XInt] = NoImplicit[NormedVectorSpace[Vec[F,S], F]]
+    type NI1[F,S <: XInt] = spire.NoImplicit[NormedVectorSpace[Vec[F,S], F]]
 
     implicit def vecIsVectorSpace[@sp(Float, Double) F : ClassTag : Field, Size <: XInt : ValueOf](implicit no : NI1[F,Size]) : VecIsVectorSpace[F,Size] = {
       new VecIsVectorSpace[F, Size]()

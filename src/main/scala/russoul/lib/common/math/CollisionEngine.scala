@@ -10,12 +10,12 @@ import russoul.lib.common.math.algebra.Mat
 
 import scala.language.postfixOps
 import scala.reflect.ClassTag
-
 import Implicits._
-
+import russoul.lib.common.Ops.VectorSpaceOps
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+import singleton.ops._
 
 object CollisionEngine
 {
@@ -41,7 +41,7 @@ object CollisionEngine
 
     val denom = ray.dir ⋅ n
 
-
+    //val debug = new VectorSpaceOps(Vec3[Float](1,1,1)).*(2F)
 
     if(abs(denom) < 1e-6){
       None
@@ -52,8 +52,8 @@ object CollisionEngine
       if(t >= 0){ //in front the ray
         val point = ray.start + ray.dir * t
         val centerPoint = point - rec.center
-        val projRight = centerPoint ⋅ rec.right.normalize()
-        val projUp = centerPoint ⋅ rec.up.normalize()
+        val projRight = centerPoint ⋅ rec.right.normalize
+        val projUp = centerPoint ⋅ rec.up.normalize
 
 
         val rightMag = rec.right.squaredLength()
@@ -479,7 +479,7 @@ object CollisionEngine
 
       for (j <- vertices.indices ) {
         val v = vertices(j)
-        val toVertex = (v - plane.point).normalize()
+        val toVertex = (v - plane.point).normalize
         val res = n ⋅ toVertex
         if (res < 0) {
           inCount -= 1
@@ -853,7 +853,7 @@ object CollisionEngine
 
       for (k <- 0 until 8  if in == 0 || out == 0) {
         val v = vertices(k)
-        val toVertex = (v - planes(i).point).normalize()
+        val toVertex = (v - planes(i).point).normalize
         val res = planes(i).normal * toVertex
         if (res < 0) {
           out += 1

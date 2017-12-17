@@ -8,7 +8,7 @@ import singleton.ops.XString
 
 import scala.collection.immutable
 import scala.language.higherKinds
-import scala.reflect.macros.whitebox
+import scala.reflect.macros.{Context, blackbox, whitebox}
 import scala.annotation.{StaticAnnotation, elidable}
 import scala.tools.reflect.ToolBox
 import scala.reflect.runtime.universe._
@@ -45,14 +45,28 @@ package object macros {
     ) ++ (DefaultOps.operatorNames - "$eq$eq$eq")
   }
 
-  object Enricher extends Ops with OperatorNames
+  object Enricher extends Ops with OperatorNames{
+
+    def findMethodNameStr(c: whitebox.Context, s : String): c.universe.TermName = {
+      import c.universe._
+      newTermName(operatorNames.getOrElse(s, s))
+    }
+
+    def binopWithEv_timesr[A, Ev, R](c: whitebox.Context)(rhs: c.Expr[A])(ev: c.Expr[Ev]): c.Expr[R] = {
+      import c.universe._
+      val lhs = unpackWithoutEv(c)
+      val tree = Apply(Select(ev.tree, findMethodNameStr(c, "timesr")), List(lhs, rhs.tree))
+      //println(showCode(tree))
+      c.Expr[R](tree)
+    }
+
+  }
 
   import scala.language.experimental.macros
-  import scala.reflect.macros.whitebox.Context
 
   object vec {
     def apply(xs: Any*) : Any = macro at_impl
-    def at_impl(c: Context)(xs: c.Expr[Any]*) : c.Expr[Any] = {
+    def at_impl(c: whitebox.Context)(xs: c.Expr[Any]*) : c.Expr[Any] = {
       import c.universe._
 
       // First let's show that we can recover the types:

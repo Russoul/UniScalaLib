@@ -137,7 +137,7 @@ object CollisionEngineF
       amin.z >= bmin.z && amax.z <= bmax.z
   }
 
-  def checkOBBOBBSeparatingAxisTheorem(checkThis:OBBF, checkWith:OBBF)(implicit v3: Orderable[Float]):Boolean =
+  def checkOBBOBBSeparatingAxisTheorem(checkThis:OBBF, checkWith:OBBF):Boolean =
   {
 
     val normals = new Arr[Float3]
@@ -168,10 +168,10 @@ object CollisionEngineF
     {
       val n = normals(i)
 
-      val S = v3.abs(cToC ⋅ n)
+      val S = abs(cToC ⋅ n)
 
-      val s1 = v3.abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + v3.abs( (checkThis.up * checkThis.extentUp) ⋅ n) + v3.abs ( (look1 * checkThis.extentLook) ⋅ n)
-      val s2 = v3.abs(( checkWith.right * checkWith.extentRight ) ⋅ n) + v3.abs( (checkWith.up * checkWith.extentUp) ⋅ n) + v3.abs ( (look2 * checkWith.extentLook) ⋅ n)
+      val s1 = abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + abs( (checkThis.up * checkThis.extentUp) ⋅ n) + abs ( (look1 * checkThis.extentLook) ⋅ n)
+      val s2 = abs(( checkWith.right * checkWith.extentRight ) ⋅ n) + abs( (checkWith.up * checkWith.extentUp) ⋅ n) + abs ( (look2 * checkWith.extentLook) ⋅ n)
 
       if(S > s1 + s2) return false
     }
@@ -179,7 +179,7 @@ object CollisionEngineF
     true
   }
 
-  def checkOBBAABBSeparatingAxisTheorem(checkThis:OBBF, checkWith:AABBF)(implicit v3: Orderable[Float]):Boolean =
+  def checkOBBAABBSeparatingAxisTheorem(checkThis:OBBF, checkWith:AABBF):Boolean =
   {
 
     val normals = new Arr[Float3](16)
@@ -214,10 +214,10 @@ object CollisionEngineF
     {
       val n = normals(i)
 
-      val S = v3.abs(cToC ⋅ n)
+      val S = abs(cToC ⋅ n)
 
-      val s1 = v3.abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + v3.abs( (checkThis.up * checkThis.extentUp) ⋅ n) + v3.abs ( (look1 * checkThis.extentLook) ⋅ n)
-      val s2 = v3.abs(( r2 * checkWith.extent.x ) ⋅ n) + v3.abs( (u2 * checkWith.extent.y) ⋅ n) + v3.abs ( (look2 * checkWith.extent.z) ⋅ n)
+      val s1 = abs(( checkThis.right * checkThis.extentRight ) ⋅ n) + abs( (checkThis.up * checkThis.extentUp) ⋅ n) + abs ( (look1 * checkThis.extentLook) ⋅ n)
+      val s2 = abs(( r2 * checkWith.extent.x ) ⋅ n) + abs( (u2 * checkWith.extent.y) ⋅ n) + abs ( (look2 * checkWith.extent.z) ⋅ n)
 
       if(S > s1 + s2) return false
     }

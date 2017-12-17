@@ -188,7 +188,7 @@ package object common
   }
 
   //specialization
-  type sp = specialized
+  //type sp = specialized
   class tbsp extends Annotation //tbsp for to be specialized; currently specialization does not work well
   //....
 

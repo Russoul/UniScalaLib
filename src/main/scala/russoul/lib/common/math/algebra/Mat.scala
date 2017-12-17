@@ -1,6 +1,6 @@
 package russoul.lib.common.math.algebra
 
-import russoul.lib.common.{immutable, sp, tbsp}
+import russoul.lib.common._
 import shapeless.Nat
 import shapeless.ops.nat.ToInt
 import singleton.ops.XInt

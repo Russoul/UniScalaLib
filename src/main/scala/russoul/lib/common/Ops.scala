@@ -15,6 +15,7 @@ import Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+import machinist.DefaultOps
 
 /**
   * Created by russoul on 13.06.2017.
@@ -52,8 +53,14 @@ object Ops {
   }
 
 
-  class VecOps[@tbsp A : ClassTag, Size <: XInt](a : Vec[A, Size]){
-    def *[M <: XInt](b : Mat[A, Size, M])(implicit field : Field[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
+  class VectorSpaceOps[V](lhs : V){
+    //no sp needed
+    //def :/[F](rhs:F)(implicit ev: VectorSpace[V, F]): V = macro Ops.binopWithEv[F, VectorSpace[V, F], V]
+    def *[F](rhs:F)(implicit ev: VectorSpace[V, F]): V = null.asInstanceOf[V]//TODO//macro Enricher.binopWithEv_timesr[F, VectorSpace[V, F], V]
+  }
+
+  class VecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Vec[A, Size]){
+    /*def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
       val ar = new Array[A](b.m)
 
 
@@ -64,6 +71,17 @@ object Ops {
       }
 
       Vec[A, M](ar : _*)
+    }*/
+
+    def squaredLength()(implicit ring : Ring[A]): A ={
+      var ret = ring.zero
+      var i = 0
+      while(i < a.size){
+        ret += a(i) * a(i)
+        i += 1
+      }
+
+      ret
     }
   }
 
@@ -102,7 +120,7 @@ object Ops {
     def y = a(1)
   }
 
-  class MatrixOps[@tbsp A : ClassTag , A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2]){
+  class MatrixOps[@tbsp A : ClassTag , A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2]){
     def +(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
 
       val n = lhs.size() / lhs.m
@@ -169,7 +187,7 @@ object Ops {
       Vec[A, A1](ar : _*)
     }
 
-    def ⨯[A3 <: XInt](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
+    def ⨯[A3 <: XInt : ValueOf](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
       val n = lhs.size() / lhs.m
       val m = rhs.m
 
@@ -198,14 +216,15 @@ object Ops {
   }
 
   trait MatrixImplicits{
-    implicit def matrixOps[@tbsp A, A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
+    implicit def matrixOps[@tbsp A, A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
   }
 
   trait VectorImplicits{
     implicit def vector4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : Vec4Ops[A] = new Vec4Ops[A](lhs)
     implicit def vector3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : Vec3Ops[A] = new Vec3Ops[A](lhs)
     implicit def vector2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : Vec2Ops[A] = new Vec2Ops[A](lhs)
-    implicit def vectorOps[@tbsp A : ClassTag : Field, N <: XInt](lhs : Vec[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
+    implicit def vectorOps[@tbsp A : ClassTag : Field, N <: XInt : ValueOf](lhs : Vec[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
+    implicit def vectorSpaceOps[V](lhs : V) : VectorSpaceOps[V] = new VectorSpaceOps[V](lhs)
   }
 
 
