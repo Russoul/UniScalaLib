@@ -35,7 +35,7 @@ import spire.implicits._
   */
 @immutable case class RectangleOver[@tbsp F]private (override val center: Vec3[F], val right: Vec3[F], val up: Vec3[F]) extends CenteredShape[F,_3] {
 
-  override def translate(v: Vec3[F])(implicit ev3 : Field[F]): RectangleOver[F] = {
+  override def translate(v: Vec3[F])(implicit ev3 : Field[F], classTag: ClassTag[F]): RectangleOver[F] = {
     new RectangleOver(center + v, right, up)
   }
 
@@ -43,14 +43,14 @@ import spire.implicits._
     *
     * @return right hand rule
     */
-  def genNormal()(implicit ev3 : Field[F]): Vec3[F] = (right ⨯ up).normalize()
+  def genNormal()(implicit ev3 : Field[F], classTag: ClassTag[F], root : NRoot[F]): Vec3[F] = (right ⨯ up).normalize
 
 
-  def genVerticesClockwise()(implicit ev3 : Field[F], ev4: ClassTag[Vec3[F]]): Array[Vec3[F]] = Array[Vec3[F]](center + up - right, center + up + right, center - up + right, center - up - right)
+  def genVerticesClockwise()(implicit ev3 : Field[F], ev4: ClassTag[F]): Array[Vec3[F]] = Array[Vec3[F]](center + up - right, center + up + right, center - up + right, center - up - right)
 
-  def genVertices()(implicit ev3 : Field[F], ev4: ClassTag[Vec3[F]]): Array[Vec3[F]] = Array[Vec3[F]](center - up - right, center - up + right, center + up + right, center + up - right)
+  def genVertices()(implicit ev3 : Field[F], ev4: ClassTag[F]): Array[Vec3[F]] = Array[Vec3[F]](center - up - right, center - up + right, center + up + right, center + up - right)
 
-  def scale(right:F, up:F)(implicit ev3 : Field[F]): RectangleOver[F] =
+  def scale(right:F, up:F)(implicit ev3 : Field[F], classTag: ClassTag[F]): RectangleOver[F] =
   {
     new RectangleOver(center, this.right :* right, this.up :* up)
   }
@@ -61,16 +61,16 @@ import spire.implicits._
     * @param factor
     * @return scaled around its center version
     */
-  override def scale(factor: F)(implicit ev3 : Field[F]): RectangleOver[F] = {
+  override def scale(factor: F)(implicit ev3 : Field[F], classTag: ClassTag[F]): RectangleOver[F] = {
     new RectangleOver(center, this.right :* factor, this.up :* factor)
   }
 
-  def scaleAroundBasis(scale:F)(implicit ev3 : Field[F]): RectangleOver[F] =
+  def scaleAroundBasis(scale:F)(implicit ev3 : Field[F], classTag: ClassTag[F]): RectangleOver[F] =
   {
     new RectangleOver(center :* scale, this.right :* scale, this.up :* scale)
   }
 
-  def scaleAroundBasisZConst(scale:F)(implicit ev3 : Field[F]): RectangleOver[F] =
+  def scaleAroundBasisZConst(scale:F)(implicit ev3 : Field[F], tag : ClassTag[F]): RectangleOver[F] =
   {
     new RectangleOver(Vec3[F](center(0) * scale, center(1) * scale,center(2)), this.right :* scale, this.up :* scale)
   }
@@ -84,7 +84,7 @@ import spire.implicits._
 
 object RectangleOver
 {
-  def fromMinMax2DParallelToZ[@tbsp F](min:Vec2[F], max:Vec2[F], z:F)(implicit evTag: ClassTag[Vec3[F]], field: Field[F]): RectangleOver[F] =
+  def fromMinMax2DParallelToZ[@tbsp F : ClassTag](min:Vec2[F], max:Vec2[F], z:F)(implicit field: Field[F]): RectangleOver[F] =
   {
     val t: Vec3[F] = Vec3[F](max(0), max(1) ,field.zero) - Vec3[F](min(0), min(1),field.zero)
     new RectangleOver(Vec3[F](min(0), min(1),z) + t :* field.fromDouble(0.5D), Vec3[F](t(0) / field.fromDouble(2D), field.zero, field.zero), Vec3[F](field.zero, t(1) / field.fromDouble(2D) ,field.zero))

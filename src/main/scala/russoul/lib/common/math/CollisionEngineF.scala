@@ -48,8 +48,8 @@ object CollisionEngineF
       if(t >= 0){ //in front the ray
         val point = ray.start + ray.dir * t
         val centerPoint = point - rec.center
-        val projRight = centerPoint ⋅ rec.right.normalize()
-        val projUp = centerPoint ⋅ rec.up.normalize()
+        val projRight = centerPoint ⋅ rec.right.normalize
+        val projUp = centerPoint ⋅ rec.up.normalize
 
 
         val rightMag = rec.right.squaredLength()
@@ -475,7 +475,7 @@ object CollisionEngineF
 
       for (j <- vertices.indices ) {
         val v = vertices(j)
-        val toVertex = (v - plane.point).normalize()
+        val toVertex = (v - plane.point).normalize
         val res = n ⋅ toVertex
         if (res < 0) {
           inCount -= 1
@@ -702,7 +702,7 @@ object CollisionEngineF
       minL = l3
     }
 
-    if(minL != null) Some(minV, minL) else None
+    if(minL != null) Some((minV, minL)) else None
 
 
   }
@@ -729,7 +729,7 @@ object CollisionEngineF
 
   def distancePoint2Point2(a:Float2, b:Float2): Float =
   {
-    (b-a).length()
+    (b-a).norm
   }
 
   /**
@@ -742,7 +742,7 @@ object CollisionEngineF
     val d = line.start - line.end
     val n = d.⟂
     val vec = point - line.start
-    lang.Math.abs((n dot vec) / n.length())
+    lang.Math.abs((n dot vec) / n.norm)
   }
 
 
@@ -768,17 +768,16 @@ object CollisionEngineF
 
 
     if((v1 ⋅ v2) * (v1⋅v3) > 0)
-      ((circle.center-dist).length()-circle.rad, dist)
+      ((circle.center-dist).norm-circle.rad, dist)
     else{
       val l1 = (circle.center - line.start).squaredLength()
       val l2 = (circle.center - line.end).squaredLength()
 
-      val ev = implicitly[Euclidean[Float]]
 
       if(l1 > l2)
-        (ev.sqrt(l2) - circle.rad, line.end)
+        (scala.math.sqrt(l2).toFloat - circle.rad, line.end)
       else
-        (ev.sqrt(l1) - circle.rad, line.start)
+        (scala.math.sqrt(l1).toFloat - circle.rad, line.start)
     }
   }
 

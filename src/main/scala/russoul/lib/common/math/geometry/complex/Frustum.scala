@@ -7,6 +7,11 @@ import russoul.lib.common.Implicits._
 import russoul.lib.common.math.algebra.Vec
 
 
+import Implicits._
+import spire.algebra._
+import spire.math._
+import spire.implicits._
+
 case class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Float, val lookingDir: Vec3[Float], val zNear: Float, val zFar: Float, val up: Vec3[Float])
 {
 
@@ -85,7 +90,7 @@ case class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Flo
     val lb = flb - nlb
     val nl = nlt - nlb
 
-    val normalLeft = lb.⨯(nl).normalize()
+    val normalLeft = lb.⨯(nl).normalize
 
     val nrb = nvs(1)
     val nrt = nvs(2)
@@ -94,7 +99,7 @@ case class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Flo
     val rb = nrb - frb
     val nr = nrt - nrb
 
-    val normalRight = rb.⨯(nr).normalize()
+    val normalRight = rb.⨯(nr).normalize
 
 
     val frt = fvs(2)
@@ -102,12 +107,12 @@ case class Frustum(val pos: Vec3[Float], val angleOfView: Float, val aspect: Flo
     val nt = nlt - nrt
     val tr = frt - nrt
 
-    val normalTop = nt.⨯(tr).normalize()
+    val normalTop = nt.⨯(tr).normalize
 
 
     val nb = nrb - nlb
 
-    val normalBottom = nb.⨯(-rb).normalize()
+    val normalBottom = nb.⨯(-rb).normalize
 
 
     Array[PlaneOver[Float]](PlaneOver(nlb, normalLeft), PlaneOver(nrb, normalRight), PlaneOver(frt, normalTop), PlaneOver(flb, normalBottom))

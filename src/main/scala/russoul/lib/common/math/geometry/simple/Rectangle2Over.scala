@@ -20,21 +20,21 @@ import spire.implicits._
   */
 @immutable case class Rectangle2Over[@tbsp F]private(override val center:Vec2[F],val extent:Vec2[F]) extends CenteredShape[F,_2]{
 
-  override def translate(v: Vec2[F])(implicit ev3 : Field[F]): Rectangle2Over[F] = {
+  override def translate(v: Vec2[F])(implicit ev3 : Field[F], evTag: ClassTag[F]): Rectangle2Over[F] = {
     new Rectangle2Over(center + v, extent)
   }
 
-  def genVertices()(implicit evTag: ClassTag[Vec2[F]], ev3 : Field[F]): Array[Vec2[F]] = Array[Vec2[F]](center - extent, center + Vec2[F](extent(0), -extent(1)), center + extent, center + Vec2[F](-extent(0), extent(1)))
+  def genVertices()(implicit evTag: ClassTag[F], ev3 : Field[F]): Array[Vec2[F]] = Array[Vec2[F]](center - extent, center + Vec2[F](extent(0), -extent(1)), center + extent, center + Vec2[F](-extent(0), extent(1)))
 
   /**
     * scaling around center of this rectangle
     */
-  def scale(scalar:F)(implicit ev3 : Field[F]): Rectangle2Over[F] =
+  def scale(scalar:F)(implicit ev3 : Field[F], tag : ClassTag[F]): Rectangle2Over[F] =
   {
     new Rectangle2Over(center, extent :* scalar)
   }
 
-  def scaleAroundBasis(scalar:F)(implicit ev3 : Field[F]):Rectangle2Over[F] =
+  def scaleAroundBasis(scalar:F)(implicit ev3 : Field[F], tag : ClassTag[F]):Rectangle2Over[F] =
   {
     new Rectangle2Over(center :* scalar, extent :* scalar)
   }
@@ -45,7 +45,7 @@ import spire.implicits._
   }
 
 
-  def toRectangleParallelToZ(zLevel:F)(implicit field : Field[F]): RectangleOver[F] =
+  def toRectangleParallelToZ(zLevel:F)(implicit field : Field[F], tag : ClassTag[F]): RectangleOver[F] =
   {
     RectangleOver[F](Vec3[F](center(0), center(1), zLevel), Vec3[F](extent(0), field.zero, field.zero), Vec3[F](field.zero,extent(2), field.zero))
   }
@@ -55,7 +55,7 @@ import spire.implicits._
 
 object Rectangle2Over
 {
-  def fromMinMax[@tbsp F](min:Vec2[F], max:Vec2[F])(implicit field : Field[F]):Rectangle2Over[F] =
+  def fromMinMax[@tbsp F : ClassTag](min:Vec2[F], max:Vec2[F])(implicit field : Field[F]):Rectangle2Over[F] =
   {
     val t = (max - min) :* field.fromDouble(0.5D)
     Rectangle2Over[F](min + t, t)

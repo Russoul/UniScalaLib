@@ -18,7 +18,7 @@ import scala.reflect.ClassTag
   * @param sizeY number of squares along Y axis
   * @tparam A
   */
-class VoxelGrid2[@sp(Float, Double) A : ClassTag] (val a: A, val sizeX: Int, val sizeY: Int){
+class VoxelGrid2[@specialized(Float, Double) A : ClassTag] (val a: A, val sizeX: Int, val sizeY: Int){
 
   def verticesX = sizeX + 1
   def verticesY = sizeY + 1

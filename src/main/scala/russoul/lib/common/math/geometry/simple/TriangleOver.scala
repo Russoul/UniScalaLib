@@ -20,12 +20,12 @@ import spire.implicits._
 
 
 
-  override def translate(v: Vec3[F])(implicit ev3: Field[F]): TriangleOver[F] = {
+  override def translate(v: Vec3[F])(implicit ev3: Field[F], classTag: ClassTag[F]): TriangleOver[F] = {
     new TriangleOver(p1 + v, p2 + v, p3 + v)
   }
 
 
-  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F]): TriangleOver[F] = {
+  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F], classTag: ClassTag[F]): TriangleOver[F] = {
     new TriangleOver(p1 :* factor, p2 :* factor, p3 :* factor)
   }
 

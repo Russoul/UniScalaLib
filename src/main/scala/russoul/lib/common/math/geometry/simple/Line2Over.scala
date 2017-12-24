@@ -1,23 +1,23 @@
 package russoul.lib.common.math.geometry.simple
 
 import russoul.lib.common.math.geometry.simple.general.GeometricShape
-
-
 import russoul.lib.common._
 import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+
+import scala.reflect.ClassTag
 /**
   * Created by russoul on 23.04.17.
   */
 @immutable case class Line2Over[@tbsp F]private(val start:Vec2[F], val end:Vec2[F]) extends GeometricShape[F,_2] {
 
 
-  def genDir()(implicit field: Field[F]): Vec2[F] = (end - start).normalize()
+  def genDir()(implicit field: Field[F], classTag: ClassTag[F], nroot : NRoot[F]): Vec2[F] = (end - start).normalize
 
 
-  override def translate(v: Vec2[F])(implicitfield: Field[F]): Line2Over[F] = {
+  override def translate(v: Vec2[F])(implicit field: Field[F], classTag: ClassTag[F]): Line2Over[F] = {
     new Line2Over(start + v, end + v)
   }
 
@@ -26,9 +26,9 @@ import spire.implicits._
 
   }
 
-  def scaleAroundBasis(scalar:F)(implicit field: Field[F]): Line2Over[F] =
+  def scaleAroundBasis(scalar:F)(implicit field: Field[F], classTag: ClassTag[F]): Line2Over[F] =
   {
-    new Line2Over(start * scalar, end * scalar)
+    new Line2Over(start :* scalar, end :* scalar)
   }
 
 }

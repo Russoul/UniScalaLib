@@ -1,8 +1,10 @@
 package russoul.lib.common.math.algebra
 
 import russoul.lib.common.Implicits._
-import russoul.lib.common.{Real, immutable, tbsp}
+import russoul.lib.common._
 import russoul.lib.common.utils.Arr
+
+import scala.math
 
 import spire.algebra._
 import spire.math._

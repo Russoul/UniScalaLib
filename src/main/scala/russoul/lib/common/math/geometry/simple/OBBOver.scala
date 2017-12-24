@@ -11,18 +11,19 @@ import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+import singleton.ops._
 /**
   * Created by Russoul on 18.07.2016.
   */
 @immutable case class OBBOver[@tbsp F]private[geometry](override val center:Vec3[F], val right:Vec3[F], val up:Vec3[F], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[F,_3] {
 
 
-  private[geometry] def this(aabb :AABBOver[F])(implicit field: Field[F]) {
+  private[geometry] def this(aabb :AABBOver[F])(implicit field: Field[F], tag : ClassTag[F]) {
     this(aabb.center, Vec3[F](field.one,field.zero,field.zero), Vec3[F](field.zero,field.one,field.zero), aabb.extent(0), aabb.extent(1), aabb.extent(2))
   }
 
   
-  def genMax()(implicit field: Field[F]): Vec3[F] =
+  def genMax()(implicit field: Field[F], tag : ClassTag[F]): Vec3[F] =
   {
     val fe = (right ⨯ up) :* extentLook
     val ue =  up :* extentUp
@@ -31,53 +32,53 @@ import spire.implicits._
     center + ue + re + fe
   }
 
-  def genMin()(implicit field: Field[F]): Vec3[F] =
+  def genMin()(implicit field: Field[F], tag : ClassTag[F]): Vec3[F] =
   {
-    val fe = (right ⨯ up)*extentLook
-    val ue =  up*extentUp
-    val re = right*extentRight
+    val fe = (right ⨯ up) :* extentLook
+    val ue =  up :* extentUp
+    val re = right :* extentRight
 
     center - ue - re - fe
   }
 
-  def genRightLine(length:F)(implicit field: Field[F]): LineOver[F] =
+  def genRightLine(length:F)(implicit field: Field[F], tag : ClassTag[F]): LineOver[F] =
   {
     LineOver(center, center + (right :* length))
   }
 
-  def genUpLine(length:F)(implicit field: Field[F]): LineOver[F] = {
+  def genUpLine(length:F)(implicit field: Field[F], tag : ClassTag[F]): LineOver[F] = {
     LineOver(center, center + (up :* length))
   }
 
-  def genLookLine(length:F)(implicit field: Field[F]): LineOver[F] = {
-    LineOver[V,F](center, center + ((right ⨯ up) :* length))
+  def genLookLine(length:F)(implicit field: Field[F], tag : ClassTag[F]): LineOver[F] = {
+    LineOver[F](center, center + ((right ⨯ up) :* length))
   }
 
 
-  override def translate(tr:Vec3[F])(implicit field: Field[F]): OBBOver[F] =
+  override def translate(tr:Vec3[F])(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] =
   {
     new OBBOver(center + tr, right, up, extentRight, extentUp, extentLook)
   }
 
-  def scale(s:F)(implicit field: Field[F]): OBBOver[F] =
+  def scale(s:F)(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] =
   {
     new OBBOver(center, right, up, extentRight * s, extentUp * s, extentLook * s)
   }
 
 
-  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F]): OBBOver[F] = {
-    new OBBOver(center * factor, right, up, extentRight * factor, extentUp * factor, extentLook * factor)
+  override def scaleAroundBasis(factor: F)(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] = {
+    new OBBOver(center :* factor, right, up, extentRight * factor, extentUp * factor, extentLook * factor)
   }
 
 
 
-  def genRectangles()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[RectangleOver[F]]=
+  def genRectangles()(implicit field: Field[F], tag: ClassTag[Vec3[F]], tag2 : ClassTag[F]): Array[RectangleOver[F]]=
   {
     val out = new Array[RectangleOver[F]](6)
 
-    val fe = (right ⨯ up) * extentLook
-    val ue = up * extentUp
-    val re = right * extentRight
+    val fe = (right ⨯ up) :* extentLook
+    val ue = up :* extentUp
+    val re = right :* extentRight
 
     val t = center + ue
     val b = center - ue
@@ -96,13 +97,13 @@ import spire.implicits._
     out
   }
 
-  def genVertices()(implicit field: Field[F], tag: ClassTag[Vec3[F]]):Array[Vec3[F]] =
+  def genVertices()(implicit field: Field[F], tag: ClassTag[Vec3[F]], tag2 : ClassTag[F]):Array[Vec3[F]] =
   {
     val out = new Array[Vec3[F]](8)
 
-    val fe = (right ⨯ up)*extentLook
-    val ue =  up*extentUp
-    val re = right*extentRight
+    val fe = (right ⨯ up) :* extentLook
+    val ue =  up :* extentUp
+    val re = right :* extentRight
 
     out(0) = center + ue + re + fe
     out(1) = center + ue + re - fe
@@ -117,13 +118,13 @@ import spire.implicits._
     out
   }
 
-  def genVerticesCounterClockwise()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[Vec3[F]] =
+  def genVerticesCounterClockwise()(implicit field: Field[F], tag: ClassTag[Vec3[F]], tag2 : ClassTag[F]): Array[Vec3[F]] =
   {
     val out = new Array[Vec3[F]](8)
 
-    val l = (right ⨯ up)*extentLook
-    val u =  up*extentUp
-    val r = right*extentRight
+    val l = (right ⨯ up) :* extentLook
+    val u =  up :* extentUp
+    val r = right :* extentRight
 
 
     out(0) = center - u - l - r
@@ -148,7 +149,7 @@ import spire.implicits._
 
 object OBBOver{
   def apply[@tbsp F](center:Vec3[F], right:Vec3[F], up:Vec3[F], extentRight:F, extentUp:F, extentLook:F) = new OBBOver[F](center, right, up, extentRight, extentUp, extentLook)
-  def apply[@tbsp F](aabb: AABBOver[V,F])(implicit ev1: CES[V,F,_3] , ev2: T1[F,V,_3], field: Field[F]): OBBOver[F] = new OBBOver[F](aabb)
+  def apply[@tbsp F](aabb: AABBOver[F])(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] = new OBBOver[F](aabb)
 
 }
 

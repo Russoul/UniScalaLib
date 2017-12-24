@@ -7,6 +7,7 @@ import russoul.lib.common.Implicits._
 import russoul.lib.common.math.algebra.Vec
 import russoul.lib.common._
 
+import russoul.lib.common.Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -107,12 +108,12 @@ class Camera private
 
 
     val upTransform = Mat4F.rotationDeg(look, -droll)
-    var newUp = transformf(up , upTransform).normalize() //new base : look, newUp, newRight
-    var newRight = (look ⨯ newUp).normalize()
+    var newUp = transformf(up , upTransform).normalize //new base : look, newUp, newRight
+    var newRight = (look ⨯ newUp).normalize
 
-    val newLook = (newRight * scala.math.sin(yaw).toFloat + look * scala.math.cos(yaw).toFloat + newUp * scala.math.sin(pitch).toFloat).normalize(); //new look based on dpitch and dyaw in new base
-    newRight = (newLook ⨯ newUp).normalize()
-    newUp = (newLook ⨯ (-newRight)).normalize()
+    val newLook = (newRight * scala.math.sin(yaw).toFloat + look * scala.math.cos(yaw).toFloat + newUp * scala.math.sin(pitch).toFloat).normalize; //new look based on dpitch and dyaw in new base
+    newRight = (newLook ⨯ newUp).normalize
+    newUp = (newLook ⨯ (-newRight)).normalize
 
     look = newLook
     up = newUp

@@ -99,7 +99,7 @@ import russoul.lib.common.utils.Arr
 
         val t3 = vertices(second) - vertices(first)
         val t4 = vertices(third) - vertices(second)
-        val normal = (t3 ^ t4).normalize()
+        val normal = (t3 ^ t4).normalize
 
         val turple = (center, normal, vertices(first), vertices(second), vertices(third), vertices(fourth), vertices(fifth))
         res += turple

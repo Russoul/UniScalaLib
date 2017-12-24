@@ -1,7 +1,6 @@
 package russoul.lib.common.utils
 
 import russoul.lib.common.{Float3, Vec3}
-import russoul.lib.common.TypeClasses.{Euclidean, Field, Orderable}
 import russoul.lib.common.Implicits._
 
 

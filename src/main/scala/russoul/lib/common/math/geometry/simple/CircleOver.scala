@@ -13,22 +13,22 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class CircleOver[@tbsp F : ClassTag]private(override val center:Vec[F,_2],val rad:F) extends CenteredShape[F,_2] {
+@immutable case class CircleOver[@tbsp F]private(override val center:Vec[F,_2],val rad:F) extends CenteredShape[F,_2] {
 
 
-  override def translate(v: Vec[F,_2])(implicit field: Field[F]): CircleOver[F] = {
+  override def translate(v: Vec[F,_2])(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
     new CircleOver(center + v, rad)
   }
 
-  override def scale(scalar:F)(implicit field: Field[F]): CircleOver[F] = {
+  override def scale(scalar:F)(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
     new CircleOver(center, rad * scalar)
   }
 
-  override def scaleAroundBasis(scalar:F)(implicit field: Field[F]): CircleOver[F] = {
+  override def scaleAroundBasis(scalar:F)(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
     new CircleOver(center * scalar, rad * scalar)
   }
 
-  def inscribedInRectangle2()(implicit field: Field[F]): Rectangle2Over[F] = {
+  def inscribedInRectangle2()(implicit field: Field[F], tag : ClassTag[F]): Rectangle2Over[F] = {
     Rectangle2Over[F](center, Vec[F,_2](rad,rad))
   }
 

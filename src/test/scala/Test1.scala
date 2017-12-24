@@ -43,7 +43,7 @@ object Test1 extends App{
 
     assert(Float2(1,2).⟂ == Float2(-2,1))
     assert( (Int2(1,2) ⊗ Int2(0,-1)) == Int2(0,-2))
-    assert(Double2(3D,4D).normalize() == Double2(0.6D, 0.8D))
+    assert(Double2(3D,4D).normalize == Double2(0.6D, 0.8D))
     assert( (Double4(1,2,3,4) dot Double4(-1,-2,-3,-4)) == -30D)
   }
 
@@ -89,7 +89,7 @@ object Test1 extends App{
     val k = Float3(0,0,1)
 
     val circle = CircleF(center = Float2(0F,0F), rad = 1F)
-    val ray2 = Ray2(start = Real2(1D,1D), dir = Real2(1D,1D).normalize())
+    val ray2 = Ray2(start = Real2(1D,1D), dir = Real2(1D,1D).normalize)
     val triangle = TriangleF(p1 = i, p2 = j, p3 = k)
     val orientedBoundingBox = OBB(center = Real3(0,0,0), right = Real3(1,0,0),
       up = Real3(0,1,0), extentRight = 1, extentUp = 2, extentLook = 3)//right and up must be normalized !

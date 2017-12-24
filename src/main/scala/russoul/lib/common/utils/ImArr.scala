@@ -43,6 +43,7 @@ import scala.reflect.ClassTag
          eq
        }else
          false
+      case _ => false
     }
   }
 }

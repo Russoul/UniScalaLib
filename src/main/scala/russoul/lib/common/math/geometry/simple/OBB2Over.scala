@@ -4,7 +4,6 @@ import russoul.lib.common.utils.Arr
 import russoul.lib.common.math.geometry.simple.general.CenteredShape
 
 import scala.reflect.ClassTag
-
 import russoul.lib.common._
 import russoul.lib.common.Implicits._
 import spire.algebra._
@@ -21,19 +20,19 @@ import spire.implicits._
     * @param factor
     * @return scaled around its center version
     */
-  override def scale(factor: F)(implicit field: Field[F]): OBB2Over[F] = {
+  override def scale(factor: F)(implicit field: Field[F], classTag: ClassTag[F]): OBB2Over[F] = {
     new OBB2Over(center, right, up, extentRight * factor, extentUp * factor)
   }
 
-  override def translate(v: Vec2[F])(implicit field: Field[F]): OBB2Over[F] = {
+  override def translate(v: Vec2[F])(implicit field: Field[F], classTag: ClassTag[F]): OBB2Over[F] = {
     new OBB2Over(center + v, right, up, extentRight, extentUp)
   }
 
-  override def scaleAroundBasis(factor: F)(implicit field: Field[F]): OBB2Over[F] = {
+  override def scaleAroundBasis(factor: F)(implicit field: Field[F], classTag: ClassTag[F]): OBB2Over[F] = {
     new OBB2Over(center * factor, right, up, extentRight * factor, extentUp * factor)
   }
 
-  def genVertices()(implicit field: Field[F], tag: ClassTag[Vec2[F]]): Array[Vec2[F]] = Array[Vec2[F]](center - right * extentRight - up * extentUp, center + right * extentRight - up * extentUp, center + right * extentRight + up * extentUp, center - right * extentRight + up * extentUp)
+  def genVertices()(implicit field: Field[F], tag: ClassTag[F]): Array[Vec2[F]] = Array[Vec2[F]](center - right * extentRight - up * extentUp, center + right * extentRight - up * extentUp, center + right * extentRight + up * extentUp, center - right * extentRight + up * extentUp)
 
   override def toString: String =
   {

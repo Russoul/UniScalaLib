@@ -3,12 +3,12 @@ package russoul.lib.common.math.geometry.simple
 import russoul.lib.common.math.geometry.simple.general.GeometricShape
 import russoul.lib.common.{TypeClasses, immutable, tbsp}
 import russoul.lib.common._
-
-
 import Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
+
+import scala.reflect.ClassTag
 
 /**
   * Created by russoul on 17.07.2017.
@@ -17,11 +17,11 @@ import spire.implicits._
 
   
 
-  override def translate(v: Vec2[F])(implicit ev : Field[F]): Triangle2Over[F] = {
+  override def translate(v: Vec2[F])(implicit ev : Field[F], tag : ClassTag[F]): Triangle2Over[F] = {
     new Triangle2Over(p1 + v, p2 + v, p3 + v)
   }
 
-  override def scaleAroundBasis(factor: F)(implicit ev : Field[F]): Triangle2Over[F] = {
+  override def scaleAroundBasis(factor: F)(implicit ev : Field[F], tag : ClassTag[F]): Triangle2Over[F] = {
     new Triangle2Over(p1 :* factor, p2 :* factor, p3 :* factor)
   }
 

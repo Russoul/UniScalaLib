@@ -177,7 +177,7 @@ case class Vec_old[A <: Dim : NotNothing, @tbsp B](dim: A, array:Array[B])(impli
     ev.sqrt(squaredLength())
   }
 
-  @inline def normalize(): Vec_old[A,B] = {
+  @inline def normalize: Vec_old[A,B] = {
     val ar = new Array[B](dim.n)
     val len = length()
     for(i <- 0 until dim.n){

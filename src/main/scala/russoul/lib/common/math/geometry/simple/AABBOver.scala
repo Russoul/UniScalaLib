@@ -12,12 +12,12 @@ import spire.math._
 import spire.implicits._
 
 
-@immutable case class AABBOver[@tbsp F : ClassTag]private (override val center: Vec[F,_3],val extent: Vec[F,_3]) extends CenteredShape[F,_3] {
+@immutable case class AABBOver[@tbsp F]private (override val center: Vec[F,_3],val extent: Vec[F,_3]) extends CenteredShape[F,_3] {
 
-  def genMin()(implicit field: Field[F]): Vec[F,_3] = center - extent
-  def genMax()(implicit field: Field[F]): Vec[F,_3] = center + extent
+  def genMin()(implicit field: Field[F], tag : ClassTag[F]): Vec[F,_3] = center - extent
+  def genMax()(implicit field: Field[F], tag : ClassTag[F]): Vec[F,_3] = center + extent
 
-  override def translate(v: Vec[F,_3])(implicit field: Field[F]): AABBOver[F] =
+  override def translate(v: Vec[F,_3])(implicit field: Field[F], tag : ClassTag[F]): AABBOver[F] =
   {
     new AABBOver(center + v, extent)
   }
@@ -26,17 +26,17 @@ import spire.implicits._
     *
     * @return scaled version (around AABB's center point)
     */
-  override def scale(s:F)(implicit field: Field[F]): AABBOver[F] =
+  override def scale(s:F)(implicit field: Field[F], tag : ClassTag[F]): AABBOver[F] =
   {
     new AABBOver(center, extent * s)
   }
 
 
-  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F]): AABBOver[F] = {
+  override def scaleAroundBasis(factor: F)(implicit ev3: Field[F], tag : ClassTag[F]): AABBOver[F] = {
     new AABBOver(center * factor, extent * factor)
   }
 
-  def genVertices()(implicit tag: ClassTag[Vec[F,_3]], f : Field[F]): Array[Vec[F,_3]] =
+  def genVertices()(implicit f : Field[F], tag : ClassTag[F]): Array[Vec[F,_3]] =
   {
     val a = new Array[Vec[F,_3]](8)
 
@@ -61,7 +61,7 @@ import spire.implicits._
     *
     *
     */
-  def genRectangles()(implicit field: Field[F], tag: ClassTag[Vec3[F]]): Array[RectangleOver[F]] =
+  def genRectangles()(implicit field: Field[F], tag: ClassTag[F]): Array[RectangleOver[F]] =
   {
 
     val a = new Array[RectangleOver[F]](6)
@@ -92,7 +92,7 @@ import spire.implicits._
 
 object AABBOver
 {
-  def genFromMinMax[@tbsp F : ClassTag](min:Vec3[F], max:Vec3[F])(implicit field: Field[F], tag: ClassTag[Vec3[F]]):AABBOver[F] =
+  def genFromMinMax[@tbsp F](min:Vec3[F], max:Vec3[F])(implicit field: Field[F], tag: ClassTag[F]):AABBOver[F] =
   {
     val extent = (max-min) * field.fromDouble(0.5D)
     val center = min + extent

@@ -9,9 +9,8 @@ import scala.annotation.Annotation
 import scala.language.implicitConversions
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
-
-
 import russoul.lib.common.Implicits._
+import singleton.ops.XInt
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -72,11 +71,11 @@ package object common
 
   //TODO better design FShape2, it is too verbose
   trait FShape2[@tbsp A]{ self =>
-    def density(p: Vec2[A])(implicit field: Field[A]) : A
+    def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]) : A
 
     def &(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
           order.max(self.density(p), that.density(p))
         }
       }
@@ -84,7 +83,7 @@ package object common
 
     def |(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
           order.min(self.density(p), that.density(p))
         }
       }
@@ -92,7 +91,7 @@ package object common
 
     def -(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
       new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
           order.max(self.density(p), -that.density(p))
         }
       }
@@ -100,32 +99,32 @@ package object common
   }
 
   case class FCircle[@tbsp A](center : Vec2[A], rad: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       val d = p - center
       (d dot d) - rad * rad
     }
   }
 
   case class FHalfPlaneLeft[@tbsp A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       p(0) - x
     }
   }
 
   case class FHalfPlaneRight[@tbsp A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       x - p(0)
     }
   }
 
   case class FHalfPlaneUpper[@tbsp A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       y - p(1)
     }
   }
 
   case class FHalfPlaneLower[@tbsp A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       p(1) - y
     }
   }
@@ -135,7 +134,7 @@ package object common
     val shape = FHalfPlaneRight(center(0) - extent(0)) & FHalfPlaneLeft(center(0) + extent(0)) &
       FHalfPlaneLower(center(1) + extent(1)) & FHalfPlaneUpper(center(1) - extent(1))
 
-    override def density(p: Vec2[A])(implicit field: Field[A]): A = {
+    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       shape.density(p)
     }
   }
@@ -202,6 +201,8 @@ package object common
   type ComplexD = ComplexOver[Double]
   type ComplexF = ComplexOver[Float]
 
+
+
   type Vec2[@tbsp T] = Vec[T, _2]
   type Vec3[@tbsp T] = Vec[T, _3]
   type Vec4[@tbsp T] = Vec[T, _4]
@@ -221,9 +222,9 @@ package object common
     @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A, w: A): Vec[A, _4] = Vec[A,_4](x,y,z,w)
   }
 
-  type Double2 = Vec2[Double]
-  type Double3 = Vec3[Double]
-  type Double4 = Vec4[Double]
+  type Double2 = Vec[Double,_2]
+  type Double3 = Vec[Double,_3]
+  type Double4 = Vec[Double,_4]
   //...................
 
   type Float2 = Vec[Float, _2]
@@ -244,11 +245,11 @@ package object common
   //Common simple geometric objects over Doubles--------------
   type AABB = AABBOver[Double]
   object AABB{
-    def apply(center: Double3, extent: Double3) = AABBOver[Double](center, extent)
+    //def apply(center: Vec[Double,_3], extent: Vec[Double,_3]) = AABBOver[Double](center, extent)
   }
   type Circle = CircleOver[Double]
   object Circle{
-    def apply(center : Double2, rad: Double) = CircleOver[Double](center, rad)
+    //def apply(center : Vec[Double,_2], rad: Double) = CircleOver[Double](center, rad)
   }
   type Line2 = Line2Over[Double]
   object Line2{
@@ -322,11 +323,11 @@ package object common
   //Common simple geometric objects over Floats--------------
   type AABBF = AABBOver[Float]
   object AABBF{
-    def apply(center: Float3, extent: Float3) = AABBOver[Float](center, extent)
+    //def apply(center: Vec[Float,_3], extent: Vec[Float,_3]) = AABBOver[Float](center, extent)
   }
   type CircleF = CircleOver[Float]
   object CircleF{
-    def apply(center : Float2, rad: Float) = CircleOver(center, rad)
+    //def apply(center : Vec[Float,_2], rad: Float) = CircleOver(center, rad)
   }
   type Line2F = Line2Over[Float]
   object Line2F{
@@ -616,8 +617,8 @@ package object common
     def view(pos: Float3, target: Float3, up: Float3): Mat4F =
     {
 
-      val za = (target - pos).normalize()
-      val xa = up.⨯(za).normalize()
+      val za = (target - pos).normalize
+      val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
       Mat[Float,_4](
         xa(0), ya(0), za(0), 0F,
@@ -631,7 +632,7 @@ package object common
 
 
       val za = -look
-      val xa = up.⨯(za).normalize()
+      val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
       Mat[Float,_4](
         xa(0), ya(0), za(0), 0F,
@@ -765,8 +766,8 @@ package object common
     def view(pos: Vec3[Double], target: Vec3[Double], up: Vec3[Double]): Mat4D = //row major?
     {
 
-      val za = (target - pos).normalize()
-      val xa = up.⨯(za).normalize()
+      val za = (target - pos).normalize
+      val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
       Mat[Double,_4](
         xa(0), ya(0), za(0), 0D,
@@ -780,7 +781,7 @@ package object common
 
 
       val za = -look
-      val xa = up.⨯(za).normalize()
+      val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
       Mat[Double,_4](
         xa(0), ya(0), za(0), 0D,

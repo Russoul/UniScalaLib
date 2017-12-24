@@ -53,14 +53,18 @@ object Ops {
   }
 
 
-  class VectorSpaceOps[V](lhs : V){
+  class VectorSpaceOps[V, @tbsp F](lhs : V)(implicit ev: VectorSpace[V, F]){
     //no sp needed
     //def :/[F](rhs:F)(implicit ev: VectorSpace[V, F]): V = macro Ops.binopWithEv[F, VectorSpace[V, F], V]
-    def *[F](rhs:F)(implicit ev: VectorSpace[V, F]): V = null.asInstanceOf[V]//TODO//macro Enricher.binopWithEv_timesr[F, VectorSpace[V, F], V]
+    def *(rhs:F): V = ev.timesr(lhs, rhs)//TODO//macro Enricher.binopWithEv_timesr[F, VectorSpace[V, F], V]
   }
 
   class VecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Vec[A, Size]){
-    /*def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
+
+    def *(rhs:A)(implicit ev: VectorSpace[Vec[A,Size], A]): Vec[A,Size] = ev.timesr(a, rhs)
+
+
+    def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A], nroot : NRoot[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
       val ar = new Array[A](b.m)
 
 
@@ -71,7 +75,7 @@ object Ops {
       }
 
       Vec[A, M](ar : _*)
-    }*/
+    }
 
     def squaredLength()(implicit ring : Ring[A]): A ={
       var ret = ring.zero
@@ -94,11 +98,11 @@ object Ops {
   }
 
   class Vec3Ops[@tbsp A : ClassTag](a : Vec[A, _3]){
-    def ⨯(b : Vec[A, _3])(implicit ring : Field[A]) : Vec[A,_3] = {
+    def ⨯(b : Vec[A, _3])(implicit ring : Ring[A]) : Vec[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
 
-    def cross(b : Vec[A, _3])(implicit ring : Field[A]) : Vec[A,_3] = {
+    def cross(b : Vec[A, _3])(implicit ring : Ring[A]) : Vec[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
 
@@ -224,7 +228,6 @@ object Ops {
     implicit def vector3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : Vec3Ops[A] = new Vec3Ops[A](lhs)
     implicit def vector2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : Vec2Ops[A] = new Vec2Ops[A](lhs)
     implicit def vectorOps[@tbsp A : ClassTag : Field, N <: XInt : ValueOf](lhs : Vec[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
-    implicit def vectorSpaceOps[V](lhs : V) : VectorSpaceOps[V] = new VectorSpaceOps[V](lhs)
   }
 
 

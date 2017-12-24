@@ -46,7 +46,7 @@ object FileUtils
 
   }
 
-  def listOfFilesInDir(directory: File, files: Arr[File])
+  def listOfFilesInDir(directory: File, files: Arr[File]) : Unit =
   {
     val fList: Array[File] = directory.listFiles
     if (fList == null) return
