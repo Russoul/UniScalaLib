@@ -64,7 +64,7 @@ package object macros {
 
   import scala.language.experimental.macros
 
-  object vec {
+  object row {
     def apply(xs: Any*) : Any = macro at_impl
     def at_impl(c: whitebox.Context)(xs: c.Expr[Any]*) : c.Expr[Any] = {
       import c.universe._
@@ -80,7 +80,7 @@ package object macros {
 
       val tpeTree = tq"$tpe"
       val natTpeTree = c.parse(s"""${xs.size.toString}""")
-      val tree = q"russoul.lib.common.math.algebra.Vec.apply[$tpeTree,$natTpeTree](..$xs)"
+      val tree = q"russoul.lib.common.math.algebra.Row.apply[$tpeTree,$natTpeTree](..$xs)"
       c.Expr(tree)
     }
   }

@@ -4,7 +4,7 @@ import russoul.lib.common._
 import russoul.lib.common.math.geometry.simple.{PlaneOver, RectangleOver, SphereOver}
 import russoul.lib.common.utils.Arr
 import russoul.lib.common.Implicits._
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 
 
 import Implicits._

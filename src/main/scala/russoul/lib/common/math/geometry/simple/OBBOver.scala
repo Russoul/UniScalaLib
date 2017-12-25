@@ -1,6 +1,6 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.math.algebra.{Mat, Vec}
+import russoul.lib.common.math.algebra.{Mat, Row}
 import russoul.lib.common.utils.Arr
 import russoul.lib.common.math.geometry.simple.general.{CenteredShape, GeometricShape}
 

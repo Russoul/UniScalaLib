@@ -2,7 +2,7 @@ package russoul.lib
 
 
 import russoul.lib.common.math.geometry.simple._
-import russoul.lib.common.math.algebra.{ComplexOver, Mat, Vec}
+import russoul.lib.common.math.algebra.{ComplexOver, Mat, Row}
 import spire.algebra.{Field, Order}
 
 import scala.annotation.Annotation
@@ -192,6 +192,7 @@ package object common
   //....
 
 
+  type _1 = 1
   type _2 = 2
   type _3 = 3
   type _4 = 4
@@ -202,10 +203,12 @@ package object common
   type ComplexF = ComplexOver[Float]
 
 
+  type Row[@tbsp T, Size <: XInt] = Mat[T,_1,Size]
+  type Column[@tbsp T, Size <: XInt] = Mat[T, Size, _1] //TODO
 
-  type Vec2[@tbsp T] = Vec[T, _2]
-  type Vec3[@tbsp T] = Vec[T, _3]
-  type Vec4[@tbsp T] = Vec[T, _4]
+  type Vec2[@tbsp T] = Row[T, _2]
+  type Vec3[@tbsp T] = Row[T, _3]
+  type Vec4[@tbsp T] = Row[T, _4]
 
   type Mat2[@tbsp A] = Mat[A, _3, _3]
   type Mat3[@tbsp A] = Mat[A, _3, _3]
@@ -213,29 +216,29 @@ package object common
 
 
   object Vec2{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A): Vec[A, _2] = Vec[A,_2](x,y)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A): Row[A, _2] = Row[A,_2](x,y)
   }
   object Vec3{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A): Vec[A, _3] = Vec[A,_3](x,y,z)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A): Row[A, _3] = Row[A,_3](x,y,z)
   }
   object Vec4{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A, w: A): Vec[A, _4] = Vec[A,_4](x,y,z,w)
+    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A, w: A): Row[A, _4] = Row[A,_4](x,y,z,w)
   }
 
-  type Double2 = Vec[Double,_2]
-  type Double3 = Vec[Double,_3]
-  type Double4 = Vec[Double,_4]
+  type Double2 = Row[Double,_2]
+  type Double3 = Row[Double,_3]
+  type Double4 = Row[Double,_4]
   //...................
 
-  type Float2 = Vec[Float, _2]
-  type Float3 = Vec[Float, _3]
-  type Float4 = Vec[Float, _4]
+  type Float2 = Row[Float, _2]
+  type Float3 = Row[Float, _3]
+  type Float4 = Row[Float, _4]
 
-  type Int2 = Vec[Int, _2]
-  type Int3 = Vec[Int, _3]
-  type Int4 = Vec[Int, _4]
+  type Int2 = Row[Int, _2]
+  type Int3 = Row[Int, _3]
+  type Int4 = Row[Int, _4]
 
-  
+
 
   type Mat4D = Mat4[Double]
   type Mat4F = Mat4[Float]
@@ -245,11 +248,11 @@ package object common
   //Common simple geometric objects over Doubles--------------
   type AABB = AABBOver[Double]
   object AABB{
-    //def apply(center: Vec[Double,_3], extent: Vec[Double,_3]) = AABBOver[Double](center, extent)
+    def apply(center: Row[Double,_3], extent: Row[Double,_3]) = AABBOver[Double](center, extent)
   }
   type Circle = CircleOver[Double]
   object Circle{
-    //def apply(center : Vec[Double,_2], rad: Double) = CircleOver[Double](center, rad)
+    def apply(center : Row[Double,_2], rad: Double) = CircleOver[Double](center, rad)
   }
   type Line2 = Line2Over[Double]
   object Line2{
@@ -323,11 +326,11 @@ package object common
   //Common simple geometric objects over Floats--------------
   type AABBF = AABBOver[Float]
   object AABBF{
-    //def apply(center: Vec[Float,_3], extent: Vec[Float,_3]) = AABBOver[Float](center, extent)
+    def apply(center: Row[Float,_3], extent: Row[Float,_3]) = AABBOver[Float](center, extent)
   }
   type CircleF = CircleOver[Float]
   object CircleF{
-    //def apply(center : Vec[Float,_2], rad: Float) = CircleOver(center, rad)
+    def apply(center : Row[Float,_2], rad: Float) = CircleOver(center, rad)
   }
   type Line2F = Line2Over[Float]
   object Line2F{
@@ -404,48 +407,48 @@ package object common
 
 
   object Double2{
-    @inline def apply(x: Double, y: Double) = Vec[Double, _2](x,y)
+    @inline def apply(x: Double, y: Double) = Row[Double, _2](x,y)
   }
 
   object Double3{
-    @inline def apply(x: Double, y: Double, z: Double) = Vec[Double, _3](x,y,z)
-    @inline def apply(v2:Double2, z:Double) = Vec[Double, _3](v2(0), v2(1), z)
+    @inline def apply(x: Double, y: Double, z: Double) = Row[Double, _3](x,y,z)
+    @inline def apply(v2:Double2, z:Double) = Row[Double, _3](v2(0), v2(1), z)
   }
 
   object Double4{
-    @inline def apply(x: Double, y: Double, z: Double, w: Double)  = Vec[Double, _4](x,y,z,w)
-    @inline def apply(v:Double3, w:Double): Double4 = Vec[Double, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Double, y: Double, z: Double, w: Double)  = Row[Double, _4](x,y,z,w)
+    @inline def apply(v:Double3, w:Double): Double4 = Row[Double, _4](v(0), v(1), v(2), w)
   }
 
 
   object Float2{
-    @inline def apply(x: Float, y: Float) = Vec[Float, _2](x,y)
+    @inline def apply(x: Float, y: Float) = Row[Float, _2](x,y)
   }
 
   object Float3{
-    @inline def apply(x: Float, y: Float, z: Float) = Vec[Float, _3](x,y,z)
-    @inline def apply(v2:Float2, z:Float) = Vec[Float, _3](v2(0), v2(1), z)
+    @inline def apply(x: Float, y: Float, z: Float) = Row[Float, _3](x,y,z)
+    @inline def apply(v2:Float2, z:Float) = Row[Float, _3](v2(0), v2(1), z)
   }
 
   object Float4{
-    @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Vec[Float, _4](x,y,z,w)
-    @inline def apply(v:Float3, w:Float): Float4 = Vec[Float, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Row[Float, _4](x,y,z,w)
+    @inline def apply(v:Float3, w:Float): Float4 = Row[Float, _4](v(0), v(1), v(2), w)
   }
   
 
 
   object Int2{
-    @inline def apply(x: Int, y: Int) = Vec[Int, _2](x,y)
+    @inline def apply(x: Int, y: Int) = Row[Int, _2](x,y)
   }
 
   object Int3{
-    @inline def apply(x: Int, y: Int, z: Int) = Vec[Int, _3](x,y,z)
-    @inline def apply(v2:Int2, z:Int) = Vec[Int, _3](v2(0), v2(1), z)
+    @inline def apply(x: Int, y: Int, z: Int) = Row[Int, _3](x,y,z)
+    @inline def apply(v2:Int2, z:Int) = Row[Int, _3](v2(0), v2(1), z)
   }
 
   object Int4{
-    @inline def apply(x: Int, y: Int, z: Int, w: Int)  = Vec[Int, _4](x,y,z,w)
-    @inline def apply(v:Int3, w:Int): Int4 = Vec[Int, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Int, y: Int, z: Int, w: Int)  = Row[Int, _4](x,y,z,w)
+    @inline def apply(v:Int3, w:Int): Int4 = Row[Int, _4](v(0), v(1), v(2), w)
   }
   
 

@@ -1,6 +1,6 @@
 package russoul.lib.common.math.geometry.simple
 
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 import russoul.lib.common.math.geometry.simple.general.CenteredShape
 import russoul.lib.common._
 import russoul.lib.common.Implicits._
@@ -13,10 +13,10 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class CircleOver[@tbsp F]private(override val center:Vec[F,_2],val rad:F) extends CenteredShape[F,_2] {
+@immutable case class CircleOver[@tbsp F]private(override val center:Row[F,_2], val rad:F) extends CenteredShape[F,_2] {
 
 
-  override def translate(v: Vec[F,_2])(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
+  override def translate(v: Row[F,_2])(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
     new CircleOver(center + v, rad)
   }
 
@@ -29,7 +29,7 @@ import scala.reflect.ClassTag
   }
 
   def inscribedInRectangle2()(implicit field: Field[F], tag : ClassTag[F]): Rectangle2Over[F] = {
-    Rectangle2Over[F](center, Vec[F,_2](rad,rad))
+    Rectangle2Over[F](center, Row[F,_2](rad,rad))
   }
 
   override def toString(): String =
@@ -39,5 +39,5 @@ import scala.reflect.ClassTag
 }
 
 object CircleOver{
-  def apply[@tbsp F : ClassTag](center:Vec2[F], rad:F) = new CircleOver[F](center, rad)
+  //def apply[@tbsp F : ClassTag](center:Vec2[F], rad:F) = new CircleOver[F](center, rad)
 }

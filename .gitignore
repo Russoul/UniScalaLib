@@ -5,7 +5,6 @@ target/
 *.jar
 *.class
 *.log
-lib/
 macros/project/
 macros/target/
 macros_post/project/

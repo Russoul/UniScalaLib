@@ -5,7 +5,7 @@ import scala.language.experimental.macros
 import russoul.lib.common.TypeClasses._
 
 import algebra.ring.AdditiveGroup
-import russoul.lib.common.math.algebra.{Mat, Vec}
+import russoul.lib.common.math.algebra.{Mat, Row}
 
 import scala.reflect.ClassTag
 import russoul.lib.macros.Enricher
@@ -59,12 +59,36 @@ object Ops {
     def *(rhs:F): V = ev.timesr(lhs, rhs)//TODO//macro Enricher.binopWithEv_timesr[F, VectorSpace[V, F], V]
   }
 
-  class VecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Vec[A, Size]){
+  class VecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
 
-    def *(rhs:A)(implicit ev: VectorSpace[Vec[A,Size], A]): Vec[A,Size] = ev.timesr(a, rhs)
+    def *(rhs:A)(implicit ev: VectorSpace[Row[A,Size], A]): Row[A,Size] = ev.timesr(a, rhs)
+
+    def product(rhs : Row[A,Size])(implicit ev : Ring[A]) : Row[A,Size] = {
+      val ar = new Array[A](a.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = a(i) * rhs(i)
+        i += 1
+      }
+
+      Row[A, Size](ar : _*)
+    }
+
+    def ⊗(rhs : Row[A,Size])(implicit ev : Ring[A]) : Row[A,Size] = {
+      val ar = new Array[A](a.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = a(i) * rhs(i)
+        i += 1
+      }
+
+      Row[A, Size](ar : _*)
+    }
 
 
-    def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A], nroot : NRoot[A]) : Vec[A, M] = { // 1xSize * SizexN = 1xM
+    def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A], nroot : NRoot[A]) : Row[A, M] = { // 1xSize * SizexN = 1xM
       val ar = new Array[A](b.m)
 
 
@@ -74,7 +98,7 @@ object Ops {
         i += 1
       }
 
-      Vec[A, M](ar : _*)
+      Row[A, M](ar : _*)
     }
 
     def squaredLength()(implicit ring : Ring[A]): A ={
@@ -89,7 +113,7 @@ object Ops {
     }
   }
 
-  class Vec4Ops[@tbsp A : ClassTag](a : Vec[A, _4]){
+  class Vec4Ops[@tbsp A : ClassTag](a : Row[A, _4]){
 
     def x = a(0) //TODO make faster
     def y = a(1)
@@ -97,12 +121,12 @@ object Ops {
     def w = a(3)
   }
 
-  class Vec3Ops[@tbsp A : ClassTag](a : Vec[A, _3]){
-    def ⨯(b : Vec[A, _3])(implicit ring : Ring[A]) : Vec[A,_3] = {
+  class Vec3Ops[@tbsp A : ClassTag](a : Row[A, _3]){
+    def ⨯(b : Row[A, _3])(implicit ring : Ring[A]) : Row[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
 
-    def cross(b : Vec[A, _3])(implicit ring : Ring[A]) : Vec[A,_3] = {
+    def cross(b : Row[A, _3])(implicit ring : Ring[A]) : Row[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
 
@@ -111,12 +135,12 @@ object Ops {
     def z = a(2)
   }
 
-  class Vec2Ops[@tbsp A : ClassTag](a : Vec[A, _2]){
-    def ⟂()(implicit ev : Ring[A]) : Vec[A, _2] = {
+  class Vec2Ops[@tbsp A : ClassTag](a : Row[A, _2]){
+    def ⟂()(implicit ev : Ring[A]) : Row[A, _2] = {
       Vec2[A](-a(1), a(0))
     }
 
-    def ortho()(implicit ev : Ring[A]) : Vec[A, _2] = {
+    def ortho()(implicit ev : Ring[A]) : Row[A, _2] = {
       Vec2[A](-a(1), a(0))
     }
 
@@ -167,7 +191,7 @@ object Ops {
       Mat[A, A1, A2](n, lhs.m, ar : _*)
     }
 
-    def row(index : Int) : Vec[A, A2] = {
+    def row(index : Int) : Row[A, A2] = {
       val ar = new Array[A](lhs.m)
 
       var i = 0
@@ -176,10 +200,10 @@ object Ops {
         i += 1
       }
 
-      Vec[A, A2](ar : _*)
+      Row[A, A2](ar : _*)
     }
 
-    def column(index : Int) : Vec[A, A1] = {
+    def column(index : Int) : Row[A, A1] = {
       val ar = new Array[A](lhs.m)
 
       var i = 0
@@ -188,7 +212,7 @@ object Ops {
         i += 1
       }
 
-      Vec[A, A1](ar : _*)
+      Row[A, A1](ar : _*)
     }
 
     def ⨯[A3 <: XInt : ValueOf](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
@@ -204,6 +228,22 @@ object Ops {
       }
 
       Mat[A, A1, A3](n, m, ar : _*)
+    }
+
+    def trans() : Mat[A,A2,A1] = {
+      val ar = new Array[A](lhs.size())
+
+      val n = lhs.size() / lhs.m
+      val m = lhs.m
+
+
+      for(i <- 0 until n){
+        for(j <- 0 until m){
+          ar(i * m + j) = lhs(j,i)
+        }
+      }
+
+      Mat[A, A2, A1](m, n, ar : _*)
     }
 
 
@@ -227,7 +267,7 @@ object Ops {
     implicit def vector4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : Vec4Ops[A] = new Vec4Ops[A](lhs)
     implicit def vector3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : Vec3Ops[A] = new Vec3Ops[A](lhs)
     implicit def vector2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : Vec2Ops[A] = new Vec2Ops[A](lhs)
-    implicit def vectorOps[@tbsp A : ClassTag : Field, N <: XInt : ValueOf](lhs : Vec[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
+    implicit def vectorOps[@tbsp A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
   }
 
 

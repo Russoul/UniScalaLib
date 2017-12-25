@@ -1,10 +1,11 @@
 package russoul.lib.common.math.geometry.simple.general
 
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 import russoul.lib.common.tbsp
 import shapeless.Nat
 import singleton.ops.XInt
 import spire.algebra.Field
+import russoul.lib.common._
 
 import scala.reflect.ClassTag
 
@@ -14,7 +15,7 @@ import scala.reflect.ClassTag
   */
 trait CenteredShape[@tbsp F, Dim <: XInt] extends GeometricShape[F,Dim]
 {
-  def center:Vec[F,Dim]
+  def center:Row[F,Dim]
 
   /**
     *

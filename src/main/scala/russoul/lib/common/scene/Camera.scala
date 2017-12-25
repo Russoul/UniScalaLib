@@ -4,7 +4,7 @@ import russoul.lib.common._
 import russoul.lib.common.math.geometry.complex.Frustum
 import russoul.lib.common.math.geometry.simple.{RayOver, RectangleOver}
 import russoul.lib.common.Implicits._
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 import russoul.lib.common._
 
 import russoul.lib.common.Implicits._

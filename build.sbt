@@ -1,7 +1,11 @@
+inThisBuild(Seq(
+  scalaOrganization := "org.typelevel",
+  scalaVersion := "2.12.4-bin-typelevel-4"
+))
+
+
 lazy val coreSettings = Seq(
   //scalaOrganization := "org.scala-lang",
-  scalaOrganization := "org.typelevel",
-  scalaVersion := "2.12.3-bin-typelevel-4",
   //scalaVersion  := "2.12.3",
   //scalaVersion := "0.2.0-RC1",
   version := "0.0.1",

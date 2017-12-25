@@ -2,7 +2,7 @@ package russoul.lib.common.math.geometry.simple
 
 import russoul.lib.common.utils.Arr
 import russoul.lib.common.math.geometry.simple.general.{CenteredShape, GeometricShape}
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 
 import scala.reflect.ClassTag
 import russoul.lib.common._
@@ -12,12 +12,12 @@ import spire.math._
 import spire.implicits._
 
 
-@immutable case class AABBOver[@tbsp F]private (override val center: Vec[F,_3],val extent: Vec[F,_3]) extends CenteredShape[F,_3] {
+@immutable case class AABBOver[@tbsp F]private (override val center: Row[F,_3], val extent: Row[F,_3]) extends CenteredShape[F,_3] {
 
-  def genMin()(implicit field: Field[F], tag : ClassTag[F]): Vec[F,_3] = center - extent
-  def genMax()(implicit field: Field[F], tag : ClassTag[F]): Vec[F,_3] = center + extent
+  def genMin()(implicit field: Field[F], tag : ClassTag[F]): Row[F,_3] = center - extent
+  def genMax()(implicit field: Field[F], tag : ClassTag[F]): Row[F,_3] = center + extent
 
-  override def translate(v: Vec[F,_3])(implicit field: Field[F], tag : ClassTag[F]): AABBOver[F] =
+  override def translate(v: Row[F,_3])(implicit field: Field[F], tag : ClassTag[F]): AABBOver[F] =
   {
     new AABBOver(center + v, extent)
   }
@@ -36,23 +36,23 @@ import spire.implicits._
     new AABBOver(center * factor, extent * factor)
   }
 
-  def genVertices()(implicit f : Field[F], tag : ClassTag[F]): Array[Vec[F,_3]] =
+  def genVertices()(implicit f : Field[F], tag : ClassTag[F]): Array[Row[F,_3]] =
   {
-    val a = new Array[Vec[F,_3]](8)
+    val a = new Array[Row[F,_3]](8)
 
     val sx = extent(0)
     val sy = extent(1)
     val sz = extent(2)
 
 
-    a(0) = Vec[F, _3](center(0)-sx, center(1)-sy, center(2)-sz)
-    a(1) = Vec[F, _3](center(0)-sx, center(1)-sy, center(2)+sz)
-    a(2) = Vec[F, _3](center(0)+sx, center(1)-sy, center(2)+sz)
-    a(3) = Vec[F, _3](center(0)+sx, center(1)-sy, center(2)-sz)
-    a(4) = Vec[F, _3](center(0)-sx, center(1)+sy, center(2)-sz)
-    a(5) = Vec[F, _3](center(0)-sx, center(1)+sy, center(2)+sz)
-    a(6) = Vec[F, _3](center(0)+sx, center(1)+sy, center(2)+sz)
-    a(7) = Vec[F, _3](center(0)+sx, center(1)+sy, center(2)-sz)
+    a(0) = Row[F, _3](center(0)-sx, center(1)-sy, center(2)-sz)
+    a(1) = Row[F, _3](center(0)-sx, center(1)-sy, center(2)+sz)
+    a(2) = Row[F, _3](center(0)+sx, center(1)-sy, center(2)+sz)
+    a(3) = Row[F, _3](center(0)+sx, center(1)-sy, center(2)-sz)
+    a(4) = Row[F, _3](center(0)-sx, center(1)+sy, center(2)-sz)
+    a(5) = Row[F, _3](center(0)-sx, center(1)+sy, center(2)+sz)
+    a(6) = Row[F, _3](center(0)+sx, center(1)+sy, center(2)+sz)
+    a(7) = Row[F, _3](center(0)+sx, center(1)+sy, center(2)-sz)
 
     a
   }
@@ -100,5 +100,5 @@ object AABBOver
     new AABBOver[F](center,extent)
   }
 
-  def apply[@tbsp F : ClassTag](center: Vec3[F], extent: Vec3[F]) = new AABBOver[F](center, extent)
+  //def apply[@tbsp F : ClassTag](center: Vec3[F], extent: Vec3[F]) = new AABBOver[F](center, extent)
 }

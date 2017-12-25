@@ -5,7 +5,7 @@ import java.lang
 import russoul.lib.common._
 import russoul.lib.common.TypeClasses._
 import russoul.lib.common.Implicits._
-import russoul.lib.common.math.algebra.Vec
+import russoul.lib.common.math.algebra.Row
 
 import scala.annotation.tailrec
 import scala.reflect.ClassTag

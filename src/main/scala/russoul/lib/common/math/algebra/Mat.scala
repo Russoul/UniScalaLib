@@ -5,6 +5,7 @@ import shapeless.Nat
 import shapeless.ops.nat.ToInt
 import singleton.ops.XInt
 
+import scala.collection.GenTraversableOnce
 import scala.reflect.ClassTag
 
 /**
@@ -12,7 +13,7 @@ import scala.reflect.ClassTag
   */
 //TODO constructor should be private, but it does not compile this way due to bug with @sp
 //n is not a field
-@immutable class Mat[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt] (n: Int, val m: Int){
+@immutable class Mat[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt] (n: Int, val m: Int) extends Traversable[T]{
 
   type E = T
   type N = A1
@@ -25,7 +26,17 @@ import scala.reflect.ClassTag
   def apply(i : Int) = array(i)
 
   //total number of elements
-  def size() : Int = array.length
+  override def size() : Int = array.length
+
+
+
+  override def foreach[U](f: (T) => U): Unit = {
+    var k = 0
+    while (k < array.length){
+      f +> array(k)
+      k += 1
+    }
+  }
 
   def toArray = array.clone()
 
@@ -45,13 +56,28 @@ import scala.reflect.ClassTag
     s"Mat[${implicitly[ClassTag[T]].toString()}, ${n}, ${m}]\n$str"
   }
 
-  override def hashCode() = {
-    array.hashCode()
+  override def hashCode(): Int = {
+    var code: Int = 0xf457f00d
+
+    for(i <- 0 until size){
+      code = (code * 19) + array(i).##
+    }
+
+    code
   }
 
-  override def equals(obj: scala.Any) = {
+
+  override def equals(obj: scala.Any): Boolean = {
     obj match {
-      case that : Mat[T, A1,A2] => this.hashCode() == that.hashCode()
+      case that : Mat[T, A1,A2] => this.hashCode() == that.hashCode() && {
+        var i = 0
+        while(i < size()){
+          if(!(this(i) == that(i))) return false
+          i += 1
+        }
+
+        true
+      }
       case _ => false
     }
   }
