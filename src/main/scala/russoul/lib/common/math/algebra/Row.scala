@@ -85,3 +85,11 @@ object Row {
   }
 
 }
+
+object Column {
+  @inline def apply[@tbsp A : ClassTag, Size <: XInt](args: A*): Mat[A, Size, _1] = {
+    Mat[A, Size, _1](args.size, 1, args : _*)
+
+  }
+
+}

@@ -2,9 +2,8 @@ package russoul.lib.common.helper.model
 
 import russoul.lib.common._
 import russoul.lib.common.utils.Arr
-
-
 import russoul.lib.common.Implicits._
+import russoul.lib.common.Ops.MatrixOps
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -54,7 +53,7 @@ class WaveFrontObject(name: String)
   def scale(v3: Vec3[Float]): WaveFrontObject =
   {
     val mat = Mat4F.scale(v3)
-    vertexList.map(x => {val temp = Float4(x, 0) * mat; Float3(temp(0), temp(1), temp(2))})
+    vertexList.map(x => {val temp = Float4(x, 0) ⨯ mat; Float3(temp(0), temp(1), temp(2))})
     this
   }
 

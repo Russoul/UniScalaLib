@@ -58,17 +58,17 @@ object Test1 extends App{
     val v1 = Float4(1,2,3,1)
     val m1 = Mat4F.translation(Float3(2,3,4))
 
-    assert(v1 * m1 == Float4(3,5,7,1))
+    assert(v1 ⨯ m1 == Float4(3,5,7,1))
 
     val v2 = Float4(1,0,0,1)
     val m2 = Mat4F.rotationDeg(Float3(0,0,1), -90F)
 
-    assert((v2 * m2).distance(Float4(0,1,0,1)) < eps )
-    assert(v2 * m2 == v2 * m2.trans().trans())
+    assert((v2 ⨯ m2).distance(Float4(0,1,0,1)) < eps )
+    assert(v2 ⨯ m2 == v2 ⨯ m2.trans().trans())
 
     val m3 = m1 ⨯ m2
 
-    assert(v2 * m3 == v2 * m1 * m2)
+    assert(v2 ⨯ m3 == v2 ⨯ m1 ⨯ m2)
 
   }
 

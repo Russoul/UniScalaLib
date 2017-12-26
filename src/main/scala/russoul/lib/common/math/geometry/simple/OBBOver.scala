@@ -161,7 +161,7 @@ class OBBOverDouble private(override val center:Double3, override val right:Doub
   def rotateAroundRight(rad:Double): OBBOver[Double] =
   {
     val mat = Mat4D.rotationRad(right, rad)
-    OBBOver(center,right,up = {val t = Double4(up,1D); val r = t * mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
+    OBBOver(center,right,up = {val t = Double4(up,1D); val r = t ⨯ mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
   }
 
 
@@ -169,15 +169,15 @@ class OBBOverDouble private(override val center:Double3, override val right:Doub
   {
     val mat = Mat4D.rotationRad(up, rad)
 
-    OBBOver(center,right = {val t = Double4(right,1D); val r = t * mat ; Double3(r(0),r(1),r(2))},up,extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Double4(right,1D); val r = t ⨯ mat ; Double3(r(0),r(1),r(2))},up,extentRight, extentUp, extentLook)
   }
 
 
   def rotateAroundLook(rad:Double):OBBOver[Double] =
   {
     val mat = Mat4D.rotationRad(right ⨯ up, rad)
-    OBBOver(center,right = {val t = Double4(right,1D); val r = t * mat ; Double3(r(0),r(1),r(2))},
-      up = {val t = Double4(up,1D); val r = t * mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
+    OBBOver(center,right = {val t = Double4(right,1D); val r = t ⨯ mat ; Double3(r(0),r(1),r(2))},
+      up = {val t = Double4(up,1D); val r = t ⨯ mat; Double3(r(0),r(1),r(2))},extentRight, extentUp, extentLook)
   }
 }
 

@@ -391,12 +391,12 @@ package object common
   //used as fully infered function
   @inline def transformd(a: Double3, b: Mat4D) : Double3 = {
     val temp = Double4(a, 1D)
-    val temp2 = temp * b
+    val temp2 = temp ⨯ b
     Double3(temp2(0), temp2(1), temp(2))
   }
   @inline def transformf(a: Float3, b: Mat4F) : Float3 = {
     val temp = Float4(a, 1F)
-    val temp2 = temp * b
+    val temp2 = temp ⨯ b
     Float3(temp2(0), temp2(1), temp(2))
   }
 

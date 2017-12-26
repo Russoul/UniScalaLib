@@ -3,14 +3,12 @@ package russoul.lib.common
 import scala.language.implicitConversions
 import scala.language.experimental.macros
 import russoul.lib.common.TypeClasses._
-
 import algebra.ring.AdditiveGroup
-import russoul.lib.common.math.algebra.{Mat, Row}
+import russoul.lib.common.math.algebra.{Column, Mat, Row}
 
 import scala.reflect.ClassTag
 import russoul.lib.macros.Enricher
 import singleton.ops.XInt
-
 import Implicits._
 import spire.algebra._
 import spire.math._
@@ -53,13 +51,7 @@ object Ops {
   }
 
 
-  class VectorSpaceOps[V, @tbsp F](lhs : V)(implicit ev: VectorSpace[V, F]){
-    //no sp needed
-    //def :/[F](rhs:F)(implicit ev: VectorSpace[V, F]): V = macro Ops.binopWithEv[F, VectorSpace[V, F], V]
-    def *(rhs:F): V = ev.timesr(lhs, rhs)//TODO//macro Enricher.binopWithEv_timesr[F, VectorSpace[V, F], V]
-  }
-
-  class VecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
+  class RowVecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
 
     def *(rhs:A)(implicit ev: VectorSpace[Row[A,Size], A]): Row[A,Size] = ev.timesr(a, rhs)
 
@@ -88,7 +80,7 @@ object Ops {
     }
 
 
-    def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A], nroot : NRoot[A]) : Row[A, M] = { // 1xSize * SizexN = 1xM
+    /*def *[M <: XInt : ValueOf](b : Mat[A, Size, M])(implicit field : Field[A], nroot : NRoot[A]) : Row[A, M] = { // 1xSize * SizexN = 1xM
       val ar = new Array[A](b.m)
 
 
@@ -99,7 +91,7 @@ object Ops {
       }
 
       Row[A, M](ar : _*)
-    }
+    }*/
 
     def squaredLength()(implicit ring : Ring[A]): A ={
       var ret = ring.zero
@@ -113,7 +105,48 @@ object Ops {
     }
   }
 
-  class Vec4Ops[@tbsp A : ClassTag](a : Row[A, _4]){
+  class ColumnVecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Column[A, Size]){
+
+    def *(rhs:A)(implicit ev: VectorSpace[Column[A,Size], A]): Column[A,Size] = ev.timesr(a, rhs)
+
+    def product(rhs : Column[A,Size])(implicit ev : Ring[A]) : Column[A,Size] = {
+      val ar = new Array[A](a.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = a(i) * rhs(i)
+        i += 1
+      }
+
+      Column[A, Size](ar : _*)
+    }
+
+    def ⊗(rhs : Column[A,Size])(implicit ev : Ring[A]) : Column[A,Size] = {
+      val ar = new Array[A](a.size())
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = a(i) * rhs(i)
+        i += 1
+      }
+
+      Column[A, Size](ar : _*)
+    }
+
+
+    def squaredLength()(implicit ring : Ring[A]): A ={
+      var ret = ring.zero
+      var i = 0
+      while(i < a.size){
+        ret += a(i) * a(i)
+        i += 1
+      }
+
+      ret
+    }
+  }
+
+  class ColumnVec4Ops[@tbsp A : ClassTag](a : Column[A, _4]){
 
     def x = a(0) //TODO make faster
     def y = a(1)
@@ -121,7 +154,42 @@ object Ops {
     def w = a(3)
   }
 
-  class Vec3Ops[@tbsp A : ClassTag](a : Row[A, _3]){
+  class ColumnVec3Ops[@tbsp A : ClassTag](a : Column[A, _3]){
+    def ⨯(b : Column[A, _3])(implicit ring : Ring[A]) : Column[A,_3] = {
+      Column[A,_3](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+    }
+
+    def cross(b : Column[A, _3])(implicit ring : Ring[A]) : Column[A,_3] = {
+      Column[A,_3](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+    }
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+    def z = a(2)
+  }
+
+  class ColumnVec2Ops[@tbsp A : ClassTag](a : Column[A, _2]){
+    def ⟂()(implicit ev : Ring[A]) : Column[A, _2] = {
+      Column[A,_2](-a(1), a(0))
+    }
+
+    def ortho()(implicit ev : Ring[A]) : Column[A, _2] = {
+      Column[A,_2](-a(1), a(0))
+    }
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+  }
+
+  class RowVec4Ops[@tbsp A : ClassTag](a : Row[A, _4]){
+
+    def x = a(0) //TODO make faster
+    def y = a(1)
+    def z = a(2)
+    def w = a(3)
+  }
+
+  class RowVec3Ops[@tbsp A : ClassTag](a : Row[A, _3]){
     def ⨯(b : Row[A, _3])(implicit ring : Ring[A]) : Row[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
@@ -135,7 +203,7 @@ object Ops {
     def z = a(2)
   }
 
-  class Vec2Ops[@tbsp A : ClassTag](a : Row[A, _2]){
+  class RowVec2Ops[@tbsp A : ClassTag](a : Row[A, _2]){
     def ⟂()(implicit ev : Ring[A]) : Row[A, _2] = {
       Vec2[A](-a(1), a(0))
     }
@@ -203,7 +271,31 @@ object Ops {
       Row[A, A2](ar : _*)
     }
 
-    def column(index : Int) : Row[A, A1] = {
+    def rowAsColumn(index : Int) : Column[A, A2] = {
+      val ar = new Array[A](lhs.m)
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(index, i)
+        i += 1
+      }
+
+      Column[A, A2](ar : _*)
+    }
+
+    def column(index : Int) : Column[A, A1] = {
+      val ar = new Array[A](lhs.m)
+
+      var i = 0
+      while(i < ar.length){
+        ar(i) = lhs(i, index)
+        i += 1
+      }
+
+      Column[A, A1](ar : _*)
+    }
+
+    def columnAsRow(index : Int) : Row[A, A1] = {
       val ar = new Array[A](lhs.m)
 
       var i = 0
@@ -223,7 +315,7 @@ object Ops {
 
       for(i <- 0 until n){
         for(j <- 0 until m){
-          ar(i * m + j) = lhs.row(i) dot rhs.column(j)
+          ar(i * m + j) = lhs.row(i) dot rhs.columnAsRow(j)
         }
       }
 
@@ -264,10 +356,10 @@ object Ops {
   }
 
   trait VectorImplicits{
-    implicit def vector4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : Vec4Ops[A] = new Vec4Ops[A](lhs)
-    implicit def vector3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : Vec3Ops[A] = new Vec3Ops[A](lhs)
-    implicit def vector2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : Vec2Ops[A] = new Vec2Ops[A](lhs)
-    implicit def vectorOps[@tbsp A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : VecOps[A, N] = new VecOps[A, N](lhs)
+    implicit def rowVec4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : RowVec4Ops[A] = new RowVec4Ops[A](lhs)
+    implicit def rowVec3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : RowVec3Ops[A] = new RowVec3Ops[A](lhs)
+    implicit def rowVec2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : RowVec2Ops[A] = new RowVec2Ops[A](lhs)
+    implicit def rowVecOps[@tbsp A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : RowVecOps[A, N] = new RowVecOps[A, N](lhs)
   }
 
 
