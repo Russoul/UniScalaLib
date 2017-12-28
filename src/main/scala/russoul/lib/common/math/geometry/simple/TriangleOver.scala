@@ -16,7 +16,7 @@ import spire.implicits._
 /**
   * Created by Russoul on 23.07.2016.
   */
-@immutable case class TriangleOver[@tbsp F] private(val p1:Vec3[F], val p2:Vec3[F], val p3:Vec3[F]) extends GeometricShape[F, _3] {
+@immutable case class TriangleOver[@specialized(Float,Double,Int) F] private(val p1:Vec3[F], val p2:Vec3[F], val p3:Vec3[F]) extends GeometricShape[F, _3] {
 
 
 
@@ -35,5 +35,5 @@ import spire.implicits._
 }
 
 object TriangleOver{
-  @inline def apply[@tbsp F](p1:Vec3[F], p2:Vec3[F], p3:Vec3[F]) = new TriangleOver[F](p1,p2,p3)
+  @inline def apply[@specialized(Float,Double,Int) F](p1:Vec3[F], p2:Vec3[F], p3:Vec3[F]) = new TriangleOver[F](p1,p2,p3)
 }

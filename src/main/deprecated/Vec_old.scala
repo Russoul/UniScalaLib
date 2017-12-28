@@ -17,7 +17,7 @@ import scala.reflect.ClassTag
 }
 
 //TODO compile time scalameta checks of validity (Vec_oldDim == arg.length and others like vec(2.dim, ...) + vec(3.dim, ...))
-case class Vec_old[A <: Dim : NotNothing, @tbsp B](dim: A, array:Array[B])(implicit tagA: ClassTag[A], tagB: ClassTag[B], ev: Field[B] with Euclidean[B]){
+case class Vec_old[A <: Dim : NotNothing, @specialized(Float,Double,Int) B](dim: A, array:Array[B])(implicit tagA: ClassTag[A], tagB: ClassTag[B], ev: Field[B] with Euclidean[B]){
 
   //TODO prevent this runtime check if possible ???, but how ?
   if(dim.n != array.length) throw new IncorrectDimException(dim)

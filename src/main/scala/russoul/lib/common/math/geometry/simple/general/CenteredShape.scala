@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 11.05.17.
   */
-trait CenteredShape[@tbsp F, Dim <: XInt] extends GeometricShape[F,Dim]
+trait CenteredShape[@specialized(Float,Double,Int) F, Dim <: XInt] extends GeometricShape[F,Dim]
 {
   def center:Row[F,Dim]
 

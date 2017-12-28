@@ -70,7 +70,7 @@ package object common
 
 
   //TODO better design FShape2, it is too verbose
-  trait FShape2[@tbsp A]{ self =>
+  trait FShape2[@specialized(Float,Double,Int) A]{ self =>
     def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]) : A
 
     def &(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
@@ -98,38 +98,38 @@ package object common
     }
   }
 
-  case class FCircle[@tbsp A](center : Vec2[A], rad: A) extends FShape2[A]{
+  case class FCircle[@specialized(Float,Double,Int) A](center : Vec2[A], rad: A) extends FShape2[A]{
     override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       val d = p - center
       (d dot d) - rad * rad
     }
   }
 
-  case class FHalfPlaneLeft[@tbsp A](x: A) extends FShape2[A]{
+  case class FHalfPlaneLeft[@specialized(Float,Double,Int) A](x: A) extends FShape2[A]{
     override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       p(0) - x
     }
   }
 
-  case class FHalfPlaneRight[@tbsp A](x: A) extends FShape2[A]{
+  case class FHalfPlaneRight[@specialized(Float,Double,Int) A](x: A) extends FShape2[A]{
     override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       x - p(0)
     }
   }
 
-  case class FHalfPlaneUpper[@tbsp A](y: A) extends FShape2[A]{
+  case class FHalfPlaneUpper[@specialized(Float,Double,Int) A](y: A) extends FShape2[A]{
     override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       y - p(1)
     }
   }
 
-  case class FHalfPlaneLower[@tbsp A](y: A) extends FShape2[A]{
+  case class FHalfPlaneLower[@specialized(Float,Double,Int) A](y: A) extends FShape2[A]{
     override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
       p(1) - y
     }
   }
 
-  case class FRectangle2[@tbsp A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], order: Order[A]) extends FShape2[A]{
+  case class FRectangle2[@specialized(Float,Double,Int) A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], order: Order[A]) extends FShape2[A]{
 
     val shape = FHalfPlaneRight(center(0) - extent(0)) & FHalfPlaneLeft(center(0) + extent(0)) &
       FHalfPlaneLower(center(1) + extent(1)) & FHalfPlaneUpper(center(1) - extent(1))
@@ -203,26 +203,26 @@ package object common
   type ComplexF = ComplexOver[Float]
 
 
-  type Row[@tbsp T, Size <: XInt] = Mat[T,_1,Size]
-  type Column[@tbsp T, Size <: XInt] = Mat[T, Size, _1] //TODO
+  type Row[@specialized(Float,Double,Int) T, Size <: XInt] = Mat[T,_1,Size]
+  type Column[@specialized(Float,Double,Int) T, Size <: XInt] = Mat[T, Size, _1] //TODO
 
-  type Vec2[@tbsp T] = Row[T, _2]
-  type Vec3[@tbsp T] = Row[T, _3]
-  type Vec4[@tbsp T] = Row[T, _4]
+  type Vec2[@specialized(Float,Double,Int) T] = Row[T, _2]
+  type Vec3[@specialized(Float,Double,Int) T] = Row[T, _3]
+  type Vec4[@specialized(Float,Double,Int) T] = Row[T, _4]
 
-  type Mat2[@tbsp A] = Mat[A, _3, _3]
-  type Mat3[@tbsp A] = Mat[A, _3, _3]
-  type Mat4[@tbsp A] = Mat[A, _4, _4]
+  type Mat2[@specialized(Float,Double,Int) A] = Mat[A, _3, _3]
+  type Mat3[@specialized(Float,Double,Int) A] = Mat[A, _3, _3]
+  type Mat4[@specialized(Float,Double,Int) A] = Mat[A, _4, _4]
 
 
   object Vec2{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A): Row[A, _2] = Row[A,_2](x,y)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A): Row[A, _2] = Row[A,_2](x,y)
   }
   object Vec3{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A): Row[A, _3] = Row[A,_3](x,y,z)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A): Row[A, _3] = Row[A,_3](x,y,z)
   }
   object Vec4{
-    @inline def apply[@tbsp A : ClassTag](x: A, y: A, z: A, w: A): Row[A, _4] = Row[A,_4](x,y,z,w)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A, w: A): Row[A, _4] = Row[A,_4](x,y,z,w)
   }
 
   type Double2 = Row[Double,_2]

@@ -92,7 +92,16 @@ package object macros {
     def macroTransform(annottees: Any*) : Any = macro ref.impl
   }
 
+
+  object Patterns{
+    val pattern1 = """Ref\["\s*(.*)\s*[^\|]\|[^\|]\s*(.*)"\.type\]""".r.unanchored
+    val pattern2 = """Ref\["\s*(.*)"\.type\]""".r.unanchored
+  }
+
   object ref {
+
+    val pattern1 = Patterns.pattern1
+    val pattern2 = Patterns.pattern2
 
     var REFINE: Boolean = true
 
@@ -104,14 +113,13 @@ package object macros {
 
           case q"$mods def $methodName[..$tpes](...$args): $returnType = { ..$body }" :: Nil => {
             //println(args.toString())
-            val pattern1 = """Ref\["\s*(.*)\s*\|\s*(.*)"\.type\]""".r.unanchored
-            val pattern2 = """Ref\["\s*(.*)"\.type\]""".r.unanchored
+
 
 
 
             if(!REFINE){
 
-              val argsResLast = args.last.filter(arg => pattern2.findFirstIn(arg.toString()).isEmpty)
+              val argsResLast = args.last.filter(arg => pattern2.findFirstIn(arg.toString()).isEmpty && pattern1.findFirstIn(arg.toString()).isEmpty)
               val argsRes = args.init :+ argsResLast
 
               q"""$mods def $methodName[..$tpes](...$argsRes): $returnType =  {..$body}"""
@@ -119,8 +127,11 @@ package object macros {
               val out = c.freshName()
               val bodyToString = q"""{..$body}.toString()"""
 
+
+
               args.toString() match{
                 case pattern1(input, output) =>
+                  //println(input + "+++++++++++" + output)
                   val argsResLast = args.last.filter(arg => pattern1.findFirstIn(arg.toString()).isEmpty)
                   val argsRes = args.init :+ argsResLast
 
@@ -131,27 +142,55 @@ package object macros {
                        output: $output
                      """.stripMargin)*/
 
+
+
+                  var names = List[String]()
+                  argsRes.flatten.foreach {
+                    case ValDef(_, TermName(name), _, _) => names = names :+ name
+                    case _ =>
+                  }
+                  val exprs = for(name <- names) yield{
+                    val e1 = c.parse(name + ".toString")
+                    q""" $name + " = " + $e1  """
+                  }
+
+                  val list = q"List(..$exprs).toString"
+
+
                   val tree = q"""$mods def $methodName[..$tpes](...$argsRes): $returnType =  {
-                  assert(${c.parse(input)}, ${"Input constraint not kept: " + input})
+                  assert(${c.parse(input)}, ${"Input constraint not kept: " + input  + ", on input: "} + $list)
                   val ${c.parse(out)} = {..$body}
-                  assert(${c.parse(outputBind)}, ${"Output constraint (" + output + ") not kept on output ("} + $bodyToString + ")")
+                  assert(${c.parse(outputBind)}, ${"Output constraint (" + output + ") not kept on output: "} + $bodyToString)
                   ${c.parse(out)}
                 }"""
-                  println(showCode(tree))
+                  //println(showCode(tree))
                   tree
                 case pattern2(input) =>
 
                   val argsResLast = args.last.filter(arg => pattern2.findFirstIn(arg.toString()).isEmpty)
                   val argsRes = args.init :+ argsResLast
 
+
+                  var names = List[String]()
+                  argsRes.flatten.foreach {
+                    case ValDef(_, TermName(name), _, _) => names = names :+ name
+                    case _ =>
+                  }
+                  val exprs = for(name <- names) yield{
+                    val e1 = c.parse(name + ".toString")
+                    q""" $name + " = " + $e1  """
+                  }
+
+                  val list = q"List(..$exprs).toString"
+
                   val tree = q"""$mods def $methodName[..$tpes](...$argsRes): $returnType =  {
-                  assert(${c.parse(input)}, ${"Input constraint not kept: " + input})
+                  assert(${c.parse(input)}, ${"Input constraint not kept: " + input  + ", on input: "} + $list)
                   val ${c.parse(out)} = {..$body}
                   ${c.parse(out)}
                 }"""
                   println(showCode(tree))
                   tree
-                case _ => c.abort(c.enclosingPosition, "No match")
+                case _ => c.abort(c.enclosingPosition, "Refinement constructed incorrectly")
               }
             }
 

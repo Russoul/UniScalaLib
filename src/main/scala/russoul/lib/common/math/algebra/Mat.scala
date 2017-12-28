@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
   */
 //TODO constructor should be private, but it does not compile this way due to bug with @sp
 //n is not a field
-@immutable class Mat[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt] (n: Int, val m: Int) extends Traversable[T]{
+@immutable class Mat[@specialized(Float,Double,Int) T : ClassTag, A1 <: XInt, A2 <: XInt] (n: Int, val m: Int) extends Traversable[T]{
 
   type E = T
   type N = A1
@@ -87,7 +87,7 @@ import scala.reflect.ClassTag
 
 object Mat{
 
-  def apply[@tbsp T : ClassTag, Size <: XInt](args: T*) : Mat[T,Size,Size] = {
+  def apply[@specialized(Float,Double,Int) T : ClassTag, Size <: XInt](args: T*) : Mat[T,Size,Size] = {
     val n = Math.sqrt(args.size).toInt
     val result = new Mat[T,Size,Size](n, n)
 
@@ -107,7 +107,7 @@ object Mat{
 
 
 
-  def apply[@tbsp T : ClassTag, A1 <: XInt, A2 <: XInt](n: Int, m: Int, args: T*) : Mat[T,A1,A2] = {
+  def apply[@specialized(Float,Double,Int) T : ClassTag, A1 <: XInt, A2 <: XInt](n: Int, m: Int, args: T*) : Mat[T,A1,A2] = {
     val result = new Mat[T,A1,A2](n, m)
 
     var i = 0

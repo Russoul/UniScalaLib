@@ -13,7 +13,7 @@ import spire.implicits._
 /**
   * Created by russoul on 20.05.17.
   */
-@immutable case class ComplexOver[@tbsp A](real: A, imaginary:A) {
+@immutable case class ComplexOver[@specialized(Float,Double,Int) A](real: A, imaginary:A) {
 
   @inline def +(that:ComplexOver[A])(implicit ev: Field[A]): ComplexOver[A] =
   {

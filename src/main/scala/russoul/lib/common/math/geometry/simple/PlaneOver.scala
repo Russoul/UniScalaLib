@@ -12,7 +12,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class PlaneOver[@tbsp F]private(val point:Vec3[F],val normal:Vec3[F]) extends GeometricShape[F,_3]{
+@immutable case class PlaneOver[@specialized(Float,Double,Int) F](val point:Vec3[F],val normal:Vec3[F]) extends GeometricShape[F,_3]{
 
 
   override def translate(v: Vec3[F])(implicit ev3: Field[F], tag : ClassTag[F]): PlaneOver[F] = new PlaneOver[F](point, normal)
@@ -29,5 +29,5 @@ import scala.reflect.ClassTag
 }
 
 object PlaneOver{
-  def apply[@tbsp F](point:Vec3[F], normal:Vec3[F]) = new PlaneOver[F](point, normal)
+  def apply[@specialized(Float,Double,Int) F](point:Vec3[F], normal:Vec3[F]) = new PlaneOver[F](point, normal)
 }

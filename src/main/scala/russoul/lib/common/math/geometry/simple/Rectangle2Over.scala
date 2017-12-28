@@ -18,7 +18,7 @@ import spire.implicits._
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Rectangle2Over[@tbsp F]private(override val center:Vec2[F],val extent:Vec2[F]) extends CenteredShape[F,_2]{
+@immutable case class Rectangle2Over[@specialized(Float,Double,Int) F](override val center:Vec2[F],val extent:Vec2[F]) extends CenteredShape[F,_2]{
 
   override def translate(v: Vec2[F])(implicit ev3 : Field[F], evTag: ClassTag[F]): Rectangle2Over[F] = {
     new Rectangle2Over(center + v, extent)
@@ -55,11 +55,11 @@ import spire.implicits._
 
 object Rectangle2Over
 {
-  def fromMinMax[@tbsp F : ClassTag](min:Vec2[F], max:Vec2[F])(implicit field : Field[F]):Rectangle2Over[F] =
+  def fromMinMax[@specialized(Float,Double,Int) F : ClassTag](min:Vec2[F], max:Vec2[F])(implicit field : Field[F]):Rectangle2Over[F] =
   {
     val t = (max - min) :* field.fromDouble(0.5D)
     Rectangle2Over[F](min + t, t)
   }
 
-  def apply[@tbsp F](center:Vec2[F], extent:Vec2[F]) = new Rectangle2Over[F](center, extent)
+  def apply[@specialized(Float,Double,Int) F](center:Vec2[F], extent:Vec2[F]) = new Rectangle2Over[F](center, extent)
 }

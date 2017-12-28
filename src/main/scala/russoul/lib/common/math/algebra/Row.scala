@@ -15,7 +15,7 @@ import scala.reflect.ClassTag
   * Created by russoul on 11.07.2017.
   */
 //size_arg is not a field !
-@immutable class Vec[@tbsp A : ClassTag, Size <: XInt]private(size_arg: Int) extends Traversable[A]{
+@immutable class Vec[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt]private(size_arg: Int) extends Traversable[A]{
 
   type E = A
   type N = Size
@@ -79,7 +79,7 @@ import scala.reflect.ClassTag
 }*/
 
 object Row {
-  @inline def apply[@tbsp A : ClassTag, Size <: XInt](args: A*): Mat[A, _1, Size] = {
+  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: A*): Mat[A, _1, Size] = {
     Mat[A, _1, Size](1, args.size, args : _*)
 
   }
@@ -87,7 +87,7 @@ object Row {
 }
 
 object Column {
-  @inline def apply[@tbsp A : ClassTag, Size <: XInt](args: A*): Mat[A, Size, _1] = {
+  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: A*): Mat[A, Size, _1] = {
     Mat[A, Size, _1](args.size, 1, args : _*)
 
   }

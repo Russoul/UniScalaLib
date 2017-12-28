@@ -58,10 +58,18 @@ lazy val macrosSettings = Seq(
   )
 )
 
+lazy val pluginSettings = Seq(
+  autoCompilerPlugins := true,
+  libraryDependencies ++= Seq(
+    compilerPlugin("org.russoul" %% "plugin" % "0.0.1")
+  )
+)
+
+
 lazy val macrosScalaLib = (project in file("macros")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosScalaLib")
 lazy val uniScalaLib = (project in file(".")).settings(coreSettings, uniSettings, name := "UniScalaLib").dependsOn(macrosScalaLib)
-lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib").dependsOn(macrosScalaLib)
-lazy val uniScalaLibTest = (project in file("test")).settings(coreSettings, uniSettings, name := "UniScalaLibTest").dependsOn(macrosPostScalaLib, uniScalaLib)
+lazy val uniScalaCompilerPlugin = (project in file("compiler_plugin")).settings(coreSettings, uniSettings, name := "Plugin").dependsOn(macrosScalaLib)
+lazy val macrosPostScalaLib = (project in file("macros_post")).settings(coreSettings, macrosSettings, uniSettings, name := "MacrosPostScalaLib", pluginSettings).dependsOn(macrosScalaLib)
 
 resolvers ++= Seq(
   Resolver.sonatypeRepo("releases"),

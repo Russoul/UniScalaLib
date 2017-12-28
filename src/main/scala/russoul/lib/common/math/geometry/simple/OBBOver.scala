@@ -15,7 +15,7 @@ import singleton.ops._
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class OBBOver[@tbsp F]private[geometry](override val center:Vec3[F], val right:Vec3[F], val up:Vec3[F], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[F,_3] {
+@immutable case class OBBOver[@specialized(Float,Double,Int) F]private[geometry](override val center:Vec3[F], val right:Vec3[F], val up:Vec3[F], val extentRight:F, val extentUp:F, val extentLook:F) extends CenteredShape[F,_3] {
 
 
   private[geometry] def this(aabb :AABBOver[F])(implicit field: Field[F], tag : ClassTag[F]) {
@@ -148,8 +148,8 @@ import singleton.ops._
 }
 
 object OBBOver{
-  def apply[@tbsp F](center:Vec3[F], right:Vec3[F], up:Vec3[F], extentRight:F, extentUp:F, extentLook:F) = new OBBOver[F](center, right, up, extentRight, extentUp, extentLook)
-  def apply[@tbsp F](aabb: AABBOver[F])(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] = new OBBOver[F](aabb)
+  def apply[@specialized(Float,Double,Int) F](center:Vec3[F], right:Vec3[F], up:Vec3[F], extentRight:F, extentUp:F, extentLook:F) = new OBBOver[F](center, right, up, extentRight, extentUp, extentLook)
+  def apply[@specialized(Float,Double,Int) F](aabb: AABBOver[F])(implicit field: Field[F], tag : ClassTag[F]): OBBOver[F] = new OBBOver[F](aabb)
 
 }
 

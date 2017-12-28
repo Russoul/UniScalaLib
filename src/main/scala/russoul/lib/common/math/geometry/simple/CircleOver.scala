@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class CircleOver[@tbsp F]private(override val center:Row[F,_2], val rad:F) extends CenteredShape[F,_2] {
+@immutable case class CircleOver[@specialized(Float,Double,Int) F](override val center:Row[F,_2], val rad:F) extends CenteredShape[F,_2] {
 
 
   override def translate(v: Row[F,_2])(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
@@ -39,5 +39,5 @@ import scala.reflect.ClassTag
 }
 
 object CircleOver{
-  //def apply[@tbsp F : ClassTag](center:Vec2[F], rad:F) = new CircleOver[F](center, rad)
+  //def apply[@specialized(Float,Double,Int) F : ClassTag](center:Vec2[F], rad:F) = new CircleOver[F](center, rad)
 }

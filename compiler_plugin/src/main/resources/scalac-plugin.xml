@@ -1,0 +1,4 @@
+<plugin>
+    <name>refinement</name>
+    <classname>russoul.lib.common.CompilerPlugin</classname>
+</plugin>

@@ -11,7 +11,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 23.04.17.
   */
-@immutable case class Line2Over[@tbsp F]private(val start:Vec2[F], val end:Vec2[F]) extends GeometricShape[F,_2] {
+@immutable case class Line2Over[@specialized(Float,Double,Int) F](val start:Vec2[F], val end:Vec2[F]) extends GeometricShape[F,_2] {
 
 
   def genDir()(implicit field: Field[F], classTag: ClassTag[F], nroot : NRoot[F]): Vec2[F] = (end - start).normalize
@@ -34,5 +34,5 @@ import scala.reflect.ClassTag
 }
 
 object Line2Over{
-  def apply[@tbsp F](start:Vec2[F], end:Vec2[F]) = new Line2Over[F](start, end)
+  def apply[@specialized(Float,Double,Int) F](start:Vec2[F], end:Vec2[F]) = new Line2Over[F](start, end)
 }

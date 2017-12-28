@@ -5,12 +5,12 @@ Priority:
     Errors:
         1)see Mat4 (specialize it !)
     Performance issues:
-        //TODO @tbsp leads to performance REGRESS !!!!!!!!!!!!!!
+        //TODO @specialized(Float,Double,Int) leads to performance REGRESS !!!!!!!!!!!!!!
         //macro for all ops, probably scala meta, NOPE. scala meta wont do, wait for scalamacros/scalamacros (macro lib and plugin depending on scala meta)
         //rectangle2 as (min,max) ?
         //TODO CACHING OF IMPLICITS !!!
         //abstract over shapes ?
-        //for now vec,mat and geos are case classes (@tbsp is currently removed), remove case class notation and add custom equals and hashocode method before adding @tbsp back
+        //for now vec,mat and geos are case classes (@specialized(Float,Double,Int) is currently removed), remove case class notation and add custom equals and hashocode method before adding @specialized(Float,Double,Int) back
     High:
         //name abbreviations correctly
         //performant way to represent generic field literals ?
@@ -21,7 +21,7 @@ Priority:
        -3)matrices for 2d transformations
        -1)overriding abstract typeclass method with field for better performance (like 'one' or 'zero') throws runtime exception, why ?
         1)write tests
-        2)see if @tbsp is set in all places needed
+        2)see if @specialized(Float,Double,Int) is set in all places needed
         3)assertions
         4)//TODO fix Mat.apply calls indexing from 0 but not from 1
         5)make Vec, Mat and other containers be scala friendly(support native operations or

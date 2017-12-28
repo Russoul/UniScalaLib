@@ -21,7 +21,7 @@ import spire.implicits._
 object CollisionEngineF
 {
 
-  /*def genGramOrtho3[@tbsp F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
+  /*def genGramOrtho3[@specialized(Float,Double,Int) F]()(implicit ev: Field[F], tag : ClassTag[F]): Mat[F] =
   {
     Mat[F](3,3, Array[F](ev.one, ev.zero, ev.zero,
       ev.zero, ev.one, ev.zero,

@@ -12,7 +12,7 @@ import spire.math._
 import spire.implicits._
 
 
-@immutable case class AABBOver[@tbsp F]private (override val center: Row[F,_3], val extent: Row[F,_3]) extends CenteredShape[F,_3] {
+@immutable case class AABBOver[@specialized(Float,Double,Int) F] (override val center: Row[F,_3], val extent: Row[F,_3]) extends CenteredShape[F,_3] {
 
   def genMin()(implicit field: Field[F], tag : ClassTag[F]): Row[F,_3] = center - extent
   def genMax()(implicit field: Field[F], tag : ClassTag[F]): Row[F,_3] = center + extent
@@ -92,7 +92,7 @@ import spire.implicits._
 
 object AABBOver
 {
-  def genFromMinMax[@tbsp F](min:Vec3[F], max:Vec3[F])(implicit field: Field[F], tag: ClassTag[F]):AABBOver[F] =
+  def genFromMinMax[@specialized(Float,Double,Int) F](min:Vec3[F], max:Vec3[F])(implicit field: Field[F], tag: ClassTag[F]):AABBOver[F] =
   {
     val extent = (max-min) * field.fromDouble(0.5D)
     val center = min + extent
@@ -100,5 +100,5 @@ object AABBOver
     new AABBOver[F](center,extent)
   }
 
-  //def apply[@tbsp F : ClassTag](center: Vec3[F], extent: Vec3[F]) = new AABBOver[F](center, extent)
+  //def apply[@specialized(Float,Double,Int) F : ClassTag](center: Vec3[F], extent: Vec3[F]) = new AABBOver[F](center, extent)
 }

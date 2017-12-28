@@ -12,7 +12,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 11.05.17.
   */
-trait GeometricShape[@tbsp F, Dim <: XInt] {
+trait GeometricShape[@specialized(Float,Double,Int) F, Dim <: XInt] {
   def translate(v:Row[F,Dim])(implicit ev : Field[F], tag : ClassTag[F]): GeometricShape[F,Dim]
   def scaleAroundBasis(factor:F)(implicit ev3: Field[F], tag : ClassTag[F]):GeometricShape[F,Dim]
 }

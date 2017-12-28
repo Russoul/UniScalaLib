@@ -23,25 +23,25 @@ object Ops {
 
 
 
-  class Container1Ops[@tbsp T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
+  class Container1Ops[@specialized(Float,Double,Int) T, Con](lhs: Con)(implicit ev: Container1[T,Con]){
     @inline def x: T = ev.x(lhs)
   }
-  class Container2Ops[@tbsp T, Con2](lhs: Con2)(implicit ev: Container2[T,Con2]){
+  class Container2Ops[@specialized(Float,Double,Int) T, Con2](lhs: Con2)(implicit ev: Container2[T,Con2]){
     //@inline def x: T = ev.x(lhs)
     @inline def y: T = ev.y(lhs)
   }
-  class Container3Ops[@tbsp T, Con3](lhs: Con3)(implicit ev: Container3[T,Con3]){
+  class Container3Ops[@specialized(Float,Double,Int) T, Con3](lhs: Con3)(implicit ev: Container3[T,Con3]){
     //@inline def x: T = ev.x(lhs)
     //@inline def y: T = ev.y(lhs)
     @inline def z: T = ev.z(lhs)
   }
-  class Container4Ops[@tbsp T, Con4](lhs: Con4)(implicit ev: Container4[T,Con4]){
+  class Container4Ops[@specialized(Float,Double,Int) T, Con4](lhs: Con4)(implicit ev: Container4[T,Con4]){
     //@inline def x: T = ev.x(lhs)
     //@inline def y: T = ev.y(lhs)
     //@inline def z: T = ev.z(lhs)
     @inline def w: T = ev.w(lhs)
   }
-  class ContainerAnyOps[@tbsp T, Con](lhs: Con)(implicit ev: ContainerAny[T,Con]){
+  class ContainerAnyOps[@specialized(Float,Double,Int) T, Con](lhs: Con)(implicit ev: ContainerAny[T,Con]){
     /*@inline def x: T = ev.x(lhs)
     @inline def y: T = ev.y(lhs)
     @inline def z: T = ev.z(lhs)
@@ -51,7 +51,7 @@ object Ops {
   }
 
 
-  class RowVecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
+  class RowVecOps[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
 
     def *(rhs:A)(implicit ev: VectorSpace[Row[A,Size], A]): Row[A,Size] = ev.timesr(a, rhs)
 
@@ -105,7 +105,7 @@ object Ops {
     }
   }
 
-  class ColumnVecOps[@tbsp A : ClassTag, Size <: XInt : ValueOf](a : Column[A, Size]){
+  class ColumnVecOps[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt : ValueOf](a : Column[A, Size]){
 
     def *(rhs:A)(implicit ev: VectorSpace[Column[A,Size], A]): Column[A,Size] = ev.timesr(a, rhs)
 
@@ -146,7 +146,7 @@ object Ops {
     }
   }
 
-  class ColumnVec4Ops[@tbsp A : ClassTag](a : Column[A, _4]){
+  class ColumnVec4Ops[@specialized(Float,Double,Int) A : ClassTag](a : Column[A, _4]){
 
     def x = a(0) //TODO make faster
     def y = a(1)
@@ -154,7 +154,7 @@ object Ops {
     def w = a(3)
   }
 
-  class ColumnVec3Ops[@tbsp A : ClassTag](a : Column[A, _3]){
+  class ColumnVec3Ops[@specialized(Float,Double,Int) A : ClassTag](a : Column[A, _3]){
     def ⨯(b : Column[A, _3])(implicit ring : Ring[A]) : Column[A,_3] = {
       Column[A,_3](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
@@ -168,7 +168,7 @@ object Ops {
     def z = a(2)
   }
 
-  class ColumnVec2Ops[@tbsp A : ClassTag](a : Column[A, _2]){
+  class ColumnVec2Ops[@specialized(Float,Double,Int) A : ClassTag](a : Column[A, _2]){
     def ⟂()(implicit ev : Ring[A]) : Column[A, _2] = {
       Column[A,_2](-a(1), a(0))
     }
@@ -181,7 +181,7 @@ object Ops {
     def y = a(1)
   }
 
-  class RowVec4Ops[@tbsp A : ClassTag](a : Row[A, _4]){
+  class RowVec4Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _4]){
 
     def x = a(0) //TODO make faster
     def y = a(1)
@@ -189,7 +189,7 @@ object Ops {
     def w = a(3)
   }
 
-  class RowVec3Ops[@tbsp A : ClassTag](a : Row[A, _3]){
+  class RowVec3Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _3]){
     def ⨯(b : Row[A, _3])(implicit ring : Ring[A]) : Row[A,_3] = {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
@@ -203,7 +203,7 @@ object Ops {
     def z = a(2)
   }
 
-  class RowVec2Ops[@tbsp A : ClassTag](a : Row[A, _2]){
+  class RowVec2Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _2]){
     def ⟂()(implicit ev : Ring[A]) : Row[A, _2] = {
       Vec2[A](-a(1), a(0))
     }
@@ -216,7 +216,7 @@ object Ops {
     def y = a(1)
   }
 
-  class MatrixOps[@tbsp A : ClassTag , A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2]){
+  class MatrixOps[@specialized(Float,Double,Int) A : ClassTag , A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2]){
     def +(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
 
       val n = lhs.size() / lhs.m
@@ -344,22 +344,22 @@ object Ops {
 
 
   trait ContainerImplicits{
-    implicit def Container1Ops[@tbsp T, Con1](x: Con1)(implicit ev : Container1[T,Con1]): Container1Ops[T,Con1] = new Container1Ops[T,Con1](x)
-    implicit def Container2Ops[@tbsp T, Con2](x: Con2)(implicit ev : Container2[T,Con2]): Container2Ops[T,Con2] = new Container2Ops[T,Con2](x)
-    implicit def Container3Ops[@tbsp T, Con3](x: Con3)(implicit ev : Container3[T,Con3]): Container3Ops[T,Con3] = new Container3Ops[T,Con3](x)
-    implicit def Container4Ops[@tbsp T, Con4](x: Con4)(implicit ev : Container4[T,Con4]): Container4Ops[T,Con4] = new Container4Ops[T,Con4](x)
-    implicit def ContainerAnyOps[@tbsp T, Con](x: Con)(implicit ev : ContainerAny[T,Con]): ContainerAnyOps[T,Con] = new ContainerAnyOps[T,Con](x)
+    implicit def Container1Ops[@specialized(Float,Double,Int) T, Con1](x: Con1)(implicit ev : Container1[T,Con1]): Container1Ops[T,Con1] = new Container1Ops[T,Con1](x)
+    implicit def Container2Ops[@specialized(Float,Double,Int) T, Con2](x: Con2)(implicit ev : Container2[T,Con2]): Container2Ops[T,Con2] = new Container2Ops[T,Con2](x)
+    implicit def Container3Ops[@specialized(Float,Double,Int) T, Con3](x: Con3)(implicit ev : Container3[T,Con3]): Container3Ops[T,Con3] = new Container3Ops[T,Con3](x)
+    implicit def Container4Ops[@specialized(Float,Double,Int) T, Con4](x: Con4)(implicit ev : Container4[T,Con4]): Container4Ops[T,Con4] = new Container4Ops[T,Con4](x)
+    implicit def ContainerAnyOps[@specialized(Float,Double,Int) T, Con](x: Con)(implicit ev : ContainerAny[T,Con]): ContainerAnyOps[T,Con] = new ContainerAnyOps[T,Con](x)
   }
 
   trait MatrixImplicits{
-    implicit def matrixOps[@tbsp A, A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
+    implicit def matrixOps[@specialized(Float,Double,Int) A, A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
   }
 
   trait VectorImplicits{
-    implicit def rowVec4Ops[@tbsp A : ClassTag](lhs : Vec4[A]) : RowVec4Ops[A] = new RowVec4Ops[A](lhs)
-    implicit def rowVec3Ops[@tbsp A : ClassTag](lhs : Vec3[A]) : RowVec3Ops[A] = new RowVec3Ops[A](lhs)
-    implicit def rowVec2Ops[@tbsp A : ClassTag](lhs : Vec2[A]) : RowVec2Ops[A] = new RowVec2Ops[A](lhs)
-    implicit def rowVecOps[@tbsp A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : RowVecOps[A, N] = new RowVecOps[A, N](lhs)
+    implicit def rowVec4Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec4[A]) : RowVec4Ops[A] = new RowVec4Ops[A](lhs)
+    implicit def rowVec3Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec3[A]) : RowVec3Ops[A] = new RowVec3Ops[A](lhs)
+    implicit def rowVec2Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec2[A]) : RowVec2Ops[A] = new RowVec2Ops[A](lhs)
+    implicit def rowVecOps[@specialized(Float,Double,Int) A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : RowVecOps[A, N] = new RowVecOps[A, N](lhs)
   }
 
 

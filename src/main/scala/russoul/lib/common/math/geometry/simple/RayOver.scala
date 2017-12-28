@@ -10,7 +10,7 @@ import spire.implicits._
 
 import scala.reflect.ClassTag
 
-@immutable case class RayOver[@tbsp F]private (val start: Vec3[F],val dir: Vec3[F]) extends GeometricShape[F,_3] {
+@immutable case class RayOver[@specialized(Float,Double,Int) F] (val start: Vec3[F],val dir: Vec3[F]) extends GeometricShape[F,_3] {
 
   override def translate(v: Vec3[F])(implicit ev3: Field[F], tag : ClassTag[F]): RayOver[F] = {
     new RayOver(start + v, dir)
@@ -30,10 +30,10 @@ import scala.reflect.ClassTag
 object RayOver
 {
 
-  def apply[@tbsp F](pos: Vec3[F], look: Vec3[F], zNear: F, zFar: F)(implicit field: Field[F], tag : ClassTag[F]): RayOver[F] =
+  def apply[@specialized(Float,Double,Int) F](pos: Vec3[F], look: Vec3[F], zNear: F, zFar: F)(implicit field: Field[F], tag : ClassTag[F]): RayOver[F] =
   {
     new RayOver(pos + (look :* zNear), look)
   }
 
-  def apply[@tbsp F](start: Vec3[F], dir: Vec3[F]) = new RayOver[F](start, dir)
+  def apply[@specialized(Float,Double,Int) F](start: Vec3[F], dir: Vec3[F]) = new RayOver[F](start, dir)
 }

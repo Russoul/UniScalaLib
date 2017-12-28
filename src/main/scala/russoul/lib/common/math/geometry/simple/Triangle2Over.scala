@@ -13,7 +13,7 @@ import scala.reflect.ClassTag
 /**
   * Created by russoul on 17.07.2017.
   */
-@immutable case class Triangle2Over[@tbsp F] private(val p1:Vec2[F], val p2:Vec2[F], val p3:Vec2[F]) extends GeometricShape[F,_2] {
+@immutable case class Triangle2Over[@specialized(Float,Double,Int) F] private(val p1:Vec2[F], val p2:Vec2[F], val p3:Vec2[F]) extends GeometricShape[F,_2] {
 
   
 
@@ -31,5 +31,5 @@ import scala.reflect.ClassTag
 }
 
 object Triangle2Over{
-  @inline def apply[@tbsp F](p1:Vec2[F], p2:Vec2[F], p3:Vec2[F]) = new Triangle2Over[F](p1,p2,p3)
+  @inline def apply[@specialized(Float,Double,Int) F](p1:Vec2[F], p2:Vec2[F], p3:Vec2[F]) = new Triangle2Over[F](p1,p2,p3)
 }

@@ -13,7 +13,7 @@ import spire.implicits._
 /**
   * Created by russoul on 01.07.2017.
   */
-@immutable case class OBB2Over[@tbsp F]private(override val center: Vec2[F], val right: Vec2[F], val up: Vec2[F], val extentRight : F, val extentUp: F) extends CenteredShape[F,_2] {
+@immutable case class OBB2Over[@specialized(Float,Double,Int) F](override val center: Vec2[F], val right: Vec2[F], val up: Vec2[F], val extentRight : F, val extentUp: F) extends CenteredShape[F,_2] {
 
   /**
     *
@@ -41,5 +41,5 @@ import spire.implicits._
 }
 
 object OBB2Over{
-  def apply[@tbsp F](center: Vec2[F], right: Vec2[F], up: Vec2[F], extentRight : F, extentUp: F) = new OBB2Over[F](center, right, up, extentRight, extentUp)
+  def apply[@specialized(Float,Double,Int) F](center: Vec2[F], right: Vec2[F], up: Vec2[F], extentRight : F, extentUp: F) = new OBB2Over[F](center, right, up, extentRight, extentUp)
 }

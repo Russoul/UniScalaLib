@@ -33,7 +33,7 @@ import spire.implicits._
   * @param up fully scaled
   * @tparam F
   */
-@immutable case class RectangleOver[@tbsp F]private (override val center: Vec3[F], val right: Vec3[F], val up: Vec3[F]) extends CenteredShape[F,_3] {
+@immutable case class RectangleOver[@specialized(Float,Double,Int) F] (override val center: Vec3[F], val right: Vec3[F], val up: Vec3[F]) extends CenteredShape[F,_3] {
 
   override def translate(v: Vec3[F])(implicit ev3 : Field[F], classTag: ClassTag[F]): RectangleOver[F] = {
     new RectangleOver(center + v, right, up)
@@ -84,12 +84,12 @@ import spire.implicits._
 
 object RectangleOver
 {
-  def fromMinMax2DParallelToZ[@tbsp F : ClassTag](min:Vec2[F], max:Vec2[F], z:F)(implicit field: Field[F]): RectangleOver[F] =
+  def fromMinMax2DParallelToZ[@specialized(Float,Double,Int) F : ClassTag](min:Vec2[F], max:Vec2[F], z:F)(implicit field: Field[F]): RectangleOver[F] =
   {
     val t: Vec3[F] = Vec3[F](max(0), max(1) ,field.zero) - Vec3[F](min(0), min(1),field.zero)
     new RectangleOver(Vec3[F](min(0), min(1),z) + t :* field.fromDouble(0.5D), Vec3[F](t(0) / field.fromDouble(2D), field.zero, field.zero), Vec3[F](field.zero, t(1) / field.fromDouble(2D) ,field.zero))
   }
 
-  def apply[@tbsp F](center: Vec3[F], right: Vec3[F], up: Vec3[F]) = new RectangleOver[F](center, right, up)
+  def apply[@specialized(Float,Double,Int) F](center: Vec3[F], right: Vec3[F], up: Vec3[F]) = new RectangleOver[F](center, right, up)
 
 }

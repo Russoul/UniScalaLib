@@ -19,7 +19,7 @@ import spire.implicits._
   *
   * AXIS ALIGNED !!!
   */
-@immutable case class Square2Over[@tbsp F]private(override val center:Vec2[F], val extent:F) extends CenteredShape[F, _2]{
+@immutable case class Square2Over[@specialized(Float,Double,Int) F](override val center:Vec2[F], val extent:F) extends CenteredShape[F, _2]{
 
 
 
@@ -58,5 +58,5 @@ import spire.implicits._
 }
 
 object Square2Over{
-  def apply[@tbsp F](center:Vec2[F], extent:F) = new Square2Over[F](center, extent)
+  def apply[@specialized(Float,Double,Int) F](center:Vec2[F], extent:F) = new Square2Over[F](center, extent)
 }

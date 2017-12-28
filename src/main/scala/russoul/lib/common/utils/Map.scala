@@ -16,7 +16,7 @@ class KeyNotFoundException(k: String) extends Exception("key %s was not found" f
   */
 
 
-class Map[@tbsp A, @tbsp B](var keys:Arr[A], var values:Arr[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
+class Map[@specialized(Float,Double,Int) A, @specialized(Float,Double,Int) B](var keys:Arr[A], var values:Arr[B])(implicit val cta: ClassTag[A], val ctb: ClassTag[B])
 {
   def this()(implicit cta: ClassTag[A], ctb: ClassTag[B]) =
   {
@@ -209,7 +209,7 @@ class Map[@tbsp A, @tbsp B](var keys:Arr[A], var values:Arr[B])(implicit val cta
 
 object Map
 {
-  def empty[@tbsp A:ClassTag,@tbsp B:ClassTag](): Map[A,B] =
+  def empty[@specialized(Float,Double,Int) A:ClassTag,@specialized(Float,Double,Int) B:ClassTag](): Map[A,B] =
   {
     new Map[A,B]()
   }

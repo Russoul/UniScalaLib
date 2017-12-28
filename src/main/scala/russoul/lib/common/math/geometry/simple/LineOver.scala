@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 18.07.2016.
   */
-@immutable case class LineOver[@tbsp F]private(val start:Vec3[F], val end:Vec3[F]) extends GeometricShape[F,_3] {
+@immutable case class LineOver[@specialized(Float,Double,Int) F](val start:Vec3[F], val end:Vec3[F]) extends GeometricShape[F,_3] {
 
   override def translate(v: Vec3[F])(implicit field: Field[F], classTag: ClassTag[F]): LineOver[F] = {
     new LineOver(start + v, end + v)
@@ -37,7 +37,7 @@ import scala.reflect.ClassTag
 
 object LineOver
 {
-  def apply[@tbsp F](pos: Vec3[F], start: F, end: F, yaw: F, pitch: F)(implicit field: Field[F], trig: Trig[F], classTag: ClassTag[F], nroot : NRoot[F]): LineOver[F] = {
+  def apply[@specialized(Float,Double,Int) F](pos: Vec3[F], start: F, end: F, yaw: F, pitch: F)(implicit field: Field[F], trig: Trig[F], classTag: ClassTag[F], nroot : NRoot[F]): LineOver[F] = {
     val alpha = -yaw
     val t = trig.toRadians(field.fromDouble(90D) - alpha)
     val cosT = trig.cos(t)
@@ -54,5 +54,5 @@ object LineOver
     new LineOver(p1, p2)
   }
 
-  def apply[@tbsp F](start:Vec3[F], end:Vec3[F]) = new LineOver[F](start, end)
+  def apply[@specialized(Float,Double,Int) F](start:Vec3[F], end:Vec3[F]) = new LineOver[F](start, end)
 }

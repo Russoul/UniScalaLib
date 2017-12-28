@@ -23,12 +23,12 @@ object Solver
   /**
     * aX + b = 0
     */
-  @inline def findRealRootsPolynomial1[@tbsp A](a:A, b:A)(implicit ev: Field[A]): Option[A] ={
+  @inline def findRealRootsPolynomial1[@specialized(Float,Double,Int) A](a:A, b:A)(implicit ev: Field[A]): Option[A] ={
     if(a != 0) Some(-b/a) else None
   }
 
 
-  @inline def findDiscriminantOfPolynomial2[@tbsp A](a:A, b:A, c:A)(implicit ev: Field[A]) : A =
+  @inline def findDiscriminantOfPolynomial2[@specialized(Float,Double,Int) A](a:A, b:A, c:A)(implicit ev: Field[A]) : A =
   {
     b * b - ev.fromDouble(4D) * a * c
   }
@@ -36,7 +36,7 @@ object Solver
   /**
     * aX² + bX + c = 0, a ≠ 0
     */
-  def findRealRootsPolynomial2[@tbsp A : ClassTag](a:A, b:A, c:A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A]) : Option[Vec2[A]] =
+  def findRealRootsPolynomial2[@specialized(Float,Double,Int) A : ClassTag](a:A, b:A, c:A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A]) : Option[Vec2[A]] =
   {
     val disc = findDiscriminantOfPolynomial2(a,b,c)
 
@@ -54,7 +54,7 @@ object Solver
   /**
     * X³ + pX + q = 0
     */
-  def findRealRootsCanonicalPolynomial3[@tbsp A : ClassTag](p : A, q: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Array[A] = {
+  def findRealRootsCanonicalPolynomial3[@specialized(Float,Double,Int) A : ClassTag](p : A, q: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Array[A] = {
 
     val three = ev.fromDouble(3D)
     val two = ev.fromDouble(2D)
@@ -94,7 +94,7 @@ object Solver
   /**
     * aX³ + bX² + cX + d = 0, a ≠ 0
     */
-  def findRealRootsPolynomial3[@tbsp A : ClassTag](a: A, b: A, c: A, d: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Array[A] = {
+  def findRealRootsPolynomial3[@specialized(Float,Double,Int) A : ClassTag](a: A, b: A, c: A, d: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Array[A] = {
 
     val three = ev.fromDouble(3D)
     val two = ev.fromDouble(2D)
@@ -116,7 +116,7 @@ object Solver
   /**
     * aX⁴ + bX³ + cX² + dX + e = 0, a ≠ 0
     */
-  def findRealRootsPolynomial4[@tbsp A : ClassTag](a: A, b: A, c: A, d: A, e: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Option[Array[A]] = {
+  def findRealRootsPolynomial4[@specialized(Float,Double,Int) A : ClassTag](a: A, b: A, c: A, d: A, e: A)(implicit ev: Field[A], order : Order[A], nroot : NRoot[A], trig : Trig[A]): Option[Array[A]] = {
 
     val four = ev.fromDouble(4D)
     val three = ev.fromDouble(3D)

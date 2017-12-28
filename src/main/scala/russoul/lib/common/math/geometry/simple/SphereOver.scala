@@ -12,7 +12,7 @@ import scala.reflect.ClassTag
 /**
   * Created by Russoul on 21.04.2016.
   */
-@immutable case class SphereOver[@tbsp F]private (override val center:Vec3[F],val rad: F) extends CenteredShape[F,_3] {
+@immutable case class SphereOver[@specialized(Float,Double,Int) F] (override val center:Vec3[F],val rad: F) extends CenteredShape[F,_3] {
 
   override def translate(v: Vec3[F])(implicit ev3: Field[F], tag : ClassTag[F]): SphereOver[F] = {
     new SphereOver(center + v, rad)
@@ -38,5 +38,5 @@ import scala.reflect.ClassTag
 }
 
 object SphereOver{
-  def apply[@tbsp F](center:Vec3[F],rad: F) = new SphereOver[F](center, rad)
+  def apply[@specialized(Float,Double,Int) F](center:Vec3[F],rad: F) = new SphereOver[F](center, rad)
 }
