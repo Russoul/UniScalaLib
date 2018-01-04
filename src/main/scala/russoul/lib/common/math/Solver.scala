@@ -6,10 +6,10 @@ import russoul.lib.common._
 import russoul.lib.common.TypeClasses._
 import russoul.lib.common.Implicits._
 import russoul.lib.common.math.algebra.Row
+import russoul.lib.macros.array
 
 import scala.annotation.tailrec
 import scala.reflect.ClassTag
-
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -70,11 +70,11 @@ object Solver
 
 
     if(Q > ev.zero){ //1 Real, 2 Complex conjugated roots
-      Array(sum)
+      array!(sum)
     }else if(Q === ev.zero){
       val r = -sum/two
 
-      Array(alpha + beta, r, r)
+      array!(alpha + beta, r, r)
     }else{
       val phi = if(q < ev.zero){
         trig.atan(nroot.sqrt(-Q)/(-q/two))
@@ -87,7 +87,7 @@ object Solver
       val r2 = nroot.sqrt(-p/three) * trig.cos(phi/three + ev.fromDouble(2D * Math.PI / 3D)) * two
       val r3 = nroot.sqrt(-p/three) * trig.cos(phi/three + ev.fromDouble(4D * Math.PI / 3D)) * two
 
-      Array(r1,r2,r3)
+      array!(r1,r2,r3)
     }
   }
 
@@ -149,14 +149,14 @@ object Solver
           case None =>
             None
           case some =>
-            Some(Array(some.get(0), some.get(1)))
+            Some(array!(some.get(0), some.get(1)))
         }
       case some =>
         r2 match{
           case None =>
-            Some(Array(some.get.x, some.get.y))
+            Some(array!(some.get.x, some.get.y))
           case also =>
-            Some(Array(some.get.x, some.get.y, also.get.x, also.get.y))
+            Some(array!(some.get.x, some.get.y, also.get.x, also.get.y))
         }
     }
   }

@@ -4,10 +4,9 @@ import russoul.lib.common._
 import russoul.lib.common.Abstraction._
 import russoul.lib.common.Implicits._
 import russoul.lib.common.math.CollisionEngineF
+import russoul.lib.common.math.algebra.Mat
 import russoul.lib.common.math.geometry.simple.CircleOver
 import russoul.lib.common.utils.Arr
-
-
 import spire.math._
 import spire.implicits._
 import spire.algebra._
@@ -15,6 +14,9 @@ import spire.algebra._
 object Test1 extends App{
 
   val eps = 0.00001F
+
+
+
 
 
   def testVectorCreation(): Unit ={
@@ -26,6 +28,8 @@ object Test1 extends App{
   def testVectorOps(): Unit ={
     val v1 = Float3(1,0,0)
     val v2 = Float3(0,1,0)
+
+    assert(v1(0) == 1)
 
     assert(v1.x == v2.y)
     assert(v1(0) == v2(1))

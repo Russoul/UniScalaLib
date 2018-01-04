@@ -17,9 +17,16 @@ lazy val coreSettings = Seq(
 
 
 lazy val uniSettings = Seq(
+
+  resolvers ++= Seq(
+    Resolver.sonatypeRepo("snapshots")
+  ),
   libraryDependencies += "com.chuusai" %% "shapeless" % "2.3.2",
   libraryDependencies += "org.typelevel" %% "spire" % "0.14.1", //using this just for cfor loop
   libraryDependencies += "eu.timepit" %% "singleton-ops" % "0.2.1",
+  libraryDependencies += "org.typelevel" %% "cats" % "0.9.0",
+  libraryDependencies += "org.scala-metal" %% "metal-core" % "0.14.1.1-SNAPSHOT",
+  libraryDependencies += "org.scala-metal" %% "metal-library" % "0.14.1.1-SNAPSHOT",
   scalacOptions += "-Yliteral-types",
 
 
@@ -87,6 +94,7 @@ resolvers ++= Seq(
 //scalacOptions in Runtime += "-Xplugin-require:scalaxy-streams"
 scalacOptions in Test ~= (_ filterNot (_ == "-Xplugin-require:scalaxy-streams"))
 scalacOptions in Test += "-Xplugin-disable:scalaxy-streams"
+scalacOptions in Global += "-Xprint:jvm"
 scalacOptions in Test ~= (_ filterNot (_ == "-Xdisable-assertions"))
 autoCompilerPlugins := true
 //addCompilerPlugin("com.nativelibs4java" %% "scalaxy-streams" % "0.3.4")

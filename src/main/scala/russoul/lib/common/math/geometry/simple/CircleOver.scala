@@ -25,11 +25,11 @@ import scala.reflect.ClassTag
   }
 
   override def scaleAroundBasis(scalar:F)(implicit field: Field[F], tag : ClassTag[F]): CircleOver[F] = {
-    new CircleOver(center * scalar, rad * scalar)
+    new CircleOver(center :* scalar, rad * scalar)
   }
 
   def inscribedInRectangle2()(implicit field: Field[F], tag : ClassTag[F]): Rectangle2Over[F] = {
-    Rectangle2Over[F](center, Row[F,_2](rad,rad))
+    Rectangle2Over[F](center, Vec2[F](rad,rad))
   }
 
   override def toString(): String =

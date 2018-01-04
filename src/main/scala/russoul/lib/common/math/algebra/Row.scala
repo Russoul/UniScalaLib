@@ -79,16 +79,16 @@ import scala.reflect.ClassTag
 }*/
 
 object Row {
-  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: A*): Mat[A, _1, Size] = {
-    Mat[A, _1, Size](1, args.size, args : _*)
+  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: Array[A]): Mat[A, _1, Size] = {
+    Mat[A, _1, Size](1, args.length, args)
 
   }
 
 }
 
 object Column {
-  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: A*): Mat[A, Size, _1] = {
-    Mat[A, Size, _1](args.size, 1, args : _*)
+  @inline def apply[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](args: Array[A]): Mat[A, Size, _1] = {
+    Mat[A, Size, _1](args.length, 1, args)
 
   }
 

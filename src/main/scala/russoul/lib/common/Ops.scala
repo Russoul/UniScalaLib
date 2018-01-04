@@ -7,13 +7,14 @@ import algebra.ring.AdditiveGroup
 import russoul.lib.common.math.algebra.{Column, Mat, Row}
 
 import scala.reflect.ClassTag
-import russoul.lib.macros.Enricher
-import singleton.ops.XInt
+import russoul.lib.macros.{Enricher, array}
+import singleton.ops._
 import Implicits._
 import spire.algebra._
 import spire.math._
 import spire.implicits._
 import machinist.DefaultOps
+import spire.NoImplicit
 
 /**
   * Created by russoul on 13.06.2017.
@@ -51,7 +52,7 @@ object Ops {
   }
 
 
-  class RowVecOps[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt : ValueOf](a : Row[A, Size]){
+  class RowVecOps[@specialized(Float,Double,Int) A : ClassTag, Size <: XInt](a : Row[A, Size]){
 
     def *(rhs:A)(implicit ev: VectorSpace[Row[A,Size], A]): Row[A,Size] = ev.timesr(a, rhs)
 
@@ -64,7 +65,7 @@ object Ops {
         i += 1
       }
 
-      Row[A, Size](ar : _*)
+      Row[A, Size](ar)
     }
 
     def ⊗(rhs : Row[A,Size])(implicit ev : Ring[A]) : Row[A,Size] = {
@@ -76,7 +77,7 @@ object Ops {
         i += 1
       }
 
-      Row[A, Size](ar : _*)
+      Row[A, Size](ar)
     }
 
 
@@ -118,7 +119,7 @@ object Ops {
         i += 1
       }
 
-      Column[A, Size](ar : _*)
+      Column[A, Size](ar)
     }
 
     def ⊗(rhs : Column[A,Size])(implicit ev : Ring[A]) : Column[A,Size] = {
@@ -130,7 +131,7 @@ object Ops {
         i += 1
       }
 
-      Column[A, Size](ar : _*)
+      Column[A, Size](ar)
     }
 
 
@@ -156,11 +157,11 @@ object Ops {
 
   class ColumnVec3Ops[@specialized(Float,Double,Int) A : ClassTag](a : Column[A, _3]){
     def ⨯(b : Column[A, _3])(implicit ring : Ring[A]) : Column[A,_3] = {
-      Column[A,_3](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+      Column[A,_3](array!(a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1)))
     }
 
     def cross(b : Column[A, _3])(implicit ring : Ring[A]) : Column[A,_3] = {
-      Column[A,_3](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
+      Column[A,_3](array!(a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1)))
     }
 
     def x = a(0) //TODO make faster
@@ -170,23 +171,23 @@ object Ops {
 
   class ColumnVec2Ops[@specialized(Float,Double,Int) A : ClassTag](a : Column[A, _2]){
     def ⟂()(implicit ev : Ring[A]) : Column[A, _2] = {
-      Column[A,_2](-a(1), a(0))
+      Column[A,_2](array!(-a(1), a(0)))
     }
 
     def ortho()(implicit ev : Ring[A]) : Column[A, _2] = {
-      Column[A,_2](-a(1), a(0))
+      Column[A,_2](array!(-a(1), a(0)))
     }
 
-    def x = a(0) //TODO make faster
-    def y = a(1)
+    def x : A = a(0) //TODO make faster
+    def y : A = a(1)
   }
 
   class RowVec4Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _4]){
 
-    def x = a(0) //TODO make faster
-    def y = a(1)
-    def z = a(2)
-    def w = a(3)
+    def x : A = a(0) //TODO make faster
+    def y : A = a(1)
+    def z : A = a(2)
+    def w : A = a(3)
   }
 
   class RowVec3Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _3]){
@@ -198,9 +199,9 @@ object Ops {
       Vec3[A](a(1) * b(2) - b(1) * a(2), -(a(0)*b(2) - b(0)*a(2)), a(0) * b(1) - b(0) * a(1))
     }
 
-    def x = a(0) //TODO make faster
-    def y = a(1)
-    def z = a(2)
+    def x : A = a(0) //TODO make faster
+    def y : A = a(1)
+    def z : A = a(2)
   }
 
   class RowVec2Ops[@specialized(Float,Double,Int) A : ClassTag](a : Row[A, _2]){
@@ -212,12 +213,12 @@ object Ops {
       Vec2[A](-a(1), a(0))
     }
 
-    def x = a(0) //TODO make faster
-    def y = a(1)
+    def x : A = a(0) //TODO make faster
+    def y : A = a(1)
   }
 
-  class MatrixOps[@specialized(Float,Double,Int) A : ClassTag , A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2]){
-    def +(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
+  class MatrixOps[@specialized(Float,Double,Int) A : ClassTag , A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2]){
+    def |+|(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A], no : Require[(A1 != _1) || (A2 != _1)]): Mat[A, A1, A2] ={
 
       val n = lhs.size() / lhs.m
       val ar = new Array[A](lhs.size())
@@ -228,10 +229,10 @@ object Ops {
         i += 1
       }
 
-      Mat[A, A1, A2](n, lhs.m, ar : _*)
+      Mat[A, A1, A2](n, lhs.m, ar)
     }
 
-    def -(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A]): Mat[A, A1, A2] ={
+    def |-|(rhs : Mat[A, A1, A2])(implicit ev : AdditiveGroup[A], no : Require[(A1 != _1) || (A2 != _1)]): Mat[A, A1, A2] ={
 
       val n = lhs.size() / lhs.m
       val ar = new Array[A](lhs.size())
@@ -242,10 +243,10 @@ object Ops {
         i += 1
       }
 
-      Mat[A, A1, A2](n, lhs.m, ar : _*)
+      Mat[A, A1, A2](n, lhs.m, ar)
     }
 
-    def *(rhs : A)(implicit ev : Field[A]): Mat[A, A1, A2] ={
+    def |*|(rhs : A)(implicit ev : Field[A], no : Require[(A1 != _1) || (A2 != _1)]): Mat[A, A1, A2] ={
 
       val n = lhs.size() / lhs.m
       val ar = new Array[A](lhs.size())
@@ -256,7 +257,7 @@ object Ops {
         i += 1
       }
 
-      Mat[A, A1, A2](n, lhs.m, ar : _*)
+      Mat[A, A1, A2](n, lhs.m, ar)
     }
 
     def row(index : Int) : Row[A, A2] = {
@@ -268,7 +269,7 @@ object Ops {
         i += 1
       }
 
-      Row[A, A2](ar : _*)
+      Row[A, A2](ar)
     }
 
     def rowAsColumn(index : Int) : Column[A, A2] = {
@@ -280,7 +281,7 @@ object Ops {
         i += 1
       }
 
-      Column[A, A2](ar : _*)
+      Column[A, A2](ar)
     }
 
     def column(index : Int) : Column[A, A1] = {
@@ -292,7 +293,7 @@ object Ops {
         i += 1
       }
 
-      Column[A, A1](ar : _*)
+      Column[A, A1](ar)
     }
 
     def columnAsRow(index : Int) : Row[A, A1] = {
@@ -304,10 +305,10 @@ object Ops {
         i += 1
       }
 
-      Row[A, A1](ar : _*)
+      Row[A, A1](ar)
     }
 
-    def ⨯[A3 <: XInt : ValueOf](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
+    def ⨯[A3 <: XInt](rhs : Mat[A, A2, A3])(implicit field : Field[A]) : Mat[A, A1, A3] = {
       val n = lhs.size() / lhs.m
       val m = rhs.m
 
@@ -319,7 +320,7 @@ object Ops {
         }
       }
 
-      Mat[A, A1, A3](n, m, ar : _*)
+      Mat[A, A1, A3](n, m, ar)
     }
 
     def trans() : Mat[A,A2,A1] = {
@@ -335,7 +336,7 @@ object Ops {
         }
       }
 
-      Mat[A, A2, A1](m, n, ar : _*)
+      Mat[A, A2, A1](m, n, ar)
     }
 
 
@@ -352,14 +353,14 @@ object Ops {
   }
 
   trait MatrixImplicits{
-    implicit def matrixOps[@specialized(Float,Double,Int) A, A1 <: XInt : ValueOf, A2 <: XInt : ValueOf](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
+    implicit def matrixOps[@specialized(Float,Double,Int) A, A1 <: XInt, A2 <: XInt](lhs : Mat[A,A1,A2])(implicit tag : ClassTag[A]) : MatrixOps[A,A1,A2] = new MatrixOps(lhs)
   }
 
   trait VectorImplicits{
     implicit def rowVec4Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec4[A]) : RowVec4Ops[A] = new RowVec4Ops[A](lhs)
     implicit def rowVec3Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec3[A]) : RowVec3Ops[A] = new RowVec3Ops[A](lhs)
     implicit def rowVec2Ops[@specialized(Float,Double,Int) A : ClassTag](lhs : Vec2[A]) : RowVec2Ops[A] = new RowVec2Ops[A](lhs)
-    implicit def rowVecOps[@specialized(Float,Double,Int) A : ClassTag, N <: XInt : ValueOf](lhs : Row[A, N]) : RowVecOps[A, N] = new RowVecOps[A, N](lhs)
+    implicit def rowVecOps[@specialized(Float,Double,Int) A : ClassTag, N <: XInt](lhs : Row[A, N]) : RowVecOps[A, N] = new RowVecOps[A, N](lhs)
   }
 
 

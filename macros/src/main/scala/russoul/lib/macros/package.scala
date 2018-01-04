@@ -85,6 +85,46 @@ package object macros {
     }
   }
 
+  //macro for fast vararg array creation
+  object array{
+    def !(xs : Any*) : Any = macro at_impl
+    def at_impl(c: whitebox.Context)(xs: c.Expr[Any]*) : c.Expr[Any] = {
+      import c.universe._
+
+      // First let's show that we can recover the types:
+      //println(xs.map(_.tree.tpe.widen))
+      val tpe = xs(0).tree.tpe.widen
+      val filtered = xs.filter(_.tree.tpe.widen == tpe)
+      if(filtered.size != xs.size){
+        c.abort(c.enclosingPosition, "Varargs must contain elements of the same type !")
+      }
+
+      val size = c.parse(xs.size.toString)
+
+
+
+      val name_t = c.freshName()
+      val t = c.parse(name_t)
+
+      val typee = tq"$tpe"
+
+      val assignments = for(i <- 0 until xs.length) yield{
+        val ie = c.parse(i.toString)
+        q"$t($ie) = ${xs(i)}"
+      }
+
+
+      val tree =
+        q"""
+           val $t = new Array[$typee]($size)
+           ..$assignments
+           $t
+
+          """
+      c.Expr(tree)
+    }
+  }
+
 
   case class Ref[Str <: XString]()
 

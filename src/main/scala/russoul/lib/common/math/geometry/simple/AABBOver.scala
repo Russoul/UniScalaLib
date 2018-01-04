@@ -28,12 +28,12 @@ import spire.implicits._
     */
   override def scale(s:F)(implicit field: Field[F], tag : ClassTag[F]): AABBOver[F] =
   {
-    new AABBOver(center, extent * s)
+    new AABBOver(center, extent :* s)
   }
 
 
   override def scaleAroundBasis(factor: F)(implicit ev3: Field[F], tag : ClassTag[F]): AABBOver[F] = {
-    new AABBOver(center * factor, extent * factor)
+    new AABBOver(center :* factor, extent :* factor)
   }
 
   def genVertices()(implicit f : Field[F], tag : ClassTag[F]): Array[Row[F,_3]] =
@@ -45,14 +45,14 @@ import spire.implicits._
     val sz = extent(2)
 
 
-    a(0) = Row[F, _3](center(0)-sx, center(1)-sy, center(2)-sz)
-    a(1) = Row[F, _3](center(0)-sx, center(1)-sy, center(2)+sz)
-    a(2) = Row[F, _3](center(0)+sx, center(1)-sy, center(2)+sz)
-    a(3) = Row[F, _3](center(0)+sx, center(1)-sy, center(2)-sz)
-    a(4) = Row[F, _3](center(0)-sx, center(1)+sy, center(2)-sz)
-    a(5) = Row[F, _3](center(0)-sx, center(1)+sy, center(2)+sz)
-    a(6) = Row[F, _3](center(0)+sx, center(1)+sy, center(2)+sz)
-    a(7) = Row[F, _3](center(0)+sx, center(1)+sy, center(2)-sz)
+    a(0) = Vec3[F](center(0)-sx, center(1)-sy, center(2)-sz)
+    a(1) = Vec3[F](center(0)-sx, center(1)-sy, center(2)+sz)
+    a(2) = Vec3[F](center(0)+sx, center(1)-sy, center(2)+sz)
+    a(3) = Vec3[F](center(0)+sx, center(1)-sy, center(2)-sz)
+    a(4) = Vec3[F](center(0)-sx, center(1)+sy, center(2)-sz)
+    a(5) = Vec3[F](center(0)-sx, center(1)+sy, center(2)+sz)
+    a(6) = Vec3[F](center(0)+sx, center(1)+sy, center(2)+sz)
+    a(7) = Vec3[F](center(0)+sx, center(1)+sy, center(2)-sz)
 
     a
   }

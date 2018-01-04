@@ -5,10 +5,9 @@ import russoul.lib.common.math.geometry.simple.general.{CenteredShape, Geometric
 import russoul.lib.common.utils.Arr
 
 import scala.reflect.ClassTag
-
-
 import russoul.lib.common._
 import russoul.lib.common.Implicits._
+import russoul.lib.macros.array
 import spire.algebra._
 import spire.math._
 import spire.implicits._
@@ -34,7 +33,7 @@ import spire.implicits._
 
 
 
-  def genVertices()(implicit classtag: ClassTag[F], ev3: Field[F]): Array[Vec2[F]] = Array(center - Vec2[F](extent,extent), center + Vec2[F](extent, -extent), center + Vec2[F](extent,extent), center + Vec2[F](-extent, extent))
+  def genVertices()(implicit classtag: ClassTag[F], ev3: Field[F]): Array[Vec2[F]] = array!(center - Vec2[F](extent,extent), center + Vec2[F](extent, -extent), center + Vec2[F](extent,extent), center + Vec2[F](-extent, extent))
 
 
   /**

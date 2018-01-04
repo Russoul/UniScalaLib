@@ -10,6 +10,7 @@ import scala.language.implicitConversions
 import scala.reflect.ClassTag
 import scala.util.{Failure, Success, Try}
 import russoul.lib.common.Implicits._
+import russoul.lib.macros.array
 import singleton.ops.XInt
 import spire.algebra._
 import spire.math._
@@ -21,6 +22,10 @@ import spire.implicits._
 package object common
 {
 
+  //see http://aleksandar-prokopec.com/2013/11/03/specialization-quirks.html
+  trait Function1R[A, @specialized(Float,Double,Int,Unit) R]{
+    def apply(x : A) : R
+  }
 
   //Functional
 
@@ -69,72 +74,91 @@ package object common
   //Functional mathematical Shape 2D
 
 
+  //TODO specialization does not work correctly here, write a macro ? the issue is in annonymous functions being specialized but erased calls are inserted at call sites
+  type DensityFunc2[@specialized(Float, Double, Int) A] = Vec2[A] => A
+
+  object FShape2{
+    def intersection[@specialized(Float,Double,Int) A : Order](a : DensityFunc2[A], b : DensityFunc2[A]): DensityFunc2[A] ={
+      x => max(a(x), b(x))
+    }
+
+    def union[@specialized(Float,Double,Int) A : Order](a : DensityFunc2[A], b : DensityFunc2[A]): DensityFunc2[A] ={
+      x => min(a(x), b(x))
+    }
+
+    def subtraction[@specialized(Float,Double,Int) A : Order : Ring](a : DensityFunc2[A], b : DensityFunc2[A]): DensityFunc2[A] ={
+      x => max(a(x), -b(x))
+    }
+
+    def mkCircle2[@specialized(Float,Double,Int) A : Order : Field : ClassTag](center : Vec2[A], rad : A) : DensityFunc2[A] = {
+      (x : Vec2[A]) =>
+        val d = x - center
+        (d dot d) - rad * rad
+    }
+  }
+
+
+
   //TODO better design FShape2, it is too verbose
-  trait FShape2[@specialized(Float,Double,Int) A]{ self =>
-    def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]) : A
+  trait FShape2{ self =>
+    def density(p: Float2) : Float
 
-    def &(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
-      new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
-          order.max(self.density(p), that.density(p))
-        }
+    def &(that: FShape2) : FShape2 = {
+      (p: Float2) => {
+        scala.math.max(self.density(p), that.density(p))
       }
     }
 
-    def |(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
-      new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
-          order.min(self.density(p), that.density(p))
-        }
+    def |(that: FShape2) : FShape2 = {
+      (p: Float2) => {
+        scala.math.min(self.density(p), that.density(p))
       }
     }
 
-    def -(that: FShape2[A])(implicit order : Order[A]) : FShape2[A] = {
-      new FShape2[A] {
-        override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
-          order.max(self.density(p), -that.density(p))
-        }
+    def -(that: FShape2) : FShape2 = {
+      (p: Float2) => {
+        scala.math.max(self.density(p), -that.density(p))
       }
     }
   }
 
-  case class FCircle[@specialized(Float,Double,Int) A](center : Vec2[A], rad: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+  case class FCircle(center : Float2, rad: Float) extends FShape2{
+    override def density(p: Float2): Float = {
       val d = p - center
       (d dot d) - rad * rad
     }
   }
 
-  case class FHalfPlaneLeft[@specialized(Float,Double,Int) A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+  case class FHalfPlaneLeft(x: Float) extends FShape2{
+    override def density(p: Float2) : Float = {
       p(0) - x
     }
   }
 
-  case class FHalfPlaneRight[@specialized(Float,Double,Int) A](x: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+  case class FHalfPlaneRight(x: Float) extends FShape2{
+    override def density(p: Float2): Float = {
       x - p(0)
     }
   }
 
-  case class FHalfPlaneUpper[@specialized(Float,Double,Int) A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+  case class FHalfPlaneUpper(y: Float) extends FShape2{
+    override def density(p: Float2): Float = {
       y - p(1)
     }
   }
 
-  case class FHalfPlaneLower[@specialized(Float,Double,Int) A](y: A) extends FShape2[A]{
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+  case class FHalfPlaneLower(y: Float) extends FShape2{
+    override def density(p: Float2): Float = {
       p(1) - y
     }
   }
 
-  case class FRectangle2[@specialized(Float,Double,Int) A](center : Vec2[A], extent: Vec2[A])(implicit field: Field[A], order: Order[A]) extends FShape2[A]{
+  case class FRectangle2(center : Float2, extent: Float2) extends FShape2{
 
-    val shape = FHalfPlaneRight(center(0) - extent(0)) & FHalfPlaneLeft(center(0) + extent(0)) &
+    val shape: FShape2 = FHalfPlaneRight(center(0) - extent(0)) & FHalfPlaneLeft(center(0) + extent(0)) &
       FHalfPlaneLower(center(1) + extent(1)) & FHalfPlaneUpper(center(1) - extent(1))
 
-    override def density(p: Vec2[A])(implicit field: Field[A], tag : ClassTag[A]): A = {
+    override def density(p: Float2): Float = {
       shape.density(p)
     }
   }
@@ -216,13 +240,13 @@ package object common
 
 
   object Vec2{
-    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A): Row[A, _2] = Row[A,_2](x,y)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A): Row[A, _2] = Row[A,_2](array!(x,y))
   }
   object Vec3{
-    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A): Row[A, _3] = Row[A,_3](x,y,z)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A): Row[A, _3] = Row[A,_3](array!(x,y,z))
   }
   object Vec4{
-    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A, w: A): Row[A, _4] = Row[A,_4](x,y,z,w)
+    @inline def apply[@specialized(Float,Double,Int) A : ClassTag](x: A, y: A, z: A, w: A): Row[A, _4] = Row[A,_4](array!(x,y,z,w))
   }
 
   type Double2 = Row[Double,_2]
@@ -407,48 +431,48 @@ package object common
 
 
   object Double2{
-    @inline def apply(x: Double, y: Double) = Row[Double, _2](x,y)
+    @inline def apply(x: Double, y: Double) = Row[Double, _2](array!(x,y))
   }
 
   object Double3{
-    @inline def apply(x: Double, y: Double, z: Double) = Row[Double, _3](x,y,z)
-    @inline def apply(v2:Double2, z:Double) = Row[Double, _3](v2(0), v2(1), z)
+    @inline def apply(x: Double, y: Double, z: Double) = Row[Double, _3](array!(x,y,z))
+    @inline def apply(v2:Double2, z:Double) = Row[Double, _3](array!(v2(0), v2(1), z))
   }
 
   object Double4{
-    @inline def apply(x: Double, y: Double, z: Double, w: Double)  = Row[Double, _4](x,y,z,w)
-    @inline def apply(v:Double3, w:Double): Double4 = Row[Double, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Double, y: Double, z: Double, w: Double)  = Row[Double, _4](array!(x,y,z,w))
+    @inline def apply(v:Double3, w:Double): Double4 = Row[Double, _4](array!(v(0), v(1), v(2), w))
   }
 
 
   object Float2{
-    @inline def apply(x: Float, y: Float) = Row[Float, _2](x,y)
+    @inline def apply(x: Float, y: Float) : Row[Float, _2] = Row[Float, _2](array!(x,y))
   }
 
   object Float3{
-    @inline def apply(x: Float, y: Float, z: Float) = Row[Float, _3](x,y,z)
-    @inline def apply(v2:Float2, z:Float) = Row[Float, _3](v2(0), v2(1), z)
+    @inline def apply(x: Float, y: Float, z: Float) = Row[Float, _3](array!(x,y,z))
+    @inline def apply(v2:Float2, z:Float) = Row[Float, _3](array!(v2(0), v2(1), z))
   }
 
   object Float4{
-    @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Row[Float, _4](x,y,z,w)
-    @inline def apply(v:Float3, w:Float): Float4 = Row[Float, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Float, y: Float, z: Float, w: Float)  = Row[Float, _4](array!(x,y,z,w))
+    @inline def apply(v:Float3, w:Float): Float4 = Row[Float, _4](array!(v(0), v(1), v(2), w))
   }
   
 
 
   object Int2{
-    @inline def apply(x: Int, y: Int) = Row[Int, _2](x,y)
+    @inline def apply(x: Int, y: Int) = Row[Int, _2](array!(x,y))
   }
 
   object Int3{
-    @inline def apply(x: Int, y: Int, z: Int) = Row[Int, _3](x,y,z)
-    @inline def apply(v2:Int2, z:Int) = Row[Int, _3](v2(0), v2(1), z)
+    @inline def apply(x: Int, y: Int, z: Int) = Row[Int, _3](array!(x,y,z))
+    @inline def apply(v2:Int2, z:Int) = Row[Int, _3](array!(v2(0), v2(1), z))
   }
 
   object Int4{
-    @inline def apply(x: Int, y: Int, z: Int, w: Int)  = Row[Int, _4](x,y,z,w)
-    @inline def apply(v:Int3, w:Int): Int4 = Row[Int, _4](v(0), v(1), v(2), w)
+    @inline def apply(x: Int, y: Int, z: Int, w: Int)  = Row[Int, _4](array!(x,y,z,w))
+    @inline def apply(v:Int3, w:Int): Int4 = Row[Int, _4](array!(v(0), v(1), v(2), w))
   }
   
 
@@ -514,47 +538,47 @@ package object common
 
 
 
-      Mat[Float, _4](
+      Mat[Float, _4]( array!(
         1F, 0F, 0F, 0F,
         0F, 1F, 0F, 0F,
         0F, 0F, 1F, 0F,
-        0F, 0F, 0F, 1F)
+        0F, 0F, 0F, 1F))
     }
 
     def scale(x: Float, y: Float, z: Float): Mat4F =
     {
-      Mat[Float, _4](
+      Mat[Float, _4]( array!(
         x, 0F, 0F, 0F,
         0F, y, 0F, 0F,
         0F, 0F, z, 0F,
-        0F, 0F, 0F, 1F)
+        0F, 0F, 0F, 1F))
     }
 
     def scale(v: Float3): Mat4F =
     {
-      Mat[Float,_4](
-        v(0), 0, 0, 0,
-        0, v(1), 0, 0,
-        0, 0, v(2), 0,
-        0, 0, 0, 1)
+      Mat[Float,_4]( array!(
+        v(0), 0F, 0F, 0F,
+        0F, v(1), 0F, 0F,
+        0F, 0F, v(2), 0F,
+        0F, 0F, 0F, 1F))
     }
 
     def translation(x: Float, y: Float, z: Float): Mat4F =
     {
-      Mat[Float,_4](
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        x, y, z, 1)
+      Mat[Float,_4]( array!(
+        1F, 0F, 0F, 0F,
+        0F, 1F, 0F, 0F,
+        0F, 0F, 1F, 0F,
+        x, y, z, 1F))
     }
 
     def translation(v: Float3): Mat4F =
     {
-      Mat[Float,_4](
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        v(0), v(1), v(2), 1)
+      Mat[Float,_4]( array!(
+        1F, 0F, 0F, 0F,
+        0F, 1F, 0F, 0F,
+        0F, 0F, 1F, 0F,
+        v(0), v(1), v(2), 1F))
     }
 
     def rotationDeg(axis: Float3, angleInDegrees: Float): Mat4F =
@@ -565,11 +589,11 @@ package object common
       val x = axis(0)
       val y = axis(1)
       val z = axis(2)
-      Mat[Float,_4](
-        cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
-        y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
-        z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
-        0, 0, 0, 1)
+      Mat[Float,_4]( array!(
+        cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0F,
+        y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0F,
+        z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0F,
+        0F, 0F, 0F, 1F))
 
     }
 
@@ -581,22 +605,22 @@ package object common
       val x = axis(0)
       val y = axis(1)
       val z = axis(2)
-      Mat[Float,_4](
+      Mat[Float,_4]( array!(
         cos + x * x * (1F - cos), x * y * (1F - cos) - z * sin, x * z * (1F - cos) + y * sin, 0F,
         y * x * (1F - cos) + z * sin, cos + y * y * (1F - cos), y * z * (1F - cos) - x * sin, 0F,
         z * x * (1F - cos) - y * sin, z * y * (1F - cos) + x * sin, cos + z * z * (1F - cos), 0F,
-        0F, 0F, 0F, 1F)
+        0F, 0F, 0F, 1F))
 
     }
 
     def ortho(left: Float, right: Float, bottom: Float, top: Float, near: Float, far: Float): Mat4F =
     {
 
-      Mat[Float, _4](
-        2 / (right - left), 0, 0, -(right + left) / (right - left),
-        0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
-        0, 0, -2 / (far - near), -(far + near) / (far - near),
-        0, 0, 0, 1)
+      Mat[Float, _4]( array!(
+        2F / (right - left), 0F, 0F, -(right + left) / (right - left),
+        0F, 2F / (top - bottom), 0F, -(top + bottom) / (top - bottom),
+        0F, 0F, -2F / (far - near), -(far + near) / (far - near),
+        0F, 0F, 0F, 1F))
     }
 
 
@@ -607,11 +631,11 @@ package object common
       val right = top * aspect
       val left = -right
 
-      Mat[Float,_4](
-        2 * near / (right - left), 0, (right + left) / (right - left), 0, //OpenGL form(column-major) not transposed, transposed - row-major form
-        0, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0,
-        0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
-        0, 0, -1, 0)
+      Mat[Float,_4]( array!(
+        2F * near / (right - left), 0F, (right + left) / (right - left), 0F, //OpenGL form(column-major) not transposed, transposed - row-major form
+        0F, 2F * near / (top - bottom), (top + bottom) / (top - bottom), 0F,
+        0F, 0F, -(far + near) / (far - near), -2F * (far * near) / (far - near),
+        0F, 0F, -1F, 0F))
     }
 
 
@@ -623,11 +647,11 @@ package object common
       val za = (target - pos).normalize
       val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
-      Mat[Float,_4](
+      Mat[Float,_4]( array!(
         xa(0), ya(0), za(0), 0F,
         xa(1), ya(1), za(1), 0F,
         xa(2), ya(2), za(2), 0F,
-        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1F)
+        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1F))
     }
 
     def viewDir(pos: Vec3[Float], look: Vec3[Float], up: Vec3[Float]): Mat4F =
@@ -637,11 +661,11 @@ package object common
       val za = -look
       val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
-      Mat[Float,_4](
+      Mat[Float,_4]( array!(
         xa(0), ya(0), za(0), 0F,
         xa(1), ya(1), za(1), 0F,
         xa(2), ya(2), za(2), 0F,
-        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1F)
+        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1F))
     }
 
     def view(pos: Vec3[Float], rotX: Float, rotY: Float, rotZ: Float): Mat4F =
@@ -664,47 +688,47 @@ package object common
     def identity(): Mat4D = //row major
     {
 
-      Mat[Double,_4](
+      Mat[Double,_4]( array!(
         1D, 0D, 0D, 0D,
         0D, 1D, 0D, 0D,
         0D, 0D, 1D, 0D,
-        0D, 0D, 0D, 1D)
+        0D, 0D, 0D, 1D))
     }
 
     def scale(x: Double, y: Double, z: Double): Mat4D = //row major
     {
-      Mat[Double,_4](
+      Mat[Double,_4]( array!(
         x, 0D, 0D, 0D,
         0D, y, 0D, 0D,
         0D, 0D, z, 0D,
-        0D, 0D, 0D, 1D)
+        0D, 0D, 0D, 1D))
     }
 
     def scale(v: Vec3[Double]): Mat4D = //row major
     {
-      Mat[Double,_4](
-        v(0), 0, 0, 0,
-        0, v(1), 0, 0,
-        0, 0, v(2), 0,
-        0, 0, 0, 1)
+      Mat[Double,_4]( array!(
+        v(0), 0D, 0D, 0D,
+        0D, v(1), 0D, 0D,
+        0D, 0D, v(2), 0D,
+        0D, 0D, 0D, 1D))
     }
 
     def translation(x: Double, y: Double, z: Double): Mat4D = //row major
     {
-      Mat[Double,_4](
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        x, y, z, 1)
+      Mat[Double,_4]( array!(
+        1D, 0D, 0D, 0D,
+        0D, 1D, 0D, 0D,
+        0D, 0D, 1D, 0D,
+        x, y, z, 1D))
     }
 
     def translation(v: Vec3[Double]): Mat4D = //row major
     {
-      Mat[Double,_4](
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        v(0), v(1), v(2), 1)
+      Mat[Double,_4]( array!(
+        1D, 0D, 0D, 0D,
+        0D, 1D, 0D, 0D,
+        0D, 0D, 1D, 0D,
+        v(0), v(1), v(2), 1D))
     }
 
     def rotationDeg(axis: Vec3[Double], angleInDegrees: Double): Mat4D = //row major
@@ -715,11 +739,11 @@ package object common
       val x = axis(0)
       val y = axis(1)
       val z = axis(2)
-      Mat[Double,_4](
-        cos + x * x * (1 - cos), x * y * (1 - cos) - z * sin, x * z * (1 - cos) + y * sin, 0,
-        y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0,
-        z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0,
-        0, 0, 0, 1)
+      Mat[Double,_4]( array!(
+        cos + x * x * (1 - cos), x * y * (1D - cos) - z * sin, x * z * (1 - cos) + y * sin, 0D,
+        y * x * (1 - cos) + z * sin, cos + y * y * (1 - cos), y * z * (1 - cos) - x * sin, 0D,
+        z * x * (1 - cos) - y * sin, z * y * (1 - cos) + x * sin, cos + z * z * (1 - cos), 0D,
+        0D, 0D, 0D, 1D))
 
     }
 
@@ -731,22 +755,22 @@ package object common
       val x = axis(0)
       val y = axis(1)
       val z = axis(2)
-      Mat[Double,_4](
+      Mat[Double,_4]( array!(
         cos + x * x * (1D - cos), x * y * (1D - cos) - z * sin, x * z * (1D - cos) + y * sin, 0D,
         y * x * (1D - cos) + z * sin, cos + y * y * (1D - cos), y * z * (1D - cos) - x * sin, 0D,
         z * x * (1D - cos) - y * sin, z * y * (1D - cos) + x * sin, cos + z * z * (1D - cos), 0D,
-        0D, 0D, 0D, 1D)
+        0D, 0D, 0D, 1D))
 
     }
 
     def ortho(left: Double, right: Double, bottom: Double, top: Double, near: Double, far: Double): Mat4D = //column major
     {
 
-      Mat[Double,_4](
-        2 / (right - left), 0, 0, -(right + left) / (right - left),
-        0, 2 / (top - bottom), 0, -(top + bottom) / (top - bottom),
-        0, 0, -2 / (far - near), -(far + near) / (far - near),
-        0, 0, 0, 1)
+      Mat[Double,_4]( array!(
+        2.0 / (right - left), 0.0, 0.0, -(right + left) / (right - left),
+        0.0, 2.0 / (top - bottom), 0.0, -(top + bottom) / (top - bottom),
+        0.0, 0.0, -2.0 / (far - near), -(far + near) / (far - near),
+        0.0, 0.0, 0.0, 1.0))
     }
 
 
@@ -757,11 +781,11 @@ package object common
       val right = top * aspect
       val left = -right
 
-      Mat[Double,_4](
-        2 * near / (right - left), 0D, (right + left) / (right - left), 0D,
-        0D, 2 * near / (top - bottom), (top + bottom) / (top - bottom), 0D,
-        0, 0, -(far + near) / (far - near), -2 * (far * near) / (far - near),
-        0, 0, -1, 0)
+      Mat[Double,_4]( array!(
+        2D * near / (right - left), 0D, (right + left) / (right - left), 0D,
+        0D, 2D * near / (top - bottom), (top + bottom) / (top - bottom), 0D,
+        0D, 0D, -(far + near) / (far - near), -2D * (far * near) / (far - near),
+        0D, 0D, -1D, 0D))
     }
 
 
@@ -772,11 +796,11 @@ package object common
       val za = (target - pos).normalize
       val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
-      Mat[Double,_4](
+      Mat[Double,_4]( array!(
         xa(0), ya(0), za(0), 0D,
         xa(1), ya(1), za(1), 0D,
         xa(2), ya(2), za(2), 0D,
-        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
+        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D))
     }
 
     def viewDir(pos: Vec3[Double], look: Vec3[Double], up: Vec3[Double]): Mat4D = //row major?
@@ -786,11 +810,11 @@ package object common
       val za = -look
       val xa = up.⨯(za).normalize
       val ya = za.⨯(xa)
-      Mat[Double,_4](
+      Mat[Double,_4]( array!(
         xa(0), ya(0), za(0), 0D,
         xa(1), ya(1), za(1), 0D,
         xa(2), ya(2), za(2), 0D,
-        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D)
+        -xa.⋅(pos), -ya.⋅(pos), -za.⋅(pos), 1D))
     }
 
     def view(pos: Vec3[Double], rotX: Double, rotY: Double, rotZ: Double): Mat4D = //row major?
