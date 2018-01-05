@@ -2,7 +2,7 @@ package russoul.lib
 
 
 import russoul.lib.common.math.geometry.simple._
-import russoul.lib.common.math.algebra.{ComplexOver, Mat, Row}
+import russoul.lib.common.math.algebra.{ComplexOver, Mat, MatF, Row}
 import spire.algebra.{Field, Order}
 
 import scala.annotation.Annotation
@@ -229,6 +229,9 @@ package object common
 
   type Row[@specialized(Float,Double,Int) T, Size <: XInt] = Mat[T,_1,Size]
   type Column[@specialized(Float,Double,Int) T, Size <: XInt] = Mat[T, Size, _1] //TODO
+
+  type RowF[Size <: XInt] = MatF[_1, Size]
+  type ColumnF[Size <: XInt] = MatF[Size, _1]
 
   type Vec2[@specialized(Float,Double,Int) T] = Row[T, _2]
   type Vec3[@specialized(Float,Double,Int) T] = Row[T, _3]

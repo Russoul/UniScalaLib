@@ -1,3 +1,4 @@
+import algebra.instances.IntAlgebra
 import russoul.lib.common.{FCircle, FRectangle2, Float2}
 import russoul.lib.common._
 import russoul.lib.common.Abstraction._
@@ -13,11 +14,12 @@ import syntax._
 import metal._
 import spire.std.ArrayCoordinateSpace
 import syntax._
+import algebra.instances.int._
 
 object Spec extends App{
 
 
-  def sampleIntersectionBrute(line : Line2Over[Float], n: Int, f : FShape2) : Float2 = {
+  /*def sampleIntersectionBrute(line : Line2Over[Float], n: Int, f : FShape2) : Float2 = {
     val ext = line.end - line.start
 
     var bestAbs = 100000000F //placeholder TODO
@@ -85,5 +87,19 @@ object Spec extends App{
     m
   }
 
-  specializationTest()
+  specializationTest()*/
+
+
+
+  final def plusInt(x : Int, y : Int) = x + y
+
+  def specTest1(): Unit ={
+    val q = 1 + 2
+    val p = plusInt(1, 2)
+    val impl = implicitly[Monoid[Int]]
+    val t = impl.combine(1, 2)
+
+    val impl2 = implicitly[IntAlgebra]
+    val n = impl2.plus(1, 2)
+  }
 }
